@@ -1,0 +1,5 @@
+{
+    "name": "Jekyll",
+    "image": "mcr.microsoft.com/vscode/devcontainers/jekyll",
+    "extensions": []
+}
