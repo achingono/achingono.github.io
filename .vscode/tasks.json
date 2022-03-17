@@ -9,7 +9,7 @@
 				"kind": "test",
 				"isDefault": true
 			},
-			"isBackground": true,
+			"isBackground": true
 		},
 		{
 			"label": "Build",
@@ -18,7 +18,20 @@
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			},
+			}
+		},
+		{
+			"label": "New Post",
+			"type": "shell",
+			"command": "title=\"${input:title}\" && slug=\"${title// /-}\" && hugo new content/post/${slug,,}/index.md --source ./src",
+			"problemMatcher": []
+		}
+	],
+	"inputs": [
+		{
+			"id": "title",
+			"description": "Enter the title of the new post",
+			"type": "promptString"
 		}
 	]
 }
