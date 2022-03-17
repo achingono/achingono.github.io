@@ -1,20 +1,23 @@
-+++
-author = "Alfero Chingono"
-title = "My first Hugo post"
-date = "2019-03-10"
-description = "How I created my first Hugo blog powered by GitHub pages"
-tags = [
+---
+author: "Alfero Chingono"
+title: "Hugo blog powered by GitHub Pages and GitHub Codespaces"
+date: "2022-03-15"
+draft: true
+description: "How I created my first Hugo blog powered by GitHub pages"
+slug: "hugo-blog-powered-by-github-pages-codespaces"
+tags: [
 "github",
 "hugo",
 "devcontainer",
 "vscode",
 "codespaces"
 ]
-categories = [
+categories: [
 "How To",
 "Setup"
 ]
-+++
+image: "cover.jpg"
+---
 
 1. Clone repo in Codespaces
 2. Add Hugo devcontainer
