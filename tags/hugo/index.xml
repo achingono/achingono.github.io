@@ -1,37 +1,104 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on Alfero Chingono</title><link>https://achingono.github.io/tags/hugo/</link><description>Recent content in Hugo on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://achingono.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>My first post</title><link>https://achingono.github.io/p/my-first-post/</link><pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate><guid>https://achingono.github.io/p/my-first-post/</guid><description>&lt;ol>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on Alfero Chingono</title><link>https://achingono.github.io/tags/hugo/</link><description>Recent content in Hugo on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://achingono.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>My first post</title><link>https://achingono.github.io/blog/my-first-post/</link><pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate><guid>https://achingono.github.io/blog/my-first-post/</guid><description>&lt;ol>
 &lt;li>
-&lt;p>Add devcontainer&lt;/p>
+&lt;p>Add Hugo devcontainer&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>Create new hugo site:
-&lt;code>hugo new site blog&lt;/code>&lt;/p>
+&lt;p>Create new hugo site:&lt;/p>
+&lt;p>&lt;code>hugo new site blog&lt;/code>&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>Try to create new hugo module
-&lt;a class="link" href="https://docs.stack.jimmycai.com/getting-started" target="_blank" rel="noopener"
->https://docs.stack.jimmycai.com/getting-started&lt;/a>
-&lt;code>hugo mod init github.com/achingono/achingono.github.io&lt;/code>
-Error: failed to init modules: binary with name &amp;ldquo;go&amp;rdquo; not found&lt;/p>
-&lt;/li>
+&lt;p>Try to create new hugo module &lt;a class="link" href="https://docs.stack.jimmycai.com/getting-started" target="_blank" rel="noopener"
+>https://docs.stack.jimmycai.com/getting-started&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">hugo mod init github.com/achingono/achingono.github.io
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Error: failed to init modules: binary with name &lt;span class="s2">&amp;#34;go&amp;#34;&lt;/span> not found
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
 &lt;li>
 &lt;p>Add go binary to devcontainer docker file&lt;/p>
-&lt;/li>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-docker" data-lang="docker">&lt;span class="line">&lt;span class="cl">&lt;span class="c">#Download Go&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> wget https://golang.org/dl/go1.&lt;span class="si">${&lt;/span>&lt;span class="nv">GO_VERSION&lt;/span>&lt;span class="si">}&lt;/span>.linux-amd64.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> tar -C /usr/local -xzf go1.&lt;span class="si">${&lt;/span>&lt;span class="nv">GO_VERSION&lt;/span>&lt;span class="si">}&lt;/span>.linux-amd64.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> rm go1.&lt;span class="si">${&lt;/span>&lt;span class="nv">GO_VERSION&lt;/span>&lt;span class="si">}&lt;/span>.linux-amd64.tar.gz&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> GOPATH /go&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> PATH &lt;span class="nv">$GOPATH&lt;/span>/bin:/usr/local/go/bin:&lt;span class="nv">$PATH&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
 &lt;li>
-&lt;p>Check go version
-&lt;code>&amp;gt;go version&lt;/code>
-&lt;code>go version go1.18 linux/amd64&lt;/code>&lt;/p>
-&lt;/li>
+&lt;p>Check go version&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&amp;gt;go version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">go version go1.18 linux/amd64
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
 &lt;li>
-&lt;p>Turn new site into a Hugo module:
-&lt;code>&amp;gt;hugo mod init github.com/achingono/achingono.github.io&lt;/code>
-&lt;code>go: creating new go.mod: module github.com/achingono/achingono.github.io go: to add module requirements and sums: go mod tidy&lt;/code>&lt;/p>
-&lt;/li>
+&lt;p>Turn new site into a Hugo module:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&amp;gt;hugo mod init github.com/achingono/achingono.github.io
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">go: creating new go.mod: module github.com/achingono/achingono.github.io
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">go: to add module requirements and sums:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> go mod tidy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
 &lt;li>
-&lt;p>Declare the hugo-theme-stack module as a dependency of your site:
-&lt;code>&amp;gt;hugo mod get github.com/CaiJimmy/hugo-theme-stack/v3&lt;/code>
-&lt;code>go: downloading github.com/CaiJimmy/hugo-theme-stack/v3 v3.10.0 go: downloading github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible go: added github.com/CaiJimmy/hugo-theme-stack/v3 v3.10.0&lt;/code>&lt;/p>
-&lt;/li>
+&lt;p>Declare the hugo-theme-stack module as a dependency of your site:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&amp;gt;hugo mod get github.com/CaiJimmy/hugo-theme-stack/v3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">go: downloading github.com/CaiJimmy/hugo-theme-stack/v3 v3.10.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">go: downloading github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">go: added github.com/CaiJimmy/hugo-theme-stack/v3 v3.10.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
 &lt;li>
-&lt;p>&lt;code>wget https://raw.githubusercontent.com/CaiJimmy/hugo-theme-stack/master/exampleSite/config.yaml&lt;/code>&lt;/p>
-&lt;/li>
+&lt;p>Grab config file from example site&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&amp;gt;wget https://raw.githubusercontent.com/CaiJimmy/hugo-theme-stack/master/exampleSite/config.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
 &lt;/ol></description></item></channel></rss>
