@@ -13,6 +13,7 @@ menu:
         weight: -90
         params:
             icon: user
+image: "cover.jpg"
 ---
 
 Software Development expert with 20+ years’ experience generating trust, building strategic alliances, and orchestrating interdisciplinary teams to deliver products and services that meet end user needs and business objectives. Envisioned, designed, architected, and led the implementation of full software development life cycle projects ranging from $150,000 to $1.5 million with distributed engineering teams of 4 – 12 members.
