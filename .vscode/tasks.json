@@ -2,16 +2,6 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Test",
-			"type": "shell",
-			"command": "hugo server -D --source ./src",
-			"group": {
-				"kind": "test",
-				"isDefault": true
-			},
-			"isBackground": true
-		},
-		{
 			"label": "Build",
 			"type": "shell",
 			"command": "hugo --source ./src",
@@ -19,6 +9,16 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"label": "Serve",
+			"type": "shell",
+			"command": "hugo server -D --source ./src",
+			"group": {
+				"kind": "build"
+			},
+			"isBackground": true,
+			"problemMatcher": []
 		},
 		{
 			"label": "New Post",

@@ -4,7 +4,7 @@
     {
         "key": "ctrl+shift+a",
         "command": "workbench.action.tasks.runTask",
-        "args": "Test",
-        "when": "workspaceKeybindings.testTask.enabled"
+        "args": "Serve",
+        "when": "workspaceKeybindings.serveTask.enabled"
     }
 ]

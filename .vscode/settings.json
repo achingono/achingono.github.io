@@ -1,5 +1,5 @@
 {
-    "workspaceKeybindings.testTask.enabled": true,
+    "workspaceKeybindings.serveTask.enabled": true,
     "cSpell.words": [
         "achingono",
         "Alfero",
