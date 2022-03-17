@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Defining A Task for Quickly Creating Hugo Posts In Visual Studio Code"
 date: 2022-03-17T18:39:12Z
-draft: true
+draft: false
 description: "Using Visual Studio custom tasks, it is possible and easy to create tasks for quickly creating new content."
 slug: defining-task-quickly-creating-hugo-posts-vscode
 tags: [
@@ -67,5 +67,5 @@ does three (3) things using bash:
     hugo new content/post/${slug,,}/index.md --source ./src
     ```
     *This last command converts the contents of the `slug` variable to lowercase. Pretty neat!*
-    
+
 So far I'm pretty pleased with my experience with the [Hugo static site generator](https://gohugo.io/).

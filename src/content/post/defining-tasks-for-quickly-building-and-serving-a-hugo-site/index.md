@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Defining Tasks for Quickly Building and Serving a Hugo Site"
 date: 2022-03-16T20:44:03Z
-draft: true
+draft: false
 description: "Using Visual Studio custom tasks, it is possible and easy to create tasks for quickly building and serving a Hugo site."
 slug: defining-tasks-quickly-building-serving-hugo-site
 tags: [

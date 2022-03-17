@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Hugo blog powered by GitHub Pages and GitHub Codespaces"
 date: "2022-03-15"
-draft: true
+draft: false
 description: "How I created my first Hugo blog powered by GitHub pages"
 slug: "hugo-blog-powered-by-github-pages-codespaces"
 tags: [
