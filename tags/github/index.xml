@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GitHub on Alfero Chingono</title><link>https://achingono.github.io/tags/github/</link><description>Recent content in GitHub on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://achingono.github.io/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>My first post</title><link>https://achingono.github.io/p/my-first-post/</link><pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate><guid>https://achingono.github.io/p/my-first-post/</guid><description>&lt;ol>
+&lt;li>
+&lt;p>Add devcontainer&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Create new hugo site:
+&lt;code>hugo new site blog&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Try to create new hugo module
+&lt;a class="link" href="https://docs.stack.jimmycai.com/getting-started" target="_blank" rel="noopener"
+>https://docs.stack.jimmycai.com/getting-started&lt;/a>
+&lt;code>hugo mod init github.com/achingono/achingono.github.io&lt;/code>
+Error: failed to init modules: binary with name &amp;ldquo;go&amp;rdquo; not found&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Add go binary to devcontainer docker file&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Check go version
+&lt;code>&amp;gt;go version&lt;/code>
+&lt;code>go version go1.18 linux/amd64&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Turn new site into a Hugo module:
+&lt;code>&amp;gt;hugo mod init github.com/achingono/achingono.github.io&lt;/code>
+&lt;code>go: creating new go.mod: module github.com/achingono/achingono.github.io go: to add module requirements and sums: go mod tidy&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Declare the hugo-theme-stack module as a dependency of your site:
+&lt;code>&amp;gt;hugo mod get github.com/CaiJimmy/hugo-theme-stack/v3&lt;/code>
+&lt;code>go: downloading github.com/CaiJimmy/hugo-theme-stack/v3 v3.10.0 go: downloading github.com/CaiJimmy/hugo-theme-stack v2.6.0+incompatible go: added github.com/CaiJimmy/hugo-theme-stack/v3 v3.10.0&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>wget https://raw.githubusercontent.com/CaiJimmy/hugo-theme-stack/master/exampleSite/config.yaml&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>
