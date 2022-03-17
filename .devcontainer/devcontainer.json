@@ -23,12 +23,18 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"html.format.templating": true,
+		"markdown.preview.scrollPreviewWithEditor": true,
+		"[markdown]": {
+			"files.trimTrailingWhitespace": false
+		  }
 	},
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"bungcip.better-toml",
-		"davidanson.vscode-markdownlint"
+		"zaaack.markdown-editor",
+		"davidanson.vscode-markdownlint",
+		"shuworks.vscode-table-formatter",
+		"streetsidesoftware.code-spell-checker"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
