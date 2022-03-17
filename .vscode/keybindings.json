@@ -1,0 +1,10 @@
+// Copy this key binding to your user profile for it to work
+// https://github.com/Microsoft/vscode/issues/23757
+[
+    {
+        "key": "ctrl+shift+a",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Test",
+        "when": "workspaceKeybindings.testTask.enabled"
+    }
+]

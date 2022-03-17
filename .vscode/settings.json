@@ -1,0 +1,14 @@
+{
+    "workspaceKeybindings.testTask.enabled": true,
+    "cSpell.words": [
+        "achingono",
+        "Alfero",
+        "Chingono",
+        "Codespaces",
+        "devcontainer"
+    ],
+    "cSpell.files": [
+        "src/**/*",
+        "!config.yaml"
+    ]
+}
