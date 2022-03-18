@@ -1,4 +1,4 @@
-baseurl: https://achingono.github.io
+baseurl: https://www.chingono.com
 languageCode: en-us
 theme: github.com/CaiJimmy/hugo-theme-stack/v3
 paginate: 5
@@ -14,7 +14,7 @@ languages:
 disqusShortname: achingono
 
 # GA Tracking ID
-googleAnalytics:
+googleAnalytics: 
 
 # Theme i18n support
 # Available values: en, fr, id, ja, ko, pt-br, zh-cn, zh-tw, es, de, nl, it, th, el, uk, ar
