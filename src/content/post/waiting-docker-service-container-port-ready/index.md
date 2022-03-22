@@ -2,12 +2,12 @@
 author: "Alfero Chingono"
 title: "Waiting for Docker Service Container Port to Be Ready"
 date: 2021-03-04T12:21:28Z
-draft: true
+draft: false
 description: "In this post, I will show how I configured my dotnet core docker container to wait for another docker container before loading the application."
 slug: waiting-docker-service-container-port-ready
 tags: [
     "docker",
-    "dotnet-core"
+    "dotnet-core",
     "sql-server",
     "bash",
     "tcp"
