@@ -106,3 +106,6 @@ exit 0
 As you can see, I am reading environment variables in the bash script and I use all arguments to this script as the startup command. You may prefer it the other way, but I like it this way, and I hope you find this post valuable.
 
 As always, all comments and feedback are greatly appreciated.
+
+Credits:
+[How to check if an environment variable exists and get its value?](https://stackoverflow.com/questions/39296472/how-to-check-if-an-environment-variable-exists-and-get-its-value)
