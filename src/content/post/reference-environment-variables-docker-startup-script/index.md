@@ -1,10 +1,10 @@
 ---
 author: "Alfero Chingono"
-title: "Reference Build Arguments in Docker Startup Script"
+title: "Reference Environment Variables in Docker Startup Script"
 date: 2021-03-11T21:27:40Z
 draft: false
-description: "In this post, I show how to reference build arguments in a docker startup script"
-slug: reference-build-arguments-docker-startup-script
+description: "In this post, I show how to reference environment variables in a docker startup script"
+slug: reference-environment-variables-docker-startup-script
 tags: [
     "docker",
     "dotnet-core",
@@ -60,6 +60,8 @@ RUN dotnet publish -c Release -o /release --no-restore
 FROM runtime AS release
 # https://github.com/moby/moby/issues/37345#issuecomment-400245466
 ARG PROJECT
+ENV DB_SERVICE=${DB_SERVICE}
+ENV DB_SERVICE_PORT=${DB_SERVICE_PORT}
 ENV ASSEMBLY=${PROJECT}.dll
 COPY --from=publish /release .
 COPY entrypoint.sh .
@@ -120,4 +122,5 @@ With this setup, I can create multiple image variations with the same `Dockerfil
         PROJECT: Business.Web
 ```
 
+And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
 Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.
