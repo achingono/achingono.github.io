@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Combining ENTRYPOINT and CMD in a Dockerfile"
-date: 2021-07-15T17:51:18Z
+date: 2021-03-15T17:51:18Z
 draft: false
 description: "In this post, I show how to combine CMD and ENTRYPOINT in the same Dockerfile."
 slug: dockerfile-combine-entrypoint-cmd
@@ -16,7 +16,7 @@ categories: [
     "containers",
     "development"
 ]
-image: "cover.jpg"
+image: "cover.png"
 ---
 In my previous post; [Reference Build Arguments in Docker Startup Script]({{< ref "/post/reference-environment-variables-docker-startup-script/index.md" >}}), I showed how I added reusability to my `Dockerfile` by adding build arguments.
 
