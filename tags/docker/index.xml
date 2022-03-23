@@ -1,4 +1,105 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on Alfero Chingono</title><link>https://www.chingono.com/tags/docker/</link><description>Recent content in docker on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 11 Mar 2021 21:27:40 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Reference Build Arguments in Docker Startup Script</title><link>https://www.chingono.com/blog/2021/03/11/reference-build-arguments-docker-startup-script/</link><pubDate>Thu, 11 Mar 2021 21:27:40 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/11/reference-build-arguments-docker-startup-script/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/11/reference-build-arguments-docker-startup-script/cover.jpg" alt="Featured image of post Reference Build Arguments in Docker Startup Script" />&lt;p>In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" >Waiting for Docker Service Container Port to Be Ready&lt;/a>, I showed how I managed to delay container application code execution until another service is ready to accept tcp connections.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on Alfero Chingono</title><link>https://www.chingono.com/tags/docker/</link><description>Recent content in docker on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 15 Jul 2021 17:51:18 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/07/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Thu, 15 Jul 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/07/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/cover.jpg" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" />&lt;p>In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" >Reference Build Arguments in Docker Startup Script&lt;/a>, I showed how I added reusability to my &lt;code>Dockerfile&lt;/code> by adding build arguments.&lt;/p>
+&lt;p>The docker builder &lt;a class="link" href="https://docs.docker.com/engine/reference/builder/#cmd" target="_blank" rel="noopener"
+>CMD&lt;/a> reference document states:&lt;/p>
+&lt;blockquote>
+&lt;p>If you would like your container to run the same executable every time, then you should consider using &lt;code>ENTRYPOINT&lt;/code> in combination with &lt;code>CMD&lt;/code>. See &lt;a class="link" href="https://docs.docker.com/engine/reference/builder/#entrypoint" target="_blank" rel="noopener"
+>ENTRYPOINT&lt;/a>.&lt;/p>
+&lt;p>If the user specifies arguments to docker run then they will override the default specified in CMD.&lt;/p>
+&lt;/blockquote>
+&lt;p>So, after some fiddling around, I ended up with the following final version of my &lt;code>Dockerfile&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># [Choice] .NET Core version: 5.0, 3.1, 2.1&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">VARIANT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">3&lt;/span>.1&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">DB_SERVICE&lt;/span>&lt;span class="o">=&lt;/span>db
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">ARG&lt;/span> &lt;span class="nv">DB_SERVICE_PORT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1433&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">ARG&lt;/span> &lt;span class="nv">PROJECT&lt;/span>&lt;span class="o">=&lt;/span>Business.Web&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create a base runtime image with node&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/core/aspnet:${VARIANT} AS runtime&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">EXPOSE&lt;/span>&lt;span class="s"> 80&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">EXPOSE&lt;/span>&lt;span class="s"> 443&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> curl -sL https://deb.nodesource.com/setup_10.x &lt;span class="p">|&lt;/span> bash -&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> apt-get install -y nodejs&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create a base SDK image with node&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/core/sdk:${VARIANT} as sdk&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> curl -sL https://deb.nodesource.com/setup_10.x &lt;span class="p">|&lt;/span> bash -&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> apt-get install -y nodejs&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy source files&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> sdk as build&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/ ./src&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># restore nuget packages&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /src&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># run publish command&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> build as publish&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet publish -c Release -o /release --no-restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create release image from base runtime image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> runtime AS release&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://github.com/moby/moby/issues/37345#issuecomment-400245466&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> PROJECT&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">ASSEMBLY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PROJECT&lt;/span>&lt;span class="si">}&lt;/span>.dll&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>publish /release .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> entrypoint.sh .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> testconnection.sh .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> chmod +x ./entrypoint.sh&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> chmod +x ./testconnection.sh&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span> &lt;span class="s2">&amp;#34;./entrypoint.sh&amp;#34;&lt;/span> &lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">CMD&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;sh&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;-c&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;$DB_SERVICE $DB_SERVICE_PORT dotnet $ASSEMBLY&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Configuring it this way allows me to supply different arguments when running the container without having to specify &lt;code>entrypoint.sh&lt;/code> every time. Small change, and I hope this proves helpful to you, dear reader. All comments and feedback will be greatly appreciated.&lt;/p></description></item><item><title>Reference Environment Variables in Docker Startup Script</title><link>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</link><pubDate>Thu, 11 Mar 2021 21:27:40 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/cover.jpg" alt="Featured image of post Reference Environment Variables in Docker Startup Script" />&lt;p>In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" >Waiting for Docker Service Container Port to Be Ready&lt;/a>, I showed how I managed to delay container application code execution until another service is ready to accept tcp connections.&lt;/p>
 &lt;p>If this post, I&amp;rsquo;m going to improve on that solution and make it more reusable by adding environment variables to the the &lt;code>Dockerfile&lt;/code> and to the &lt;code>docker-compose.yml&lt;/code>.&lt;/p>
 &lt;p>Here&amp;rsquo;s the updated &lt;code>Dockerfile&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -45,6 +146,8 @@
 &lt;/span>&lt;span class="lnt">40
 &lt;/span>&lt;span class="lnt">41
 &lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># [Choice] .NET Core version: 5.0, 3.1, 2.1&lt;/span>&lt;span class="err">
@@ -81,6 +184,8 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> runtime AS release&lt;/span>&lt;span class="err">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://github.com/moby/moby/issues/37345#issuecomment-400245466&lt;/span>&lt;span class="err">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> PROJECT&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">DB_SERVICE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DB_SERVICE&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">DB_SERVICE_PORT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DB_SERVICE_PORT&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="err">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">ASSEMBLY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PROJECT&lt;/span>&lt;span class="si">}&lt;/span>.dll&lt;span class="err">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>publish /release .&lt;span class="err">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> entrypoint.sh .&lt;span class="err">
@@ -185,7 +290,8 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> PROJECT: Business.Web&lt;span class="err">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.&lt;/p></description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" />&lt;p>Recently, I was working on a pet project and had created my &lt;code>Dockerfile&lt;/code> for the ASP.NET Core container as well as the &lt;code>docker-compose.yml&lt;/code> file to compose the services.&lt;/p>
+&lt;/div>&lt;p>And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
+Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.&lt;/p></description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" />&lt;p>Recently, I was working on a pet project and had created my &lt;code>Dockerfile&lt;/code> for the ASP.NET Core container as well as the &lt;code>docker-compose.yml&lt;/code> file to compose the services.&lt;/p>
 &lt;p>Here&amp;rsquo;s the &lt;code>Dockerfile&lt;/code> I had:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
