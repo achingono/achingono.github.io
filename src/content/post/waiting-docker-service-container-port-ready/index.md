@@ -239,6 +239,6 @@ info: Microsoft.EntityFrameworkCore.Database.Command[20101]
 
 As you can see, this solution allowed my `app` container to wait for as long as it needed to before starting the .net application. Hopefully, you find that helpful, dear reader.
 
-Credits:
-[Testing remote TCP port using telnet by running a one-line command](https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356)
+Credits:  
+[Testing remote TCP port using telnet by running a one-line command](https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356)  
 [How to pass all arguments passed to my bash script to a function of mine?](https://stackoverflow.com/a/3816747)

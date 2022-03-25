@@ -125,5 +125,5 @@ With this setup, I can create multiple image variations with the same `Dockerfil
 And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
 Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.
 
-Credits:
+Credits:  
 [Persisting ENV and ARG settings to all later stages in multi-stage builds](https://github.com/moby/moby/issues/37345#issuecomment-400245466)

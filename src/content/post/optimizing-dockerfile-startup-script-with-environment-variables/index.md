@@ -107,5 +107,5 @@ As you can see, I am reading environment variables in the bash script and I use 
 
 As always, all comments and feedback are greatly appreciated.
 
-Credits:
+Credits:  
 [How to check if an environment variable exists and get its value?](https://stackoverflow.com/questions/39296472/how-to-check-if-an-environment-variable-exists-and-get-its-value)
