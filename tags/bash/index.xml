@@ -1,4 +1,384 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>bash on Alfero Chingono</title><link>https://www.chingono.com/tags/bash/</link><description>Recent content in bash on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 15 Jul 2021 17:51:18 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/07/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Thu, 15 Jul 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/07/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/cover.jpg" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" />&lt;p>In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" >Reference Build Arguments in Docker Startup Script&lt;/a>, I showed how I added reusability to my &lt;code>Dockerfile&lt;/code> by adding build arguments.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>bash on Alfero Chingono</title><link>https://www.chingono.com/tags/bash/</link><description>Recent content in bash on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 07 Apr 2021 18:39:49 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" />&lt;p>This is a continuation of my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" >Waiting for Docker Service Container Port to Be Ready&lt;/a>. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
+>this article&lt;/a>, I decided to build up on that codebase as a learning opportunity and add a Blazor WASM front-end to the .NET Core API already built.&lt;/p>
+&lt;p>I will not repeat the process details as that is nicely outlined in the referenced article. What I will do here is share my version of the &lt;code>Dockerfile&lt;/code> and the associated script and configuration file.&lt;/p>
+&lt;p>So, here&amp;rsquo;s my &lt;code>Dockerfile&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># [Choice] .NET Core version: 5.0, 3.1, 2.1&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">VARIANT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">5&lt;/span>.0&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">PROJECT&lt;/span>&lt;span class="o">=&lt;/span>Business.Spa&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">CONFIG&lt;/span>&lt;span class="o">=&lt;/span>Release
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># create build image from base SDK image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/sdk:${VARIANT} as build&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://github.com/moby/moby/issues/37345#issuecomment-400245466&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> PROJECT&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Copy all the csproj files and restore to cache the layer for faster builds&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://github.com/dotnet/dotnet-docker/issues/1697#issuecomment-589420446&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/Business.Spa/Business.Spa.csproj ./src/Business.Spa/&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># restore nuget packages&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /src&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># run publish command&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> build as publish&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://github.com/moby/moby/issues/37345#issuecomment-400245466&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> PROJECT&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> CONFIG&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy source files&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/ /src/&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># run the publish command&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /src/${PROJECT}&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet publish -c &lt;span class="si">${&lt;/span>&lt;span class="nv">CONFIG&lt;/span>&lt;span class="si">}&lt;/span> -o /&lt;span class="si">${&lt;/span>&lt;span class="nv">CONFIG&lt;/span>&lt;span class="si">}&lt;/span> --no-restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create release image from base runtime image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> nginx:alpine AS runtime&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> CONFIG&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> apk update &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> apk add --no-cache openssh&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy startup commands&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> ./configure-environment.sh /docker-entrypoint.d/&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> chmod +x /docker-entrypoint.d/configure-environment.sh&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy the nginx configuration file&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> ./nginx.conf /etc/nginx/nginx.conf&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">BLAZOR_ENVIRONMENT&lt;/span>&lt;span class="o">=&lt;/span>Staging
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">ENV&lt;/span> &lt;span class="nv">REST_URL&lt;/span>&lt;span class="o">=&lt;/span>http://localhost:8081&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">PORT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">8080&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">EXPOSE&lt;/span>&lt;span class="s"> 8080&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /home/site/wwwroot&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>publish /&lt;span class="si">${&lt;/span>&lt;span class="nv">CONFIG&lt;/span>&lt;span class="si">}&lt;/span>/wwwroot .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>You will notice that my &lt;code>Dockerfile&lt;/code> does not have a &lt;code>CMD&lt;/code> or &lt;code>ENTRYPOINT&lt;/code> declaration. That is because the base image I&amp;rsquo;m using to host my application &lt;code>nginx:alpine&lt;/code> already has a very nice feature where it automatically runs all scripts in the &lt;code>/docker-entrypoint.d/&lt;/code> folder and executes them before starting up nginx.&lt;/p>
+&lt;p>This allowed me to copy my &lt;code>configure-environment.sh&lt;/code> to the &lt;code>/docker-entrypoint.d/&lt;/code> folder, make it executable and let the magic happen.&lt;/p>
+&lt;p>Here&amp;rsquo;s my &lt;code>configure-environment.sh&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># The script replaces the Api.BaseAddress in the configuration file &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># with environment values set for the container &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># replace the placeholder in the blazor congfiguration file &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># https://stackoverflow.com/a/23134318&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i -e &lt;span class="s2">&amp;#34;s|REST_URL|&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">REST_URL&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">|g&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;/home/site/wwwroot/appsettings.&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">BLAZOR_ENVIRONMENT&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">.json&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># replace the placeholders in the nginx congfiguration file &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># https://github.com/dotnet/aspnetcore/issues/25152 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i -e &lt;span class="s1">&amp;#39;s/BLAZOR_ENVIRONMENT/&amp;#39;&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">BLAZOR_ENVIRONMENT&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="s1">&amp;#39;/g&amp;#39;&lt;/span> /etc/nginx/nginx.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sed -i -e &lt;span class="s1">&amp;#39;s/PORT/&amp;#39;&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PORT&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="s1">&amp;#39;/g&amp;#39;&lt;/span> /etc/nginx/nginx.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>And finally, here&amp;rsquo;s my nginx configuration file:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">events { }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">http {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> include mime.types;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> types {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> application/wasm wasm;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> server {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # this will be replaced by the sed command in the configure-environment.sh script
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> listen PORT;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index index.html;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # This will add the environment http header to the responses
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # https://github.com/dotnet/aspnetcore/issues/25152
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> add_header Blazor-Environment BLAZOR_ENVIRONMENT;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> location / {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> root /home/site/wwwroot;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> try_files $uri $uri/ /index.html =404;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Credits:&lt;br>
+&lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
+>Dockerizing Blazor WASM Application&lt;/a>&lt;br>
+&lt;a class="link" href="https://github.com/nginxinc/docker-nginx/blob/master/mainline/alpine/docker-entrypoint.sh" target="_blank" rel="noopener"
+>docker-nginx/docker-entrypoint.sh&lt;/a>&lt;br>
+&lt;a class="link" href="https://stackoverflow.com/a/23134318" target="_blank" rel="noopener"
+>linux - Environment variable substitution in sed&lt;/a>&lt;br>
+&lt;a class="link" href="https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/environments?view=aspnetcore-5.0" target="_blank" rel="noopener"
+>ASP.NET Core Blazor environments&lt;/a>&lt;br>
+&lt;a class="link" href="https://github.com/dotnet/aspnetcore/issues/25152" target="_blank" rel="noopener"
+>Blazor WASM not loading appsettings.{environment}.json in Azure App Services&lt;/a>&lt;/p></description></item><item><title>Optimizing Dockerfile Startup Script With Environment Variables</title><link>https://www.chingono.com/blog/2021/03/23/optimizing-dockerfile-startup-script-with-environment-variables/</link><pubDate>Tue, 23 Mar 2021 18:08:25 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/23/optimizing-dockerfile-startup-script-with-environment-variables/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/23/optimizing-dockerfile-startup-script-with-environment-variables/cover.png" alt="Featured image of post Optimizing Dockerfile Startup Script With Environment Variables" />&lt;p>In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/" >Combining ENTRYPOINT and CMD in a Dockerfile&lt;/a>, I showed how I added reusability to my &lt;code>Dockerfile&lt;/code> by combining &lt;code>ENTRYPOINT&lt;/code> and &lt;code>CMD&lt;/code>.&lt;/p>
+&lt;p>To take things further, I didn&amp;rsquo;t like how I still had to supply arguments to &lt;code>entrypoint.sh&lt;/code> when those arguments were already available in the container as environment variables, so I eventually modified my &lt;code>Dockerfile&lt;/code> this way:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># [Choice] .NET Core version: 5.0, 3.1, 2.1&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">VARIANT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">3&lt;/span>.1&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">DB_SERVICE&lt;/span>&lt;span class="o">=&lt;/span>db
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">ARG&lt;/span> &lt;span class="nv">DB_SERVICE_PORT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1433&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">ARG&lt;/span> &lt;span class="nv">PROJECT&lt;/span>&lt;span class="o">=&lt;/span>Business.Web&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create a base runtime image with node&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/core/aspnet:${VARIANT} AS runtime&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">EXPOSE&lt;/span>&lt;span class="s"> 80&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">EXPOSE&lt;/span>&lt;span class="s"> 443&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> curl -sL https://deb.nodesource.com/setup_10.x &lt;span class="p">|&lt;/span> bash -&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> apt-get install -y nodejs&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create a base SDK image with node&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/core/sdk:${VARIANT} as sdk&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> curl -sL https://deb.nodesource.com/setup_10.x &lt;span class="p">|&lt;/span> bash -&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> apt-get install -y nodejs&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy source files&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> sdk as build&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/ ./src&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># restore nuget packages&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /src&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># run publish command&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> build as publish&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet publish -c Release -o /release --no-restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># create release image from base runtime image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> runtime AS release&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://github.com/moby/moby/issues/37345#issuecomment-400245466&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> PROJECT&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">ASSEMBLY&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PROJECT&lt;/span>&lt;span class="si">}&lt;/span>.dll&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>publish /release .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> entrypoint.sh /bin/&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> testconnection.sh /bin/&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> chmod +x /bin/entrypoint.sh&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> chmod +x /bin/testconnection.sh&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span> &lt;span class="s2">&amp;#34;/bin/entrypoint.sh&amp;#34;&lt;/span> &lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">CMD&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;sh&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;-c&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;dotnet $ASSEMBLY&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Subtle change; the location of the &lt;code>entrypoint.sh&lt;/code> changed to &lt;code>/bin/entrypoint.sh&lt;/code> and the &lt;code>$DB_SERVICE&lt;/code> as well as the &lt;code>$DB_SERVICE_PORT&lt;/code> arguments are missing.
+So, how does my &lt;code>entrypoint.sh&lt;/code> know which server to check for connections before running our startup command? Thanks for asking:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="nb">set&lt;/span> -e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># check if the startup command has been provided&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$1&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Startup command not set. Exiting&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exit&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># check if the $DB_SERVICE environment variable has been set&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$DB_SERVICE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Environment variable &amp;#39;SQL_SERVICE_NAME&amp;#39; not set. Exiting.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exit&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># check if the $DB_SERVICE_PORT environment variable has been set&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$DB_SERVICE_PORT&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Environment variable &amp;#39;SQL_SERVICE_PORT&amp;#39; not set. Exiting.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exit&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;Testing connection to &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DB_SERVICE&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">:&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DB_SERVICE_PORT&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">until&lt;/span> /bin/test-connection.sh &lt;span class="nv">$DB_SERVICE_NAME&lt;/span> &lt;span class="nv">$DB_SERVICE_PORT&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">2&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;DB Service is starting up&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sleep &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt;&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="m">2&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;DB Service is up - executing command: &amp;#39;&lt;/span>&lt;span class="nv">$@&lt;/span>&lt;span class="s2">&amp;#39;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># https://stackoverflow.com/a/3816747&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exec&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$@&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">exit&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>As you can see, I am reading environment variables in the bash script and I use all arguments to this script as the startup command. You may prefer it the other way, but I like it this way, and I hope you find this post valuable.&lt;/p>
+&lt;p>As always, all comments and feedback are greatly appreciated.&lt;/p>
+&lt;p>Credits:&lt;br>
+&lt;a class="link" href="https://stackoverflow.com/questions/39296472/how-to-check-if-an-environment-variable-exists-and-get-its-value" target="_blank" rel="noopener"
+>How to check if an environment variable exists and get its value?&lt;/a>&lt;/p></description></item><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Mon, 15 Mar 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/cover.png" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" />&lt;p>In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" >Reference Build Arguments in Docker Startup Script&lt;/a>, I showed how I added reusability to my &lt;code>Dockerfile&lt;/code> by adding build arguments.&lt;/p>
 &lt;p>The docker builder &lt;a class="link" href="https://docs.docker.com/engine/reference/builder/#cmd" target="_blank" rel="noopener"
 >CMD&lt;/a> reference document states:&lt;/p>
 &lt;blockquote>
@@ -291,7 +671,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
-Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.&lt;/p></description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" />&lt;p>Recently, I was working on a pet project and had created my &lt;code>Dockerfile&lt;/code> for the ASP.NET Core container as well as the &lt;code>docker-compose.yml&lt;/code> file to compose the services.&lt;/p>
+Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.&lt;/p>
+&lt;p>Credits:&lt;br>
+&lt;a class="link" href="https://github.com/moby/moby/issues/37345#issuecomment-400245466" target="_blank" rel="noopener"
+>Persisting ENV and ARG settings to all later stages in multi-stage builds&lt;/a>&lt;/p></description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" />&lt;p>Recently, I was working on a pet project and had created my &lt;code>Dockerfile&lt;/code> for the ASP.NET Core container as well as the &lt;code>docker-compose.yml&lt;/code> file to compose the services.&lt;/p>
 &lt;p>Here&amp;rsquo;s the &lt;code>Dockerfile&lt;/code> I had:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -690,4 +1073,9 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> SELECT 1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>As you can see, this solution allowed my &lt;code>app&lt;/code> container to wait for as long as it needed to before starting the .net application. Hopefully, you find that helpful, dear reader.&lt;/p></description></item></channel></rss>
+&lt;/div>&lt;p>As you can see, this solution allowed my &lt;code>app&lt;/code> container to wait for as long as it needed to before starting the .net application. Hopefully, you find that helpful, dear reader.&lt;/p>
+&lt;p>Credits:&lt;br>
+&lt;a class="link" href="https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356" target="_blank" rel="noopener"
+>Testing remote TCP port using telnet by running a one-line command&lt;/a>&lt;br>
+&lt;a class="link" href="https://stackoverflow.com/a/3816747" target="_blank" rel="noopener"
+>How to pass all arguments passed to my bash script to a function of mine?&lt;/a>&lt;/p></description></item></channel></rss>
