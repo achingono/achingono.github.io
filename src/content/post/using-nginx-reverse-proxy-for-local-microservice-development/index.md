@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Using Nginx Reverse Proxy for Local Microservice Development"
 date: 2021-05-25T21:43:26Z
-draft: true
+draft: false
 description: "In this post, I share how I added a NGINX proxy to route traffic to microservices for local development"
 slug: using-nginx-reverse-proxy-for-local-microservice-development
 tags: [

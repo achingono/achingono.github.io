@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Add Favicon to a Hugo-Based Website"
 date: 2022-03-27T18:39:35Z
-draft: true
+draft: false
 description: "In this post, I will show how I enhanced the look of my Hugo website by adding a favicon."
 slug: adding-favicon-hugo-site
 tags: [
