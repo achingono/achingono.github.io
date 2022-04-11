@@ -1,4 +1,171 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Alfero Chingono</title><link>https://www.chingono.com/post/</link><description>Recent content in Posts on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 27 Mar 2022 18:39:35 +0000</lastBuildDate><atom:link href="https://www.chingono.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Add Favicon to a Hugo-Based Website</title><link>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</link><pubDate>Sun, 27 Mar 2022 18:39:35 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/cover.png" alt="Featured image of post Add Favicon to a Hugo-Based Website" />&lt;p>A favicon, which is an abbreviation of the word &amp;ldquo;favorite icon&amp;rdquo;, is a small icon that helps users visually identify and distinguish your website. Its main purpose is to help visitors locate your page easier when they have multiple tabs, bookmarks, shortcuts, and address bars open.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Alfero Chingono</title><link>https://www.chingono.com/post/</link><description>Recent content in Posts on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Apr 2022 14:31:58 +0000</lastBuildDate><atom:link href="https://www.chingono.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Dotnet Spawn Global Tool</title><link>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</link><pubDate>Sun, 10 Apr 2022 14:31:58 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/cover.jpg" alt="Featured image of post Dotnet Spawn Global Tool" />&lt;p>Back in 2013, I created a nice little sample project demonstrating code generation among other things. &lt;a class="link" href="https://twitter.com/shanselman" target="_blank" rel="noopener"
+>Scott Hanselman&lt;/a> had this to say about it:&lt;/p>
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Really col &lt;a href="http://t.co/dzTs3fnv">http://t.co/dzTs3fnv&lt;/a> &amp;quot;Northwind&amp;quot; demo app by &lt;a href="https://twitter.com/achingono?ref_src=twsrc%5Etfw">@achingono&lt;/a> on GitHub. Clever use of T4 and more. Starred! &lt;a href="https://t.co/1GTE055f">https://t.co/1GTE055f&lt;/a>&lt;/p>&amp;mdash; Scott Hanselman 🇺🇦 (@shanselman) &lt;a href="https://twitter.com/shanselman/status/288902839005220865?ref_src=twsrc%5Etfw">January 9, 2013&lt;/a>&lt;/blockquote>
+&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+&lt;p>I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:&lt;/p>
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">&lt;a href="https://twitter.com/mkristensen?ref_src=twsrc%5Etfw">@mkristensen&lt;/a> &lt;a href="https://twitter.com/VisualStudio?ref_src=twsrc%5Etfw">@VisualStudio&lt;/a> is there an equivalent to T4Scaffolding for &lt;a href="https://twitter.com/hashtag/dotnercore?src=hash&amp;amp;ref_src=twsrc%5Etfw">#dotnercore&lt;/a>? I need to generate multiple files based on a template.&lt;/p>&amp;mdash; Alfero Chingono (@achingono) &lt;a href="https://twitter.com/achingono/status/936598758682451969?ref_src=twsrc%5Etfw">December 1, 2017&lt;/a>&lt;/blockquote>
+&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+&lt;p>&lt;a class="link" href="https://twitter.com/condrong" target="_blank" rel="noopener"
+>Glenn von Breadmeister&lt;/a> was kind enough to respond with:&lt;/p>
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Not really no. At least not one that I am aware of. People like &lt;a href="https://twitter.com/anurse?ref_src=twsrc%5Etfw">@anurse&lt;/a> will tell you that you can use razor. But afaik there isnt anything quite like t4.&lt;/p>&amp;mdash; Glenn von Breadmeister (@condrong) &lt;a href="https://twitter.com/condrong/status/936636161933574144?ref_src=twsrc%5Etfw">December 1, 2017&lt;/a>&lt;/blockquote>
+&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+&lt;p>And &lt;a class="link" href="https://twitter.com/anurse" target="_blank" rel="noopener"
+>Andrew Stanton-Nurse&lt;/a> took it further by saying:&lt;/p>
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Razor isn’t for generating anything other than HTML. My understanding is that T4Scaffolding generates code, which Razor is really bad at. I don’t think there’s a good replacement right now&lt;/p>&amp;mdash; Andrew Stanton-Nurse (@anurse) &lt;a href="https://twitter.com/anurse/status/938069127700156416?ref_src=twsrc%5Etfw">December 5, 2017&lt;/a>&lt;/blockquote>
+&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+&lt;p>I somewhat forgot about these conversations until recently when I started building another sample project and needed to generate some code for rapid development. Looking around, I couldn&amp;rsquo;t find something that suited my needs and besides, I had a lingering question: &amp;ldquo;Is razor really that bad at code generation?&amp;rdquo;. I figured maybe it&amp;rsquo;s worth a try.&lt;/p>
+&lt;p>So, I created a dotnet global tool for generating project files.&lt;/p>
+&lt;p>&lt;a class="link" href="https://www.nuget.org/packages/dotnet-spawn" target="_blank" rel="noopener"
+>&lt;img src="https://img.shields.io/nuget/v/dotnet-spawn.svg"
+loading="lazy"
+alt="Nuget"
+>&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/achingono/dotnet-spawn/" target="_blank" rel="noopener"
+>dotnet-spawn&lt;/a> is a roslyn-based code generator for &lt;code>dotnet&lt;/code> that adds files to a project or solution. Code generation parameters can be supplied inline or from a &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
+>response file&lt;/a>. At this time &lt;a class="link" href="https://github.com/achingono/dotnet-spawn/" target="_blank" rel="noopener"
+>dotnet-spawn&lt;/a> is able to create a single file or multiple files of any extension based on a Razor file template.&lt;/p>
+&lt;h3 id="how-to-use">How To Use&lt;/h3>
+&lt;p>Invoking the &lt;code>dotnet spawn&lt;/code> command will generate project files based on the supplied parameters or &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
+>response file&lt;/a>. You can control how verbose the output will be by using the &lt;code>--verbosity&lt;/code> option.&lt;/p>
+&lt;h3 id="command-options">Command Options&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>--project&lt;/code>: The path to the project or solution file to analyze with Roslyn&lt;/li>
+&lt;li>&lt;code>--template&lt;/code>: The path to the template file used for code generation&lt;/li>
+&lt;li>&lt;code>--output&lt;/code>: The path to a file/folder. If the tool is generating a single file, then the path should be a file, otherwise, it should be a folder.&lt;/li>
+&lt;li>&lt;code>--namespace&lt;/code>: The namespace used for generated files, if applicable. This parameter is available in the Razor template and can be customized further.&lt;/li>
+&lt;li>&lt;code>--generator&lt;/code>: One of &lt;code>SingleFile&lt;/code> or &lt;code>MultipleFile&lt;/code>. As the names suggest, the &lt;code>SingleFile&lt;/code> generator creates a single file and the &lt;code>MultipleFile&lt;/code> generator creates multiple files.&lt;/li>
+&lt;li>&lt;code>--match&lt;/code>: The lambda expression representing the Roslyn symbols that should be used for code generation.&lt;/li>
+&lt;li>&lt;code>--pattern&lt;/code>: The lambda expression used by the &lt;code>MultipleFile&lt;/code> generator to generate file names.&lt;/li>
+&lt;li>&lt;code>--verbosity&lt;/code>: Set the verbosity level. Allowed values are &lt;code>Debug&lt;/code>, &lt;code>Info&lt;/code>, and &lt;code>Quiet&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-help-option">The Help Option&lt;/h3>
+&lt;p>This tool provides an option to display a brief description of the available commands, options, and arguments. &lt;code>System.CommandLine&lt;/code> automatically generates help output. For example:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet spawn --help
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>produces the following output:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">Description:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> Roslyn based code generator.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go">&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="go">Usage:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> dotnet-spawn [options]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go">&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="go">Options:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -p, --project &amp;lt;project&amp;gt; (REQUIRED) Project file, Solution file or directory
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -t, --template &amp;lt;template&amp;gt; (REQUIRED) Specify the template used for the generated code file(s)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -g, --generator &amp;lt;generator&amp;gt; (REQUIRED) Specify the generator used for the generated code file(s)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -n, --namespace &amp;lt;namespace&amp;gt; (REQUIRED) Specify the namespace for the generated code file(s)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -m, --match &amp;lt;match&amp;gt; Specify the lambda expression used for the nanes of the generated code file(s)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -p, --pattern &amp;lt;pattern&amp;gt; Specify the lambda expression used for the nanes of the generated code file(s)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -o, --output &amp;lt;output&amp;gt; (REQUIRED) Specify the file or folder used for the generated code file(s) [default: .]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -v, --verbosity &amp;lt;Debug|Info|Quiet&amp;gt; Output verbosity [default: Info]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -f, --force Force execution of command
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> --version Show version information
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -?, -h, --help Show help and usage information
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="response-file">Response File&lt;/h3>
+&lt;p>A &lt;em>response file&lt;/em> is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code>System.CommandLine&lt;/code> that is useful in two scenarios:&lt;/p>
+&lt;ul>
+&lt;li>To invoke a command-line app by specifying input that is longer than the character limit of the terminal.
+To invoke the same command repeatedly without retyping the whole line.&lt;/li>
+&lt;li>To use a response file, enter the file name prefixed by an &lt;code>@&lt;/code> sign wherever in the line you want to insert commands, options, and arguments. The following lines are equivalent:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet spawn @controllers.rsp
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Contents of &lt;em>controllers.rsp&lt;/em>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">--project
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./src/Sample.sln
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--template
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./src/Sample/Templates/Controller.cshtml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--output
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./src/Sample/Controllers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--namespace
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sample.Controllers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--generator
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">MultipleFile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--match
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">symbol =&amp;gt; symbol.IsReferenceType &amp;amp;&amp;amp; !(symbol.IsAbstract || symbol.IsNamespace || symbol.IsVirtual)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--pattern
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">model =&amp;gt; $&amp;#34;{model.Name}.cs&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--verbosity
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Info
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="how-to-install">How To Install&lt;/h3>
+&lt;p>You can install the latest build of the tool using the following command.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet tool install -g dotnet-spawn
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="how-to-uninstall">How To Uninstall&lt;/h3>
+&lt;p>You can uninstall the tool using the following command.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet tool uninstall -g dotnet-spawn
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>Add Favicon to a Hugo-Based Website</title><link>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</link><pubDate>Sun, 27 Mar 2022 18:39:35 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/cover.png" alt="Featured image of post Add Favicon to a Hugo-Based Website" />&lt;p>A favicon, which is an abbreviation of the word &amp;ldquo;favorite icon&amp;rdquo;, is a small icon that helps users visually identify and distinguish your website. Its main purpose is to help visitors locate your page easier when they have multiple tabs, bookmarks, shortcuts, and address bars open.&lt;/p>
 &lt;p>With so many platforms, devices, icon formats, and dimensions, it&amp;rsquo;s hard to know exactly what you should do to consistently present your website icon/brand everywhere. That&amp;rsquo;s the reason why there are multiple favicon generators available. Just a quick search for &amp;ldquo;favicon generator&amp;rdquo; will reveal a long list of websites that assist in creating favicons supported across a wide range of platforms, and devices.&lt;/p>
 &lt;p>The one I chose for this case was &lt;a class="link" href="https://favicon.io" target="_blank" rel="noopener"
 >favicon.io&lt;/a>. This process could&amp;rsquo;ve been accomplished with &lt;a class="link" href="https://realfavicongenerator.net/" target="_blank" rel="noopener"
