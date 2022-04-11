@@ -3,6 +3,9 @@ languageCode: en-us
 theme: github.com/CaiJimmy/hugo-theme-stack/v3
 paginate: 5
 title: Alfero Chingono
+enableEmoji: true
+enableGitInfo: true
+enableRobotsTXT: true
 
 languages:
     en:

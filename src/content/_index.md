@@ -1,4 +1,5 @@
 ---
+description: Alfero Chingono is a Cloud Solutions Architect, DevOps Advocate, and Trusted Advisor
 menu:
     main:
         name: Home
