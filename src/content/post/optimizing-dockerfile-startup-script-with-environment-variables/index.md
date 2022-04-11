@@ -81,13 +81,13 @@ fi
 
 # check if the $DB_SERVICE environment variable has been set
 if [ "$DB_SERVICE" == "" ]; then
- echo "Environment variable 'SQL_SERVICE_NAME' not set. Exiting."
+ echo "Environment variable 'DB_SERVICE_NAME' not set. Exiting."
  exit;
 fi
 
 # check if the $DB_SERVICE_PORT environment variable has been set
 if [ "$DB_SERVICE_PORT" == "" ]; then
- echo "Environment variable 'SQL_SERVICE_PORT' not set. Exiting."
+ echo "Environment variable 'DB_SERVICE_PORT' not set. Exiting."
  exit;
 fi
 
