@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Alfero Chingono</title><link>https://www.chingono.com/</link><description>Recent content on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://www.chingono.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Dotnet Spawn Global Tool</title><link>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</link><pubDate>Sun, 10 Apr 2022 14:31:58 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/cover.jpg" alt="Featured image of post Dotnet Spawn Global Tool" />&lt;p>Back in 2013, I created a nice little sample project demonstrating code generation among other things. &lt;a class="link" href="https://twitter.com/shanselman" target="_blank" rel="noopener"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Alfero Chingono</title><link>https://www.chingono.com/</link><description>Recent content on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://www.chingono.com/index.xml" rel="self" type="application/rss+xml"/><item><title>The Paradox of Inclusion</title><link>https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/</link><pubDate>Fri, 29 Apr 2022 15:18:21 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/</guid><description>&lt;p>Inclusion is a process and practice that involves enabling people of all identities, orientations, and styles to be fully themselves while also contributing to the larger collective, as valued and full members. The question that often cannot be easily answered is this whether free speech is fully compatible with diversity, inclusion, and equality?&lt;/p>
+&lt;p>In light of that, here&amp;rsquo;s a poem I wrote inspired by a recent experience:&lt;/p>
+&lt;blockquote>
+&lt;p>In the land of diversity and inclusion&lt;br>
+In a sea of different and tolerant people&lt;br>
+There is that one quiet voice&lt;br>
+Drowned in collective representations&lt;br>
+Denied of individual expression&lt;br>
+I hope my friend&lt;br>
+You will choose to be&lt;br>
+The one to lend&lt;br>
+A listening ear&lt;br>
+And seek to understand&lt;br>
+Before being understood&lt;br>
+And opt to disagree&lt;br>
+But still appreciate&lt;br>
+They have a story&lt;br>
+Yet to be told&lt;/p>
+&lt;/blockquote>
+&lt;p>My hope is that at some point we will find a way to recognize, appreciate, and acknowledge the contradictions inherent in inclusion and use the resulting tensions as springboards to push us forward and closer not backwards and further apart.&lt;/p>
+&lt;p>Thank you for reading.&lt;/p></description></item><item><title>Dotnet Spawn Global Tool</title><link>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</link><pubDate>Sun, 10 Apr 2022 14:31:58 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/cover.jpg" alt="Featured image of post Dotnet Spawn Global Tool" />&lt;p>Back in 2013, I created a nice little sample project demonstrating code generation among other things. &lt;a class="link" href="https://twitter.com/shanselman" target="_blank" rel="noopener"
 >Scott Hanselman&lt;/a> had this to say about it:&lt;/p>
 &lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Really col &lt;a href="http://t.co/dzTs3fnv">http://t.co/dzTs3fnv&lt;/a> &amp;quot;Northwind&amp;quot; demo app by &lt;a href="https://twitter.com/achingono?ref_src=twsrc%5Etfw">@achingono&lt;/a> on GitHub. Clever use of T4 and more. Starred! &lt;a href="https://t.co/1GTE055f">https://t.co/1GTE055f&lt;/a>&lt;/p>&amp;mdash; Scott Hanselman 🇺🇦 (@shanselman) &lt;a href="https://twitter.com/shanselman/status/288902839005220865?ref_src=twsrc%5Etfw">January 9, 2013&lt;/a>&lt;/blockquote>
 &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
