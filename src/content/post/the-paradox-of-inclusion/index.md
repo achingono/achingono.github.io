@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "The Paradox of Inclusion"
 date: 2022-04-29T15:18:21Z
 draft: false
-description: "Inclusion is a process and practice that involves enabling people of all identities, orientations, and styles to be fully themselves while also contributing to the larger collective, as valued and full members. The question that often cannot be easily answered is whether free speech is fully compatible with diversity, inclusion, and equality?"
+description: "Inclusion is a process and practice that involves enabling people of all identities, orientations, and styles to be fully themselves while also contributing to the larger collective, as valued and full members. The question that often cannot be easily answered is whether individual expression is fully compatible with diversity, inclusion, and equality?"
 slug: the-paradox-of-inclusion
 tags: [
     "poem",
