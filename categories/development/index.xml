@@ -165,7 +165,303 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li>
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet tool uninstall -g dotnet-spawn
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p>This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" >Dockerizing Blazor Wasm Application&lt;/a>&lt;/p>
+&lt;/div></description></item><item><title>How to Build and Sign iOs Application Using Azure DevOps</title><link>https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/</link><pubDate>Mon, 30 Aug 2021 22:46:59 +0000</pubDate><guid>https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/cover.png" alt="Featured image of post How to Build and Sign iOs Application Using Azure DevOps" />&lt;p>A Distribution Certificate is used to identify a developer for the purpose of installing and testing apps on iOS devices. Certificates can be obtained from Apple&amp;rsquo;s iOS Provisioning Portal and a Certificate Signing Request (CSR) file needs to be generated first.&lt;/p>
+&lt;p>The process for generating a CSR differs depending on your choice of operating system. In this post, I&amp;rsquo;ll cover how to generate Certificate Signing Request (CSR) file on Windows as well as how to use the generated certificate and provisioning profile to build and sign an iOS application in Azure DevOps.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>First open a PowerShell window, then run the following command to create a private key:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">genrsa&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="n">2048&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Next, run the following command to generate the Certificate Signing Request (CSR) file using the previously created private key:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">req&lt;/span> &lt;span class="n">-new&lt;/span> &lt;span class="n">-key&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">csr&lt;/span> &lt;span class="n">-subj&lt;/span> &lt;span class="s2">&amp;#34;/emailAddress=devops@example.com, CN=Example, C=CA&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Next, go to the &lt;a class="link" href="https://developer.apple.com/account/resources/certificates/list" target="_blank" rel="noopener"
+>Apple Developer Portal&lt;/a> and click the &amp;ldquo;+&amp;rdquo; button next to &amp;ldquo;Certificates&amp;rdquo;:&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate.png"
+width="648"
+height="268"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate_hu0bbc10581357b7c2bfd8a007152cbe90_20232_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate_hu0bbc10581357b7c2bfd8a007152cbe90_20232_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Add Certificate"
+class="gallery-image"
+data-flex-grow="241"
+data-flex-basis="580px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Choose the type of certificate you want to create, then click &amp;ldquo;Continue&amp;rdquo;&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Upload the Certificate Signing Request (CSR) file generated earlier and click &amp;ldquo;Continue&amp;rdquo;:&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr.png"
+width="856"
+height="414"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr_hudae501949457686e8095d322f24472c5_31546_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr_hudae501949457686e8095d322f24472c5_31546_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Upload Certificate Signing Request (CSR) file"
+class="gallery-image"
+data-flex-grow="206"
+data-flex-basis="496px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A certificate will be generated and will be available for download. click &amp;ldquo;Download the Certificate&amp;rdquo;.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In order to sign the application in Azure DevOps, we need the certificate in &lt;code>.p12&lt;/code> format. So to convert the &lt;code>.cer&lt;/code> file to &lt;code>.p12&lt;/code>, execute the following commands:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">x509&lt;/span> &lt;span class="n">-in&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">cer&lt;/span> &lt;span class="n">-inform&lt;/span> &lt;span class="n">DER&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">pem&lt;/span> &lt;span class="n">-outform&lt;/span> &lt;span class="n">PEM&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>followed by:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">pkcs12&lt;/span> &lt;span class="n">-export&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">p12&lt;/span> &lt;span class="n">-inkey&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="n">-in&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">pem&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This will prompt for a password. Please provide a password and store it in a safe place. This password will be needed when signing the application.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Next, we need to generate a provisioning profile by going back to the &lt;a class="link" href="https://developer.apple.com/account/resources/profiles/list" target="_blank" rel="noopener"
+>Apple Developer Portal&lt;/a> and clicking &amp;ldquo;+&amp;rdquo; next to &amp;ldquo;Profiles&amp;rdquo;:&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile.png"
+width="841"
+height="326"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile_hu19e8403e951193f99fff9d8987eddd2a_25281_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile_hu19e8403e951193f99fff9d8987eddd2a_25281_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Add Profile"
+class="gallery-image"
+data-flex-grow="257"
+data-flex-basis="619px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Choose the type of Provisioning Profile you want to create, then click &amp;ldquo;Continue&amp;rdquo;&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Select the App ID you would like associated with the provisioning profile, then click &amp;ldquo;Continue&amp;rdquo;.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Select the certificate we created earlier, then click &amp;ldquo;Continue&amp;rdquo;.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Give the provisioning profile a name, then click &amp;ldquo;Generate&amp;rdquo;. You will be able to download the provisioning profile after it is generated.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Upload the P12 certificate and provisioning profile to Azure DevOps &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops" target="_blank" rel="noopener"
+>Secure Files Library&lt;/a>. During upload, your certificate will be encrypted and securely stored.&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files.png"
+width="818"
+height="244"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files_hufc7005ede993a4898a76adfc0df0cef8_13066_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files_hufc7005ede993a4898a76adfc0df0cef8_13066_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Upload Secure Files"
+class="gallery-image"
+data-flex-grow="335"
+data-flex-basis="804px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Create a new pipeline, or go to the pre-existing pipeline if one already exists.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Go to the Variables tab and add the following variables:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>CertificateFile&lt;/code>: Set the value to &lt;code>appstore-distribution.p12&lt;/code> (or whatever name you gave to your P12 certificate file in step #13).&lt;/li>
+&lt;li>&lt;code>CertificatePassword&lt;/code>: Set the value to the password you set in step #7 above. Be sure check &amp;ldquo;Keep this value secret&amp;rdquo;. This will secure your password and obscure it in logs.&lt;/li>
+&lt;li>&lt;code>ProvisioningFile&lt;/code>: Set the value to &lt;code>appstore-distribution.mobileprovision&lt;/code> (or whatever name you gave your provisioning file in step #13).&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables.png"
+width="490"
+height="326"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables_hubaa04dc2b8731ead50af82eb9dc2394d_16472_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables_hubaa04dc2b8731ead50af82eb9dc2394d_16472_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Add Variables"
+class="gallery-image"
+data-flex-grow="150"
+data-flex-basis="360px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Update the &lt;code>azure-pipelines.yml&lt;/code> using the following example:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">$(Build.BuildId)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="l">main&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="l">dev&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">pool&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">vmImage&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;macOS-latest&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">variables&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">configuration&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Release&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sdk&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">iphoneos&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">scheme&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Example&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">workspace&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Example.xcworkspace&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">plistFile&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Info.plist&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Cache@2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">key&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;pods | &amp;#34;$(Agent.OS)&amp;#34; | Podfile.lock&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Pods&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">cacheHitVar&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;PODS_CACHE_RESTORED&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">CocoaPods@0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;pod install using the CocoaPods task with defaults&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">forceRepoUpdate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ne(variables.PODS_CACHE_RESTORED, &amp;#39;true&amp;#39;)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">InstallAppleCertificate@2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">certSecureFile&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(certificateFile)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">certPwd&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(CertificatePassword)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">keychain&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;temp&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">deleteCert&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">InstallAppleProvisioningProfile@1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">provisioningProfileLocation&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;secureFiles&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">provProfileSecureFile&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(provisioningFile)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">CmdLine@2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Set Build Number&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;/usr/libexec/PlistBuddy -c &amp;#34;Set :CFBundleVersion $(Build.BuildId)&amp;#34; $(Build.SourcesDirectory)/$(scheme)/$(plistFile)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Xcode@5&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">actions&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;build&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">configuration&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(configuration)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">sdk&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(sdk)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">xcWorkspacePath&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(workspace)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">scheme&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(scheme)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">packageApp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">signingOption&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;manual&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">signingIdentity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(APPLE_CERTIFICATE_SIGNING_IDENTITY)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">provisioningProfileUuid&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(APPLE_PROV_PROFILE_UUID)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">CopyFiles@2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">contents&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;**/*.ipa&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">targetFolder&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;$(build.artifactStagingDirectory)&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">PublishBuildArtifacts@1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Publish artifact&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">succeededOrFailed()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>References:&lt;br>
+&lt;a class="link" href="https://stackoverflow.com/a/42196304" target="_blank" rel="noopener"
+>Convert .cer to .p12&lt;/a>&lt;br>
+&lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/xcode?view=azure-devops" target="_blank" rel="noopener"
+>Build, test, and deploy Xcode apps&lt;/a>&lt;br>
+&lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/apps/mobile/app-signing?view=azure-devops&amp;amp;tabs=apple-install-during-build" target="_blank" rel="noopener"
+>Sign your mobile app&lt;/a>&lt;/p></description></item><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p>This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" >Dockerizing Blazor Wasm Application&lt;/a>&lt;/p>
 &lt;p>The previous setup was a follows:
 &lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture.jpg"
 width="661"
