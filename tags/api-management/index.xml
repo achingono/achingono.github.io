@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>api-management on Alfero Chingono</title><link>https://www.chingono.com/tags/api-management/</link><description>Recent content in api-management on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 28 Sep 2022 15:58:11 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/api-management/index.xml" rel="self" type="application/rss+xml"/><item><title>Integrate Container Apps With Api Management using Bicep</title><link>https://www.chingono.com/blog/2022/09/28/integrate-container-apps-api-management-bicep/</link><pubDate>Wed, 28 Sep 2022 15:58:11 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/28/integrate-container-apps-api-management-bicep/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/28/integrate-container-apps-api-management-bicep/cover.png" alt="Featured image of post Integrate Container Apps With Api Management using Bicep" />&lt;p>While working on the &lt;a class="link" href="https://github.com/Azure-Samples/app-templates-microservices-integration" target="_blank" rel="noopener"
+>Reddog Microservices Integration Application Sample&lt;/a>, my objective was to demonstrate a development scenario that uses &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
+>Bicep&lt;/a> to integrate &lt;a class="link" href="https://azure.microsoft.com/products/api-management/" target="_blank" rel="noopener"
+>Azure API Management&lt;/a> with &lt;a class="link" href="https://azure.microsoft.com/services/container-apps/" target="_blank" rel="noopener"
+>Azure Container Apps&lt;/a>.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
+>Bicep&lt;/a>&lt;/strong> is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>&lt;a class="link" href="https://azure.microsoft.com/services/api-management" target="_blank" rel="noopener"
+>Azure API Management&lt;/a>&lt;/strong> is a managed service that allows you to manage services across hybrid and multi-cloud environments. API management acts as a facade to abstract the backend architecture, and it provides control and security for API observability and consumption for both internal and external users.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>&lt;a class="link" href="https://azure.microsoft.com/services/container-apps" target="_blank" rel="noopener"
+>Azure Container Apps&lt;/a>&lt;/strong> is a fully managed, serverless container service used to build and deploy modern apps at scale. In this solution, you&amp;rsquo;re hosting microservices on Azure Container Apps and deploying them into a single Container App environment. This environment acts as a secure boundary around the system.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="creating-the-apim-resource">Creating the APIM resource&lt;/h2>
+&lt;p>The first step was to create the main &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+>APIM Service resource&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The name of the API Management resource to be created.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>apimName&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The email address of the publisher of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">minLength&lt;/span>&lt;span class="p">(&lt;/span>1&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>publisherEmail&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;apim@contoso.com&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Company name of the publisher of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">minLength&lt;/span>&lt;span class="p">(&lt;/span>1&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>publisherName&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;Contoso&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The pricing tier of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>skuName&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;Developer&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The instance size of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>capacity&lt;span class="w"> &lt;/span>&lt;span class="nf">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>1&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Location for Azure resources.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>location&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceGroup&lt;/span>&lt;span class="p">().&lt;/span>location&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service@2020-12-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimName&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>location&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">sku&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">capacity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>capacity&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>skuName&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">virtualNetworkType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;External&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">publisherEmail&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>publisherEmail&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">publisherName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>publisherName&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This will deploy a APIM instance. Of particular note here is &lt;code>virtualNetworkType&lt;/code> declaration. This represents the type of VPN in which API Management service needs to be configured in:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>None (Default Value)&lt;/strong> means the API Management service is not part of any Virtual Network,&lt;/li>
+&lt;li>&lt;strong>External&lt;/strong> means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and&lt;/li>
+&lt;li>&lt;strong>Internal&lt;/strong> means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong> Please bear in mind that APIM takes more than an hour to provision.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="applying-a-global-policy">Applying a global policy&lt;/h2>
+&lt;p>Next step, I created a global policy definition file &lt;code>apimPolicies/global.xml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;policies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;inbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;rate-limit-by-key&lt;/span> &lt;span class="na">calls=&lt;/span>&lt;span class="s">&amp;#34;1000&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">renewal-period=&lt;/span>&lt;span class="s">&amp;#34;60&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">increment-condition=&lt;/span>&lt;span class="s">&amp;#34;@(context.Response.StatusCode == 200)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">counter-key=&lt;/span>&lt;span class="s">&amp;#34;@(context.Request.IpAddress)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="na">remaining-calls-variable-name=&lt;/span>&lt;span class="s">&amp;#34;remainingCallsPerIP&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!-- Distributed tracing support by adding correlationId using COMB format--&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!-- NOTE: If COMB format is not needed, context.RequestId should be used as a value of correlation id. --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!-- context.RequestId is unique for each request and is stored as part of gateway log records. --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!-- https://learn.microsoft.com/en-us/azure/api-management/policies/add-correlation-id --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;set-header&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;correlationid&amp;#34;&lt;/span> &lt;span class="na">exists-action=&lt;/span>&lt;span class="s">&amp;#34;skip&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;value&amp;gt;&lt;/span>@{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> var guidBinary = new byte[16];
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Array.Copy(Guid.NewGuid().ToByteArray(), 0, guidBinary, 0, 10);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> long time = DateTime.Now.Ticks;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> byte[] bytes = new byte[6];
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> unchecked
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bytes[5] = (byte)(time &amp;gt;&amp;gt; 40);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bytes[4] = (byte)(time &amp;gt;&amp;gt; 32);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bytes[3] = (byte)(time &amp;gt;&amp;gt; 24);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bytes[2] = (byte)(time &amp;gt;&amp;gt; 16);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bytes[1] = (byte)(time &amp;gt;&amp;gt; 8);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bytes[0] = (byte)(time);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Array.Copy(bytes, 0, guidBinary, 10, 6);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> return new Guid(guidBinary).ToString();
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }&lt;span class="nt">&amp;lt;/value&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/set-header&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/inbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;backend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;forward-request&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/backend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;outbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;redirect-content-urls&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/outbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;on-error&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/policies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Then add the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/policies?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+>policy resource&lt;/a> to the Bicep module:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>apimPolicy&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/policies@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;policy&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;rawxml&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">loadTextContent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;apimPolicies/global.xml&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>The &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/policies?pivots=deployment-language-bicep#policycontractproperties" target="_blank" rel="noopener"
+>Policy Contract&lt;/a> here is defined in xml format, and of particular note here is the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-files#loadtextcontent" target="_blank" rel="noopener"
+>loadTextContent&lt;/a> function which loads the content of a specified file as a string.&lt;/p>
+&lt;h2 id="adding-a-backend-api">Adding a Backend API&lt;/h2>
+&lt;p>A &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/backends" target="_blank" rel="noopener"
+>&lt;em>backend&lt;/em>&lt;/a> (or &lt;em>API backend&lt;/em>) in API Management is an HTTP service that implements your front-end API and its operations. Sometimes backend APIs are referred to simply as backends. API Management supports using other Azure resources as an API backend, such as Container Apps. A custom backend has several benefits, including:&lt;/p>
+&lt;ul>
+&lt;li>Abstracts information about the backend service, promoting reusability across APIs and improved governance.&lt;/li>
+&lt;li>Easily used by configuring a transformation policy on an existing API.&lt;/li>
+&lt;li>Takes advantage of API Management functionality to maintain secrets in Azure Key Vault if &lt;a class="link" href="api-management-howto-properties.md" >named values&lt;/a> are configured for header or query parameter authentication.&lt;/li>
+&lt;/ul>
+&lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/backends?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+>Microsoft.ApiManagement/service/backends&lt;/a> resource, I added the following Bicep to my template.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderService&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.App/containerApps@2022-03-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>existing&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderBackendResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/backends@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service-backend&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">dependsOn&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>orderService&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>orderService&lt;span class="p">.&lt;/span>name&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="py">&amp;#39;https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="c1">//${orderService.properties.configuration.ingress.fqdn}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;http&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">resourceId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;${environment().resourceManager}${orderService.id}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Here we reference an existing Container App in our backend resource and use the ingress URL as the backend URL. The &lt;code>resourceId&lt;/code> needs to be a URL for the deployment to work. Here we use the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions-deployment#environment" target="_blank" rel="noopener"
+>&lt;code>environment()&lt;/code>&lt;/a> function, returns properties for the current Azure environment, to get the management URL instead of hard-coding &lt;code>&amp;quot;https://management.azure.com/&amp;quot;&lt;/code>.&lt;/p>
+&lt;h2 id="adding-a-fronted-api">Adding a Fronted API&lt;/h2>
+&lt;p>API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.&lt;/p>
+&lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+>Microsoft.ApiManagement/service/apis&lt;/a> resource, I added the following Bicep to my template.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderApiResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;OrderService&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">subscriptionRequired&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>false&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;orders&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">protocols&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;https&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">isCurrent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>true&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>&lt;code>subscriptionRequired&lt;/code>: Specifies whether an API or Product subscription is required for accessing the API.&lt;/li>
+&lt;li>&lt;code>path&lt;/code>: Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.&lt;/li>
+&lt;/ul>
+&lt;h2 id="adding-a-fronted-api-policy">Adding a Fronted API Policy&lt;/h2>
+&lt;p>A policy is a reusable and composable component, implementing some commonly used API-related functionality. API Management offers over 50 built-in policies that take care of critical but undifferentiated horizontal concerns - for example, request transformation, routing, security, protection, caching. The policies can be applied at various scopes, which determine the affected APIs or operations and dynamically configured using policy expressions. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-policies" target="_blank" rel="noopener"
+>Policies in Azure API Management&lt;/a>.&lt;/p>
+&lt;p>In order to make the Fronted API policy reusable, I saved it in a XML file &lt;code>apimPolicies/api.xml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;policies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;inbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;set-backend-service&lt;/span> &lt;span class="na">id=&lt;/span>&lt;span class="s">&amp;#34;apim-generated-policy&amp;#34;&lt;/span> &lt;span class="na">backend-id=&lt;/span>&lt;span class="s">&amp;#34;{backendName}&amp;#34;&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/inbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;backend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/backend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;outbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/outbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;on-error&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/on-error&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/policies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This policy does one thing: Use the &lt;code>set-backend-service&lt;/code> policy to redirect an incoming request to the specified backend for all operations in this Frontend API. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-transformation-policies#SetBackendService" target="_blank" rel="noopener"
+>Set backend service&lt;/a>.&lt;/p>
+&lt;p>In this case, &lt;code>backend-id&lt;/code> is the Identifier (name) of the backend to route requests to, and since we are going to reuse this xml, we will add the &lt;code>{backendName}&lt;/code> token to be replaced later.&lt;/p>
+&lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/policies?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+>Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, I then added the following Bicep to my template:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderApiPolicy&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis/policies@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;policy&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>orderApiResource&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">loadTextContent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;apimPolicies/api.xml&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="err">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;{backendName}&amp;#39;&lt;/span>&lt;span class="err">,&lt;/span>&lt;span class="w"> &lt;/span>orderBackendResource&lt;span class="p">.&lt;/span>name&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;xml&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Here we are basically leveraging a combination of the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-string#replace" target="_blank" rel="noopener"
+>&lt;code>replace&lt;/code>&lt;/a> function and the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-files#loadtextcontent" target="_blank" rel="noopener"
+>&lt;code>loadTextContent&lt;/code>&lt;/a> function to read the XML file and replace the &lt;code>{backendName}&lt;/code> token with the actual Backend API we want to route requests to.&lt;/p>
+&lt;h2 id="adding-a-fronted-api-operation">Adding a Fronted API Operation&lt;/h2>
+&lt;p>A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses" target="_blank" rel="noopener"
+>Mock API responses&lt;/a>.&lt;/p>
+&lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+>Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, I added the following Bicep to my template:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>getOrdersOperationResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis/operations@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;get-orders-storeid&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>orderApiResource&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;/orders/{storeId} - GET&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">method&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;GET&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">urlTemplate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;/orders/{storeId}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">templateParameters&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;storeId&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;string&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">required&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>true&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">responses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">statusCode&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>200&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;Success&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="adding-a-operation-policy">Adding a Operation policy&lt;/h2>
+&lt;p>In order to make the Operation policy reusable, I saved it in a XML file &lt;code>apimPolicies/operation.xml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">In order to make the Fronted API policy reusable, I saved it in a XML file `apimPolicies/api.xml`:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">```xml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;policies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;inbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;set-method&amp;gt;&lt;/span>{method}&lt;span class="nt">&amp;lt;/set-method&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;rewrite-uri&lt;/span> &lt;span class="na">id=&lt;/span>&lt;span class="s">&amp;#34;apim-generated-policy&amp;#34;&lt;/span> &lt;span class="na">template=&lt;/span>&lt;span class="s">&amp;#34;{template}&amp;#34;&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;set-header&lt;/span> &lt;span class="na">id=&lt;/span>&lt;span class="s">&amp;#34;apim-generated-policy&amp;#34;&lt;/span> &lt;span class="na">name=&lt;/span>&lt;span class="s">&amp;#34;Ocp-Apim-Subscription-Key&amp;#34;&lt;/span> &lt;span class="na">exists-action=&lt;/span>&lt;span class="s">&amp;#34;delete&amp;#34;&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/inbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;backend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/backend&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;outbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/outbound&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;on-error&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;base&lt;/span> &lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/on-error&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/policies&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This policy does three things:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>set-method&lt;/code>: sets the HTTP request method for a request. See &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-advanced-policies#SetRequestMethod" target="_blank" rel="noopener"
+>Set request method&lt;/a>&lt;/li>
+&lt;li>&lt;code>rewrite-url&lt;/code>: converts a request URL from its public form to the form expected by the web service. See &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-transformation-policies#RewriteURL" target="_blank" rel="noopener"
+>Rewrite URL&lt;/a>&lt;/li>
+&lt;li>&lt;code>set-header&lt;/code>: assigns a value to an existing response and/or request header or adds/removes a new response and/or request header. See &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-transformation-policies#SetHTTPheader" target="_blank" rel="noopener"
+>Set HTTP header&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="repeat">Repeat&lt;/h2>
+&lt;p>Steps 3 - 7 are repeated for all Backend APIs, Frontend APIs, Policies, and operations that need to be defined on Azure API Management.&lt;/p>
+&lt;p>Hope this proves valuable to you, dear reader.&lt;/p>
+&lt;p>References:&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
+>Bicep&lt;/a>&lt;br>
+&lt;a class="link" href="https://azure.microsoft.com/services/api-management" target="_blank" rel="noopener"
+>Azure API Management&lt;/a>&lt;br>
+&lt;a class="link" href="https://azure.microsoft.com/services/container-apps" target="_blank" rel="noopener"
+>Azure Container Apps&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-terminology" target="_blank" rel="noopener"
+>Azure API Management terminology&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions" target="_blank" rel="noopener"
+>Bicep functions&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-policies" target="_blank" rel="noopener"
+>API Management policy reference&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
+>Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item></channel></rss>
