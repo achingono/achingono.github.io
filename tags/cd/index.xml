@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cd on Alfero Chingono</title><link>https://www.chingono.com/tags/cd/</link><description>Recent content in cd on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Oct 2022 18:06:36 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" />&lt;p>While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1408460Z [21:31:36]: There was a general exception while executing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1409440Z An exception has occurred: issuerId is required
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1410980Z Return status of iTunes Transporter was 1: There was a general exception while executing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1411520Z \nAn exception has occurred: issuerId is required
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1412610Z The call to the iTMSTransporter completed with a non-zero exit status: 1. This indicates a failure.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1567410Z
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1568750Z [!] Error uploading ipa file:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1569190Z
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1893760Z ##[error]Error: The process &amp;#39;/usr/local/lib/ruby/gems/2.7.0/bin/fastlane&amp;#39; failed with exit code 1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>A quick search for &lt;code>fastlane +&amp;quot;An exception has occurred: issuerId is required&amp;quot;&lt;/code> led me to this issue on GitHub:&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741" target="_blank" rel="noopener"
+> [pilot] fails to upload build to TestFlight using api key after iTMSTransporter auto updated to version 3.0.0 with An exception has occurred: issuerId is required error&lt;/a>&lt;/p>
+&lt;p>One particular &lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741#issuecomment-1285291626" target="_blank" rel="noopener"
+>comment by Tobias Totzek&lt;/a> provided the exact answer to my problem. I changed the Agent Specification from &lt;code>macos-latest&lt;/code> to &lt;code>macOS-12&lt;/code> and problem solved.&lt;/p>
+&lt;p>Credits:&lt;br>
+&lt;a class="link" href="https://github.com/honkmaster" target="_blank" rel="noopener"
+>Tobias Totzek&lt;/a>&lt;/p></description></item></channel></rss>

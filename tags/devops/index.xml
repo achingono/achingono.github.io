@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>devops on Alfero Chingono</title><link>https://www.chingono.com/tags/devops/</link><description>Recent content in devops on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Oct 2022 18:06:36 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" />&lt;p>While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1408460Z [21:31:36]: There was a general exception while executing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1409440Z An exception has occurred: issuerId is required
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1410980Z Return status of iTunes Transporter was 1: There was a general exception while executing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1411520Z \nAn exception has occurred: issuerId is required
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1412610Z The call to the iTMSTransporter completed with a non-zero exit status: 1. This indicates a failure.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1567410Z
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1568750Z [!] Error uploading ipa file:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1569190Z
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1893760Z ##[error]Error: The process &amp;#39;/usr/local/lib/ruby/gems/2.7.0/bin/fastlane&amp;#39; failed with exit code 1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>A quick search for &lt;code>fastlane +&amp;quot;An exception has occurred: issuerId is required&amp;quot;&lt;/code> led me to this issue on GitHub:&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741" target="_blank" rel="noopener"
+> [pilot] fails to upload build to TestFlight using api key after iTMSTransporter auto updated to version 3.0.0 with An exception has occurred: issuerId is required error&lt;/a>&lt;/p>
+&lt;p>One particular &lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741#issuecomment-1285291626" target="_blank" rel="noopener"
+>comment by Tobias Totzek&lt;/a> provided the exact answer to my problem. I changed the Agent Specification from &lt;code>macos-latest&lt;/code> to &lt;code>macOS-12&lt;/code> and problem solved.&lt;/p>
+&lt;p>Credits:&lt;br>
+&lt;a class="link" href="https://github.com/honkmaster" target="_blank" rel="noopener"
+>Tobias Totzek&lt;/a>&lt;/p></description></item><item><title>Set Calculated Value to Azure Devops Pipeline BuildNumber</title><link>https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/</link><pubDate>Tue, 11 Oct 2022 16:06:49 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/cover.png" alt="Featured image of post Set Calculated Value to Azure Devops Pipeline BuildNumber" />&lt;p>After migrating a Azure DevOps project from one organization to another, I ran into an issue where the automatically generated build identifiers were out of sync. What do I mean by that? Well, in the old organization, the most recent build id was something like &lt;code>14928&lt;/code>. In Azure DevOps, every build has two primary identifiers, &lt;code>Build.BuildId&lt;/code> and &lt;code>Build.BuildNumber&lt;/code>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Build.BuildId&lt;/code>: The ID of the record for the completed build.&lt;/li>
+&lt;li>&lt;code>Build.BuildNumber&lt;/code>: The name of the completed build, also known as the run number.&lt;/li>
+&lt;/ul>
+&lt;p>It is possible to specify &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/process/run-number" target="_blank" rel="noopener"
+>what is included&lt;/a> in the run number by leveraging any of the predefined &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/process/run-number?view=azure-devops&amp;amp;tabs=yaml#tokens" target="_blank" rel="noopener"
+>tokens&lt;/a>. The default value for run number is &lt;code>$(Date:yyyyMMdd).$(Rev:r)&lt;/code>.&lt;/p>
+&lt;p>The easiest way to customize the build/pipeline run number is to specify the &lt;code>name&lt;/code> property at the root level of the YAML file, and in my pipeline I had it define this way:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">$(Build.BuildId)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">trigger&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="l">master&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="l">v4.3&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="l">versioning&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">pool&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">vmImage&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;macOS-latest&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This basically uses the &lt;code>BuildId&lt;/code> which is an integer as the &lt;code>BuildNumber&lt;/code> and shows up this way in the pipeline history:&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history.png"
+width="983"
+height="297"
+srcset="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history_hu7b65b4f05164c71a9af4ed8d65c13682_32179_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history_hu7b65b4f05164c71a9af4ed8d65c13682_32179_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Pipeline History"
+class="gallery-image"
+data-flex-grow="330"
+data-flex-basis="794px"
+>&lt;/p>
+&lt;p>This also allows me to reference the build number either during the build process or the release process:&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format.png"
+width="1026"
+height="269"
+srcset="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format_huaca369ef3db0b4b356312e8f21b45230_10031_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format_huaca369ef3db0b4b356312e8f21b45230_10031_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Release name format"
+class="gallery-image"
+data-flex-grow="381"
+data-flex-basis="915px"
+>&lt;/p>
+&lt;p>Now, the issue I was facing was that I simply needed to add the number &lt;code>14928&lt;/code> to my &lt;code>BuildId&lt;/code> and use that as my &lt;code>BuildNumber&lt;/code>. Unfortunately, Azure Devops does not support mathematical calculations at this stage of of the release pipeline process. As it turns out, mathematical calculations can only be done in tasks running on an agent.&lt;/p>
+&lt;p>So, with the help of Stack Overflow, this is the solution I eventually came up with:&lt;/p>
+&lt;ol>
+&lt;li>Create a pipeline variable to hold your base build number.&lt;/li>
+&lt;li>Add a task to add the base build number to the current build id.&lt;/li>
+&lt;li>Set the build number to the calculated value&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">steps&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">task&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Bash@3&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;Update Build Number&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">inputs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">targetType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;inline&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> # create new variable holding sum of the two numbers
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> newBuildNumber=$(( $(baseBuildNumber) + $(Build.BuildId) ))
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> # display the sum
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> echo &amp;#34;New Build Number: $newBuildNumber&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> # update the pipeline build number
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> echo &amp;#34;##vso[build.updatebuildnumber]$newBuildNumber&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">condition&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Hope that proves helpful to you too, dear reader.&lt;/p>
+&lt;p>References:&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&amp;amp;tabs=yaml" target="_blank" rel="noopener"
+>Use predefined variables&lt;/a>&lt;br>
+&lt;a class="link" href="https://ryanstutorials.net/bash-scripting-tutorial/bash-arithmetic.php" target="_blank" rel="noopener"
+>Arithmetic - Bash Scripting Tutorial&lt;/a>&lt;br>
+&lt;a class="link" href="https://unix.stackexchange.com/a/232386" target="_blank" rel="noopener"
+>Argument string to integer in bash&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&amp;amp;tabs=yaml#build-variables-devops-services" target="_blank" rel="noopener"
+>Build variables (DevOps Services)&lt;/a>&lt;br>
+&lt;a class="link" href="https://stackoverflow.com/questions/67481676/azure-devops-build-number-vs-build-id" target="_blank" rel="noopener"
+>Azure devops - build number vs build id&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&amp;amp;tabs=bash#updatebuildnumber-override-the-automatically-generated-build-number" target="_blank" rel="noopener"
+>UpdateBuildNumber: Override the automatically generated build number&lt;/a>&lt;/p></description></item></channel></rss>
