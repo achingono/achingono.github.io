@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "Adding Azure Functions Support to a Devcontainer"
 date: 2022-09-23T15:58:13Z
 draft: false
-description: ""
+description: "A container image for developing Azure Functions with Azure Functions Core Tools exists. What if one wants to add Azure Functions Core Tools to an existing dev container?"
 slug: adding-azure-functions-support-devcontainer
 tags: [
 "azure",

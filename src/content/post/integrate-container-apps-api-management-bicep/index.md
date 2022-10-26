@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "Integrate Container Apps With Api Management using Bicep"
 date: 2022-09-28T15:58:11Z
 draft: false
-description: ""
+description: "With Azure API Management it is easy to expose Backend APIs hosted in Azure Container Apps and integrate them with other Azure services like Azure App Service or Azure Functions"
 slug: integrate-container-apps-api-management-bicep
 tags: [
 "bicep",
