@@ -17,7 +17,11 @@ image: "cover.jpg"
 ---
 Back in 2013, I created a nice little sample project demonstrating code generation among other things. [Scott Hanselman](https://twitter.com/shanselman) had this to say about it:
 
-{{< tweet user="shanselman" id="288902839005220865" >}}
+<!--{ { < tweet user="shanselman" id="288902839005220865" > } }-->
+
+> Really col http://t.co/dzTs3fnv "Northwind" demo app by @achingono on GitHub. Clever use of T4 and more. Starred! https://t.co/1GTE055f
+>
+> — Scott Hanselman (@shanselman) January 9, 2013
 
 I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:
 
