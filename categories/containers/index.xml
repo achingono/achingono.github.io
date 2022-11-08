@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>containers on Alfero Chingono</title><link>https://www.chingono.com/categories/containers/</link><description>Recent content in containers on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Nov 2022 18:32:15 +0000</lastBuildDate><atom:link href="https://www.chingono.com/categories/containers/index.xml" rel="self" type="application/rss+xml"/><item><title>Consume Secrets in Azure Key vault From Kubernetes On-prem</title><link>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</link><pubDate>Mon, 07 Nov 2022 18:32:15 +0000</pubDate><guid>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/cover.png" alt="Featured image of post Consume Secrets in Azure Key vault From Kubernetes On-prem" />&lt;p>Recently, I had a customer ask if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps I followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>containers on Alfero Chingono</title><link>https://www.chingono.com/categories/containers/</link><description>Recent content in containers on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Nov 2022 18:32:15 +0000</lastBuildDate><atom:link href="https://www.chingono.com/categories/containers/index.xml" rel="self" type="application/rss+xml"/><item><title>Consume Secrets in Azure Key vault From Kubernetes On-prem</title><link>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</link><pubDate>Mon, 07 Nov 2022 18:32:15 +0000</pubDate><guid>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/cover.png" alt="Featured image of post Consume Secrets in Azure Key vault From Kubernetes On-prem" />&lt;p>Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps I followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/overview" target="_blank" rel="noopener"
+>&lt;strong>Azure Key Vault&lt;/strong>&lt;/a> is one of several key management solutions in Azure, and can be used to Securely store and tightly control access to tokens, passwords, &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/certificates/" target="_blank" rel="noopener"
+>certificates&lt;/a>, &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/keys/" target="_blank" rel="noopener"
+>API keys&lt;/a>, and other &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/secrets/" target="_blank" rel="noopener"
+>secrets&lt;/a>. Centralizing storage of application secrets in Azure Key Vault allows you to control their distribution. Key Vault greatly reduces the chances that secrets may be accidentally leaked. When using Key Vault, application developers no longer need to store security information in their application. Not having to store security information in applications eliminates the need to make this information part of the code.&lt;/li>
+&lt;li>&lt;a class="link" href="https://kubernetes.io/docs/concepts/overview/" target="_blank" rel="noopener"
+>&lt;strong>Kubernetes&lt;/strong>&lt;/a> is a portable, extensible, open source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem and focuses on the application workloads, not the underlying infrastructure components.&lt;/li>
+&lt;li>&lt;a class="link" href="https://secrets-store-csi-driver.sigs.k8s.io/" target="_blank" rel="noopener"
+>&lt;strong>Kubernetes Secrets Store CSI Driver&lt;/strong>&lt;/a> integrates secrets stores with Kubernetes via a &lt;a class="link" href="https://kubernetes-csi.github.io/docs/" target="_blank" rel="noopener"
+>Container Storage Interface (CSI)&lt;/a> volume. It allows Kubernetes to mount multiple secrets, keys, and certificates stored in enterprise-grade external secrets stores, such as Azure Key Vault, into pods as a volume. Once the Volume is attached, the data in it is mounted into the container’s file system.&lt;/li>
+&lt;/ul>
 &lt;p>The Secrets Store CSI Driver on Azure Kubernetes Service (AKS) provides the following methods of identity-based access to your Azure key vault.&lt;/p>
 &lt;ul>
 &lt;li>An &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity" target="_blank" rel="noopener"
@@ -13,9 +25,10 @@
 &lt;blockquote>
 &lt;p>&lt;strong>NOTE:&lt;/strong> Service principals eventually expire and must be renewed to keep the cluster working. In addition, managing service principals adds complexity, thus it&amp;rsquo;s recommended to use managed identities when working with Azure resources. Managed identities are the default authentication method for an AKS cluster.&lt;/p>
 &lt;/blockquote>
-&lt;p>Given that the use-case in question is not AKS and the cluster is not hosted in Azure, we are left with no other choice but to use service principals.&lt;/p>
+&lt;p>Given that the use-case in question is not AKS and the cluster is not hosted in Azure, we are left with no other option but to use service principals to &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/security-features#key-vault-authentication-options" target="_blank" rel="noopener"
+>access Azure Key Vault&lt;/a>.&lt;/p>
 &lt;h2 id="create-a-new-kubernetes-cluster">Create a new Kubernetes Cluster&lt;/h2>
-&lt;p>Since I did not have a running on-prem cluster, I followed instructions here at &lt;a class="link" href="https://www.linuxtechi.com/install-kubernetes-cluster-on-debian/" target="_blank" rel="noopener"
+&lt;p>If you do not have an on-prem Kubernetes cluster, you can follow instructions at &lt;a class="link" href="https://www.linuxtechi.com/install-kubernetes-cluster-on-debian/" target="_blank" rel="noopener"
 >How to Install Kubernetes Cluster on Debian 11 with Kubeadm&lt;/a> to create a cluster on Hyper-V.&lt;/p>
 &lt;h2 id="create-a-new-azure-key-vault">Create a new Azure key vault&lt;/h2>
 &lt;p>In addition to a Kubernetes cluster, you&amp;rsquo;ll need an Azure key vault resource that stores the secret content in the cloud.&lt;/p>
@@ -51,7 +64,7 @@
 &lt;p>&lt;strong>NOTE:&lt;/strong> The key vault&amp;rsquo;s name must be globally unique.&lt;/p>
 &lt;/blockquote>
 &lt;h3 id="create-key-vault-secrets">Create Key Vault secrets&lt;/h3>
-&lt;p>In this example, we&amp;rsquo;ll create two plain-text secrets in our Key vault as follows:&lt;/p>
+&lt;p>In this example, you&amp;rsquo;ll create two plain-text secrets in our Key vault as follows:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -63,7 +76,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;h2 id="create-a-service-principal">Create a Service Principal&lt;/h2>
-&lt;p>Next, let us create a service principal with the following commands:&lt;/p>
+&lt;p>Next, create a service principal with the following commands:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -93,9 +106,9 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>We will need all four values in later steps, so it&amp;rsquo;s important to note them down at this point.&lt;/p>
+&lt;/div>&lt;p>You will need all four values in later steps, so it&amp;rsquo;s important to note them down at this point.&lt;/p>
 &lt;h2 id="assign-permissions-to-key-vault">Assign Permissions to Key vault&lt;/h2>
-&lt;p>Next, we assign the service principal &lt;code>get&lt;/code> permissions to our key vault:&lt;/p>
+&lt;p>Access to a key vault is controlled through two interfaces: the management plane and the data plane. The management plane is where you manage Key Vault itself. Operations in this plane include creating and deleting key vaults, retrieving Key Vault properties, and updating access policies. The data plane is where you work with the data stored in a key vault. You can add, delete, and modify keys, secrets, and certificates. To grant our service principal permissions to read keys, secrets, and certificates, we execute the following commands:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -226,7 +239,8 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;h2 id="create-service-principal-kubernetes-secret">Create Service Principal Kubernetes Secret&lt;/h2>
-&lt;p>In order for our on-prem Kubernetes cluster to connect to Azure Key Vault, we will need to create Kubernetes secrets accessible to the Secret Store CSI Driver. To create the secrets, execute the following commands against the cluster:&lt;/p>
+&lt;p>In order for your on-prem Kubernetes cluster to connect to Azure Key Vault, you will need to create &lt;a class="link" href="https://kubernetes.io/docs/concepts/configuration/secret/" target="_blank" rel="noopener"
+>Kubernetes secrets&lt;/a> accessible to the Secret Store CSI Driver. To create the secrets, execute the following commands against the cluster:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -250,7 +264,12 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;blockquote>
-&lt;p>&lt;strong>NOTE:&lt;/strong> The Kubernetes secret is stored as plaintext in etcd. Additional security measures are needed to ensure access is restricted.&lt;/p>
+&lt;p>&lt;strong>NOTE:&lt;/strong>&lt;br>
+Kubernetes Secrets are, by default, stored unencrypted in the API server&amp;rsquo;s underlying data store (etcd). Anyone with API access can retrieve or modify a Secret, and so can anyone with access to etcd. Additionally, anyone who is authorized to create a Pod in a namespace can use that access to read any Secret in that namespace; this includes indirect access such as the ability to create a Deployment.&lt;/p>
+&lt;p>In order to restrict access to Kubernetes secrets, consider enabling or configuring &lt;a class="link" href="https://kubernetes.io/docs/reference/access-authn-authz/authorization/" target="_blank" rel="noopener"
+>RBAC rules&lt;/a> with least-privilege access to Secrets.&lt;/p>
+&lt;p>See &lt;a class="link" href="https://kubernetes.io/docs/concepts/configuration/secret/#information-security-for-secrets" target="_blank" rel="noopener"
+>Information security for Secrets&lt;/a> for more details.&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="deploy-the-secret-provider-class">Deploy the Secret Provider Class&lt;/h2>
 &lt;p>Create a YAML file:&lt;/p>
@@ -299,10 +318,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">provider&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">azure&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">parameters&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">usePodIdentity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;false&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">useVMManadedIdentity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;false&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">useVMManagedIdentity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;false&amp;#34;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">userAssignedIdentityID&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">keyvaultName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;secret-store-6d9e5b0a&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># The name of the Key Vault we created in earlier steps&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tenantId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;c6a70df6-0848-491e-9ae6-038dc1d12160&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># The tenant Id returned from the `az ad sp create-for-rbac` command&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tenantId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;&amp;lt;GUID&amp;gt;&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c"># The tenant Id returned from the `az ad sp create-for-rbac` command&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">objects&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">|&lt;/span>&lt;span class="sd">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> array:
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sd"> - |
@@ -408,7 +427,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;h2 id="verify-azure-key-vault-secrets-in-container">Verify Azure Key Vault Secrets in container&lt;/h2>
-&lt;p>To verify that our secrets are accessible inside our container, we execute the following commands:&lt;/p>
+&lt;p>To verify that your secrets are accessible inside our container, you execute the following commands:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -433,7 +452,18 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Forty7&lt;span class="p">&amp;amp;&lt;/span>Scale
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>And there you have it! We managed to retrieve Azure Key Vault secrets from an on-prem Kubernetes cluster using a Service Principal. Hope the proves valuable to you, dear reader.&lt;/p>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;strong>Important:&lt;/strong>&lt;br>
+You can reduce the exposure of your vaults by specifying which IP addresses have access to them. The &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/overview-vnet-service-endpoints" target="_blank" rel="noopener"
+>Virtual network service endpoints for Azure Key Vault&lt;/a> allow you to restrict access to a list of IPv4 (internet protocol version 4) address ranges. Any user connecting to your key vault from outside those sources is denied access.&lt;/p>
+&lt;p>For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/network-security" target="_blank" rel="noopener"
+>Configure Azure Key Vault firewalls and virtual networks&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>And there you have it! We managed to retrieve Azure Key Vault secrets from an on-prem Kubernetes cluster using a Service Principal. Hope the proves valuable to you, dear reader.&lt;/p>
+&lt;p>Credits:&lt;br>
+Thanks to my colleagues &lt;a class="link" href="https://mvp.microsoft.com/en-us/PublicProfile/5002189" target="_blank" rel="noopener"
+>Ravi Yadav&lt;/a> and &lt;a class="link" href="https://hammadaslam.com/" target="_blank" rel="noopener"
+>Hammad Aslam&lt;/a> for the important pointers.&lt;/p>
 &lt;p>References:&lt;br>
 &lt;a class="link" href="https://www.j3ns.de/d365-business-central/use-azure-keyvaults-in-bc-onprem/" target="_blank" rel="noopener"
 >Use Azure KeyVaults in BC OnPrem&lt;/a>&lt;br>
@@ -450,7 +480,9 @@
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-driver" target="_blank" rel="noopener"
 >Use the Azure Key Vault Provider for Secrets Store CSI Driver in an AKS cluster&lt;/a>&lt;br>
 &lt;a class="link" href="https://github.com/Azure/secrets-store-csi-driver-provider-azure/tree/master/examples/service-principal" target="_blank" rel="noopener"
->Service Principal Examples for Azure Key Vault Provider for Secrets Store CSI Driver&lt;/a>&lt;/p></description></item><item><title>Restore Database on Container Start Up</title><link>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</link><pubDate>Wed, 21 Apr 2021 10:20:50 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/cover.jpg" alt="Featured image of post Restore Database on Container Start Up" />&lt;p>This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" >Dockerizing Blazor Wasm Application&lt;/a> and &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" >Waiting for Docker Service Container Port to Be Ready&lt;/a>.&lt;/p>
+>Service Principal Examples for Azure Key Vault Provider for Secrets Store CSI Driver&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/security-features" target="_blank" rel="noopener"
+>Azure Key Vault security&lt;/a>&lt;/p></description></item><item><title>Restore Database on Container Start Up</title><link>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</link><pubDate>Wed, 21 Apr 2021 10:20:50 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/cover.jpg" alt="Featured image of post Restore Database on Container Start Up" />&lt;p>This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" >Dockerizing Blazor Wasm Application&lt;/a> and &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" >Waiting for Docker Service Container Port to Be Ready&lt;/a>.&lt;/p>
 &lt;p>One of the main reasons I needed my application container to wait for the database container to be ready was because I needed to initialize and seed the database before launching the application. This created a significant, and somewhat unacceptable, delay in container startup which impacted local development experience and automated UI tests.&lt;/p>
 &lt;p>I went on a quest to search for a solution to this problem and found out that Database engines such as MySQL support the ability to automatically restore database backups when creating a docker container. Surely, Microsoft SQL Server would have the same feature, right? Apparently, not. So I had no choice but to roll out my own solution, right? Right!&lt;/p>
 &lt;p>Now that we agree on the legitimacy of my quest, here are the changes I made to my project.&lt;/p>
