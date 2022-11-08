@@ -710,8 +710,13 @@ data-flex-basis="915px"
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-core-tools-reference?tabs=v2" target="_blank" rel="noopener"
 >Azure Functions Core Tools&lt;/a>&lt;/p></description></item><item><title>Dotnet Spawn Global Tool</title><link>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</link><pubDate>Sun, 10 Apr 2022 14:31:58 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/cover.jpg" alt="Featured image of post Dotnet Spawn Global Tool" />&lt;p>Back in 2013, I created a nice little sample project demonstrating code generation among other things. &lt;a class="link" href="https://twitter.com/shanselman" target="_blank" rel="noopener"
 >Scott Hanselman&lt;/a> had this to say about it:&lt;/p>
-&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Really col &lt;a href="http://t.co/dzTs3fnv">http://t.co/dzTs3fnv&lt;/a> &amp;quot;Northwind&amp;quot; demo app by &lt;a href="https://twitter.com/achingono?ref_src=twsrc%5Etfw">@achingono&lt;/a> on GitHub. Clever use of T4 and more. Starred! &lt;a href="https://t.co/1GTE055f">https://t.co/1GTE055f&lt;/a>&lt;/p>&amp;mdash; Scott Hanselman (@shanselman) &lt;a href="https://twitter.com/shanselman/status/288902839005220865?ref_src=twsrc%5Etfw">January 9, 2013&lt;/a>&lt;/blockquote>
-&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
+&lt;!-- raw HTML omitted -->
+&lt;blockquote>
+&lt;p>Really col &lt;a class="link" href="http://t.co/dzTs3fnv" target="_blank" rel="noopener"
+>http://t.co/dzTs3fnv&lt;/a> &amp;ldquo;Northwind&amp;rdquo; demo app by @achingono on GitHub. Clever use of T4 and more. Starred! &lt;a class="link" href="https://t.co/1GTE055f" target="_blank" rel="noopener"
+>https://t.co/1GTE055f&lt;/a>&lt;/p>
+&lt;p>— Scott Hanselman (@shanselman) January 9, 2013&lt;/p>
+&lt;/blockquote>
 &lt;p>I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:&lt;/p>
 &lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">&lt;a href="https://twitter.com/mkristensen?ref_src=twsrc%5Etfw">@mkristensen&lt;/a> &lt;a href="https://twitter.com/VisualStudio?ref_src=twsrc%5Etfw">@VisualStudio&lt;/a> is there an equivalent to T4Scaffolding for &lt;a href="https://twitter.com/hashtag/dotnercore?src=hash&amp;amp;ref_src=twsrc%5Etfw">#dotnercore&lt;/a>? I need to generate multiple files based on a template.&lt;/p>&amp;mdash; Alfero Chingono (@achingono) &lt;a href="https://twitter.com/achingono/status/936598758682451969?ref_src=twsrc%5Etfw">December 1, 2017&lt;/a>&lt;/blockquote>
 &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
