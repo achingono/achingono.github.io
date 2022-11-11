@@ -19,7 +19,9 @@ categories: [
 image: "cover.png"
 ---
 
-While working on the [Reddog Microservices Integration Application Sample](https://github.com/Azure-Samples/app-templates-microservices-integration), my objective was to demonstrate a development scenario that uses [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) to integrate [Azure API Management](https://azure.microsoft.com/products/api-management/) with [Azure Container Apps](https://azure.microsoft.com/services/container-apps/).
+While working on the [Reddog Microservices Integration Application Sample](https://github.com/Azure-Samples/app-templates-microservices-integration), our objective was to demonstrate a development scenario that uses [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) to integrate [Azure API Management](https://azure.microsoft.com/products/api-management/) with [Azure Container Apps](https://azure.microsoft.com/services/container-apps/).
+
+> **DISCLAIMER:** This project is not my original work. The repository leverages the [Reddog codebase](https://github.com/Azure/reddog-code) and the [Reddog Container Apps](https://github.com/Azure/reddog-containerapps) bicep modules generously contributed by the Cloud Native Global Black Belt Team. I do not own any rights to the project an do not take credit for any of the amazing design work done by the team.
 
 - **[Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)** is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources.
 
@@ -77,7 +79,7 @@ This will deploy a APIM instance. Of particular note here is `virtualNetworkType
 
 ## Applying a global policy
 
-Next step, I created a global policy definition file `apimPolicies/global.xml`:
+Next step, we created a global policy definition file `apimPolicies/global.xml`:
 
 ```xml
 <policies>
@@ -144,7 +146,7 @@ A [*backend*](https://learn.microsoft.com/en-us/azure/api-management/backends) (
 * Easily used by configuring a transformation policy on an existing API.
 * Takes advantage of API Management functionality to maintain secrets in Azure Key Vault if [named values](api-management-howto-properties.md) are configured for header or query parameter authentication.
 
-To create a [Microsoft.ApiManagement/service/backends](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/backends?pivots=deployment-language-bicep) resource, I added the following Bicep to my template.
+To create a [Microsoft.ApiManagement/service/backends](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/backends?pivots=deployment-language-bicep) resource, we added the following Bicep to my template.
 
 ```Bicep
 resource orderService 'Microsoft.App/containerApps@2022-03-01' existing = {
@@ -172,7 +174,7 @@ Here we reference an existing Container App in our backend resource and use the 
 
 API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.
 
-To create a [Microsoft.ApiManagement/service/apis](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep) resource, I added the following Bicep to my template.
+To create a [Microsoft.ApiManagement/service/apis](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep) resource, we added the following Bicep to my template.
 
 ```Bicep
 resource orderApiResource 'Microsoft.ApiManagement/service/apis@2021-12-01-preview' = {
@@ -197,7 +199,7 @@ resource orderApiResource 'Microsoft.ApiManagement/service/apis@2021-12-01-previ
 
 A policy is a reusable and composable component, implementing some commonly used API-related functionality. API Management offers over 50 built-in policies that take care of critical but undifferentiated horizontal concerns - for example, request transformation, routing, security, protection, caching. The policies can be applied at various scopes, which determine the affected APIs or operations and dynamically configured using policy expressions. For more information, see [Policies in Azure API Management](https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-policies).
 
-In order to make the Fronted API policy reusable, I saved it in a XML file `apimPolicies/api.xml`:
+In order to make the Fronted API policy reusable, we saved it in a XML file `apimPolicies/api.xml`:
 
 ```xml
 <policies>
@@ -221,7 +223,7 @@ This policy does one thing: Use the `set-backend-service` policy to redirect an 
 
 In this case, `backend-id` is the Identifier (name) of the backend to route requests to, and since we are going to reuse this xml, we will add the `{backendName}` token to be replaced later.
 
-To create a [Microsoft.ApiManagement/service/apis/policies](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/policies?pivots=deployment-language-bicep) resource, I then added the following Bicep to my template:
+To create a [Microsoft.ApiManagement/service/apis/policies](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/policies?pivots=deployment-language-bicep) resource, we then added the following Bicep to my template:
 
 ```Bicep
 resource orderApiPolicy 'Microsoft.ApiManagement/service/apis/policies@2021-12-01-preview' = {
@@ -240,7 +242,7 @@ Here we are basically leveraging a combination of the [`replace`](https://learn.
 
 A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see [Mock API responses](https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses).
 
-To create a [Microsoft.ApiManagement/service/apis/operations](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep) resource, I added the following Bicep to my template:
+To create a [Microsoft.ApiManagement/service/apis/operations](https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep) resource, we added the following Bicep to my template:
 
 ```Bicep
 resource getOrdersOperationResource 'Microsoft.ApiManagement/service/apis/operations@2021-12-01-preview' = {
@@ -269,10 +271,10 @@ resource getOrdersOperationResource 'Microsoft.ApiManagement/service/apis/operat
 
 ## Adding a Operation policy
 
-In order to make the Operation policy reusable, I saved it in a XML file `apimPolicies/operation.xml`:
+In order to make the Operation policy reusable, we saved it in a XML file `apimPolicies/operation.xml`:
 
 ```xml
-In order to make the Fronted API policy reusable, I saved it in a XML file `apimPolicies/api.xml`:
+In order to make the Fronted API policy reusable, we saved it in a XML file `apimPolicies/api.xml`:
 
 ```xml
 <policies>
@@ -314,3 +316,5 @@ References:
 [Bicep functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions)  
 [API Management policy reference](https://learn.microsoft.com/en-us/azure/api-management/api-management-policies)  
 [Define resources with Bicep, ARM templates, and Terraform AzAPI provider](https://learn.microsoft.com/en-us/azure/templates/)  
+[RedDog Codebase](https://github.com/Azure/reddog-code)  
+[https://github.com/Azure/reddog-containerapps](https://github.com/Azure/reddog-containerappsc)
