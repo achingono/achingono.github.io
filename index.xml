@@ -631,7 +631,8 @@ data-flex-basis="915px"
 &lt;blockquote>
 &lt;p>&lt;strong>DISCLAIMER:&lt;/strong> This project is not my original work. The repository leverages the &lt;a class="link" href="https://github.com/Azure/reddog-code" target="_blank" rel="noopener"
 >Reddog codebase&lt;/a> and the &lt;a class="link" href="https://github.com/Azure/reddog-containerapps" target="_blank" rel="noopener"
->Reddog Container Apps&lt;/a> bicep modules generously contributed by the Cloud Native Global Black Belt Team. I do not own any rights to the project an do not take credit for any of the amazing design work done by the team.&lt;/p>
+>Reddog Container Apps&lt;/a> bicep modules generously contributed by the &lt;a class="link" href="https://github.com/CloudNativeGBB" target="_blank" rel="noopener"
+>Cloud Native Global Black Belt Team&lt;/a>. I do not own any rights to the project an do not take credit for any of the amazing design work done by the team.&lt;/p>
 &lt;/blockquote>
 &lt;ul>
 &lt;li>
@@ -1121,8 +1122,15 @@ data-flex-basis="915px"
 &lt;h2 id="repeat">Repeat&lt;/h2>
 &lt;p>Steps 3 - 7 are repeated for all Backend APIs, Frontend APIs, Policies, and operations that need to be defined on Azure API Management.&lt;/p>
 &lt;p>Hope this proves valuable to you, dear reader.&lt;/p>
-&lt;p>References:&lt;br>
-&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
+&lt;p>&lt;strong>Credits:&lt;/strong>&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/Azure/reddog-code" target="_blank" rel="noopener"
+>RedDog Codebase&lt;/a>&lt;br>
+&lt;a class="link" href="https://github.com/Azure/reddog-containerapps" target="_blank" rel="noopener"
+>RedDog Container Apps&lt;/a>&lt;br>
+&lt;a class="link" href="https://github.com/CloudNativeGBB" target="_blank" rel="noopener"
+>Cloud Native Global Black Belt Team&lt;/a>&lt;/p>
+&lt;p>&lt;strong>References:&lt;/strong>&lt;/p>
+&lt;p>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
 >Bicep&lt;/a>&lt;br>
 &lt;a class="link" href="https://azure.microsoft.com/services/api-management" target="_blank" rel="noopener"
 >Azure API Management&lt;/a>&lt;br>
@@ -1135,11 +1143,7 @@ data-flex-basis="915px"
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-policies" target="_blank" rel="noopener"
 >API Management policy reference&lt;/a>&lt;br>
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
->Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;br>
-&lt;a class="link" href="https://github.com/Azure/reddog-code" target="_blank" rel="noopener"
->RedDog Codebase&lt;/a>&lt;br>
-&lt;a class="link" href="https://github.com/Azure/reddog-containerappsc" target="_blank" rel="noopener"
->https://github.com/Azure/reddog-containerapps&lt;/a>&lt;/p></description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;p>While working on the &lt;a class="link" href="https://github.com/Azure-Samples/app-templates-microservices-integration" target="_blank" rel="noopener"
+>Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;p>While working on the &lt;a class="link" href="https://github.com/Azure-Samples/app-templates-microservices-integration" target="_blank" rel="noopener"
 >Reddog Microservices Integration Application Sample&lt;/a>, I wanted to add support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
 >Azure Functions&lt;/a> to an existing &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
 >Dev Container&lt;/a>.&lt;/p>
