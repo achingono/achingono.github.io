@@ -21,7 +21,7 @@ image: "cover.png"
 
 While working on the [Reddog Microservices Integration Application Sample](https://github.com/Azure-Samples/app-templates-microservices-integration), our objective was to demonstrate a development scenario that uses [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) to integrate [Azure API Management](https://azure.microsoft.com/products/api-management/) with [Azure Container Apps](https://azure.microsoft.com/services/container-apps/).
 
-> **DISCLAIMER:** This project is not my original work. The repository leverages the [Reddog codebase](https://github.com/Azure/reddog-code) and the [Reddog Container Apps](https://github.com/Azure/reddog-containerapps) bicep modules generously contributed by the Cloud Native Global Black Belt Team. I do not own any rights to the project an do not take credit for any of the amazing design work done by the team.
+> **DISCLAIMER:** This project is not my original work. The repository leverages the [Reddog codebase](https://github.com/Azure/reddog-code) and the [Reddog Container Apps](https://github.com/Azure/reddog-containerapps) bicep modules generously contributed by the [Cloud Native Global Black Belt Team](https://github.com/CloudNativeGBB). I do not own any rights to the project an do not take credit for any of the amazing design work done by the team.
 
 - **[Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)** is a domain-specific language (DSL) that uses declarative syntax to deploy Azure resources.
 
@@ -308,7 +308,14 @@ Steps 3 - 7 are repeated for all Backend APIs, Frontend APIs, Policies, and oper
 
 Hope this proves valuable to you, dear reader.
 
-References:  
+**Credits:**  
+
+[RedDog Codebase](https://github.com/Azure/reddog-code)  
+[RedDog Container Apps](https://github.com/Azure/reddog-containerapps)  
+[Cloud Native Global Black Belt Team](https://github.com/CloudNativeGBB)  
+
+**References:**  
+
 [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)  
 [Azure API Management](https://azure.microsoft.com/services/api-management)  
 [Azure Container Apps](https://azure.microsoft.com/services/container-apps)  
@@ -316,5 +323,3 @@ References:
 [Bicep functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions)  
 [API Management policy reference](https://learn.microsoft.com/en-us/azure/api-management/api-management-policies)  
 [Define resources with Bicep, ARM templates, and Terraform AzAPI provider](https://learn.microsoft.com/en-us/azure/templates/)  
-[RedDog Codebase](https://github.com/Azure/reddog-code)  
-[https://github.com/Azure/reddog-containerapps](https://github.com/Azure/reddog-containerappsc)
