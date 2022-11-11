@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure on Alfero Chingono</title><link>https://www.chingono.com/categories/azure/</link><description>Recent content in Azure on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 28 Sep 2022 15:58:11 +0000</lastBuildDate><atom:link href="https://www.chingono.com/categories/azure/index.xml" rel="self" type="application/rss+xml"/><item><title>Integrate Container Apps With Api Management using Bicep</title><link>https://www.chingono.com/blog/2022/09/28/integrate-container-apps-api-management-bicep/</link><pubDate>Wed, 28 Sep 2022 15:58:11 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/28/integrate-container-apps-api-management-bicep/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/28/integrate-container-apps-api-management-bicep/cover.png" alt="Featured image of post Integrate Container Apps With Api Management using Bicep" />&lt;p>While working on the &lt;a class="link" href="https://github.com/Azure-Samples/app-templates-microservices-integration" target="_blank" rel="noopener"
->Reddog Microservices Integration Application Sample&lt;/a>, my objective was to demonstrate a development scenario that uses &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
+>Reddog Microservices Integration Application Sample&lt;/a>, our objective was to demonstrate a development scenario that uses &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
 >Bicep&lt;/a> to integrate &lt;a class="link" href="https://azure.microsoft.com/products/api-management/" target="_blank" rel="noopener"
 >Azure API Management&lt;/a> with &lt;a class="link" href="https://azure.microsoft.com/services/container-apps/" target="_blank" rel="noopener"
 >Azure Container Apps&lt;/a>.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>DISCLAIMER:&lt;/strong> This project is not my original work. The repository leverages the &lt;a class="link" href="https://github.com/Azure/reddog-code" target="_blank" rel="noopener"
+>Reddog codebase&lt;/a> and the &lt;a class="link" href="https://github.com/Azure/reddog-containerapps" target="_blank" rel="noopener"
+>Reddog Container Apps&lt;/a> bicep modules generously contributed by the Cloud Native Global Black Belt Team. I do not own any rights to the project an do not take credit for any of the amazing design work done by the team.&lt;/p>
+&lt;/blockquote>
 &lt;ul>
 &lt;li>
 &lt;p>&lt;strong>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener"
@@ -102,7 +107,7 @@
 &lt;p>&lt;strong>NOTE:&lt;/strong> Please bear in mind that APIM takes more than an hour to provision.&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="applying-a-global-policy">Applying a global policy&lt;/h2>
-&lt;p>Next step, I created a global policy definition file &lt;code>apimPolicies/global.xml&lt;/code>:&lt;/p>
+&lt;p>Next step, we created a global policy definition file &lt;code>apimPolicies/global.xml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -223,7 +228,7 @@
 &lt;li>Takes advantage of API Management functionality to maintain secrets in Azure Key Vault if &lt;a class="link" href="api-management-howto-properties.md" >named values&lt;/a> are configured for header or query parameter authentication.&lt;/li>
 &lt;/ul>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/backends?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/backends&lt;/a> resource, I added the following Bicep to my template.&lt;/p>
+>Microsoft.ApiManagement/service/backends&lt;/a> resource, we added the following Bicep to my template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -269,7 +274,7 @@
 &lt;h2 id="adding-a-fronted-api">Adding a Fronted API&lt;/h2>
 &lt;p>API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis&lt;/a> resource, I added the following Bicep to my template.&lt;/p>
+>Microsoft.ApiManagement/service/apis&lt;/a> resource, we added the following Bicep to my template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -309,7 +314,7 @@
 &lt;h2 id="adding-a-fronted-api-policy">Adding a Fronted API Policy&lt;/h2>
 &lt;p>A policy is a reusable and composable component, implementing some commonly used API-related functionality. API Management offers over 50 built-in policies that take care of critical but undifferentiated horizontal concerns - for example, request transformation, routing, security, protection, caching. The policies can be applied at various scopes, which determine the affected APIs or operations and dynamically configured using policy expressions. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-policies" target="_blank" rel="noopener"
 >Policies in Azure API Management&lt;/a>.&lt;/p>
-&lt;p>In order to make the Fronted API policy reusable, I saved it in a XML file &lt;code>apimPolicies/api.xml&lt;/code>:&lt;/p>
+&lt;p>In order to make the Fronted API policy reusable, we saved it in a XML file &lt;code>apimPolicies/api.xml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -350,7 +355,7 @@
 >Set backend service&lt;/a>.&lt;/p>
 &lt;p>In this case, &lt;code>backend-id&lt;/code> is the Identifier (name) of the backend to route requests to, and since we are going to reuse this xml, we will add the &lt;code>{backendName}&lt;/code> token to be replaced later.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/policies?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, I then added the following Bicep to my template:&lt;/p>
+>Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, we then added the following Bicep to my template:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -380,7 +385,7 @@
 &lt;p>A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses" target="_blank" rel="noopener"
 >Mock API responses&lt;/a>.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, I added the following Bicep to my template:&lt;/p>
+>Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, we added the following Bicep to my template:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -432,7 +437,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;h2 id="adding-a-operation-policy">Adding a Operation policy&lt;/h2>
-&lt;p>In order to make the Operation policy reusable, I saved it in a XML file &lt;code>apimPolicies/operation.xml&lt;/code>:&lt;/p>
+&lt;p>In order to make the Operation policy reusable, we saved it in a XML file &lt;code>apimPolicies/operation.xml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -457,7 +462,7 @@
 &lt;/span>&lt;span class="lnt">20
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">In order to make the Fronted API policy reusable, I saved it in a XML file `apimPolicies/api.xml`:
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">In order to make the Fronted API policy reusable, we saved it in a XML file `apimPolicies/api.xml`:
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">```xml
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;policies&amp;gt;&lt;/span>
@@ -505,4 +510,8 @@
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-policies" target="_blank" rel="noopener"
 >API Management policy reference&lt;/a>&lt;br>
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
->Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item></channel></rss>
+>Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;br>
+&lt;a class="link" href="https://github.com/Azure/reddog-code" target="_blank" rel="noopener"
+>RedDog Codebase&lt;/a>&lt;br>
+&lt;a class="link" href="https://github.com/Azure/reddog-containerappsc" target="_blank" rel="noopener"
+>https://github.com/Azure/reddog-containerapps&lt;/a>&lt;/p></description></item></channel></rss>
