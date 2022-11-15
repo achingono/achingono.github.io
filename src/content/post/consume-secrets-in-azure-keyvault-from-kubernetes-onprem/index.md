@@ -20,7 +20,7 @@ categories: [
 image: "cover.png"
 ---
 
-Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps I followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.
+Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps we followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.
 
 - [**Azure Key Vault**](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) is one of several key management solutions in Azure, and can be used to Securely store and tightly control access to tokens, passwords, [certificates](https://learn.microsoft.com/en-us/azure/key-vault/certificates/), [API keys](https://learn.microsoft.com/en-us/azure/key-vault/keys/), and other [secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/). Centralizing storage of application secrets in Azure Key Vault allows you to control their distribution. Key Vault greatly reduces the chances that secrets may be accidentally leaked. When using Key Vault, application developers no longer need to store security information in their application. Not having to store security information in applications eliminates the need to make this information part of the code.
 - [**Kubernetes**](https://kubernetes.io/docs/concepts/overview/) is a portable, extensible, open source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem and focuses on the application workloads, not the underlying infrastructure components.
@@ -75,6 +75,7 @@ In this example, you'll create two plain-text secrets in our Key vault as follow
 az keyvault secret set --vault-name $KEYVAULT_NAME -n Username --value atomic_fifth
 az keyvault secret set --vault-name $KEYVAULT_NAME -n Password --value Forty7&Scale
 ```
+
 ## Create a Service Principal
 
 Next, create a service principal with the following commands:
