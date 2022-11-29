@@ -229,7 +229,7 @@
 &lt;li>Takes advantage of API Management functionality to maintain secrets in Azure Key Vault if &lt;a class="link" href="api-management-howto-properties.md" >named values&lt;/a> are configured for header or query parameter authentication.&lt;/li>
 &lt;/ul>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/backends?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/backends&lt;/a> resource, we added the following Bicep to my template.&lt;/p>
+>Microsoft.ApiManagement/service/backends&lt;/a> resource, we added the following Bicep to our template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -275,7 +275,7 @@
 &lt;h2 id="adding-a-fronted-api">Adding a Fronted API&lt;/h2>
 &lt;p>API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis&lt;/a> resource, we added the following Bicep to my template.&lt;/p>
+>Microsoft.ApiManagement/service/apis&lt;/a> resource, we added the following Bicep to our template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -356,7 +356,7 @@
 >Set backend service&lt;/a>.&lt;/p>
 &lt;p>In this case, &lt;code>backend-id&lt;/code> is the Identifier (name) of the backend to route requests to, and since we are going to reuse this xml, we will add the &lt;code>{backendName}&lt;/code> token to be replaced later.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/policies?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, we then added the following Bicep to my template:&lt;/p>
+>Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, we then added the following Bicep to our template:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -386,7 +386,7 @@
 &lt;p>A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses" target="_blank" rel="noopener"
 >Mock API responses&lt;/a>.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, we added the following Bicep to my template:&lt;/p>
+>Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, we added the following Bicep to our template:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1

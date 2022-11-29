@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Alfero Chingono</title><link>https://www.chingono.com/post/</link><description>Recent content in Posts on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Nov 2022 18:32:15 +0000</lastBuildDate><atom:link href="https://www.chingono.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Consume Secrets in Azure Key vault From Kubernetes On-prem</title><link>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</link><pubDate>Mon, 07 Nov 2022 18:32:15 +0000</pubDate><guid>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/cover.png" alt="Featured image of post Consume Secrets in Azure Key vault From Kubernetes On-prem" />&lt;p>Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps I followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Alfero Chingono</title><link>https://www.chingono.com/post/</link><description>Recent content in Posts on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Nov 2022 18:32:15 +0000</lastBuildDate><atom:link href="https://www.chingono.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Consume Secrets in Azure Key vault From Kubernetes On-prem</title><link>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</link><pubDate>Mon, 07 Nov 2022 18:32:15 +0000</pubDate><guid>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/cover.png" alt="Featured image of post Consume Secrets in Azure Key vault From Kubernetes On-prem" />&lt;p>Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps we followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.&lt;/p>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/overview" target="_blank" rel="noopener"
 >&lt;strong>Azure Key Vault&lt;/strong>&lt;/a> is one of several key management solutions in Azure, and can be used to Securely store and tightly control access to tokens, passwords, &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/certificates/" target="_blank" rel="noopener"
@@ -854,7 +854,7 @@ data-flex-basis="915px"
 &lt;li>Takes advantage of API Management functionality to maintain secrets in Azure Key Vault if &lt;a class="link" href="api-management-howto-properties.md" >named values&lt;/a> are configured for header or query parameter authentication.&lt;/li>
 &lt;/ul>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/backends?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/backends&lt;/a> resource, we added the following Bicep to my template.&lt;/p>
+>Microsoft.ApiManagement/service/backends&lt;/a> resource, we added the following Bicep to our template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -900,7 +900,7 @@ data-flex-basis="915px"
 &lt;h2 id="adding-a-fronted-api">Adding a Fronted API&lt;/h2>
 &lt;p>API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis&lt;/a> resource, we added the following Bicep to my template.&lt;/p>
+>Microsoft.ApiManagement/service/apis&lt;/a> resource, we added the following Bicep to our template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -981,7 +981,7 @@ data-flex-basis="915px"
 >Set backend service&lt;/a>.&lt;/p>
 &lt;p>In this case, &lt;code>backend-id&lt;/code> is the Identifier (name) of the backend to route requests to, and since we are going to reuse this xml, we will add the &lt;code>{backendName}&lt;/code> token to be replaced later.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/policies?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, we then added the following Bicep to my template:&lt;/p>
+>Microsoft.ApiManagement/service/apis/policies&lt;/a> resource, we then added the following Bicep to our template:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -1011,7 +1011,7 @@ data-flex-basis="915px"
 &lt;p>A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses" target="_blank" rel="noopener"
 >Mock API responses&lt;/a>.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep" target="_blank" rel="noopener"
->Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, we added the following Bicep to my template:&lt;/p>
+>Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, we added the following Bicep to our template:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -2193,7 +2193,7 @@ data-flex-basis="272px"
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">genrsa&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="n">2048&lt;/span>
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">genrsa&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">key&lt;/span> &lt;span class="mf">2048&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;/li>
@@ -2204,7 +2204,7 @@ data-flex-basis="272px"
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">req&lt;/span> &lt;span class="n">-new&lt;/span> &lt;span class="n">-key&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">csr&lt;/span> &lt;span class="n">-subj&lt;/span> &lt;span class="s2">&amp;#34;/emailAddress=devops@example.com, CN=Example, C=CA&amp;#34;&lt;/span>
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">req&lt;/span> &lt;span class="n">-new&lt;/span> &lt;span class="n">-key&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">key&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">csr&lt;/span> &lt;span class="n">-subj&lt;/span> &lt;span class="s2">&amp;#34;/emailAddress=devops@example.com, CN=Example, C=CA&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;/li>
@@ -2248,7 +2248,7 @@ data-flex-basis="496px"
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">x509&lt;/span> &lt;span class="n">-in&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">cer&lt;/span> &lt;span class="n">-inform&lt;/span> &lt;span class="n">DER&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">pem&lt;/span> &lt;span class="n">-outform&lt;/span> &lt;span class="n">PEM&lt;/span>
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">x509&lt;/span> &lt;span class="n">-in&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">cer&lt;/span> &lt;span class="n">-inform&lt;/span> &lt;span class="n">DER&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">pem&lt;/span> &lt;span class="n">-outform&lt;/span> &lt;span class="n">PEM&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>followed by:&lt;/p>
@@ -2257,7 +2257,7 @@ data-flex-basis="496px"
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">pkcs12&lt;/span> &lt;span class="n">-export&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">p12&lt;/span> &lt;span class="n">-inkey&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">key&lt;/span> &lt;span class="n">-in&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">pem&lt;/span>
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">openssl&lt;/span> &lt;span class="n">pkcs12&lt;/span> &lt;span class="n">-export&lt;/span> &lt;span class="n">-out&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">p12&lt;/span> &lt;span class="n">-inkey&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">key&lt;/span> &lt;span class="n">-in&lt;/span> &lt;span class="nb">appstore-distribution&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="py">pem&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>This will prompt for a password. Please provide a password and store it in a safe place. This password will be needed when signing the application.&lt;/p>
