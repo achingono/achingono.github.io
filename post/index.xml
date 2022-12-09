@@ -1143,8 +1143,7 @@ data-flex-basis="915px"
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-policies" target="_blank" rel="noopener"
 >API Management policy reference&lt;/a>&lt;br>
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
->Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;p>While working on the &lt;a class="link" href="https://github.com/Azure-Samples/app-templates-microservices-integration" target="_blank" rel="noopener"
->Reddog Microservices Integration Application Sample&lt;/a>, I wanted to add support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
+>Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;p>Recently, I needed to add support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
 >Azure Functions&lt;/a> to an existing &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
 >Dev Container&lt;/a>.&lt;/p>
 &lt;p>The first thing I tried was to add the following to my &lt;code>Dockerfile&lt;/code>:&lt;/p>
@@ -1179,7 +1178,7 @@ data-flex-basis="915px"
 &lt;/div>
 &lt;/div>&lt;p>This successfully rebuilt the container image and had the &lt;a class="link" href="https://github.com/Azure/azure-functions-core-tools" target="_blank" rel="noopener"
 >Azure Functions Core Tools&lt;/a> installed.&lt;/p>
-&lt;p>Next, I added the following extension to the &lt;code>devcontainer.json&lt;/code> file:&lt;/p>
+&lt;p>Next, I added the following extensions to the &lt;code>devcontainer.json&lt;/code> file:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -1510,11 +1509,10 @@ data-flex-basis="915px"
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>&lt;strong>NOTE:&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>I opted not to use the client library directly on the search page because, we do not want our search key exposed in the browser.&lt;/li>
-&lt;li>&lt;/li>
-&lt;/ul>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong>&lt;/p>
+&lt;p>I opted not to use the client library directly on the search page because, we do not want our search key exposed in the browser.&lt;/p>
+&lt;/blockquote>
 &lt;p>With that in place, our application is minimally functional. We can search documents and view the search results on the same page.&lt;/p>
 &lt;p>In a future post, I will show how I added features like Suggestions, AutoCompletion, and Facets to make the page more user friendly.&lt;/p>
 &lt;p>Hope you find this helpful, dear reader! The full source for this project can be found on my GitHub repo: &lt;a class="link" href="https://github.com/achingono/nextjs-jam-search" target="_blank" rel="noopener"

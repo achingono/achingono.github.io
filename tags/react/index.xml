@@ -303,11 +303,10 @@
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>&lt;strong>NOTE:&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>I opted not to use the client library directly on the search page because, we do not want our search key exposed in the browser.&lt;/li>
-&lt;li>&lt;/li>
-&lt;/ul>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong>&lt;/p>
+&lt;p>I opted not to use the client library directly on the search page because, we do not want our search key exposed in the browser.&lt;/p>
+&lt;/blockquote>
 &lt;p>With that in place, our application is minimally functional. We can search documents and view the search results on the same page.&lt;/p>
 &lt;p>In a future post, I will show how I added features like Suggestions, AutoCompletion, and Facets to make the page more user friendly.&lt;/p>
 &lt;p>Hope you find this helpful, dear reader! The full source for this project can be found on my GitHub repo: &lt;a class="link" href="https://github.com/achingono/nextjs-jam-search" target="_blank" rel="noopener"
