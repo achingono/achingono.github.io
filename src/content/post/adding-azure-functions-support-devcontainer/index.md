@@ -19,7 +19,7 @@ categories: [
 image: "cover.png"
 ---
 
-While working on the [Reddog Microservices Integration Application Sample](https://github.com/Azure-Samples/app-templates-microservices-integration), I wanted to add support for [Azure Functions](https://azure.microsoft.com/products/functions/) to an existing [Dev Container](https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/).
+Recently, I needed to add support for [Azure Functions](https://azure.microsoft.com/products/functions/) to an existing [Dev Container](https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/).
 
 The first thing I tried was to add the following to my `Dockerfile`:
 
@@ -41,7 +41,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > mic
 
 This successfully rebuilt the container image and had the [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools) installed.
 
-Next, I added the following extension to the `devcontainer.json` file:
+Next, I added the following extensions to the `devcontainer.json` file:
 
 ```json
 	"extensions": [

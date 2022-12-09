@@ -188,10 +188,10 @@ export default async function handler(request, response) {
 }
 ```
 
-**NOTE:**  
+> **NOTE:**  
+>  
+> I opted not to use the client library directly on the search page because, we do not want our search key exposed in the browser.
 
-- I opted not to use the client library directly on the search page because, we do not want our search key exposed in the browser.
-- 
 
 With that in place, our application is minimally functional. We can search documents and view the search results on the same page.  
 
