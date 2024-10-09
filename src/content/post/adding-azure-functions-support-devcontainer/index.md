@@ -19,14 +19,17 @@ categories: [
 image: "cover.png"
 ---
 
-Recently, I needed to add support for [Azure Functions](https://azure.microsoft.com/products/functions/) to an existing [Dev Container](https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/).
+# Adding Azure Functions Support to a Devcontainer
 
-The first thing I tried was to add the following to my `Dockerfile`:
+Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we'll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.
 
-```Dockerfile
-RUN apt-get update \
-    && apt-get -y install azure-functions-core-tools-4
-```
+## The Challenge
+
+Recently, I faced the task of adding support for [Azure Functions](https://azure.microsoft.com/products/functions/) to my trusted [Dev Container](https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/). I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.
+
+## The Solution
+
+To begin, I attempted to add the following lines to my `Dockerfile`:
 
 Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:
 
