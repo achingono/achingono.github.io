@@ -17,7 +17,7 @@ categories: [
 "Automation",
 "DevOps"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Managing work items in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops) is crucial for efficient software development. To enhance communication and collaboration, I created a Power Automate flow that automatically notifies team members whenever a work item is updated. This post will guide you through the steps I took to create this flow.
