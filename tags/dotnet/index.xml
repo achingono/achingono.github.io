@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>dotnet on Alfero Chingono</title><link>https://www.chingono.com/tags/dotnet/</link><description>Recent content in dotnet on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Apr 2022 14:31:58 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/dotnet/index.xml" rel="self" type="application/rss+xml"/><item><title>Dotnet Spawn Global Tool</title><link>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</link><pubDate>Sun, 10 Apr 2022 14:31:58 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/cover.jpg" alt="Featured image of post Dotnet Spawn Global Tool" />&lt;p>Back in 2013, I created a nice little sample project demonstrating code generation among other things. &lt;a class="link" href="https://twitter.com/shanselman" target="_blank" rel="noopener"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dotnet on Alfero Chingono</title><link>https://www.chingono.com/tags/dotnet/</link><description>Recent content in Dotnet on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 08 Nov 2022 15:51:53 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/dotnet/index.xml" rel="self" type="application/rss+xml"/><item><title>Dotnet Spawn Global Tool</title><link>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</link><pubDate>Sun, 10 Apr 2022 14:31:58 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/10/dotnet-spawn-global-tool/cover.jpg" alt="Featured image of post Dotnet Spawn Global Tool" />&lt;p>Back in 2013, I created a nice little sample project demonstrating code generation among other things. &lt;a class="link" href="https://twitter.com/shanselman" target="_blank" rel="noopener"
 >Scott Hanselman&lt;/a> had this to say about it:&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;blockquote>
@@ -16,7 +16,7 @@
 &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
 &lt;p>And &lt;a class="link" href="https://twitter.com/anurse" target="_blank" rel="noopener"
 >Andrew Stanton-Nurse&lt;/a> took it further by saying:&lt;/p>
-&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Razor isn’t for generating anything other than HTML. My understanding is that T4Scaffolding generates code, which Razor is really bad at. I don’t think there’s a good replacement right now&lt;/p>&amp;mdash; Andrew Stanton-Nurse (@analogrelay) &lt;a href="https://twitter.com/analogrelay/status/938069127700156416?ref_src=twsrc%5Etfw">December 5, 2017&lt;/a>&lt;/blockquote>
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Razor isn’t for generating anything other than HTML. My understanding is that T4Scaffolding generates code, which Razor is really bad at. I don’t think there’s a good replacement right now&lt;/p>&amp;mdash; analogrelay 🐘 (@analogrelay) &lt;a href="https://twitter.com/analogrelay/status/938069127700156416?ref_src=twsrc%5Etfw">December 5, 2017&lt;/a>&lt;/blockquote>
 &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
 &lt;p>I somewhat forgot about these conversations until recently when I started building another sample project and needed to generate some code for rapid development. Looking around, I couldn&amp;rsquo;t find something that suited my needs and besides, I had a lingering question: &amp;ldquo;Is razor really that bad at code generation?&amp;rdquo;. I figured maybe it&amp;rsquo;s worth a try.&lt;/p>
 &lt;p>So, I created a dotnet global tool for generating project files.&lt;/p>
@@ -29,11 +29,11 @@ alt="Nuget"
 >dotnet-spawn&lt;/a> is a roslyn-based code generator for &lt;code>dotnet&lt;/code> that adds files to a project or solution. Code generation parameters can be supplied inline or from a &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
 >response file&lt;/a>. At this time &lt;a class="link" href="https://github.com/achingono/dotnet-spawn/" target="_blank" rel="noopener"
 >dotnet-spawn&lt;/a> is able to create a single file or multiple files of any extension based on a Razor file template.&lt;/p>
-&lt;h3 id="how-to-use">How To Use&lt;/h3>
-&lt;p>Invoking the &lt;code>dotnet spawn&lt;/code> command will generate project files based on the supplied parameters or &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
+&lt;h3 id="how-to-use">How To Use
+&lt;/h3>&lt;p>Invoking the &lt;code>dotnet spawn&lt;/code> command will generate project files based on the supplied parameters or &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
 >response file&lt;/a>. You can control how verbose the output will be by using the &lt;code>--verbosity&lt;/code> option.&lt;/p>
-&lt;h3 id="command-options">Command Options&lt;/h3>
-&lt;ul>
+&lt;h3 id="command-options">Command Options
+&lt;/h3>&lt;ul>
 &lt;li>&lt;code>--project&lt;/code>: The path to the project or solution file to analyze with Roslyn&lt;/li>
 &lt;li>&lt;code>--template&lt;/code>: The path to the template file used for code generation&lt;/li>
 &lt;li>&lt;code>--output&lt;/code>: The path to a file/folder. If the tool is generating a single file, then the path should be a file, otherwise, it should be a folder.&lt;/li>
@@ -43,8 +43,8 @@ alt="Nuget"
 &lt;li>&lt;code>--pattern&lt;/code>: The lambda expression used by the &lt;code>MultipleFile&lt;/code> generator to generate file names.&lt;/li>
 &lt;li>&lt;code>--verbosity&lt;/code>: Set the verbosity level. Allowed values are &lt;code>Debug&lt;/code>, &lt;code>Info&lt;/code>, and &lt;code>Quiet&lt;/code>.&lt;/li>
 &lt;/ul>
-&lt;h3 id="the-help-option">The Help Option&lt;/h3>
-&lt;p>This tool provides an option to display a brief description of the available commands, options, and arguments. &lt;code>System.CommandLine&lt;/code> automatically generates help output. For example:&lt;/p>
+&lt;h3 id="the-help-option">The Help Option
+&lt;/h3>&lt;p>This tool provides an option to display a brief description of the available commands, options, and arguments. &lt;code>System.CommandLine&lt;/code> automatically generates help output. For example:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -96,8 +96,8 @@ alt="Nuget"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -?, -h, --help Show help and usage information
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="response-file">Response File&lt;/h3>
-&lt;p>A &lt;em>response file&lt;/em> is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code>System.CommandLine&lt;/code> that is useful in two scenarios:&lt;/p>
+&lt;/div>&lt;h3 id="response-file">Response File
+&lt;/h3>&lt;p>A &lt;em>response file&lt;/em> is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code>System.CommandLine&lt;/code> that is useful in two scenarios:&lt;/p>
 &lt;ul>
 &lt;li>To invoke a command-line app by specifying input that is longer than the character limit of the terminal.
 To invoke the same command repeatedly without retyping the whole line.&lt;/li>
@@ -150,8 +150,8 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Info
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="how-to-install">How To Install&lt;/h3>
-&lt;p>You can install the latest build of the tool using the following command.&lt;/p>
+&lt;/div>&lt;h3 id="how-to-install">How To Install
+&lt;/h3>&lt;p>You can install the latest build of the tool using the following command.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -160,8 +160,8 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li>
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet tool install -g dotnet-spawn
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="how-to-uninstall">How To Uninstall&lt;/h3>
-&lt;p>You can uninstall the tool using the following command.&lt;/p>
+&lt;/div>&lt;h3 id="how-to-uninstall">How To Uninstall
+&lt;/h3>&lt;p>You can uninstall the tool using the following command.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1

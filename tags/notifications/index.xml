@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notifications on Alfero Chingono</title><link>https://www.chingono.com/tags/notifications/</link><description>Recent content in Notifications on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Oct 2024 15:56:50 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/notifications/index.xml" rel="self" type="application/rss+xml"/><item><title>Automating Notifications in Azure Devops Using Power Automate</title><link>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</link><pubDate>Tue, 08 Oct 2024 21:11:43 +0000</pubDate><guid>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</guid><description>&lt;p>Managing work items in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops" target="_blank" rel="noopener"
+>Azure DevOps&lt;/a> is crucial for efficient software development. To enhance communication and collaboration, I created a Power Automate flow that automatically notifies team members whenever a work item is updated. This post will guide you through the steps I took to create this flow.&lt;/p>
+&lt;h3 id="why-use-power-automate-for-azure-devops">Why Use Power Automate for Azure DevOps?
+&lt;/h3>&lt;p>&lt;a class="link" href="https://learn.microsoft.com/en-us/power-automate/" target="_blank" rel="noopener"
+>Power Automate&lt;/a> is a powerful tool that integrates seamlessly with Azure DevOps, automating tasks like sending notifications, updating items, or even triggering workflows. By automating notifications, you ensure that relevant team members are instantly informed about the status or changes in work items.&lt;/p>
+&lt;h2 id="step-1-setting-up-the-trigger">Step 1: Setting Up the Trigger
+&lt;/h2>&lt;p>To get started, I needed to create the trigger that fires whenever a work item in Azure DevOps is updated.&lt;/p>
+&lt;ol>
+&lt;li>Head over to Power Automate and select &lt;strong>Create a new flow&lt;/strong>.&lt;/li>
+&lt;li>Choose &lt;strong>Automated flow&lt;/strong>, and for the trigger, select &lt;strong>When a work item is updated&lt;/strong>.&lt;/li>
+&lt;li>Enter your Azure DevOps organization name and the project you’re working on.
+&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/trigger.png"
+width="606"
+height="796"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/trigger_hu13719736483303383169.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/trigger_hu12582002779353767459.png 1024w"
+loading="lazy"
+alt="Trigger: When a work item is updated"
+class="gallery-image"
+data-flex-grow="76"
+data-flex-basis="182px"
+>&lt;/li>
+&lt;/ol>
+&lt;p>This is the most basic part, but the rest of the flow will depend on what specific conditions you need the flow to respond to.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong> Please pay attention to the section &lt;em>How often do you want to check for items?&lt;/em>. The interval specified here will need to match the interval used to determine state changes later.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="step-2-initialize-variables">Step 2: Initialize Variables
+&lt;/h2>&lt;p>To keep track of the work item’s state and artifact links, I initialized two variables:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>LastTime:&lt;/strong> This helps track the time interval between updates.&lt;/li>
+&lt;li>&lt;strong>HasArtifactLinks:&lt;/strong> This checks if any artifact links (commits, pull requests) are attached to the work item.&lt;/li>
+&lt;/ul>
+&lt;p>Here’s how to set up the variables:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Add a new &lt;strong>Initialize Variable&lt;/strong> action.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Name the first variable &lt;strong>LastTime&lt;/strong>. Set its type to &lt;code>String&lt;/code> and its initial value to&amp;quot; &lt;code>getPastTime(3, 'Minute')&lt;/code>.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong> The number &lt;code>3&lt;/code> here needs to match the value in the trigger as mentioned before.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Add a second &lt;strong>Initialize Variable&lt;/strong> action, name this one &lt;code>HasArtifactLinks&lt;/code>, set its type to &lt;code>Boolean&lt;/code>, and default it to &lt;code>false&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="step-3-checking-if-the-work-item-state-has-changed">Step 3: Checking if the Work Item State Has Changed
+&lt;/h2>&lt;p>Next, I wanted the flow to only proceed if the work item’s state had changed. To do this:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Add a Condition action.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the left box, enter the expression:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;Microsoft_VSTS_Common_StateChangeDate&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Set the condition to &lt;code>is equal to&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the right box, enter the expression:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;System_ChangedDate&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Add a line item to the condition&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the left box, enter the expression:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;Microsoft_VSTS_Common_StateChangeDate&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>Set the condition to &lt;code>is greater or equal to&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the right box, select the &lt;code>LastTime&lt;/code> variable.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The complete expression should look like this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="s2">&amp;#34;or&amp;#34;&lt;/span>&lt;span class="err">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;equals&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;@triggerOutputs()?[&amp;#39;body/fields&amp;#39;]?[&amp;#39;Microsoft_VSTS_Common_StateChangeDate&amp;#39;]&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;@triggerOutputs()?[&amp;#39;body/fields&amp;#39;]?[&amp;#39;System_ChangedDate&amp;#39;]&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;greaterOrEquals&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;@triggerOutputs()?[&amp;#39;body/fields&amp;#39;]?[&amp;#39;Microsoft_VSTS_Common_StateChangeDate&amp;#39;]&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;@variables(&amp;#39;LastTime&amp;#39;)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;p>If the state has changed, the flow will proceed; otherwise, it will exit at this point.&lt;/p>
+&lt;h2 id="step-4-getting-work-item-relationships">Step 4: Getting Work Item Relationships
+&lt;/h2>&lt;p>To handle work item relationships (e.g., linking artifacts), I added the following steps:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Add an action &lt;strong>Send an HTTP request to Azure DevOps&lt;/strong>.&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/send-http.png"
+width="627"
+height="436"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/send-http_hu8720245540530129640.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/send-http_hu4660900994169760533.png 1024w"
+loading="lazy"
+alt="Add an action &amp;ldquo;Send an HTTP request to Azure DevOps&amp;rdquo;"
+class="gallery-image"
+data-flex-grow="143"
+data-flex-basis="345px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Specify the same organization name as in the trigger.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Set the &lt;strong>Method&lt;/strong> to &lt;code>GET&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Set the &lt;strong>Relative URI&lt;/strong> to the following expression:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="err">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;System_TeamProject&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">_apis&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">wit&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">workitems&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;body/id&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}?&lt;/span>&lt;span class="vg">$expand&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">relations&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">api&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">preview&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">3&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong> The querystring paramater &lt;code>$expand=relations&lt;/code> which is required for expanding related links in the response.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Rename this action &lt;strong>Get WorkItem Relationships&lt;/strong>. We will use this name in subsequent steps when retrieving values from the output of this action.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>This will retrieve the work item details and expand all related links, such as commits or pull requests.&lt;/p>
+&lt;h2 id="step-5-set-the-hasartifactlinks-flag">Step 5: Set the HasArtifactLinks Flag
+&lt;/h2>&lt;p>Once I had the relationships, I needed to update the HasArtifactLinks variable to true if any artifact links were found. Here&amp;rsquo;s how:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Add an action &lt;strong>Set variable&lt;/strong>:&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/set-variable.png"
+width="1041"
+height="770"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/set-variable_hu10611356987897947924.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/set-variable_hu4505616536500489498.png 1024w"
+loading="lazy"
+alt="Add an action &amp;ldquo;Set variable&amp;rdquo;"
+class="gallery-image"
+data-flex-grow="135"
+data-flex-basis="324px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Choose &lt;code>HasArtifactLinks&lt;/code> variable from the drop down.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Set the &lt;strong>Value&lt;/strong> to the following expression:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="n">contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">string&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;Get_WorkItem_Relationships&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="sc">?[&lt;/span>&lt;span class="s1">&amp;#39;relations&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="s1">&amp;#39;ArtifactLink&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>&lt;strong>NOTE:&lt;/strong> We are using the output from our previous step (in this case, &amp;ldquo;Get_WorkItem_Relationships&amp;rdquo; — use the UI to add dynamic content in the expression to make sure you&amp;rsquo;ll have the right value). In addition, we are keeping things simple by converting the JSON to a string, and simply checking if it contains the text &lt;code>&amp;quot;ArtifactLink&amp;quot;&lt;/code>.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ol>
+&lt;p>This will set the variable &lt;code>HasArtifactLinks&lt;/code> to true if there are any links of type &lt;strong>ArtifactLink&lt;/strong>.&lt;/p>
+&lt;h2 id="step-6-handling-different-work-item-states">Step 6: Handling Different Work Item States
+&lt;/h2>&lt;p>Now comes the interesting part—handling different scenarios based on the work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted the flow to send notifications accordingly.&lt;/p>
+&lt;p>Here&amp;rsquo;s how I handled it:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Add a new &lt;strong>Switch&lt;/strong> action and set the Work item &lt;strong>State&lt;/strong> as the input.&lt;/p>
+&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/state-switch.png"
+width="1041"
+height="710"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/state-switch_hu6068443783217680742.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/state-switch_hu14866028207335255194.png 1024w"
+loading="lazy"
+alt="Add a new Switch action and set the Work item state as the input"
+class="gallery-image"
+data-flex-grow="146"
+data-flex-basis="351px"
+>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the &lt;strong>Resolved&lt;/strong> case, I send a notification to the QA team:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Action:&lt;/strong> Post a message in a chat or channel.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Recipient:&lt;/strong> Email address of the QA person/team.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Message:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-scss" data-lang="scss">&lt;span class="line">&lt;span class="cl">&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="nt">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;@{body(&amp;#39;Get_WorkItem_Relationships&amp;#39;)?[&amp;#39;_links&amp;#39;]?[&amp;#39;html&amp;#39;]?[&amp;#39;href&amp;#39;]}&amp;#34;&lt;/span> &lt;span class="nt">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;editor-link&amp;#34;&lt;/span>&lt;span class="o">&amp;gt;@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_WorkItemType&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/id&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="nt">is&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_State&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="nt">and&lt;/span> &lt;span class="nt">is&lt;/span> &lt;span class="nt">now&lt;/span> &lt;span class="nt">ready&lt;/span> &lt;span class="nt">for&lt;/span> &lt;span class="nt">testing&lt;/span>&lt;span class="nc">.&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/chat-message.png"
+width="954"
+height="771"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/chat-message_hu17817626215548667272.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/chat-message_hu13845535103764819365.png 1024w"
+loading="lazy"
+alt="Action: Post a message in a chat or channel"
+class="gallery-image"
+data-flex-grow="123"
+data-flex-basis="296px"
+>&lt;/p>
+&lt;p>This includes a hyperlink to the work item in the chat message&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>In the &lt;strong>Resolved&lt;/strong> case, I also checked the &lt;code>HasArtifactLinks&lt;/code> variable to determine if commits were linked to the work item. If the variable was false, I sent a message to the assigned user requesting a linked commit:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Action:&lt;/strong> Send an HTTP request to Azure DevOps.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Relative URI:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-kotlin" data-lang="kotlin">&lt;span class="line">&lt;span class="cl">&lt;span class="err">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">/&lt;/span>&lt;span class="n">fields&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">System_TeamProject&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]}/&lt;/span>&lt;span class="n">_apis&lt;/span>&lt;span class="p">/&lt;/span>&lt;span class="n">wit&lt;/span>&lt;span class="p">/&lt;/span>&lt;span class="n">workItems&lt;/span>&lt;span class="p">/&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">/&lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]}/&lt;/span>&lt;span class="n">comments&lt;/span>&lt;span class="p">?&lt;/span>&lt;span class="n">api&lt;/span>&lt;span class="p">-&lt;/span>&lt;span class="n">version&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="m">6.1&lt;/span>&lt;span class="p">-&lt;/span>&lt;span class="n">preview&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="m">3&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Body:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;text&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;&amp;lt;div&amp;gt;&amp;lt;a href=\&amp;#34;#\&amp;#34; data-vss-mention=\&amp;#34;version:2.0,@{body(&amp;#39;Get_WorkItem_Relationships&amp;#39;)?[&amp;#39;fields&amp;#39;]?[&amp;#39;System.AssignedTo&amp;#39;]?[&amp;#39;id&amp;#39;]}\&amp;#34;&amp;gt;@{body(&amp;#39;Get_WorkItem_Relationships&amp;#39;)?[&amp;#39;fields&amp;#39;]?[&amp;#39;System.AssignedTo&amp;#39;]?[&amp;#39;displayName&amp;#39;]}&amp;lt;/a&amp;gt;, no commits were found. Please review and update if code changes were made.&amp;lt;/div&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/mention-assigned.png"
+width="1758"
+height="898"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/mention-assigned_hu18189822933288038008.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/mention-assigned_hu83513881703856598.png 1024w"
+loading="lazy"
+alt="Action: Send an HTTP request to Azure DevOps"
+class="gallery-image"
+data-flex-grow="195"
+data-flex-basis="469px"
+>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>This mentioned the assigned user in a comment on the work item, which will trigger an email message.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>In the &lt;strong>Closed&lt;/strong> case, I checked the &lt;code>HasArtifactLinks&lt;/code> variable to determine if commits were linked to the work item. If the variable was false, I sent a message to the assigned user requesting a linked commit:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Action:&lt;/strong> Post a message in a chat or channel.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Recipient:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-kotlin" data-lang="kotlin">&lt;span class="line">&lt;span class="cl">&lt;span class="n">triggerOutputs&lt;/span>&lt;span class="p">()?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">body&lt;/span>&lt;span class="p">/&lt;/span>&lt;span class="n">fields&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">Vsts_AssignedToEmail&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Message:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-scss" data-lang="scss">&lt;span class="line">&lt;span class="cl">&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="nt">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;@{body(&amp;#39;Get_WorkItem_Relationships&amp;#39;)?[&amp;#39;_links&amp;#39;]?[&amp;#39;html&amp;#39;]?[&amp;#39;href&amp;#39;]}&amp;#34;&lt;/span> &lt;span class="nt">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;editor-link&amp;#34;&lt;/span>&lt;span class="o">&amp;gt;@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_WorkItemType&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/id&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="nt">is&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_State&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="nt">but&lt;/span> &lt;span class="nt">no&lt;/span> &lt;span class="nt">commits&lt;/span> &lt;span class="nt">were&lt;/span> &lt;span class="nt">found&lt;/span>&lt;span class="nc">.&lt;/span> &lt;span class="nt">Please&lt;/span> &lt;span class="nt">review&lt;/span> &lt;span class="nt">and&lt;/span> &lt;span class="nt">update&lt;/span> &lt;span class="nt">if&lt;/span> &lt;span class="nt">code&lt;/span> &lt;span class="nt">changes&lt;/span> &lt;span class="nt">were&lt;/span> &lt;span class="nt">made&lt;/span>&lt;span class="nc">.&lt;/span>&lt;span class="o">&amp;lt;/&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/chat-commits.png"
+width="1561"
+height="918"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/chat-commits_hu4906653284824675661.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/chat-commits_hu3289294940708082188.png 1024w"
+loading="lazy"
+alt="Action: Post a message in a chat or channel."
+class="gallery-image"
+data-flex-grow="170"
+data-flex-basis="408px"
+>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>If the work item was &lt;strong>Blocked&lt;/strong>, I posted a message to the creator of the work item to notify them of the block.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Action:&lt;/strong> Post a message in a chat or channel.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Recipient:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-kotlin" data-lang="kotlin">&lt;span class="line">&lt;span class="cl">&lt;span class="n">body&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">Get_WorkItem_Relationships&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">)?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">fields&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="nc">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CreatedBy&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]?[&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">uniqueName&lt;/span>&lt;span class="err">&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Message:&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-scss" data-lang="scss">&lt;span class="line">&lt;span class="cl">&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="nt">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;@{body(&amp;#39;Get_WorkItem_Relationships&amp;#39;)?[&amp;#39;_links&amp;#39;]?[&amp;#39;html&amp;#39;]?[&amp;#39;href&amp;#39;]}&amp;#34;&lt;/span> &lt;span class="nt">class&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;editor-link&amp;#34;&lt;/span>&lt;span class="o">&amp;gt;@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_WorkItemType&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/id&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="nt">is&lt;/span> &lt;span class="nt">currently&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_State&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="nc">.&lt;/span> &lt;span class="nt">Please&lt;/span> &lt;span class="nt">contact&lt;/span> &lt;span class="o">@&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nt">triggerOutputs&lt;/span>&lt;span class="o">()?[&lt;/span>&lt;span class="s1">&amp;#39;body/fields&amp;#39;&lt;/span>&lt;span class="o">]?[&lt;/span>&lt;span class="s1">&amp;#39;System_AssignedTo&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="nt">to&lt;/span> &lt;span class="nt">find&lt;/span> &lt;span class="nt">out&lt;/span> &lt;span class="nt">why&lt;/span> &lt;span class="nt">and&lt;/span> &lt;span class="nt">help&lt;/span> &lt;span class="nt">unblock&lt;/span> &lt;span class="nt">it&lt;/span>&lt;span class="nc">.&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/notify-createdby.png"
+width="1559"
+height="921"
+srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/notify-createdby_hu15581787555916154072.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/notify-createdby_hu9540251852544280542.png 1024w"
+loading="lazy"
+alt="Action: Post a message in a chat or channel."
+class="gallery-image"
+data-flex-grow="169"
+data-flex-basis="406px"
+>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>By setting up this Power Automate flow, I no longer have to worry about manually tracking work item updates or notifying team members. Whether a work item is resolved, blocked, or closed, the flow ensures the right people get notified at the right time. Plus, with the artifact link checks, developers can easily review the associated commits and pull requests.&lt;/p>
+&lt;p>References:&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.2" target="_blank" rel="noopener"
+>Azure DevOps Services REST API Reference&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/connectors/visualstudioteamservices" target="_blank" rel="noopener"
+>Azure DevOps Connector&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/connectors/visualstudioteamservices/#send-an-http-request-to-azure-devops" target="_blank" rel="noopener"
+>Send an HTTP request to Azure DevOps&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/connectors/teams/?tabs=text1%2Cdotnet" target="_blank" rel="noopener"
+>Microsoft Teams Connector&lt;/a>&lt;br>
+&lt;a class="link" href="https://learn.microsoft.com/en-us/connectors/teams/?tabs=text1%2Cdotnet#post-message-in-a-chat-or-channel" target="_blank" rel="noopener"
+>Post message in a chat or channel&lt;/a>&lt;br>
+&lt;a class="link" href="https://medium.com/@benjihuser/adding-notifications-to-ms-teams-when-azure-devops-work-items-are-waiting-using-power-automate-b5466eb1cae6" target="_blank" rel="noopener"
+>Adding Notifications to MS Teams when Azure DevOps Work Items are Waiting using Power Automate&lt;/a>&lt;/p></description></item></channel></rss>

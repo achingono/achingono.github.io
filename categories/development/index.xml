@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Development on Alfero Chingono</title><link>https://www.chingono.com/categories/development/</link><description>Recent content in Development on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Oct 2022 18:06:36 +0000</lastBuildDate><atom:link href="https://www.chingono.com/categories/development/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" />&lt;p>While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Development on Alfero Chingono</title><link>https://www.chingono.com/categories/development/</link><description>Recent content in Development on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Oct 2024 15:52:59 +0000</lastBuildDate><atom:link href="https://www.chingono.com/categories/development/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" />&lt;p>While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -12,15 +12,15 @@
 &lt;/span>&lt;span class="lnt">9
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1408460Z [21:31:36]: There was a general exception while executing
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1409440Z An exception has occurred: issuerId is required
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1410980Z Return status of iTunes Transporter was 1: There was a general exception while executing
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1411520Z \nAn exception has occurred: issuerId is required
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1412610Z The call to the iTMSTransporter completed with a non-zero exit status: 1. This indicates a failure.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1567410Z
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1568750Z [!] Error uploading ipa file:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1569190Z
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2022-10-24T21:31:36.1893760Z ##[error]Error: The process &amp;#39;/usr/local/lib/ruby/gems/2.7.0/bin/fastlane&amp;#39; failed with exit code 1
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1408460&lt;/span>&lt;span class="n">Z&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">36&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">There&lt;/span> &lt;span class="n">was&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">general&lt;/span> &lt;span class="n">exception&lt;/span> &lt;span class="k">while&lt;/span> &lt;span class="n">executing&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1409440&lt;/span>&lt;span class="n">Z&lt;/span> &lt;span class="n">An&lt;/span> &lt;span class="n">exception&lt;/span> &lt;span class="n">has&lt;/span> &lt;span class="n">occurred&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">issuerId&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">required&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1410980&lt;/span>&lt;span class="n">Z&lt;/span> &lt;span class="n">Return&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">iTunes&lt;/span> &lt;span class="n">Transporter&lt;/span> &lt;span class="n">was&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">There&lt;/span> &lt;span class="n">was&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">general&lt;/span> &lt;span class="n">exception&lt;/span> &lt;span class="k">while&lt;/span> &lt;span class="n">executing&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1411520&lt;/span>&lt;span class="n">Z&lt;/span> \&lt;span class="n">nAn&lt;/span> &lt;span class="n">exception&lt;/span> &lt;span class="n">has&lt;/span> &lt;span class="n">occurred&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">issuerId&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">required&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1412610&lt;/span>&lt;span class="n">Z&lt;/span> &lt;span class="n">The&lt;/span> &lt;span class="n">call&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">iTMSTransporter&lt;/span> &lt;span class="n">completed&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">non&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">zero&lt;/span> &lt;span class="n">exit&lt;/span> &lt;span class="n">status&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mf">1.&lt;/span> &lt;span class="n">This&lt;/span> &lt;span class="n">indicates&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">failure&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1567410&lt;/span>&lt;span class="n">Z&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1568750&lt;/span>&lt;span class="n">Z&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">Error&lt;/span> &lt;span class="n">uploading&lt;/span> &lt;span class="n">ipa&lt;/span> &lt;span class="n">file&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1569190&lt;/span>&lt;span class="n">Z&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">2022&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="n">T21&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">36.1893760&lt;/span>&lt;span class="n">Z&lt;/span> &lt;span class="c1">##[error]Error: The process &amp;#39;/usr/local/lib/ruby/gems/2.7.0/bin/fastlane&amp;#39; failed with exit code 1&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>A quick search for &lt;code>fastlane +&amp;quot;An exception has occurred: issuerId is required&amp;quot;&lt;/code> led me to this issue on GitHub:&lt;/p>
@@ -65,7 +65,7 @@
 &lt;p>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history.png"
 width="983"
 height="297"
-srcset="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history_hu7b65b4f05164c71a9af4ed8d65c13682_32179_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history_hu7b65b4f05164c71a9af4ed8d65c13682_32179_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history_hu9158574564670532098.png 480w, https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/pipeline-history_hu10715797519531661653.png 1024w"
 loading="lazy"
 alt="Pipeline History"
 class="gallery-image"
@@ -76,7 +76,7 @@ data-flex-basis="794px"
 &lt;p>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format.png"
 width="1026"
 height="269"
-srcset="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format_huaca369ef3db0b4b356312e8f21b45230_10031_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format_huaca369ef3db0b4b356312e8f21b45230_10031_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format_hu7366615775304906598.png 480w, https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/release-name-format_hu4296990668125079836.png 1024w"
 loading="lazy"
 alt="Release name format"
 class="gallery-image"
@@ -164,8 +164,8 @@ data-flex-basis="915px"
 >Azure Container Apps&lt;/a>&lt;/strong> is a fully managed, serverless container service used to build and deploy modern apps at scale. In this solution, you&amp;rsquo;re hosting microservices on Azure Container Apps and deploying them into a single Container App environment. This environment acts as a secure boundary around the system.&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;h2 id="creating-the-apim-resource">Creating the APIM resource&lt;/h2>
-&lt;p>The first step was to create the main &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service?pivots=deployment-language-bicep" target="_blank" rel="noopener"
+&lt;h2 id="creating-the-apim-resource">Creating the APIM resource
+&lt;/h2>&lt;p>The first step was to create the main &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service?pivots=deployment-language-bicep" target="_blank" rel="noopener"
 >APIM Service resource&lt;/a>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -204,37 +204,37 @@ data-flex-basis="915px"
 &lt;/span>&lt;span class="lnt">33
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The name of the API Management resource to be created.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>apimName&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="p">@&lt;/span>&lt;span class="nf">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The name of the API Management resource to be created.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The email address of the publisher of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">minLength&lt;/span>&lt;span class="p">(&lt;/span>1&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>publisherEmail&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;apim@contoso.com&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The email address of the publisher of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">minLength&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">publisherEmail&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;apim@contoso.com&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Company name of the publisher of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">minLength&lt;/span>&lt;span class="p">(&lt;/span>1&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>publisherName&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;Contoso&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Company name of the publisher of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">minLength&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">publisherName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Contoso&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The pricing tier of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>skuName&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;Developer&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The pricing tier of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">skuName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Developer&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The instance size of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>capacity&lt;span class="w"> &lt;/span>&lt;span class="nf">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>1&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;The instance size of the APIM resource.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">capacity&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">1&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nd">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Location for Azure resources.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>location&lt;span class="w"> &lt;/span>&lt;span class="nf">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceGroup&lt;/span>&lt;span class="p">().&lt;/span>location&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">@&lt;/span>&lt;span class="nf">description&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Location for Azure resources.&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceGroup&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service@2020-12-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimName&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>location&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">sku&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">capacity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>capacity&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>skuName&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimResource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service@2020-12-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimName&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">sku&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">capacity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">capacity&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">skuName&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">virtualNetworkType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;External&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">publisherEmail&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>publisherEmail&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">publisherName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>publisherName&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">virtualNetworkType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;External&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">publisherEmail&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">publisherEmail&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">publisherName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">publisherName&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
@@ -248,8 +248,8 @@ data-flex-basis="915px"
 &lt;blockquote>
 &lt;p>&lt;strong>NOTE:&lt;/strong> Please bear in mind that APIM takes more than an hour to provision.&lt;/p>
 &lt;/blockquote>
-&lt;h2 id="applying-a-global-policy">Applying a global policy&lt;/h2>
-&lt;p>Next step, we created a global policy definition file &lt;code>apimPolicies/global.xml&lt;/code>:&lt;/p>
+&lt;h2 id="applying-a-global-policy">Applying a global policy
+&lt;/h2>&lt;p>Next step, we created a global policy definition file &lt;code>apimPolicies/global.xml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -348,12 +348,12 @@ data-flex-basis="915px"
 &lt;/span>&lt;span class="lnt">8
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>apimPolicy&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/policies@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;policy&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;rawxml&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">loadTextContent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;apimPolicies/global.xml&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimPolicy&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/policies@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;policy&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimResource&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;rawxml&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">loadTextContent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;apimPolicies/global.xml&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
@@ -361,8 +361,8 @@ data-flex-basis="915px"
 &lt;/div>&lt;p>The &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/policies?pivots=deployment-language-bicep#policycontractproperties" target="_blank" rel="noopener"
 >Policy Contract&lt;/a> here is defined in xml format, and of particular note here is the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-files#loadtextcontent" target="_blank" rel="noopener"
 >loadTextContent&lt;/a> function which loads the content of a specified file as a string.&lt;/p>
-&lt;h2 id="adding-a-backend-api">Adding a Backend API&lt;/h2>
-&lt;p>A &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/backends" target="_blank" rel="noopener"
+&lt;h2 id="adding-a-backend-api">Adding a Backend API
+&lt;/h2>&lt;p>A &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/backends" target="_blank" rel="noopener"
 >&lt;em>backend&lt;/em>&lt;/a> (or &lt;em>API backend&lt;/em>) in API Management is an HTTP service that implements your front-end API and its operations. Sometimes backend APIs are referred to simply as backends. API Management supports using other Azure resources as an API backend, such as Container Apps. A custom backend has several benefits, including:&lt;/p>
 &lt;ul>
 &lt;li>Abstracts information about the backend service, promoting reusability across APIs and improved governance.&lt;/li>
@@ -392,29 +392,29 @@ data-flex-basis="915px"
 &lt;/span>&lt;span class="lnt">17
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderService&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.App/containerApps@2022-03-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>existing&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service&amp;#39;&lt;/span>&lt;span class="w">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderService&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.App/containerApps@2022-03-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">existing&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderBackendResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/backends@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service-backend&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">dependsOn&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>orderService&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderBackendResource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/backends@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service-backend&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimResource&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">dependsOn&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">orderService&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>orderService&lt;span class="p">.&lt;/span>name&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="py">&amp;#39;https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="c1">//${orderService.properties.configuration.ingress.fqdn}&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;http&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">resourceId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;${environment().resourceManager}${orderService.id}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">url&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;https://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">orderService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">ingress&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">fqdn&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;http&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">resourceId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nf">environment&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nv">resourceManager&lt;/span>&lt;span class="si">}${&lt;/span>&lt;span class="nv">orderService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">id&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>Here we reference an existing Container App in our backend resource and use the ingress URL as the backend URL. The &lt;code>resourceId&lt;/code> needs to be a URL for the deployment to work. Here we use the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-functions-deployment#environment" target="_blank" rel="noopener"
 >&lt;code>environment()&lt;/code>&lt;/a> function, returns properties for the current Azure environment, to get the management URL instead of hard-coding &lt;code>&amp;quot;https://management.azure.com/&amp;quot;&lt;/code>.&lt;/p>
-&lt;h2 id="adding-a-fronted-api">Adding a Fronted API&lt;/h2>
-&lt;p>API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.&lt;/p>
+&lt;h2 id="adding-a-fronted-api">Adding a Fronted API
+&lt;/h2>&lt;p>API Management serves as mediation layer over the backend APIs. Frontend API is an API that is exposed to API consumers from API Management. You can customize the shape and behavior of a frontend API in API Management without making changes to the backend API(s) that it represents. Sometimes frontend APIs are referred to simply as APIs.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis?pivots=deployment-language-bicep" target="_blank" rel="noopener"
 >Microsoft.ApiManagement/service/apis&lt;/a> resource, we added the following Bicep to our template.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -434,17 +434,17 @@ data-flex-basis="915px"
 &lt;/span>&lt;span class="lnt">13
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderApiResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>apimResource&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;OrderService&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">subscriptionRequired&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>false&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;orders&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">protocols&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;https&amp;#39;&lt;/span>&lt;span class="w">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderApiResource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">apimResource&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;order-service&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;OrderService&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">subscriptionRequired&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;orders&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">protocols&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;https&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">isCurrent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>true&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">isCurrent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
@@ -453,8 +453,8 @@ data-flex-basis="915px"
 &lt;li>&lt;code>subscriptionRequired&lt;/code>: Specifies whether an API or Product subscription is required for accessing the API.&lt;/li>
 &lt;li>&lt;code>path&lt;/code>: Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.&lt;/li>
 &lt;/ul>
-&lt;h2 id="adding-a-fronted-api-policy">Adding a Fronted API Policy&lt;/h2>
-&lt;p>A policy is a reusable and composable component, implementing some commonly used API-related functionality. API Management offers over 50 built-in policies that take care of critical but undifferentiated horizontal concerns - for example, request transformation, routing, security, protection, caching. The policies can be applied at various scopes, which determine the affected APIs or operations and dynamically configured using policy expressions. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-policies" target="_blank" rel="noopener"
+&lt;h2 id="adding-a-fronted-api-policy">Adding a Fronted API Policy
+&lt;/h2>&lt;p>A policy is a reusable and composable component, implementing some commonly used API-related functionality. API Management offers over 50 built-in policies that take care of critical but undifferentiated horizontal concerns - for example, request transformation, routing, security, protection, caching. The policies can be applied at various scopes, which determine the affected APIs or operations and dynamically configured using policy expressions. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-policies" target="_blank" rel="noopener"
 >Policies in Azure API Management&lt;/a>.&lt;/p>
 &lt;p>In order to make the Fronted API policy reusable, we saved it in a XML file &lt;code>apimPolicies/api.xml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -510,12 +510,12 @@ data-flex-basis="915px"
 &lt;/span>&lt;span class="lnt">8
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>orderApiPolicy&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis/policies@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;policy&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>orderApiResource&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">loadTextContent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;apimPolicies/api.xml&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="err">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;{backendName}&amp;#39;&lt;/span>&lt;span class="err">,&lt;/span>&lt;span class="w"> &lt;/span>orderBackendResource&lt;span class="p">.&lt;/span>name&lt;span class="p">)&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;xml&amp;#39;&lt;/span>&lt;span class="w">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderApiPolicy&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis/policies@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;policy&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderApiResource&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">loadTextContent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;apimPolicies/api.xml&amp;#39;&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;{backendName}&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderBackendResource&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">format&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;xml&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
@@ -523,8 +523,8 @@ data-flex-basis="915px"
 &lt;/div>&lt;p>Here we are basically leveraging a combination of the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-string#replace" target="_blank" rel="noopener"
 >&lt;code>replace&lt;/code>&lt;/a> function and the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-files#loadtextcontent" target="_blank" rel="noopener"
 >&lt;code>loadTextContent&lt;/code>&lt;/a> function to read the XML file and replace the &lt;code>{backendName}&lt;/code> token with the actual Backend API we want to route requests to.&lt;/p>
-&lt;h2 id="adding-a-fronted-api-operation">Adding a Fronted API Operation&lt;/h2>
-&lt;p>A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses" target="_blank" rel="noopener"
+&lt;h2 id="adding-a-fronted-api-operation">Adding a Fronted API Operation
+&lt;/h2>&lt;p>A frontend API in API Management can define multiple operations. An operation is a combination of an HTTP verb and a URL template uniquely resolvable within the frontend API. Often operations map one-to-one to backend API endpoints. For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/mock-api-responses" target="_blank" rel="noopener"
 >Mock API responses&lt;/a>.&lt;/p>
 &lt;p>To create a &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/service/apis/operations?pivots=deployment-language-bicep" target="_blank" rel="noopener"
 >Microsoft.ApiManagement/service/apis/operations&lt;/a> resource, we added the following Bicep to our template:&lt;/p>
@@ -554,32 +554,32 @@ data-flex-basis="915px"
 &lt;/span>&lt;span class="lnt">22
 &lt;/span>&lt;/code>&lt;/pre>&lt;/td>
 &lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>getOrdersOperationResource&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis/operations@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;get-orders-storeid&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>orderApiResource&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;/orders/{storeId} - GET&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">method&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;GET&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">urlTemplate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;/orders/{storeId}&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">templateParameters&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Bicep" data-lang="Bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">getOrdersOperationResource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ApiManagement/service/apis/operations@2021-12-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;get-orders-storeid&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">parent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">orderApiResource&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">displayName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;/orders/{storeId} - GET&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">method&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;GET&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">urlTemplate&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;/orders/{storeId}&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">templateParameters&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;storeId&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;string&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">required&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>true&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;storeId&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;string&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">required&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">responses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">responses&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">statusCode&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>200&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="py">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="si">&amp;#39;Success&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">statusCode&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">200&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Success&amp;#39;&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h2 id="adding-a-operation-policy">Adding a Operation policy&lt;/h2>
-&lt;p>In order to make the Operation policy reusable, we saved it in a XML file &lt;code>apimPolicies/operation.xml&lt;/code>:&lt;/p>
+&lt;/div>&lt;h2 id="adding-a-operation-policy">Adding a Operation policy
+&lt;/h2>&lt;p>In order to make the Operation policy reusable, we saved it in a XML file &lt;code>apimPolicies/operation.xml&lt;/code>:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
@@ -635,8 +635,8 @@ data-flex-basis="915px"
 &lt;li>&lt;code>set-header&lt;/code>: assigns a value to an existing response and/or request header or adds/removes a new response and/or request header. See &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-transformation-policies#SetHTTPheader" target="_blank" rel="noopener"
 >Set HTTP header&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="repeat">Repeat&lt;/h2>
-&lt;p>Steps 3 - 7 are repeated for all Backend APIs, Frontend APIs, Policies, and operations that need to be defined on Azure API Management.&lt;/p>
+&lt;h2 id="repeat">Repeat
+&lt;/h2>&lt;p>Steps 3 - 7 are repeated for all Backend APIs, Frontend APIs, Policies, and operations that need to be defined on Azure API Management.&lt;/p>
 &lt;p>Hope this proves valuable to you, dear reader.&lt;/p>
 &lt;p>&lt;strong>Credits:&lt;/strong>&lt;/p>
 &lt;p>&lt;a class="link" href="https://github.com/Azure/reddog-code" target="_blank" rel="noopener"
@@ -659,21 +659,15 @@ data-flex-basis="915px"
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/api-management/api-management-policies" target="_blank" rel="noopener"
 >API Management policy reference&lt;/a>&lt;br>
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
->Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;p>Recently, I needed to add support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
->Azure Functions&lt;/a> to an existing &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
->Dev Container&lt;/a>.&lt;/p>
-&lt;p>The first thing I tried was to add the following to my &lt;code>Dockerfile&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> apt-get update &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> apt-get -y install azure-functions-core-tools-4&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:&lt;/p>
+>Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a>&lt;/p></description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;h1 id="adding-azure-functions-support-to-a-devcontainer">Adding Azure Functions Support to a Devcontainer
+&lt;/h1>&lt;p>Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we&amp;rsquo;ll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.&lt;/p>
+&lt;h2 id="the-challenge">The Challenge
+&lt;/h2>&lt;p>Recently, I faced the task of adding support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
+>Azure Functions&lt;/a> to my trusted &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
+>Dev Container&lt;/a>. I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.&lt;/p>
+&lt;h2 id="the-solution">The Solution
+&lt;/h2>&lt;p>To begin, I attempted to add the following lines to my &lt;code>Dockerfile&lt;/code>:&lt;/p>
+&lt;p>Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -738,7 +732,7 @@ data-flex-basis="915px"
 &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
 &lt;p>And &lt;a class="link" href="https://twitter.com/anurse" target="_blank" rel="noopener"
 >Andrew Stanton-Nurse&lt;/a> took it further by saying:&lt;/p>
-&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Razor isn’t for generating anything other than HTML. My understanding is that T4Scaffolding generates code, which Razor is really bad at. I don’t think there’s a good replacement right now&lt;/p>&amp;mdash; Andrew Stanton-Nurse (@analogrelay) &lt;a href="https://twitter.com/analogrelay/status/938069127700156416?ref_src=twsrc%5Etfw">December 5, 2017&lt;/a>&lt;/blockquote>
+&lt;blockquote class="twitter-tweet">&lt;p lang="en" dir="ltr">Razor isn’t for generating anything other than HTML. My understanding is that T4Scaffolding generates code, which Razor is really bad at. I don’t think there’s a good replacement right now&lt;/p>&amp;mdash; analogrelay 🐘 (@analogrelay) &lt;a href="https://twitter.com/analogrelay/status/938069127700156416?ref_src=twsrc%5Etfw">December 5, 2017&lt;/a>&lt;/blockquote>
 &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8">&lt;/script>
 &lt;p>I somewhat forgot about these conversations until recently when I started building another sample project and needed to generate some code for rapid development. Looking around, I couldn&amp;rsquo;t find something that suited my needs and besides, I had a lingering question: &amp;ldquo;Is razor really that bad at code generation?&amp;rdquo;. I figured maybe it&amp;rsquo;s worth a try.&lt;/p>
 &lt;p>So, I created a dotnet global tool for generating project files.&lt;/p>
@@ -751,11 +745,11 @@ alt="Nuget"
 >dotnet-spawn&lt;/a> is a roslyn-based code generator for &lt;code>dotnet&lt;/code> that adds files to a project or solution. Code generation parameters can be supplied inline or from a &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
 >response file&lt;/a>. At this time &lt;a class="link" href="https://github.com/achingono/dotnet-spawn/" target="_blank" rel="noopener"
 >dotnet-spawn&lt;/a> is able to create a single file or multiple files of any extension based on a Razor file template.&lt;/p>
-&lt;h3 id="how-to-use">How To Use&lt;/h3>
-&lt;p>Invoking the &lt;code>dotnet spawn&lt;/code> command will generate project files based on the supplied parameters or &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
+&lt;h3 id="how-to-use">How To Use
+&lt;/h3>&lt;p>Invoking the &lt;code>dotnet spawn&lt;/code> command will generate project files based on the supplied parameters or &lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/standard/commandline/syntax#response-files" target="_blank" rel="noopener"
 >response file&lt;/a>. You can control how verbose the output will be by using the &lt;code>--verbosity&lt;/code> option.&lt;/p>
-&lt;h3 id="command-options">Command Options&lt;/h3>
-&lt;ul>
+&lt;h3 id="command-options">Command Options
+&lt;/h3>&lt;ul>
 &lt;li>&lt;code>--project&lt;/code>: The path to the project or solution file to analyze with Roslyn&lt;/li>
 &lt;li>&lt;code>--template&lt;/code>: The path to the template file used for code generation&lt;/li>
 &lt;li>&lt;code>--output&lt;/code>: The path to a file/folder. If the tool is generating a single file, then the path should be a file, otherwise, it should be a folder.&lt;/li>
@@ -765,8 +759,8 @@ alt="Nuget"
 &lt;li>&lt;code>--pattern&lt;/code>: The lambda expression used by the &lt;code>MultipleFile&lt;/code> generator to generate file names.&lt;/li>
 &lt;li>&lt;code>--verbosity&lt;/code>: Set the verbosity level. Allowed values are &lt;code>Debug&lt;/code>, &lt;code>Info&lt;/code>, and &lt;code>Quiet&lt;/code>.&lt;/li>
 &lt;/ul>
-&lt;h3 id="the-help-option">The Help Option&lt;/h3>
-&lt;p>This tool provides an option to display a brief description of the available commands, options, and arguments. &lt;code>System.CommandLine&lt;/code> automatically generates help output. For example:&lt;/p>
+&lt;h3 id="the-help-option">The Help Option
+&lt;/h3>&lt;p>This tool provides an option to display a brief description of the available commands, options, and arguments. &lt;code>System.CommandLine&lt;/code> automatically generates help output. For example:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -818,8 +812,8 @@ alt="Nuget"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="go"> -?, -h, --help Show help and usage information
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="response-file">Response File&lt;/h3>
-&lt;p>A &lt;em>response file&lt;/em> is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code>System.CommandLine&lt;/code> that is useful in two scenarios:&lt;/p>
+&lt;/div>&lt;h3 id="response-file">Response File
+&lt;/h3>&lt;p>A &lt;em>response file&lt;/em> is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code>System.CommandLine&lt;/code> that is useful in two scenarios:&lt;/p>
 &lt;ul>
 &lt;li>To invoke a command-line app by specifying input that is longer than the character limit of the terminal.
 To invoke the same command repeatedly without retyping the whole line.&lt;/li>
@@ -872,8 +866,8 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Info
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="how-to-install">How To Install&lt;/h3>
-&lt;p>You can install the latest build of the tool using the following command.&lt;/p>
+&lt;/div>&lt;h3 id="how-to-install">How To Install
+&lt;/h3>&lt;p>You can install the latest build of the tool using the following command.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -882,8 +876,8 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li>
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-console" data-lang="console">&lt;span class="line">&lt;span class="cl">&lt;span class="go">dotnet tool install -g dotnet-spawn
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;h3 id="how-to-uninstall">How To Uninstall&lt;/h3>
-&lt;p>You can uninstall the tool using the following command.&lt;/p>
+&lt;/div>&lt;h3 id="how-to-uninstall">How To Uninstall
+&lt;/h3>&lt;p>You can uninstall the tool using the following command.&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
 &lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
@@ -923,7 +917,7 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li>
 &lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate.png"
 width="648"
 height="268"
-srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate_hu0bbc10581357b7c2bfd8a007152cbe90_20232_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate_hu0bbc10581357b7c2bfd8a007152cbe90_20232_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate_hu17948743616486443892.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-certificate_hu8174196422210046639.png 1024w"
 loading="lazy"
 alt="Add Certificate"
 class="gallery-image"
@@ -939,7 +933,7 @@ data-flex-basis="580px"
 &lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr.png"
 width="856"
 height="414"
-srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr_hudae501949457686e8095d322f24472c5_31546_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr_hudae501949457686e8095d322f24472c5_31546_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr_hu15136804691937401845.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-csr_hu115644387893357020.png 1024w"
 loading="lazy"
 alt="Upload Certificate Signing Request (CSR) file"
 class="gallery-image"
@@ -977,7 +971,7 @@ data-flex-basis="496px"
 &lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile.png"
 width="841"
 height="326"
-srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile_hu19e8403e951193f99fff9d8987eddd2a_25281_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile_hu19e8403e951193f99fff9d8987eddd2a_25281_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile_hu10903500256984304453.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-profile_hu14286245725701378726.png 1024w"
 loading="lazy"
 alt="Add Profile"
 class="gallery-image"
@@ -1003,7 +997,7 @@ data-flex-basis="619px"
 &lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files.png"
 width="818"
 height="244"
-srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files_hufc7005ede993a4898a76adfc0df0cef8_13066_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files_hufc7005ede993a4898a76adfc0df0cef8_13066_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files_hu4391463747803585873.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/upload-secure-files_hu11406811883740014757.png 1024w"
 loading="lazy"
 alt="Upload Secure Files"
 class="gallery-image"
@@ -1024,7 +1018,7 @@ data-flex-basis="804px"
 &lt;p>&lt;img src="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables.png"
 width="490"
 height="326"
-srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables_hubaa04dc2b8731ead50af82eb9dc2394d_16472_480x0_resize_box_3.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables_hubaa04dc2b8731ead50af82eb9dc2394d_16472_1024x0_resize_box_3.png 1024w"
+srcset="https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables_hu5228400718044216018.png 480w, https://www.chingono.com/blog/2021/08/30/build-sign-ios-application-using-azure-devops/add-variables_hu3291237700206428519.png 1024w"
 loading="lazy"
 alt="Add Variables"
 class="gallery-image"
@@ -1193,7 +1187,7 @@ data-flex-basis="360px"
 &lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture.jpg"
 width="661"
 height="361"
-srcset="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture_hu9eb2bc3ac47b7781107a12f849aa8b92_17899_480x0_resize_q75_box.jpg 480w, https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture_hu9eb2bc3ac47b7781107a12f849aa8b92_17899_1024x0_resize_q75_box.jpg 1024w"
+srcset="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture_hu5608016717989977124.jpg 480w, https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture_hu12039117167317058865.jpg 1024w"
 loading="lazy"
 alt="3-Service Architecture"
 class="gallery-image"
@@ -1204,7 +1198,7 @@ data-flex-basis="439px"
 &lt;p>&lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture.jpg"
 width="661"
 height="361"
-srcset="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture_hua8ad58813e29ffdb6aae675502da59a6_18667_480x0_resize_q75_box.jpg 480w, https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture_hua8ad58813e29ffdb6aae675502da59a6_18667_1024x0_resize_q75_box.jpg 1024w"
+srcset="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture_hu1593649933767895866.jpg 480w, https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture_hu1153209194740346924.jpg 1024w"
 loading="lazy"
 alt="4-Service Architecture"
 class="gallery-image"
