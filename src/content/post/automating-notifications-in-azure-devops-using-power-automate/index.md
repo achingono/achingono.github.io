@@ -32,7 +32,7 @@ To get started, I needed to create the trigger that fires whenever a work item i
 
 1. Head over to Power Automate and select **Create a new flow**.
 1. Choose **Automated flow**, and for the trigger, select **When a work item is updated**.
-1. Enter your Azure DevOps organization name and the project you’re working on.
+1. Enter your Azure DevOps organization name and the project you're working on.
     ![Trigger: When a work item is updated](trigger.png)
 
 This is the most basic part, but the rest of the flow will depend on what specific conditions you need the flow to respond to.
@@ -122,7 +122,7 @@ To handle work item relationships (e.g., linking artifacts), I added the followi
 
 1. Rename this action **Get WorkItem Relationships**. We will use this name in subsequent steps when retrieving values from the output of this action.
 
-This will retrieve the work item details and expand all related links, such as commits or pull requests. 
+This will retrieve the work item details and expand all related links, such as commits or pull requests.
 
 ## Step 5: Set the HasArtifactLinks Flag
 
@@ -186,7 +186,7 @@ Here's how I handled it:
 
         ![Action: Send an HTTP request to Azure DevOps](mention-assigned.png)
 
-    This mentioned the assigned user in a comment on the work item, which will trigger an email message.
+    This mentions the assigned user in a comment on the work item, which will trigger an email message.
 
 1. In the **Closed** case, I checked the `HasArtifactLinks` variable to determine if commits were linked to the work item. If the variable was false, I sent a message to the assigned user requesting a linked commit:
 
