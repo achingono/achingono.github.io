@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notifications on Alfero Chingono</title><link>https://www.chingono.com/tags/notifications/</link><description>Recent content in Notifications on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Oct 2024 16:34:12 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/notifications/index.xml" rel="self" type="application/rss+xml"/><item><title>Automating Notifications in Azure Devops Using Power Automate</title><link>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</link><pubDate>Tue, 08 Oct 2024 21:11:43 +0000</pubDate><guid>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/cover.png" alt="Featured image of post Automating Notifications in Azure Devops Using Power Automate" />&lt;p>Managing work items in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops" target="_blank" rel="noopener"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notifications on Alfero Chingono</title><link>https://www.chingono.com/tags/notifications/</link><description>Recent content in Notifications on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 05 Dec 2024 20:09:45 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/notifications/index.xml" rel="self" type="application/rss+xml"/><item><title>Automating Notifications in Azure Devops Using Power Automate</title><link>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</link><pubDate>Tue, 08 Oct 2024 21:11:43 +0000</pubDate><guid>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/cover.png" alt="Featured image of post Automating Notifications in Azure Devops Using Power Automate" />&lt;p>Managing work items in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops" target="_blank" rel="noopener"
 >Azure DevOps&lt;/a> is crucial for efficient software development. To enhance communication and collaboration, I created a Power Automate flow that automatically notifies team members whenever a work item is updated. This post will guide you through the steps I took to create this flow.&lt;/p>
 &lt;h3 id="why-use-power-automate-for-azure-devops">Why Use Power Automate for Azure DevOps?
 &lt;/h3>&lt;p>&lt;a class="link" href="https://learn.microsoft.com/en-us/power-automate/" target="_blank" rel="noopener"
@@ -8,7 +8,7 @@
 &lt;ol>
 &lt;li>Head over to Power Automate and select &lt;strong>Create a new flow&lt;/strong>.&lt;/li>
 &lt;li>Choose &lt;strong>Automated flow&lt;/strong>, and for the trigger, select &lt;strong>When a work item is updated&lt;/strong>.&lt;/li>
-&lt;li>Enter your Azure DevOps organization name and the project you’re working on.
+&lt;li>Enter your Azure DevOps organization name and the project you&amp;rsquo;re working on.
 &lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/trigger.png"
 width="606"
 height="796"
@@ -145,7 +145,7 @@ width="627"
 height="436"
 srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/send-http_hu8720245540530129640.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/send-http_hu4660900994169760533.png 1024w"
 loading="lazy"
-alt="Add an action &amp;ldquo;Send an HTTP request to Azure DevOps&amp;rdquo;"
+alt="Add an action Send an HTTP request to Azure DevOps"
 class="gallery-image"
 data-flex-grow="143"
 data-flex-basis="345px"
@@ -186,7 +186,7 @@ width="1041"
 height="770"
 srcset="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/set-variable_hu10611356987897947924.png 480w, https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/set-variable_hu4505616536500489498.png 1024w"
 loading="lazy"
-alt="Add an action &amp;ldquo;Set variable&amp;rdquo;"
+alt="Add an action Set variable"
 class="gallery-image"
 data-flex-grow="135"
 data-flex-basis="324px"
@@ -304,7 +304,7 @@ data-flex-basis="469px"
 >&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;p>This mentioned the assigned user in a comment on the work item, which will trigger an email message.&lt;/p>
+&lt;p>This mentions the assigned user in a comment on the work item, which will trigger an email message.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>In the &lt;strong>Closed&lt;/strong> case, I checked the &lt;code>HasArtifactLinks&lt;/code> variable to determine if commits were linked to the work item. If the variable was false, I sent a message to the assigned user requesting a linked commit:&lt;/p>
