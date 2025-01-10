@@ -1,4 +1,350 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bicep on Alfero Chingono</title><link>https://www.chingono.com/tags/bicep/</link><description>Recent content in Bicep on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 05 Dec 2024 20:09:45 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/bicep/index.xml" rel="self" type="application/rss+xml"/><item><title>How to Enable VM Insights on an Azure Virtual Machine Using Bicep</title><link>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</link><pubDate>Thu, 27 Jun 2024 13:31:25 +0000</pubDate><guid>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/cover.jpg" alt="Featured image of post How to Enable VM Insights on an Azure Virtual Machine Using Bicep" />&lt;p>When it comes to monitoring your virtual machines in Azure, Application Insights provides a powerful and scalable solution for collecting telemetry data. In this blog post, I&amp;rsquo;ll walk you through how to enable VM Insights on an Azure Virtual Machine using a Bicep module I recently worked on.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bicep on Alfero Chingono</title><link>https://www.chingono.com/tags/bicep/</link><description>Recent content in Bicep on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 10 Jan 2025 17:21:48 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/bicep/index.xml" rel="self" type="application/rss+xml"/><item><title>Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts</title><link>https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/</link><pubDate>Fri, 10 Jan 2025 15:43:12 +0000</pubDate><guid>https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/cover.jpg" alt="Featured image of post Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts" />&lt;p>When managing configurations in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview" target="_blank" rel="noopener"
+>Azure App Configuration&lt;/a>, dynamically identifying and conditionally deploying resources can streamline your infrastructure and reduce manual intervention. In this post, I’ll walk you through how I used &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template" target="_blank" rel="noopener"
+>Azure deployment scripts&lt;/a> and Bicep templates to achieve this. Along the way, I’ll explain the logic behind the deployment and the steps required to ensure everything works seamlessly.&lt;/p>
+&lt;h2 id="problem-statement">Problem Statement
+&lt;/h2>&lt;p>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview" target="_blank" rel="noopener"
+>Azure App Configuration&lt;/a> allows us to manage configurations centrally, but as environments and configurations evolve, deploying defaults and ensuring environments are properly configured becomes a challenge. Manual processes are prone to errors and inefficiencies, and hardcoding resources isn’t scalable. We needed a solution that dynamically queried existing configurations and conditionally deployed only what was missing.&lt;/p>
+&lt;h2 id="solution-overview">Solution Overview
+&lt;/h2>&lt;p>Using &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template" target="_blank" rel="noopener"
+>Azure deployment scripts&lt;/a> within Bicep, we can:&lt;/p>
+&lt;ol>
+&lt;li>Query existing labels and keys in Azure App Configuration.&lt;/li>
+&lt;li>Conditionally deploy default settings, environments, and configurations based on the query results.&lt;/li>
+&lt;li>Automate the entire process while maintaining modularity and reusability.&lt;/li>
+&lt;/ol>
+&lt;h3 id="high-level-architecture">High-Level Architecture
+&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Deployment Script Modules:&lt;/strong> Query existing labels and keys in Azure App Configuration.&lt;/li>
+&lt;li>&lt;strong>Conditional Logic in Bicep:&lt;/strong> Deploy resources based on the query results.&lt;/li>
+&lt;li>&lt;strong>Managed Identity with Role Assignments:&lt;/strong> Securely enable deployment scripts to access Azure resources.&lt;/li>
+&lt;/ul>
+&lt;h2 id="step-1-set-up-a-managed-identity-with-role-assignments">Step 1: Set Up a Managed Identity with Role Assignments
+&lt;/h2>&lt;p>Deployment scripts require permissions to interact with Azure App Configuration. To enable this, we assign a User-Assigned Managed Identity with the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/integration#app-configuration-contributor" target="_blank" rel="noopener"
+>App Configuration Contributor&lt;/a> role.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bicep" data-lang="bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">role&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;fe86443c-f201-4fc4-9d2a-ac61149fbda0&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;id-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">roleAssignment&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.Authorization/roleAssignments@2020-08-01-preview&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">guid&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">resourceGroup&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nv">id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceId&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Microsoft.Authorization/roleDefinitions&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">role&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">roleDefinitionId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceId&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#39;Microsoft.Authorization/roleDefinitions&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">role&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">principalType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;ServicePrincipal&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">principalId&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">principalId&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">output&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">id&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">id&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">output&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">principalId&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">principalId&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>This Bicep template creates a User-Assigned Managed Identity and assigns the &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/integration#app-configuration-contributor" target="_blank" rel="noopener"
+>App Configuration Contributor&lt;/a> role, granting the identity the necessary permissions to query configuration labels and keys.&lt;/p>
+&lt;h2 id="step-2-query-existing-labels-and-keys">Step 2: Query Existing Labels and Keys
+&lt;/h2>&lt;h3 id="querying-labels">Querying Labels
+&lt;/h3>&lt;p>The &lt;code>configurationLabel.bicep&lt;/code> module dynamically retrieves all labels in Azure App Configuration using a deployment script:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bicep" data-lang="bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceGroup&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identityId&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">utcValue&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">utcNow&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">script&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.Resources/deploymentScripts@2020-10-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">-label-query&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;AzureCLI&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;UserAssigned&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">userAssignedIdentities&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">identityId&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">forceUpdateTag&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">utcValue&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">azCliVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;2.61.0&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">timeout&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;PT10M&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">arguments&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">scriptContent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> #!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> set -e
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo &amp;#34;Start Listing the Labels&amp;#34;;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> result=$(az appconfig kv list --name $1 --query &amp;#34;[].label&amp;#34; | jq -r .[] | sort -u | jq -R . | jq -s &amp;#34;{result: .}&amp;#34;);
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo $result &amp;gt; $AZ_SCRIPTS_OUTPUT_PATH;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo $result;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo &amp;#34;End Listing the Labels&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;#39;&amp;#39;&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">cleanupPreference&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;OnSuccess&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">retentionInterval&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;P1D&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">output&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">result&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="p">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">script&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">outputs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">result&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="querying-keys">Querying Keys
+&lt;/h3>&lt;p>Similarly, the &lt;code>configurationKey.bicep&lt;/code> module fetches all unique keys:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bicep" data-lang="bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resourceGroup&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">identityId&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">param&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">utcValue&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">utcNow&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">resource&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">script&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;Microsoft.Resources/deploymentScripts@2020-10-01&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">-key-query&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">location&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;AzureCLI&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">identity&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;UserAssigned&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">userAssignedIdentities&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">identityId&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">forceUpdateTag&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">utcValue&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">azCliVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;2.61.0&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">timeout&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;PT10M&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">arguments&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">scriptContent&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> #!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> set -e
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo &amp;#34;Start Listing the Keys&amp;#34;;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> result=$(az appconfig kv list --name $1 --query &amp;#34;[].key&amp;#34; | jq -r .[] | cut -d &amp;#34;:&amp;#34; -f 1 | sort -u | jq -R . | jq -s &amp;#34;{result: .}&amp;#34;);
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo $result &amp;gt; $AZ_SCRIPTS_OUTPUT_PATH;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo $result;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> echo &amp;#34;End Listing the Keys&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;#39;&amp;#39;&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">cleanupPreference&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;OnSuccess&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">retentionInterval&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;P1D&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">output&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">result&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">string&lt;/span>&lt;span class="p">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">script&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">properties&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">outputs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">result&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>The command &lt;code>az appconfig kv list --name $1 --query &amp;quot;[].key&amp;quot; | jq -r .[] | cut -d &amp;quot;:&amp;quot; -f 1 | sort -u | jq -R . | jq -s &amp;quot;{result: .}&amp;quot;&lt;/code> performs several operations to list and process keys from an Azure App Configuration store:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;code>az appconfig kv list --name $1 --query &amp;quot;[].key&amp;quot;&lt;/code>: This Azure CLI command lists all key-value pairs from the specified Azure App Configuration store (using the name provided as the first argument &lt;code>$1&lt;/code>) and extracts only the keys.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>| jq -r .[]&lt;/code>: The output from the previous command is piped to &lt;code>jq&lt;/code>, a lightweight and flexible command-line JSON processor. The &lt;code>-r&lt;/code> flag outputs raw strings instead of JSON texts, and &lt;code>.[]&lt;/code> iterates over each element in the array, outputting each key on a new line.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>| cut -d &amp;quot;:&amp;quot; -f 1&lt;/code>: The &lt;code>cut&lt;/code> command splits each key at the colon (&lt;code>:&lt;/code>) delimiter and extracts the first field. This is useful if the keys have a namespace or prefix separated by a colon.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>| sort -u&lt;/code>: The &lt;code>sort&lt;/code> command sorts the keys and the &lt;code>-u&lt;/code> flag ensures that only unique keys are kept.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>| jq -R .&lt;/code>: The sorted unique keys are then piped back to &lt;code>jq&lt;/code> with the &lt;code>-R&lt;/code> flag, which reads each line of input as a raw string and converts it to a JSON string.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>| jq -s &amp;quot;{result: .}&amp;quot;&lt;/code>: Finally, the &lt;code>jq -s&lt;/code> command slurps all the input lines into a single JSON array and wraps it in an object with a &lt;code>result&lt;/code> property.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The final output is a JSON object containing an array of unique keys, which is then stored in the &lt;code>result&lt;/code> variable.&lt;/p>
+&lt;h2 id="step-3-conditionally-deploy-resources">Step 3: Conditionally Deploy Resources
+&lt;/h2>&lt;p>The &lt;code>configuration/environments.bicep&lt;/code> module leverages the queried labels and keys to conditionally deploy resources. For example:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Defaults:&lt;/strong> Ensures a default environment is created if the label does not exist.&lt;/li>
+&lt;li>&lt;strong>Environments:&lt;/strong> Deploys specific environments for missing labels.&lt;/li>
+&lt;li>&lt;strong>Settings:&lt;/strong> Adds configurations if the keys are not present.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bicep" data-lang="bicep">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">module&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">defaults&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;defaults.bicep&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nf">contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">labels&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;default&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">-defaults&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">params&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;default&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">store&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">validationKey&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">validationKey&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">decryptionKey&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">decryptionKey&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">googleAPIKey&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">googleAPIKey&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">mail&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">mail&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">module&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">environments&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;environment.bicep&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">in&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">filter&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentNames&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">=&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nf">contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">labels&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">):&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">-environments-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s">&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">params&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">environmentName&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">pools&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">pools&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">sqlPassword&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">sqlPassword&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">storageAccountName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">storageAccountName&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">storeName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">store&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nv">name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">domain&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">domain&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nv">configurations&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nv">configurations&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="conclusion">Conclusion
+&lt;/h2>&lt;p>This approach automates the process of identifying missing configurations and deploying only the necessary resources. By combining deployment scripts with Bicep’s conditional logic, we’ve achieved a dynamic and scalable solution for managing Azure App Configuration.&lt;/p>
+&lt;p>Feel free to try this out in your environment and share your feedback. Let me know if you encounter any challenges or have ideas for further optimization!&lt;/p>
+&lt;p>References:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview" target="_blank" rel="noopener"
+>Azure App Configuration&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/" target="_blank" rel="noopener"
+>Bicep Documentation&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template" target="_blank" rel="noopener"
+>Azure Deployment Scripts&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview" target="_blank" rel="noopener"
+>Managed Identities for Azure Resources&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/role-based-access-control/overview" target="_blank" rel="noopener"
+>Role-Based Access Control (RBAC) in Azure&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/cli/azure/" target="_blank" rel="noopener"
+>Azure CLI&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://stedolan.github.io/jq/manual/" target="_blank" rel="noopener"
+>jq Manual&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-script-bicep?tabs=CLI" target="_blank" rel="noopener"
+>Use deployment scripts in Bicep&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>How to Enable VM Insights on an Azure Virtual Machine Using Bicep</title><link>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</link><pubDate>Thu, 27 Jun 2024 13:31:25 +0000</pubDate><guid>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/cover.jpg" alt="Featured image of post How to Enable VM Insights on an Azure Virtual Machine Using Bicep" />&lt;p>When it comes to monitoring your virtual machines in Azure, Application Insights provides a powerful and scalable solution for collecting telemetry data. In this blog post, I&amp;rsquo;ll walk you through how to enable VM Insights on an Azure Virtual Machine using a Bicep module I recently worked on.&lt;/p>
 &lt;h2 id="the-goal">The Goal
 &lt;/h2>&lt;p>We aim to:&lt;/p>
 &lt;ol>
