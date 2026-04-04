@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Learning on Alfero Chingono</title><link>https://www.chingono.com/tags/learning/</link><description>Recent content in Learning on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/learning/index.xml" rel="self" type="application/rss+xml"/><item><title>Teaching Kids to Code With Bayesian Knowledge Tracing: Why I Built FireFly</title><link>https://www.chingono.com/blog/2025/05/08/teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/</link><pubDate>Thu, 08 May 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/05/08/teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/</guid><description>&lt;p&gt;Most kids&amp;rsquo; coding products are better at rewarding momentum than understanding.&lt;/p&gt;
+&lt;p&gt;They make it easy to complete the next exercise, collect the badge, and keep moving. What they do not always make easy is answering the question that actually matters: &lt;strong&gt;does the learner understand what the code is doing?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;That question is the reason I started building &lt;a class="link" href="https://github.com/achingono/firefly" target="_blank" rel="noopener"
+&gt;FireFly&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I wanted something that combined three ideas:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;kids should write &lt;strong&gt;real code&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;they should be able to &lt;strong&gt;see it execute step by step&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;progression should depend on &lt;strong&gt;demonstrated understanding&lt;/strong&gt;, not just content completion&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That third requirement is what led me to Bayesian Knowledge Tracing.&lt;/p&gt;
+&lt;h2 id="why-i-did-not-want-a-purely-linear-curriculum"&gt;Why I did not want a purely linear curriculum
+&lt;/h2&gt;&lt;p&gt;One thing I dislike about a lot of beginner coding experiences is that they quietly assume exposure equals mastery.&lt;/p&gt;
+&lt;p&gt;Finish the lesson? Great, on to the next topic.&lt;/p&gt;
+&lt;p&gt;But anyone who has taught programming knows that this is not how understanding works. A learner can complete an exercise and still have a shaky mental model. They may get the right answer for the wrong reason. They may be copying a pattern without being able to transfer it.&lt;/p&gt;
+&lt;p&gt;I wanted FireFly to behave more like a patient tutor than a content playlist.&lt;/p&gt;
+&lt;p&gt;That meant the platform needed a way to estimate whether a concept was becoming solid over time, not just whether one attempt happened to be correct.&lt;/p&gt;
+&lt;h2 id="why-bayesian-knowledge-tracing-felt-like-the-right-fit"&gt;Why Bayesian Knowledge Tracing felt like the right fit
+&lt;/h2&gt;&lt;p&gt;Bayesian Knowledge Tracing (BKT) gave me something I liked immediately: it is simple enough to reason about, but still more honest than a naive pass/fail progression model.&lt;/p&gt;
+&lt;p&gt;In FireFly, each concept gets a mastery probability. After every attempt, the platform updates that probability and decides whether the learner has actually crossed the mastery threshold.&lt;/p&gt;
+&lt;p&gt;The model in the current implementation uses fixed, interpretable parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;initial knowledge (&lt;code&gt;pL0&lt;/code&gt;) = &lt;code&gt;0.10&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;learning transition (&lt;code&gt;pT&lt;/code&gt;) = &lt;code&gt;0.20&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;guess probability (&lt;code&gt;pG&lt;/code&gt;) = &lt;code&gt;0.25&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;slip probability (&lt;code&gt;pS&lt;/code&gt;) = &lt;code&gt;0.10&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;mastery threshold = &lt;code&gt;0.80&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I like this because it mirrors how real learning feels. One correct answer can move a student forward meaningfully, but not crown them an expert. A wrong answer does not erase everything, but it does lower confidence. Consistent performance matters more than isolated wins.&lt;/p&gt;
+&lt;p&gt;That is much closer to how a thoughtful teacher actually thinks.&lt;/p&gt;
+&lt;h2 id="why-bkt-alone-is-not-enough"&gt;Why BKT alone is not enough
+&lt;/h2&gt;&lt;p&gt;A mastery model is only as good as the learning experience feeding it.&lt;/p&gt;
+&lt;p&gt;That is why FireFly is not just a scoring engine. The heart of the product is still the visual code stepper.&lt;/p&gt;
+&lt;p&gt;Kids write Python in a Monaco editor, run it through a sandboxed execution engine, and watch the program unfold line by line with stack, heap, variables, and output. Under the hood, the backend wraps Python code with a &lt;code&gt;sys.settrace()&lt;/code&gt; tracer before submitting it to Judge0. The result is a structured trace that the UI can render frame by frame.&lt;/p&gt;
+&lt;p&gt;That matters because novices do not just need answers. They need a way to build mental models.&lt;/p&gt;
+&lt;p&gt;If a child can see:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;which line ran&lt;/li&gt;
+&lt;li&gt;what changed in local variables&lt;/li&gt;
+&lt;li&gt;what got printed&lt;/li&gt;
+&lt;li&gt;where a loop is getting stuck&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;then the feedback stops being mysterious.&lt;/p&gt;
+&lt;p&gt;Once you combine that with mastery tracking, you get something more interesting than &amp;ldquo;did the code run?&amp;rdquo; You get a system that can ask, &amp;ldquo;is this learner genuinely building understanding over time?&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="why-i-made-the-experience-age-adaptive"&gt;Why I made the experience age-adaptive
+&lt;/h2&gt;&lt;p&gt;Another thing I did not want was one aesthetic and one teaching voice for everybody.&lt;/p&gt;
+&lt;p&gt;An eight-year-old and a fifteen-year-old can both be beginners, but they do not need the same interface. FireFly uses three age modes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Fun&lt;/strong&gt; for younger learners&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Balanced&lt;/strong&gt; for middle learners&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Pro&lt;/strong&gt; for older learners&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The execution engine stays the same, but the tone, visuals, density, and celebration style change. I wanted the underlying system to stay serious while the presentation adapts to the learner.&lt;/p&gt;
+&lt;p&gt;That principle carries into the AI tutor as well. The goal is not to hand out solutions. The goal is to provide age-appropriate hints, explanations, and nudges that keep the learner thinking.&lt;/p&gt;
+&lt;h2 id="what-i-learned-while-building-it"&gt;What I learned while building it
+&lt;/h2&gt;&lt;p&gt;The more I worked on FireFly, the more I became convinced that the real bottleneck in beginner programming is not lack of content. It is lack of visible causality.&lt;/p&gt;
+&lt;p&gt;Kids get stuck because code feels magical until it does not work. Then it feels hostile.&lt;/p&gt;
+&lt;p&gt;The combination of execution tracing and mastery tracking is my attempt to close that gap:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the &lt;strong&gt;trace&lt;/strong&gt; makes program behavior visible&lt;/li&gt;
+&lt;li&gt;the &lt;strong&gt;tutor&lt;/strong&gt; makes the explanation conversational&lt;/li&gt;
+&lt;li&gt;the &lt;strong&gt;BKT layer&lt;/strong&gt; prevents false confidence from becoming progression&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That combination feels much closer to how I would want a patient, thoughtful mentor to teach.&lt;/p&gt;
+&lt;h2 id="why-i-still-think-this-matters"&gt;Why I still think this matters
+&lt;/h2&gt;&lt;p&gt;I did not build FireFly because kids need more gamification. They already have plenty of that.&lt;/p&gt;
+&lt;p&gt;I built it because I think programming is one of the few subjects where you can watch thought become behavior almost immediately, and that is incredibly powerful when it is made visible.&lt;/p&gt;
+&lt;p&gt;If a learner can write code, see it run, get unstuck without being spoon-fed, and unlock the next idea only after they really understand the current one, then we are not just teaching syntax. We are teaching how to think.&lt;/p&gt;
+&lt;p&gt;That is the kind of learning experience I wanted to build.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly" target="_blank" rel="noopener"
+&gt;FireFly repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly/blob/main/docs/SPEC.md" target="_blank" rel="noopener"
+&gt;FireFly product specification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;FireFly architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly/blob/main/docs/api/mastery.md" target="_blank" rel="noopener"
+&gt;FireFly mastery API&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

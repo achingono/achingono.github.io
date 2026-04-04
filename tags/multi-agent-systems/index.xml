@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Multi-Agent Systems on Alfero Chingono</title><link>https://www.chingono.com/tags/multi-agent-systems/</link><description>Recent content in Multi-Agent Systems on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/multi-agent-systems/index.xml" rel="self" type="application/rss+xml"/><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+&lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
+&lt;p&gt;Building &lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
+&lt;p&gt;What I wanted was not eight personalities for marketing. I wanted a working system where planning, coding, review, testing, DevOps, documentation, and quality control could be separated cleanly enough to be trustworthy.&lt;/p&gt;
+&lt;p&gt;That is how the &amp;ldquo;engineering orchestra&amp;rdquo; idea emerged.&lt;/p&gt;
+&lt;h2 id="the-roles-mattered-because-the-boundaries-mattered"&gt;The roles mattered because the boundaries mattered
+&lt;/h2&gt;&lt;p&gt;CueMarshal&amp;rsquo;s cast eventually became:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Marshal&lt;/strong&gt; for orchestration&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ava&lt;/strong&gt; for architecture&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dave&lt;/strong&gt; for implementation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reese&lt;/strong&gt; for review&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tess&lt;/strong&gt; for testing&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Devin&lt;/strong&gt; for DevOps&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dot&lt;/strong&gt; for documentation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linton&lt;/strong&gt; for linting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;What made that useful was not the naming. It was the fact that the roles had &lt;strong&gt;different responsibilities, different tool access, and different default model tiers&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;That is the first lesson I would pass on to anyone designing a multi-agent system:&lt;/p&gt;
+&lt;h2 id="1-different-roles-need-different-authority"&gt;1. Different roles need different authority
+&lt;/h2&gt;&lt;p&gt;If your reviewer can rewrite production code, your reviewer is not really a reviewer.&lt;/p&gt;
+&lt;p&gt;In CueMarshal, least privilege is deliberate. The reviewer is configured without write/edit permissions. The docs agent is restricted from shell access. The linter acts like a gate, not a developer with nicer manners.&lt;/p&gt;
+&lt;p&gt;That kind of restriction sounds limiting until you realize it is what gives each role meaning. Boundaries are not friction here. They are the mechanism that creates trust.&lt;/p&gt;
+&lt;p&gt;A good multi-agent system is not just a cluster of competencies. It is a set of constrained responsibilities.&lt;/p&gt;
+&lt;h2 id="2-coordination-needs-durable-state-outside-the-model"&gt;2. Coordination needs durable state outside the model
+&lt;/h2&gt;&lt;p&gt;One of the reasons I anchored CueMarshal in Git is that I did not want coordination to depend on hidden model memory.&lt;/p&gt;
+&lt;p&gt;Tasks become issues.
+Work becomes branches.
+Proposals become pull requests.
+Reviews become durable comments and approvals.&lt;/p&gt;
+&lt;p&gt;The Conductor receives webhooks, uses Redis and BullMQ to manage asynchronous flow, and dispatches work through Gitea Actions. The runners themselves stay stateless; they rebuild context from the repository, the issue, and the tool layer every time.&lt;/p&gt;
+&lt;p&gt;That has been a much better trade than magical continuity.&lt;/p&gt;
+&lt;p&gt;Models forget.
+Git does not.&lt;/p&gt;
+&lt;h2 id="3-identity-is-part-of-the-architecture"&gt;3. Identity is part of the architecture
+&lt;/h2&gt;&lt;p&gt;Another thing I underestimated early on was how important identity separation would be.&lt;/p&gt;
+&lt;p&gt;Each CueMarshal agent has its own account, token, and audit trail. That means the Git history shows who planned, who implemented, who reviewed, and who approved. Even when the &amp;ldquo;who&amp;rdquo; is an AI agent, the distinction still matters.&lt;/p&gt;
+&lt;p&gt;This has two benefits.&lt;/p&gt;
+&lt;p&gt;First, it improves explainability. The system becomes easier to inspect when actions are attributable.&lt;/p&gt;
+&lt;p&gt;Second, it changes how you think about safety. Once every agent has a clear identity and permission scope, you stop designing from a vague &amp;ldquo;assistant&amp;rdquo; mindset and start designing from explicit operational roles.&lt;/p&gt;
+&lt;p&gt;That shift is subtle, but it is foundational.&lt;/p&gt;
+&lt;h2 id="4-the-tool-layer-is-what-makes-the-orchestra-playable"&gt;4. The tool layer is what makes the orchestra playable
+&lt;/h2&gt;&lt;p&gt;This is where MCP became important for CueMarshal.&lt;/p&gt;
+&lt;p&gt;All of the agents connect to a structured tool layer instead of improvising raw integrations on the fly. The same Gitea, Conductor, and System capabilities can be used by the runner agents over stdio and by the orchestration layer over HTTP/SSE.&lt;/p&gt;
+&lt;p&gt;That matters because multi-agent systems are not only about reasoning. They are about coordination through reliable interfaces.&lt;/p&gt;
+&lt;p&gt;If the tools are vague, agents collide.
+If the permissions are sloppy, trust collapses.
+If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
+&lt;p&gt;The protocol is not the whole story, but it is the difference between a collection of prompts and a real system surface.&lt;/p&gt;
+&lt;p&gt;I wrote more about that in &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice&lt;/a&gt;, because it deserves its own treatment.&lt;/p&gt;
+&lt;h2 id="5-model-routing-is-architecture-not-optimization"&gt;5. Model routing is architecture, not optimization
+&lt;/h2&gt;&lt;p&gt;Another lesson I came away with: not every role deserves the same model.&lt;/p&gt;
+&lt;p&gt;Architecture work is more expensive and more consequential than documentation cleanup. Review often needs stronger reasoning than linting. Mechanical work should not burn premium tokens if a cheaper tier can do it reliably.&lt;/p&gt;
+&lt;p&gt;CueMarshal&amp;rsquo;s tiered routing reflects that reality:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;heavy reasoning for architecture&lt;/li&gt;
+&lt;li&gt;balanced capability for implementation, review, testing, and DevOps&lt;/li&gt;
+&lt;li&gt;lighter-weight models for docs and linting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just a cost decision. It is part of how the system stays sustainable.&lt;/p&gt;
+&lt;p&gt;Too many agent systems treat model choice as an afterthought. I think it belongs in the design doc.&lt;/p&gt;
+&lt;h2 id="6-closed-loops-beat-hero-agents"&gt;6. Closed loops beat hero agents
+&lt;/h2&gt;&lt;p&gt;The more I build these systems, the less I believe in the &amp;ldquo;super-agent&amp;rdquo; story.&lt;/p&gt;
+&lt;p&gt;What works better is a closed loop:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;detect work&lt;/li&gt;
+&lt;li&gt;route it clearly&lt;/li&gt;
+&lt;li&gt;execute with constrained roles&lt;/li&gt;
+&lt;li&gt;review it&lt;/li&gt;
+&lt;li&gt;merge it with human control&lt;/li&gt;
+&lt;li&gt;feed the next signal back into the system&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;CueMarshal&amp;rsquo;s self-improvement workflow made this even clearer to me. Once SonarQube findings, scanners, issues, PRs, and agent roles all started participating in the same loop, the system became more useful than any single agent inside it.&lt;/p&gt;
+&lt;p&gt;That is why I think orchestration matters more than agent count.&lt;/p&gt;
+&lt;h2 id="my-current-takeaway"&gt;My current takeaway
+&lt;/h2&gt;&lt;p&gt;If you are building a multi-agent system, start with these questions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What roles genuinely need to be different?&lt;/li&gt;
+&lt;li&gt;What permissions should each role have?&lt;/li&gt;
+&lt;li&gt;Where does coordination state live?&lt;/li&gt;
+&lt;li&gt;How are actions attributed?&lt;/li&gt;
+&lt;li&gt;What is the closed loop that turns outputs into the next inputs?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you cannot answer those, adding more agents will mostly add more noise.&lt;/p&gt;
+&lt;p&gt;If you can answer them, the number of agents becomes much less important than the quality of the structure around them.&lt;/p&gt;
+&lt;p&gt;That has been the real lesson for me. The point of the orchestra is not to have more instruments. The point is to make the handoffs musical instead of chaotic.&lt;/p&gt;
+&lt;p&gt;If you want the adjacent pieces, &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt; covers the motivation, and &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)&lt;/a&gt; shows what this architecture looks like when the feedback loop closes on itself.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&gt;CueMarshal repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/agents/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

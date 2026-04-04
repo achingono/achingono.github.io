@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Internal Developer Platforms on Alfero Chingono</title><link>https://www.chingono.com/tags/internal-developer-platforms/</link><description>Recent content in Internal Developer Platforms on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/internal-developer-platforms/index.xml" rel="self" type="application/rss+xml"/><item><title>The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It</title><link>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</link><pubDate>Thu, 10 Apr 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</guid><description>&lt;p&gt;When the DORA research started surfacing stronger evidence around internal developer platforms, the headline did not surprise me nearly as much as the reactions did.&lt;/p&gt;
+&lt;p&gt;Some people still hear &amp;ldquo;platform engineering&amp;rdquo; and imagine more process, more gates, and another internal team inventing obstacles. That risk is real. But it is only one version of the story.&lt;/p&gt;
+&lt;p&gt;The version I have seen in practice is much simpler: when you reduce cognitive load, standardize the boring parts well, and make the safe path the easy path, teams move faster.&lt;/p&gt;
+&lt;p&gt;That is why the widely shared DORA finding about internal developer platforms improving team performance felt directionally right to me. I have seen that pattern from multiple angles: CI/CD modernization that improved project velocity, reusable delivery templates that removed duplication, feature-flag and configuration patterns that reduced rollout risk, and platform standards that made decision-making less expensive for product teams.&lt;/p&gt;
+&lt;p&gt;I would not claim every platform effort automatically produces a neat percentage uplift. But I do believe the mechanism is real.&lt;/p&gt;
+&lt;h2 id="what-platform-engineering-is-actually-buying-you"&gt;What platform engineering is actually buying you
+&lt;/h2&gt;&lt;p&gt;At its best, an internal developer platform is not a control tower. It is a &lt;strong&gt;friction reducer&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;It helps teams spend less time answering questions like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;How should we structure this pipeline?&lt;/li&gt;
+&lt;li&gt;Which security checks are required?&lt;/li&gt;
+&lt;li&gt;What is the approved deployment pattern?&lt;/li&gt;
+&lt;li&gt;How do we manage runtime configuration safely?&lt;/li&gt;
+&lt;li&gt;How do we release gradually without gambling in production?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If every team answers those questions from scratch, you get inconsistency, duplicated effort, and unnecessary risk. If the platform team answers them once, clearly, and with enough flexibility, you get leverage.&lt;/p&gt;
+&lt;p&gt;That leverage is where the productivity gain comes from.&lt;/p&gt;
+&lt;p&gt;Not from a portal.
+Not from a dashboard.
+Not from a maturity model.&lt;/p&gt;
+&lt;p&gt;From fewer repeated decisions.&lt;/p&gt;
+&lt;h2 id="where-i-have-seen-the-gains-show-up"&gt;Where I have seen the gains show up
+&lt;/h2&gt;&lt;p&gt;One of the more durable lessons in my career is that developer productivity is usually downstream of environment design.&lt;/p&gt;
+&lt;p&gt;At VCA Software, the measurable win was CI/CD modernization. We saw delivery speed improve because the path from code to release became more repeatable and less person-dependent. That did not happen because engineers suddenly became more talented. It happened because the delivery system stopped making them re-solve the same operational problems over and over.&lt;/p&gt;
+&lt;p&gt;In more platform-oriented work, I have seen the same principle show up differently:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a reusable feature-flag framework that makes progressive delivery safer&lt;/li&gt;
+&lt;li&gt;standardized pipeline templates that reduce copy-paste infrastructure&lt;/li&gt;
+&lt;li&gt;better observability defaults so teams are not blind after deployment&lt;/li&gt;
+&lt;li&gt;configuration-management patterns that reduce drift and remove manual setup&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That last point is one reason I still like the pattern I wrote about in &lt;a class="link" href="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/" &gt;Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts&lt;/a&gt;. It is not glamorous, but it is exactly the kind of operational sharp edge a good platform should smooth out.&lt;/p&gt;
+&lt;h2 id="the-dora-nuance-matters-too"&gt;The DORA nuance matters too
+&lt;/h2&gt;&lt;p&gt;What I appreciate about the DORA research is that it does not treat platform engineering as universally positive in every implementation.&lt;/p&gt;
+&lt;p&gt;That matches my experience.&lt;/p&gt;
+&lt;p&gt;A platform helps when it gives teams &lt;strong&gt;self-service with sensible defaults&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;A platform hurts when it becomes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;mandatory ceremony&lt;/li&gt;
+&lt;li&gt;an opaque ticket queue&lt;/li&gt;
+&lt;li&gt;a rigid abstraction over real team needs&lt;/li&gt;
+&lt;li&gt;a place where local context goes to die&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is where some platform efforts go sideways. They optimize for governance theater instead of developer flow. Then leaders conclude that platform engineering is slow, when the real problem is that the platform is not being run like a product.&lt;/p&gt;
+&lt;h2 id="what-good-platform-teams-do-differently"&gt;What good platform teams do differently
+&lt;/h2&gt;&lt;p&gt;The best platform work I have seen has a few traits in common.&lt;/p&gt;
+&lt;h3 id="1-it-starts-with-repeated-pain-not-abstract-ambition"&gt;1. It starts with repeated pain, not abstract ambition
+&lt;/h3&gt;&lt;p&gt;Good platform teams do not begin with &amp;ldquo;let&amp;rsquo;s build an internal developer portal.&amp;rdquo; They begin with &amp;ldquo;teams keep tripping over the same deployment, security, configuration, or release problems.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;That difference matters because it keeps the work grounded in actual developer friction.&lt;/p&gt;
+&lt;h3 id="2-it-productizes-standards"&gt;2. It productizes standards
+&lt;/h3&gt;&lt;p&gt;A standard that lives in a slide deck does almost nothing.&lt;/p&gt;
+&lt;p&gt;A standard that shows up as a reusable template, a safe default, a documented flow, a working example, and a supportable paved road actually changes behavior.&lt;/p&gt;
+&lt;h3 id="3-it-respects-local-autonomy"&gt;3. It respects local autonomy
+&lt;/h3&gt;&lt;p&gt;The best platforms do not remove all choice. They remove the expensive choices that most teams should not have to make repeatedly.&lt;/p&gt;
+&lt;p&gt;That is a very different posture from central control.&lt;/p&gt;
+&lt;h3 id="4-it-measures-adoption-not-just-existence"&gt;4. It measures adoption, not just existence
+&lt;/h3&gt;&lt;p&gt;If nobody uses the platform voluntarily, that is feedback.&lt;/p&gt;
+&lt;p&gt;Platform teams need to care about usability the same way product teams do. A paved road that engineers avoid is not a paved road.&lt;/p&gt;
+&lt;h2 id="my-working-definition-now"&gt;My working definition now
+&lt;/h2&gt;&lt;p&gt;I increasingly think of platform engineering as the discipline of making good engineering behavior easier to repeat.&lt;/p&gt;
+&lt;p&gt;That includes technology, of course, but also language, templates, defaults, and trust.&lt;/p&gt;
+&lt;p&gt;Done well, it gives teams more autonomy because it lowers the cost of doing the right thing. Done badly, it creates another dependency.&lt;/p&gt;
+&lt;p&gt;That is why the DORA finding resonated with me. Not because I am attached to the term, but because I have seen the underlying dynamic up close. When teams have usable internal platforms, they make better decisions faster.&lt;/p&gt;
+&lt;p&gt;That is not magic. It is what happens when you turn institutional knowledge into operable systems.&lt;/p&gt;
+&lt;p&gt;If this topic interests you, the closest companion piece here is &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;, which comes at the same problem from the builder side rather than the organizational one.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://dora.dev/research/2024/dora-report/" target="_blank" rel="noopener"
+&gt;2024 DORA Report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.opslevel.com/resources/tl-dr-key-takeaways-from-the-2024-google-cloud-dora-report" target="_blank" rel="noopener"
+&gt;OpsLevel summary of the 2024 Google Cloud DORA Report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/" &gt;Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

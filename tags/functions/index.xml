@@ -1,56 +1,56 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Functions on Alfero Chingono</title><link>https://www.chingono.com/tags/functions/</link><description>Recent content in Functions on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Oct 2024 15:52:59 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/functions/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" />&lt;h1 id="adding-azure-functions-support-to-a-devcontainer">Adding Azure Functions Support to a Devcontainer
-&lt;/h1>&lt;p>Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we&amp;rsquo;ll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.&lt;/p>
-&lt;h2 id="the-challenge">The Challenge
-&lt;/h2>&lt;p>Recently, I faced the task of adding support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
->Azure Functions&lt;/a> to my trusted &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
->Dev Container&lt;/a>. I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.&lt;/p>
-&lt;h2 id="the-solution">The Solution
-&lt;/h2>&lt;p>To begin, I attempted to add the following lines to my &lt;code>Dockerfile&lt;/code>:&lt;/p>
-&lt;p>Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;span class="lnt">6
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> curl https://packages.microsoft.com/keys/microsoft.asc &lt;span class="p">|&lt;/span> gpg --dearmor &amp;gt; microsoft.gpg &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> apt-get update &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sudo sh -c &lt;span class="s1">&amp;#39;echo &amp;#34;deb [arch=amd64] https://packages.microsoft.com/debian/$(lsb_release -rs | cut -d&amp;#39;&lt;/span>.&lt;span class="s1">&amp;#39; -f 1)/prod $(lsb_release -cs) main&amp;#34; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list&amp;#39;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sudo apt-get update &lt;span class="se">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> apt-get -y install azure-functions-core-tools-4&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>This successfully rebuilt the container image and had the &lt;a class="link" href="https://github.com/Azure/azure-functions-core-tools" target="_blank" rel="noopener"
->Azure Functions Core Tools&lt;/a> installed.&lt;/p>
-&lt;p>Next, I added the following extensions to the &lt;code>devcontainer.json&lt;/code> file:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;span class="lnt">6
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;extensions&amp;#34;&lt;/span>&lt;span class="err">:&lt;/span> &lt;span class="p">[&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ms-azuretools.vscode-azurefunctions&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ms-vscode.azure-account&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ms-azuretools.vscode-azureresourcegroups&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;azurite.azurite&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>With that, I had a working environment fully loaded with Azure Functions Core Tools and the necessary Visual Studio Code extensions installed. Hope that helps, dear future reader!&lt;/p>
-&lt;p>References:&lt;br>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Functions on Alfero Chingono</title><link>https://www.chingono.com/tags/functions/</link><description>Recent content in Functions on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Oct 2024 15:52:59 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/functions/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" /&gt;&lt;h1 id="adding-azure-functions-support-to-a-devcontainer"&gt;Adding Azure Functions Support to a Devcontainer
+&lt;/h1&gt;&lt;p&gt;Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we&amp;rsquo;ll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.&lt;/p&gt;
+&lt;h2 id="the-challenge"&gt;The Challenge
+&lt;/h2&gt;&lt;p&gt;Recently, I faced the task of adding support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
+&gt;Azure Functions&lt;/a&gt; to my trusted &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
+&gt;Dev Container&lt;/a&gt;. I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.&lt;/p&gt;
+&lt;h2 id="the-solution"&gt;The Solution
+&lt;/h2&gt;&lt;p&gt;To begin, I attempted to add the following lines to my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-Dockerfile" data-lang="Dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; curl https://packages.microsoft.com/keys/microsoft.asc &lt;span class="p"&gt;|&lt;/span&gt; gpg --dearmor &amp;gt; microsoft.gpg &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get update &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo sh -c &lt;span class="s1"&gt;&amp;#39;echo &amp;#34;deb [arch=amd64] https://packages.microsoft.com/debian/$(lsb_release -rs | cut -d&amp;#39;&lt;/span&gt;.&lt;span class="s1"&gt;&amp;#39; -f 1)/prod $(lsb_release -cs) main&amp;#34; &amp;gt; /etc/apt/sources.list.d/dotnetdev.list&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt-get update &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get -y install azure-functions-core-tools-4&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This successfully rebuilt the container image and had the &lt;a class="link" href="https://github.com/Azure/azure-functions-core-tools" target="_blank" rel="noopener"
+&gt;Azure Functions Core Tools&lt;/a&gt; installed.&lt;/p&gt;
+&lt;p&gt;Next, I added the following extensions to the &lt;code&gt;devcontainer.json&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;extensions&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ms-azuretools.vscode-azurefunctions&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ms-vscode.azure-account&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ms-azuretools.vscode-azureresourcegroups&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;azurite.azurite&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;With that, I had a working environment fully loaded with Azure Functions Core Tools and the necessary Visual Studio Code extensions installed. Hope that helps, dear future reader!&lt;/p&gt;
+&lt;p&gt;References:&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
->Use a Docker container as a development environment with Visual Studio Code&lt;/a>&lt;br>
+&gt;Use a Docker container as a development environment with Visual Studio Code&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/azure/azure-functions/functions-run-local?tabs=v4%2Clinux%2Ccsharp%2Cportal%2Cbash" target="_blank" rel="noopener"
->Work with Azure Functions Core Tools&lt;/a>&lt;br>
+&gt;Work with Azure Functions Core Tools&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-core-tools-reference?tabs=v2" target="_blank" rel="noopener"
->Azure Functions Core Tools&lt;/a>&lt;/p></description></item></channel></rss>
+&gt;Azure Functions Core Tools&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Career on Alfero Chingono</title><link>https://www.chingono.com/tags/career/</link><description>Recent content in Career on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/career/index.xml" rel="self" type="application/rss+xml"/><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
+&lt;p&gt;You reduce risk.
+You simplify delivery.
+You create better defaults.
+You remove ambiguity.&lt;/p&gt;
+&lt;p&gt;And at the end of the quarter, it can still look like nothing happened.&lt;/p&gt;
+&lt;p&gt;I have come to think of that as the &lt;strong&gt;silent excellence trap&lt;/strong&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Outcomes matter, but outcomes that are not made legible, timely, and attributable are often discounted.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;That sentence has stayed with me because it explains something I have seen repeatedly, both in myself and in other high-conscientious operators. We assume that if the work is real, the value will be obvious. In many organizations, that is simply not how visibility works.&lt;/p&gt;
+&lt;h2 id="the-problem-is-usually-structural-not-personal"&gt;The problem is usually structural, not personal
+&lt;/h2&gt;&lt;p&gt;Most big organizations do not formally say they reward performative busyness over outcomes. In fact, they usually say the opposite.&lt;/p&gt;
+&lt;p&gt;The disconnect shows up in the operating reality.&lt;/p&gt;
+&lt;p&gt;I see three reasons for that.&lt;/p&gt;
+&lt;h3 id="1-long-feedback-loops"&gt;1. Long feedback loops
+&lt;/h3&gt;&lt;p&gt;Some of the most valuable work in platform engineering, architecture, governance, and operational improvement only becomes visible months later.&lt;/p&gt;
+&lt;p&gt;If you reduce configuration drift, improve rollout safety, or standardize an architectural decision, the value often appears as &lt;strong&gt;fewer future problems&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;That is good for the business.
+It is not always good for recognition.&lt;/p&gt;
+&lt;p&gt;When outcomes take a long time to surface, visible activity starts to become a proxy for progress.&lt;/p&gt;
+&lt;h3 id="2-narrative-driven-evaluation"&gt;2. Narrative-driven evaluation
+&lt;/h3&gt;&lt;p&gt;A lot of performance assessment is not just about what happened. It is about how what happened gets narrated.&lt;/p&gt;
+&lt;p&gt;This creates an uncomfortable truth: two people can generate similar value, but the person who can explain their impact in organizational language is often rewarded more clearly.&lt;/p&gt;
+&lt;p&gt;That is not always politics in the cynical sense. Sometimes it is just information design. Leaders are making decisions under ambiguity, and the work that is easiest to interpret tends to travel farther.&lt;/p&gt;
+&lt;h3 id="3-cross-team-dependency-density"&gt;3. Cross-team dependency density
+&lt;/h3&gt;&lt;p&gt;In big organizations, important work often moves through many hands.&lt;/p&gt;
+&lt;p&gt;You create the framework.
+Someone else adopts it.
+Another team gets the outcome.
+A downstream metric improves three months later.&lt;/p&gt;
+&lt;p&gt;At that point, attribution is fuzzy. Visibility fills the gap.&lt;/p&gt;
+&lt;p&gt;That is why quiet, enabling work is so easy to underrate.&lt;/p&gt;
+&lt;h2 id="this-is-not-an-argument-for-theater"&gt;This is not an argument for theater
+&lt;/h2&gt;&lt;p&gt;I do not think the answer is to become a full-time self-promoter.&lt;/p&gt;
+&lt;p&gt;I also do not think the answer is to &amp;ldquo;look busy.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The better answer is &lt;strong&gt;intentional visibility&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;That means making outcomes easier to see without fabricating activity.&lt;/p&gt;
+&lt;p&gt;There is a huge ethical and psychological difference between:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;performing importance&lt;/li&gt;
+&lt;li&gt;and making real impact legible&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I care about the second one.&lt;/p&gt;
+&lt;h2 id="what-i-do-instead-now"&gt;What I do instead now
+&lt;/h2&gt;&lt;p&gt;Over time, I have found a few habits that help.&lt;/p&gt;
+&lt;h3 id="1-express-work-in-a-simple-chain"&gt;1. Express work in a simple chain
+&lt;/h3&gt;&lt;p&gt;I try to describe meaningful work as:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Problem -&amp;gt; Action -&amp;gt; Outcome -&amp;gt; Why it matters&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;That structure sounds basic, but it keeps me from describing effort when I should be describing value.&lt;/p&gt;
+&lt;h3 id="2-translate-into-enterprise-outcomes"&gt;2. Translate into enterprise outcomes
+&lt;/h3&gt;&lt;p&gt;Enabling work often needs a second layer of interpretation.&lt;/p&gt;
+&lt;p&gt;It is not enough to say:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;built a feature-flag framework&lt;/li&gt;
+&lt;li&gt;standardized observability&lt;/li&gt;
+&lt;li&gt;created reusable pipeline templates&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You often have to go one step further:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;reduced deployment risk&lt;/li&gt;
+&lt;li&gt;removed support fragmentation&lt;/li&gt;
+&lt;li&gt;shortened decision cycles&lt;/li&gt;
+&lt;li&gt;improved auditability&lt;/li&gt;
+&lt;li&gt;lowered operational variance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is not spin. It is completion.&lt;/p&gt;
+&lt;h3 id="3-publish-checkpoints-not-just-final-wins"&gt;3. Publish checkpoints, not just final wins
+&lt;/h3&gt;&lt;p&gt;Long-cycle work disappears when nobody can see intermediate progress.&lt;/p&gt;
+&lt;p&gt;I have become much more deliberate about creating artifacts along the way:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;decision logs&lt;/li&gt;
+&lt;li&gt;patterns&lt;/li&gt;
+&lt;li&gt;working examples&lt;/li&gt;
+&lt;li&gt;metrics snapshots&lt;/li&gt;
+&lt;li&gt;short summaries of what changed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That keeps the work reviewable before it becomes historic.&lt;/p&gt;
+&lt;h3 id="4-pre-wire-leaders-with-outcomes-not-activity"&gt;4. Pre-wire leaders with outcomes, not activity
+&lt;/h3&gt;&lt;p&gt;I have learned not to wait for annual review season to explain what mattered.&lt;/p&gt;
+&lt;p&gt;Short outcome-only updates travel better than heroic recaps. They also reduce the chance that your most valuable work gets remembered only when something breaks.&lt;/p&gt;
+&lt;h2 id="the-uncomfortable-part"&gt;The uncomfortable part
+&lt;/h2&gt;&lt;p&gt;The silent excellence trap is especially common among people who take pride in substance.&lt;/p&gt;
+&lt;p&gt;We tell ourselves the work should speak for itself.&lt;/p&gt;
+&lt;p&gt;Sometimes it does.
+Often it does not.&lt;/p&gt;
+&lt;p&gt;And in large systems, what does not become legible often does not become rewarded.&lt;/p&gt;
+&lt;p&gt;That is not fair, but it is useful to understand.&lt;/p&gt;
+&lt;h2 id="my-current-reframe"&gt;My current reframe
+&lt;/h2&gt;&lt;p&gt;I no longer think of visibility as a political side quest. I think of it as part of delivery.&lt;/p&gt;
+&lt;p&gt;If I create meaningful change but fail to make it legible, timely, and attributable, then part of the job is still unfinished.&lt;/p&gt;
+&lt;p&gt;That has changed how I think about platform work, architecture work, and even writing in public. In some ways, building publicly is itself a response to this problem. The work becomes its own audit trail.&lt;/p&gt;
+&lt;p&gt;That is also why this post connects so naturally to &lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here&amp;rsquo;s How I&amp;rsquo;ve Seen It&lt;/a&gt;. Platform work can produce real leverage. But if the leverage stays invisible, the organization often underestimates both the work and the people doing it.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here&amp;rsquo;s How I&amp;rsquo;ve Seen It&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

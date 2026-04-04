@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Agentic AI on Alfero Chingono</title><link>https://www.chingono.com/categories/agentic-ai/</link><description>Recent content in Agentic AI on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/agentic-ai/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)</title><link>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</guid><description>&lt;p&gt;I wrote in 2024 about &lt;a class="link" href="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/" &gt;automating OWASP scan reports in Azure DevOps&lt;/a&gt; because I wanted security scanning to become part of the delivery flow instead of an afterthought.&lt;/p&gt;
+&lt;p&gt;This post is the next step in that same direction.&lt;/p&gt;
+&lt;p&gt;The thing I wanted from SonarQube was not another dashboard full of guilt. I wanted a loop that could actually create work, route it, fix it, and come back cleaner on the next scan.&lt;/p&gt;
+&lt;p&gt;That changed the design completely.&lt;/p&gt;
+&lt;h2 id="the-real-goal-was-not-run-sonarqube"&gt;The real goal was not &amp;ldquo;run SonarQube&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;Running SonarQube is easy.&lt;/p&gt;
+&lt;p&gt;Turning findings into a useful engineering loop is the hard part.&lt;/p&gt;
+&lt;p&gt;The pattern I have found most practical looks like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;run the scan on a schedule&lt;/li&gt;
+&lt;li&gt;translate findings into issues with enough structure to act on&lt;/li&gt;
+&lt;li&gt;let AI or agents handle the obvious remediation work&lt;/li&gt;
+&lt;li&gt;keep human review as the merge gate&lt;/li&gt;
+&lt;li&gt;rescan and repeat&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That is what I have been doing across FireFly and CueMarshal.&lt;/p&gt;
+&lt;h2 id="the-firefly-version-temporary-sonarqube-durable-issues"&gt;The FireFly version: temporary SonarQube, durable issues
+&lt;/h2&gt;&lt;p&gt;In &lt;a class="link" href="https://github.com/achingono/firefly" target="_blank" rel="noopener"
+&gt;FireFly&lt;/a&gt;, the workflow is intentionally self-contained.&lt;/p&gt;
+&lt;p&gt;The scheduled GitHub Action spins up a SonarQube Community service container, sets the admin password, creates the project, generates an analysis token, runs the scanner in Docker, and then uses the SonarQube API to fetch open issues.&lt;/p&gt;
+&lt;p&gt;From there, the workflow does something I think is more useful than just failing the pipeline: it turns findings into &lt;strong&gt;GitHub issues with meaningful labels&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The labels encode both issue type and severity:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sonar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sonar: bug&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sonar: vulnerability&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sonar: security hotspot&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sonar: blocker&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sonar: critical&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sonar: major&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That small step matters a lot. Once the findings live as first-class issues in the repo, they stop being hidden inside a scan report and start participating in the normal engineering workflow.&lt;/p&gt;
+&lt;p&gt;The FireFly workflow also keeps the body format clean: key, severity, type, rule, file, line, and the actual message. That makes the issue understandable without forcing someone to click back into SonarQube every time.&lt;/p&gt;
+&lt;h2 id="the-cuemarshal-version-findings-re-enter-the-agent-loop"&gt;The CueMarshal version: findings re-enter the agent loop
+&lt;/h2&gt;&lt;p&gt;CueMarshal takes the pattern further.&lt;/p&gt;
+&lt;p&gt;There, SonarQube is not just a quality gate. It is a signal source for the self-improvement system.&lt;/p&gt;
+&lt;p&gt;The scan runs on a schedule, the quality gate is checked, and when issues remain, they are picked up by the self-improvement workflow. That workflow runs deterministic scanners, produces a findings JSON file, and lets AI select the high-value, automation-friendly items to turn into actual repository work.&lt;/p&gt;
+&lt;p&gt;At that point the flow becomes very CueMarshal-like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;finding becomes issue&lt;/li&gt;
+&lt;li&gt;issue gets labels such as &lt;code&gt;self-improvement&lt;/code&gt; and &lt;code&gt;source:sonar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;developer agent works the task&lt;/li&gt;
+&lt;li&gt;reviewer agent reviews it&lt;/li&gt;
+&lt;li&gt;human still controls the merge&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is the part I care about most. Static analysis becomes part of an operational loop instead of a reporting loop.&lt;/p&gt;
+&lt;h2 id="what-ai-actually-fixed"&gt;What AI actually fixed
+&lt;/h2&gt;&lt;p&gt;This pattern became more convincing to me once I could see it in the commit history instead of just in a diagram.&lt;/p&gt;
+&lt;p&gt;In FireFly, the SonarQube-driven fixes moved through recognizable stages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;critical auth and data exposure issues&lt;/li&gt;
+&lt;li&gt;medium-severity issues in the LLM, tracer, and execution paths&lt;/li&gt;
+&lt;li&gt;blocker and critical tracer problems&lt;/li&gt;
+&lt;li&gt;remaining major issues in non-UI files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In CueMarshal, the same loop showed up in a different form:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;bug-class findings resolved&lt;/li&gt;
+&lt;li&gt;cognitive-complexity hotspots refactored&lt;/li&gt;
+&lt;li&gt;scan-flow issues fixed so the SonarQube pipeline itself became more reliable&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is the detail that made the whole approach feel real to me. The AI was not &amp;ldquo;doing security&amp;rdquo; in some theatrical sense. It was participating in a bounded remediation loop with concrete input, reviewable output, and a cleaner next scan.&lt;/p&gt;
+&lt;h2 id="what-i-still-keep-human"&gt;What I still keep human
+&lt;/h2&gt;&lt;p&gt;I do not think static analysis findings should all be auto-fixed blindly.&lt;/p&gt;
+&lt;p&gt;Some changes affect security-sensitive behavior. Some touch core orchestration logic. Some need architectural judgment more than mechanical cleanup.&lt;/p&gt;
+&lt;p&gt;That is why I still care so much about review gates, protected areas, and explicit pull requests. AI can do triage. AI can do a surprising amount of repair work. But the system becomes trustworthy only when people retain approval authority over the consequential parts.&lt;/p&gt;
+&lt;p&gt;This is the same design instinct behind CueMarshal more broadly: automate aggressively, but make the control points obvious.&lt;/p&gt;
+&lt;h2 id="why-i-like-this-pattern"&gt;Why I like this pattern
+&lt;/h2&gt;&lt;p&gt;The more repositories I maintain, the less patience I have for passive quality tooling.&lt;/p&gt;
+&lt;p&gt;If a scan only tells me what is wrong, it is useful.
+If a scan creates the next actionable task, it is much more useful.
+If that task can be routed through an AI-assisted workflow and still land in a human-reviewed PR, then the tool has become part of delivery rather than commentary on delivery.&lt;/p&gt;
+&lt;p&gt;That is the threshold I care about now.&lt;/p&gt;
+&lt;p&gt;I still think DAST and pipeline security automation matter deeply; that earlier OWASP post still reflects that. But SonarQube plus an AI remediation loop feels like the next generation of the same idea: make quality signals operational, not ornamental.&lt;/p&gt;
+&lt;p&gt;If you want the broader architecture around this, &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt; covers the orchestration side, and &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt; covers the bigger motivation.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly/blob/main/.github/workflows/scheduled-scan.yml" target="_blank" rel="noopener"
+&gt;FireFly scheduled SonarQube workflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly/blob/main/sonar-project.properties" target="_blank" rel="noopener"
+&gt;FireFly SonarQube project configuration&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/operations/self-improvement.md" target="_blank" rel="noopener"
+&gt;CueMarshal self-improvement design&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+&lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
+&lt;p&gt;Building &lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
+&lt;p&gt;What I wanted was not eight personalities for marketing. I wanted a working system where planning, coding, review, testing, DevOps, documentation, and quality control could be separated cleanly enough to be trustworthy.&lt;/p&gt;
+&lt;p&gt;That is how the &amp;ldquo;engineering orchestra&amp;rdquo; idea emerged.&lt;/p&gt;
+&lt;h2 id="the-roles-mattered-because-the-boundaries-mattered"&gt;The roles mattered because the boundaries mattered
+&lt;/h2&gt;&lt;p&gt;CueMarshal&amp;rsquo;s cast eventually became:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Marshal&lt;/strong&gt; for orchestration&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ava&lt;/strong&gt; for architecture&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dave&lt;/strong&gt; for implementation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reese&lt;/strong&gt; for review&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tess&lt;/strong&gt; for testing&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Devin&lt;/strong&gt; for DevOps&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dot&lt;/strong&gt; for documentation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linton&lt;/strong&gt; for linting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;What made that useful was not the naming. It was the fact that the roles had &lt;strong&gt;different responsibilities, different tool access, and different default model tiers&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;That is the first lesson I would pass on to anyone designing a multi-agent system:&lt;/p&gt;
+&lt;h2 id="1-different-roles-need-different-authority"&gt;1. Different roles need different authority
+&lt;/h2&gt;&lt;p&gt;If your reviewer can rewrite production code, your reviewer is not really a reviewer.&lt;/p&gt;
+&lt;p&gt;In CueMarshal, least privilege is deliberate. The reviewer is configured without write/edit permissions. The docs agent is restricted from shell access. The linter acts like a gate, not a developer with nicer manners.&lt;/p&gt;
+&lt;p&gt;That kind of restriction sounds limiting until you realize it is what gives each role meaning. Boundaries are not friction here. They are the mechanism that creates trust.&lt;/p&gt;
+&lt;p&gt;A good multi-agent system is not just a cluster of competencies. It is a set of constrained responsibilities.&lt;/p&gt;
+&lt;h2 id="2-coordination-needs-durable-state-outside-the-model"&gt;2. Coordination needs durable state outside the model
+&lt;/h2&gt;&lt;p&gt;One of the reasons I anchored CueMarshal in Git is that I did not want coordination to depend on hidden model memory.&lt;/p&gt;
+&lt;p&gt;Tasks become issues.
+Work becomes branches.
+Proposals become pull requests.
+Reviews become durable comments and approvals.&lt;/p&gt;
+&lt;p&gt;The Conductor receives webhooks, uses Redis and BullMQ to manage asynchronous flow, and dispatches work through Gitea Actions. The runners themselves stay stateless; they rebuild context from the repository, the issue, and the tool layer every time.&lt;/p&gt;
+&lt;p&gt;That has been a much better trade than magical continuity.&lt;/p&gt;
+&lt;p&gt;Models forget.
+Git does not.&lt;/p&gt;
+&lt;h2 id="3-identity-is-part-of-the-architecture"&gt;3. Identity is part of the architecture
+&lt;/h2&gt;&lt;p&gt;Another thing I underestimated early on was how important identity separation would be.&lt;/p&gt;
+&lt;p&gt;Each CueMarshal agent has its own account, token, and audit trail. That means the Git history shows who planned, who implemented, who reviewed, and who approved. Even when the &amp;ldquo;who&amp;rdquo; is an AI agent, the distinction still matters.&lt;/p&gt;
+&lt;p&gt;This has two benefits.&lt;/p&gt;
+&lt;p&gt;First, it improves explainability. The system becomes easier to inspect when actions are attributable.&lt;/p&gt;
+&lt;p&gt;Second, it changes how you think about safety. Once every agent has a clear identity and permission scope, you stop designing from a vague &amp;ldquo;assistant&amp;rdquo; mindset and start designing from explicit operational roles.&lt;/p&gt;
+&lt;p&gt;That shift is subtle, but it is foundational.&lt;/p&gt;
+&lt;h2 id="4-the-tool-layer-is-what-makes-the-orchestra-playable"&gt;4. The tool layer is what makes the orchestra playable
+&lt;/h2&gt;&lt;p&gt;This is where MCP became important for CueMarshal.&lt;/p&gt;
+&lt;p&gt;All of the agents connect to a structured tool layer instead of improvising raw integrations on the fly. The same Gitea, Conductor, and System capabilities can be used by the runner agents over stdio and by the orchestration layer over HTTP/SSE.&lt;/p&gt;
+&lt;p&gt;That matters because multi-agent systems are not only about reasoning. They are about coordination through reliable interfaces.&lt;/p&gt;
+&lt;p&gt;If the tools are vague, agents collide.
+If the permissions are sloppy, trust collapses.
+If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
+&lt;p&gt;The protocol is not the whole story, but it is the difference between a collection of prompts and a real system surface.&lt;/p&gt;
+&lt;p&gt;I wrote more about that in &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice&lt;/a&gt;, because it deserves its own treatment.&lt;/p&gt;
+&lt;h2 id="5-model-routing-is-architecture-not-optimization"&gt;5. Model routing is architecture, not optimization
+&lt;/h2&gt;&lt;p&gt;Another lesson I came away with: not every role deserves the same model.&lt;/p&gt;
+&lt;p&gt;Architecture work is more expensive and more consequential than documentation cleanup. Review often needs stronger reasoning than linting. Mechanical work should not burn premium tokens if a cheaper tier can do it reliably.&lt;/p&gt;
+&lt;p&gt;CueMarshal&amp;rsquo;s tiered routing reflects that reality:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;heavy reasoning for architecture&lt;/li&gt;
+&lt;li&gt;balanced capability for implementation, review, testing, and DevOps&lt;/li&gt;
+&lt;li&gt;lighter-weight models for docs and linting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just a cost decision. It is part of how the system stays sustainable.&lt;/p&gt;
+&lt;p&gt;Too many agent systems treat model choice as an afterthought. I think it belongs in the design doc.&lt;/p&gt;
+&lt;h2 id="6-closed-loops-beat-hero-agents"&gt;6. Closed loops beat hero agents
+&lt;/h2&gt;&lt;p&gt;The more I build these systems, the less I believe in the &amp;ldquo;super-agent&amp;rdquo; story.&lt;/p&gt;
+&lt;p&gt;What works better is a closed loop:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;detect work&lt;/li&gt;
+&lt;li&gt;route it clearly&lt;/li&gt;
+&lt;li&gt;execute with constrained roles&lt;/li&gt;
+&lt;li&gt;review it&lt;/li&gt;
+&lt;li&gt;merge it with human control&lt;/li&gt;
+&lt;li&gt;feed the next signal back into the system&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;CueMarshal&amp;rsquo;s self-improvement workflow made this even clearer to me. Once SonarQube findings, scanners, issues, PRs, and agent roles all started participating in the same loop, the system became more useful than any single agent inside it.&lt;/p&gt;
+&lt;p&gt;That is why I think orchestration matters more than agent count.&lt;/p&gt;
+&lt;h2 id="my-current-takeaway"&gt;My current takeaway
+&lt;/h2&gt;&lt;p&gt;If you are building a multi-agent system, start with these questions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What roles genuinely need to be different?&lt;/li&gt;
+&lt;li&gt;What permissions should each role have?&lt;/li&gt;
+&lt;li&gt;Where does coordination state live?&lt;/li&gt;
+&lt;li&gt;How are actions attributed?&lt;/li&gt;
+&lt;li&gt;What is the closed loop that turns outputs into the next inputs?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you cannot answer those, adding more agents will mostly add more noise.&lt;/p&gt;
+&lt;p&gt;If you can answer them, the number of agents becomes much less important than the quality of the structure around them.&lt;/p&gt;
+&lt;p&gt;That has been the real lesson for me. The point of the orchestra is not to have more instruments. The point is to make the handoffs musical instead of chaotic.&lt;/p&gt;
+&lt;p&gt;If you want the adjacent pieces, &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt; covers the motivation, and &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)&lt;/a&gt; shows what this architecture looks like when the feedback loop closes on itself.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&gt;CueMarshal repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/agents/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>MCP in Practice: What Anthropic's Model Context Protocol Actually Means for Developers</title><link>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</link><pubDate>Thu, 20 Mar 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</guid><description>&lt;p&gt;When Anthropic announced the &lt;a class="link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener"
+&gt;Model Context Protocol&lt;/a&gt;, the most interesting part to me was not &amp;ldquo;LLMs can call tools.&amp;rdquo; We already knew that. The interesting part was that someone was finally trying to standardize the connection.&lt;/p&gt;
+&lt;p&gt;That may sound like a small distinction, but it is the difference between a clever demo and an architecture you can actually build on.&lt;/p&gt;
+&lt;p&gt;For developers, MCP matters because it turns tool access into something more portable, more inspectable, and less bespoke. Instead of wiring every model to every internal system in a slightly different way, you get a shared protocol for secure, two-way connections between AI clients and the systems where work actually lives.&lt;/p&gt;
+&lt;p&gt;In other words: fewer one-off connectors, fewer weird wrappers, and less glue code pretending to be strategy.&lt;/p&gt;
+&lt;h2 id="the-real-problem-mcp-solves"&gt;The real problem MCP solves
+&lt;/h2&gt;&lt;p&gt;Without a protocol, most AI integrations end up with the same shape:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;custom JSON formats&lt;/li&gt;
+&lt;li&gt;hand-rolled function schemas&lt;/li&gt;
+&lt;li&gt;transport logic mixed into business logic&lt;/li&gt;
+&lt;li&gt;a different adapter for every new client&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can absolutely ship systems that way. Many people already have. But you pay for it later in duplication, debugging, and lock-in.&lt;/p&gt;
+&lt;p&gt;Anthropic&amp;rsquo;s framing resonated with me because it describes a problem I had already been running into while building CueMarshal. I did not need agents that could merely &amp;ldquo;use tools.&amp;rdquo; I needed a stable way for different parts of the system to use the &lt;strong&gt;same tools&lt;/strong&gt; in different contexts.&lt;/p&gt;
+&lt;p&gt;That is where MCP becomes practical.&lt;/p&gt;
+&lt;h2 id="what-it-changed-in-my-own-thinking"&gt;What it changed in my own thinking
+&lt;/h2&gt;&lt;p&gt;In CueMarshal, I ended up with three MCP servers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a &lt;strong&gt;Gitea MCP server&lt;/strong&gt; for issues, pull requests, repositories, workflows, and search&lt;/li&gt;
+&lt;li&gt;a &lt;strong&gt;Conductor MCP server&lt;/strong&gt; for task coordination and agent state&lt;/li&gt;
+&lt;li&gt;a &lt;strong&gt;System MCP server&lt;/strong&gt; for costs, runners, and health&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That split was not arbitrary. It reflected a design choice: organize tool access around bounded responsibilities instead of dumping everything into one giant catch-all toolbox.&lt;/p&gt;
+&lt;p&gt;Even more important, the same MCP server code supports &lt;strong&gt;two transports&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;stdio&lt;/strong&gt; for agent runners&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HTTP/SSE&lt;/strong&gt; for the long-running chat/orchestration layer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is the part I think many developers will underestimate. The value is not just that the model can invoke a tool. The value is that your tool layer stops being trapped inside one execution model.&lt;/p&gt;
+&lt;p&gt;The CueMarshal runners can spawn MCP servers directly as child processes. The Conductor can hold long-lived connections to those same tool surfaces over the network. Same capability, different runtime, no duplicated tool logic.&lt;/p&gt;
+&lt;p&gt;That is not just elegant. It is operationally useful.&lt;/p&gt;
+&lt;h2 id="mcp-is-really-about-interface-discipline"&gt;MCP is really about interface discipline
+&lt;/h2&gt;&lt;p&gt;One thing building AI systems teaches very quickly is that &amp;ldquo;prompting&amp;rdquo; gets too much credit for problems that are really interface problems.&lt;/p&gt;
+&lt;p&gt;If the tool schema is vague, the model will behave vaguely.&lt;/p&gt;
+&lt;p&gt;If the permissions are broad, the behavior will feel risky.&lt;/p&gt;
+&lt;p&gt;If the transport is brittle, the whole system looks flaky even when the reasoning is fine.&lt;/p&gt;
+&lt;p&gt;What I like about MCP is that it nudges teams toward better engineering habits:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Typed tools instead of implied behavior&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Separation between protocol and implementation&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reusable tool layers across multiple clients&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clearer permission boundaries&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That discipline matters even if you never use Anthropic&amp;rsquo;s stack directly.&lt;/p&gt;
+&lt;h2 id="what-developers-should-actually-do-with-it"&gt;What developers should actually do with it
+&lt;/h2&gt;&lt;p&gt;My advice is to treat MCP less like a product feature and more like a systems design decision.&lt;/p&gt;
+&lt;p&gt;If you are building AI-assisted software delivery, internal automation, or even just richer developer tools, start by asking:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What are the real systems my assistant needs to access?&lt;/li&gt;
+&lt;li&gt;Which of those interactions deserve typed, validated interfaces?&lt;/li&gt;
+&lt;li&gt;Which capabilities should be shared across chat, automation, and background agents?&lt;/li&gt;
+&lt;li&gt;Where do I want auditability and permission scoping to live?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That line of thinking will produce a better architecture whether you adopt MCP tomorrow or not.&lt;/p&gt;
+&lt;p&gt;In my own work, it pushed me away from raw &lt;code&gt;curl&lt;/code&gt;-driven integration and toward a universal tool layer. Once I made that shift, a lot of downstream problems became easier: orchestration, reuse, security boundaries, and even explanation. It is easier to trust a system when you can say, very plainly, &amp;ldquo;here are the tools it has, here is what they do, and here is how they are invoked.&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="what-mcp-does-not-solve"&gt;What MCP does &lt;strong&gt;not&lt;/strong&gt; solve
+&lt;/h2&gt;&lt;p&gt;MCP does not magically make an agent reliable.&lt;/p&gt;
+&lt;p&gt;It does not fix poor workflow design.&lt;/p&gt;
+&lt;p&gt;It does not remove the need for human review.&lt;/p&gt;
+&lt;p&gt;And it definitely does not turn vague prompts into good engineering.&lt;/p&gt;
+&lt;p&gt;What it does is give you a cleaner control plane for connecting models to real systems. That is already a meaningful improvement.&lt;/p&gt;
+&lt;p&gt;For me, that is why MCP feels important. Not because it adds more AI theater, but because it reduces architectural friction in a place where friction compounds very fast.&lt;/p&gt;
+&lt;p&gt;If you are curious how that idea plays out in a larger system, I wrote more about the broader coordination problem in &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt; and the orchestration lessons in &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener"
+&gt;Introducing the Model Context Protocol&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://modelcontextprotocol.io/quickstart" target="_blank" rel="noopener"
+&gt;MCP quickstart and specification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/mcp-servers/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal MCP server overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

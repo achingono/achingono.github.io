@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Developer Experience on Alfero Chingono</title><link>https://www.chingono.com/tags/developer-experience/</link><description>Recent content in Developer Experience on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/developer-experience/index.xml" rel="self" type="application/rss+xml"/><item><title>The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It</title><link>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</link><pubDate>Thu, 10 Apr 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</guid><description>&lt;p&gt;When the DORA research started surfacing stronger evidence around internal developer platforms, the headline did not surprise me nearly as much as the reactions did.&lt;/p&gt;
+&lt;p&gt;Some people still hear &amp;ldquo;platform engineering&amp;rdquo; and imagine more process, more gates, and another internal team inventing obstacles. That risk is real. But it is only one version of the story.&lt;/p&gt;
+&lt;p&gt;The version I have seen in practice is much simpler: when you reduce cognitive load, standardize the boring parts well, and make the safe path the easy path, teams move faster.&lt;/p&gt;
+&lt;p&gt;That is why the widely shared DORA finding about internal developer platforms improving team performance felt directionally right to me. I have seen that pattern from multiple angles: CI/CD modernization that improved project velocity, reusable delivery templates that removed duplication, feature-flag and configuration patterns that reduced rollout risk, and platform standards that made decision-making less expensive for product teams.&lt;/p&gt;
+&lt;p&gt;I would not claim every platform effort automatically produces a neat percentage uplift. But I do believe the mechanism is real.&lt;/p&gt;
+&lt;h2 id="what-platform-engineering-is-actually-buying-you"&gt;What platform engineering is actually buying you
+&lt;/h2&gt;&lt;p&gt;At its best, an internal developer platform is not a control tower. It is a &lt;strong&gt;friction reducer&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;It helps teams spend less time answering questions like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;How should we structure this pipeline?&lt;/li&gt;
+&lt;li&gt;Which security checks are required?&lt;/li&gt;
+&lt;li&gt;What is the approved deployment pattern?&lt;/li&gt;
+&lt;li&gt;How do we manage runtime configuration safely?&lt;/li&gt;
+&lt;li&gt;How do we release gradually without gambling in production?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If every team answers those questions from scratch, you get inconsistency, duplicated effort, and unnecessary risk. If the platform team answers them once, clearly, and with enough flexibility, you get leverage.&lt;/p&gt;
+&lt;p&gt;That leverage is where the productivity gain comes from.&lt;/p&gt;
+&lt;p&gt;Not from a portal.
+Not from a dashboard.
+Not from a maturity model.&lt;/p&gt;
+&lt;p&gt;From fewer repeated decisions.&lt;/p&gt;
+&lt;h2 id="where-i-have-seen-the-gains-show-up"&gt;Where I have seen the gains show up
+&lt;/h2&gt;&lt;p&gt;One of the more durable lessons in my career is that developer productivity is usually downstream of environment design.&lt;/p&gt;
+&lt;p&gt;At VCA Software, the measurable win was CI/CD modernization. We saw delivery speed improve because the path from code to release became more repeatable and less person-dependent. That did not happen because engineers suddenly became more talented. It happened because the delivery system stopped making them re-solve the same operational problems over and over.&lt;/p&gt;
+&lt;p&gt;In more platform-oriented work, I have seen the same principle show up differently:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a reusable feature-flag framework that makes progressive delivery safer&lt;/li&gt;
+&lt;li&gt;standardized pipeline templates that reduce copy-paste infrastructure&lt;/li&gt;
+&lt;li&gt;better observability defaults so teams are not blind after deployment&lt;/li&gt;
+&lt;li&gt;configuration-management patterns that reduce drift and remove manual setup&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That last point is one reason I still like the pattern I wrote about in &lt;a class="link" href="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/" &gt;Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts&lt;/a&gt;. It is not glamorous, but it is exactly the kind of operational sharp edge a good platform should smooth out.&lt;/p&gt;
+&lt;h2 id="the-dora-nuance-matters-too"&gt;The DORA nuance matters too
+&lt;/h2&gt;&lt;p&gt;What I appreciate about the DORA research is that it does not treat platform engineering as universally positive in every implementation.&lt;/p&gt;
+&lt;p&gt;That matches my experience.&lt;/p&gt;
+&lt;p&gt;A platform helps when it gives teams &lt;strong&gt;self-service with sensible defaults&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;A platform hurts when it becomes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;mandatory ceremony&lt;/li&gt;
+&lt;li&gt;an opaque ticket queue&lt;/li&gt;
+&lt;li&gt;a rigid abstraction over real team needs&lt;/li&gt;
+&lt;li&gt;a place where local context goes to die&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is where some platform efforts go sideways. They optimize for governance theater instead of developer flow. Then leaders conclude that platform engineering is slow, when the real problem is that the platform is not being run like a product.&lt;/p&gt;
+&lt;h2 id="what-good-platform-teams-do-differently"&gt;What good platform teams do differently
+&lt;/h2&gt;&lt;p&gt;The best platform work I have seen has a few traits in common.&lt;/p&gt;
+&lt;h3 id="1-it-starts-with-repeated-pain-not-abstract-ambition"&gt;1. It starts with repeated pain, not abstract ambition
+&lt;/h3&gt;&lt;p&gt;Good platform teams do not begin with &amp;ldquo;let&amp;rsquo;s build an internal developer portal.&amp;rdquo; They begin with &amp;ldquo;teams keep tripping over the same deployment, security, configuration, or release problems.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;That difference matters because it keeps the work grounded in actual developer friction.&lt;/p&gt;
+&lt;h3 id="2-it-productizes-standards"&gt;2. It productizes standards
+&lt;/h3&gt;&lt;p&gt;A standard that lives in a slide deck does almost nothing.&lt;/p&gt;
+&lt;p&gt;A standard that shows up as a reusable template, a safe default, a documented flow, a working example, and a supportable paved road actually changes behavior.&lt;/p&gt;
+&lt;h3 id="3-it-respects-local-autonomy"&gt;3. It respects local autonomy
+&lt;/h3&gt;&lt;p&gt;The best platforms do not remove all choice. They remove the expensive choices that most teams should not have to make repeatedly.&lt;/p&gt;
+&lt;p&gt;That is a very different posture from central control.&lt;/p&gt;
+&lt;h3 id="4-it-measures-adoption-not-just-existence"&gt;4. It measures adoption, not just existence
+&lt;/h3&gt;&lt;p&gt;If nobody uses the platform voluntarily, that is feedback.&lt;/p&gt;
+&lt;p&gt;Platform teams need to care about usability the same way product teams do. A paved road that engineers avoid is not a paved road.&lt;/p&gt;
+&lt;h2 id="my-working-definition-now"&gt;My working definition now
+&lt;/h2&gt;&lt;p&gt;I increasingly think of platform engineering as the discipline of making good engineering behavior easier to repeat.&lt;/p&gt;
+&lt;p&gt;That includes technology, of course, but also language, templates, defaults, and trust.&lt;/p&gt;
+&lt;p&gt;Done well, it gives teams more autonomy because it lowers the cost of doing the right thing. Done badly, it creates another dependency.&lt;/p&gt;
+&lt;p&gt;That is why the DORA finding resonated with me. Not because I am attached to the term, but because I have seen the underlying dynamic up close. When teams have usable internal platforms, they make better decisions faster.&lt;/p&gt;
+&lt;p&gt;That is not magic. It is what happens when you turn institutional knowledge into operable systems.&lt;/p&gt;
+&lt;p&gt;If this topic interests you, the closest companion piece here is &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;, which comes at the same problem from the builder side rather than the organizational one.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://dora.dev/research/2024/dora-report/" target="_blank" rel="noopener"
+&gt;2024 DORA Report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.opslevel.com/resources/tl-dr-key-takeaways-from-the-2024-google-cloud-dora-report" target="_blank" rel="noopener"
+&gt;OpsLevel summary of the 2024 Google Cloud DORA Report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/" &gt;Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Why I Started Building My Own DevOps Platform (And What I Learned)</title><link>https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/</link><pubDate>Sat, 15 Feb 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/</guid><description>&lt;p&gt;For a while, I had the same reaction to most AI-for-software-delivery demos: impressive in a narrow way, but not something I would trust with real work. One tool could write code. Another could summarize a diff. Another could review a pull request. But the hard part of software delivery is rarely one isolated step. It is the handoff between steps.&lt;/p&gt;
+&lt;p&gt;That was the itch that eventually pushed me to start building &lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I did not start with the ambition to build &amp;ldquo;an AI company&amp;rdquo; or some abstract autonomous future. I started because I wanted a more coherent delivery system: one place where a task could move from idea to issue to branch to pull request to review without losing context every time responsibility changed hands.&lt;/p&gt;
+&lt;h2 id="the-problem-i-actually-wanted-to-solve"&gt;The problem I actually wanted to solve
+&lt;/h2&gt;&lt;p&gt;CI/CD was never the whole problem. In many teams, the pipeline is the most deterministic part of the process. The mess usually lives around it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the design decision that only exists in a chat thread&lt;/li&gt;
+&lt;li&gt;the issue that says too little&lt;/li&gt;
+&lt;li&gt;the reviewer who has to reconstruct intent from commit history&lt;/li&gt;
+&lt;li&gt;the documentation that is always &amp;ldquo;we&amp;rsquo;ll do it after&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;the growing pile of tools that all know a little, but none of them own the workflow&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;What I wanted was not another dashboard. I wanted a delivery surface that respected how engineering work already happens.&lt;/p&gt;
+&lt;p&gt;That led me to a simple conviction: &lt;strong&gt;Git should be the source of truth, not just the storage layer.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If work already becomes legible through issues, branches, pull requests, labels, and reviews, then the orchestration layer should live there too. Not beside it. Not behind it. Inside it.&lt;/p&gt;
+&lt;h2 id="why-i-built-it-myself"&gt;Why I built it myself
+&lt;/h2&gt;&lt;p&gt;There were three constraints that mattered to me from day one.&lt;/p&gt;
+&lt;p&gt;First, I wanted the system to be &lt;strong&gt;self-hosted&lt;/strong&gt;. A lot of AI tooling assumes you are comfortable sending your code, your process, and your delivery metadata into someone else&amp;rsquo;s black box. Many teams are not. I wanted an approach that made data sovereignty a feature, not an apology.&lt;/p&gt;
+&lt;p&gt;Second, I wanted the system to be &lt;strong&gt;role-aware&lt;/strong&gt;. Real software delivery is not &amp;ldquo;one super-agent with a clever prompt.&amp;rdquo; Design, implementation, review, testing, DevOps, and documentation are different jobs. Sometimes one person does multiple jobs, but the jobs are still different. That distinction matters.&lt;/p&gt;
+&lt;p&gt;Third, I wanted &lt;strong&gt;human control to remain the final gate&lt;/strong&gt;. I am interested in automation, not surrender. If an AI system cannot work inside a reviewable pull-request workflow, I do not think it is mature enough for serious engineering work.&lt;/p&gt;
+&lt;p&gt;Those constraints eventually turned into the shape CueMarshal has now: a conductor service in TypeScript, specialized agents for architecture, development, review, testing, DevOps, docs, and linting, a Git-native workflow in Gitea, and a tool layer built around MCP so the same system can reason over structured interfaces instead of raw shell scripts and ad-hoc API calls.&lt;/p&gt;
+&lt;h2 id="the-architecture-came-later-the-principles-came-first"&gt;The architecture came later. The principles came first.
+&lt;/h2&gt;&lt;p&gt;Long before the implementation solidified, the design principles were already obvious to me.&lt;/p&gt;
+&lt;h3 id="1-git-is-a-better-coordination-layer-than-most-agent-uis"&gt;1. Git is a better coordination layer than most agent UIs
+&lt;/h3&gt;&lt;p&gt;An issue is a task. A branch is a workstream. A pull request is a proposal. A review is a decision record. A merge is a controlled state change.&lt;/p&gt;
+&lt;p&gt;That sounds almost too obvious to say out loud, but it changed how I thought about the whole problem. Once I stopped treating Git as the place where code merely ends up, and started treating it as the place where engineering decisions become inspectable, the rest of the architecture got much simpler.&lt;/p&gt;
+&lt;h3 id="2-specialization-beats-a-do-everything-agent"&gt;2. Specialization beats a &amp;ldquo;do everything&amp;rdquo; agent
+&lt;/h3&gt;&lt;p&gt;In CueMarshal, the system is intentionally split into named roles: Marshal for orchestration, Ava for architecture, Dave for implementation, Reese for review, Tess for testing, Devin for DevOps, Dot for docs, and Linton for linting.&lt;/p&gt;
+&lt;p&gt;That is not branding for its own sake. It is an operational choice.&lt;/p&gt;
+&lt;p&gt;The moment one agent tries to be planner, coder, reviewer, tester, and documentarian all at once, you lose clarity. You also lose accountability. Specialization makes prompts sharper, tool permissions narrower, and outputs easier to judge.&lt;/p&gt;
+&lt;h3 id="3-tool-contracts-matter-more-than-prompt-cleverness"&gt;3. Tool contracts matter more than prompt cleverness
+&lt;/h3&gt;&lt;p&gt;One of the biggest lessons from building CueMarshal is that the quality of an agentic system is heavily constrained by the quality of its interfaces.&lt;/p&gt;
+&lt;p&gt;If an agent is forced to improvise around loosely structured APIs, fragile shell commands, or browser automation for tasks that should be typed and validated, the system becomes harder to trust. This is one reason MCP clicked for me so quickly later on: it gave a clean shape to something I already knew was essential.&lt;/p&gt;
+&lt;p&gt;Good tool contracts do not just help the model. They help the human operator understand what the system is even allowed to do.&lt;/p&gt;
+&lt;h3 id="4-stateless-workers-are-a-feature-not-a-bug"&gt;4. Stateless workers are a feature, not a bug
+&lt;/h3&gt;&lt;p&gt;CueMarshal&amp;rsquo;s runners are intentionally stateless. They reconstruct context from the repository, the issue, the pull request, and the tool layer every time.&lt;/p&gt;
+&lt;p&gt;That may sound less magical than the &amp;ldquo;persistent AI teammate&amp;rdquo; narrative, but it is much easier to reason about. It scales better. It fails more cleanly. And it produces a better audit trail.&lt;/p&gt;
+&lt;p&gt;In practice, that has made me more skeptical of systems that depend on hidden memory to feel smart.&lt;/p&gt;
+&lt;h3 id="5-human-control-is-product-design"&gt;5. Human control is product design
+&lt;/h3&gt;&lt;p&gt;The more I worked on this, the more convinced I became that &amp;ldquo;human in the loop&amp;rdquo; is not enough as a slogan. It has to be built into the workflow itself.&lt;/p&gt;
+&lt;p&gt;That is why I prefer issue-driven execution, reviewable pull requests, typed tools, explicit handoffs, and merge control. Those are not bureaucratic constraints. They are the difference between a system that can support real engineering and a system that is only good for demos.&lt;/p&gt;
+&lt;h2 id="what-i-learned-from-building-in-public"&gt;What I learned from building in public
+&lt;/h2&gt;&lt;p&gt;The most useful part of this project has not been proving that agents can write code. We already knew that. The useful part has been learning where coordination breaks, where trust gets earned, and what kinds of structure make AI assistance actually usable.&lt;/p&gt;
+&lt;p&gt;It also made one thing clearer for me: the next layer of software delivery is not &amp;ldquo;more CI/CD.&amp;rdquo; It is better orchestration around the work humans and machines are already doing together.&lt;/p&gt;
+&lt;p&gt;That is the reason I started building CueMarshal, and it is still the reason I keep working on it.&lt;/p&gt;
+&lt;p&gt;If you want the more technical follow-up, I wrote about &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;what MCP actually changed for developers&lt;/a&gt; and the coordination lessons from &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;building an eight-agent engineering orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&gt;CueMarshal repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/agents/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,371 +1,371 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Containerization on Alfero Chingono</title><link>https://www.chingono.com/categories/containerization/</link><description>Recent content in Containerization on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 10 Jan 2025 15:38:23 -0500</lastBuildDate><atom:link href="https://www.chingono.com/categories/containerization/index.xml" rel="self" type="application/rss+xml"/><item><title>Dockerfile for containerizing Classic ASP</title><link>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</link><pubDate>Fri, 16 Jun 2023 12:14:12 +0000</pubDate><guid>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/cover.jpg" alt="Featured image of post Dockerfile for containerizing Classic ASP" />&lt;p>In this blog post, we will walk through a Dockerfile designed for containerizing a Classic ASP application. This Dockerfile is based on the &lt;code>mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/code> image and includes several steps to configure the environment for running Classic ASP applications.&lt;/p>
-&lt;h3 id="breakdown-of-the-dockerfile">Breakdown of the Dockerfile
-&lt;/h3>&lt;h4 id="base-image-and-shell-configuration">Base Image and Shell Configuration
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">ARG&lt;/span> &lt;span class="nv">LOGMONITOR_VERSION&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>.0&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">SHELL&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;powershell&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;-Command&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;$ErrorActionPreference = &amp;#39;Stop&amp;#39;; $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39;;&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> LOGMONITOR_VERSION&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>We start by specifying the base image, which is a Windows Server Core image with ASP.NET 4.8. The &lt;code>SHELL&lt;/code> instruction sets PowerShell as the default shell for subsequent instructions.&lt;/p>
-&lt;h4 id="installing-windows-features">Installing Windows Features
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Install-WindowsFeature Web-ASP&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-CGI&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-ISAPI-Ext&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-ISAPI-Filter&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-Includes&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-HTTP-Errors&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-Common-HTTP&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-Performance&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature WAS&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Import-module IISAdministration&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>This section installs various IIS features required for running Classic ASP applications, such as ASP, CGI, ISAPI extensions, and more.&lt;/p>
-&lt;h4 id="enabling-iis-features">Enabling IIS Features
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Enable-WindowsOptionalFeature -Online -FeatureName IIS-DefaultDocument&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>Here, we enable additional IIS features like default documents and HTTP errors.&lt;/p>
-&lt;h4 id="installing-dependencies">Installing Dependencies
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Invoke-Expression &lt;span class="o">((&lt;/span>New-Object System.Net.WebClient&lt;span class="o">)&lt;/span>.DownloadString&lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;https://vcredist.com/install.ps1&amp;#39;&lt;/span>&lt;span class="o">))&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> md c:/msi&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>We install the C++ 2017 redistributable and create a directory for MSI files.&lt;/p>
-&lt;h4 id="installing-iis-rewrite-module-and-sql-odbc-driver">Installing IIS Rewrite Module and SQL ODBC Driver
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Invoke-WebRequest &lt;span class="s1">&amp;#39;https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi&amp;#39;&lt;/span> -OutFile c:/msi/rewrite_amd64_en-US.msi&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Start-Process &lt;span class="s1">&amp;#39;c:/msi/rewrite_amd64_en-US.msi&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;/qn&amp;#39;&lt;/span> -PassThru &lt;span class="p">|&lt;/span> Wait-Process&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Invoke-WebRequest &lt;span class="s1">&amp;#39;https://download.microsoft.com/download/c/5/4/c54c2bf1-87d0-4f6f-b837-b78d34d4d28a/en-US/18.2.1.1/x64/msodbcsql.msi&amp;#39;&lt;/span> -OutFile c:/msi/msodbcsql.msi&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Start-Process &lt;span class="s1">&amp;#39;c:/msi/msodbcsql.msi&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;IACCEPTMSODBCSQLLICENSETERMS=YES&amp;#39;&lt;/span> -PassThru &lt;span class="p">|&lt;/span> Wait-Process&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>These commands download and install the IIS Rewrite Module and the SQL ODBC driver.&lt;/p>
-&lt;h4 id="downloading-log-monitor">Downloading Log Monitor
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Invoke-WebRequest -Uri &lt;span class="s2">&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nv">$env&lt;/span>:LOGMONITOR_VERSION&lt;span class="k">)&lt;/span>&lt;span class="s2">/LogMonitor.exe&amp;#34;&lt;/span> -OutFile C:&lt;span class="se">\L&lt;/span>ogMonitor.exe&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Invoke-WebRequest -Uri &lt;span class="s2">&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nv">$env&lt;/span>:LOGMONITOR_VERSION&lt;span class="k">)&lt;/span>&lt;span class="s2">/LogMonitor.exe&amp;#34;&lt;/span> -OutFile C:&lt;span class="se">\L&lt;/span>ogMonitor.exe&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>This command downloads the Log Monitor tool from the specified GitHub release URL and save it to the container&amp;rsquo;s file system. Log Monitor is a tool used to monitor and manage logs within a Windows container. This step ensures that the Log Monitor tool is available within the container for log management purposes.&lt;/p>
-&lt;h4 id="unlocking-iis-configuration-sections">Unlocking IIS Configuration Sections
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;span class="lnt">6
-&lt;/span>&lt;span class="lnt">7
-&lt;/span>&lt;span class="lnt">8
-&lt;/span>&lt;span class="lnt">9
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> &lt;span class="p">&amp;amp;&lt;/span> c:&lt;span class="se">\w&lt;/span>indows&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\i&lt;/span>netsrv&lt;span class="se">\a&lt;/span>ppcmd.exe &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> unlock config &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> /section:system.webServer/asp&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="p">&amp;amp;&lt;/span> c:&lt;span class="se">\w&lt;/span>indows&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\i&lt;/span>netsrv&lt;span class="se">\a&lt;/span>ppcmd.exe &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> unlock config &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> /section:system.webServer/handlers&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="p">&amp;amp;&lt;/span> c:&lt;span class="se">\w&lt;/span>indows&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\i&lt;/span>netsrv&lt;span class="se">\a&lt;/span>ppcmd.exe &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> unlock config &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> /section:system.webServer/modules&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>This section unlocks various IIS configuration sections to allow modifications.&lt;/p>
-&lt;p>In IIS (Internet Information Services), certain configuration sections are locked by default to prevent unauthorized changes that could affect the stability and security of the server. Unlocking these sections is necessary when you need to customize the behavior of your web server beyond the default settings.&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>system.webServer/asp&lt;/strong>: Unlocking this section allows you to modify settings related to ASP (Active Server Pages), such as enabling or disabling ASP, configuring script timeouts, and setting debugging options.&lt;/li>
-&lt;li>&lt;strong>system.webServer/handlers&lt;/strong>: This section controls the handlers that process requests for specific file types or URL patterns. Unlocking it allows you to add, remove, or modify handlers to customize how requests are processed.&lt;/li>
-&lt;li>&lt;strong>system.webServer/modules&lt;/strong>: Modules are components that handle various stages of request processing in IIS. Unlocking this section allows you to enable, disable, or configure modules to extend the functionality of your web server.&lt;/li>
-&lt;/ul>
-&lt;p>By unlocking these sections, you gain the flexibility to tailor the IIS configuration to meet the specific needs of your applications.&lt;/p>
-&lt;h4 id="configuring-default-application-pool-and-web-site">Configuring Default Application Pool and Web Site
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Import-Module WebAdministration&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span> &lt;span class="o">=&lt;/span> Get-Item IIS:&lt;span class="se">\\&lt;/span>AppPools&lt;span class="se">\\&lt;/span>DefaultAppPool&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.ManagedPipelineMode &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;Integrated&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.ManagedRuntimeVersion &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;v4.0&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.Enable32BitAppOnWin64 &lt;span class="o">=&lt;/span> &lt;span class="nv">$false&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.AutoStart &lt;span class="o">=&lt;/span> &lt;span class="nv">$true&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span> &lt;span class="p">|&lt;/span> Set-Item&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Import-Module WebAdministration&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-WebConfigurationProperty -Location &lt;span class="s1">&amp;#39;Default Web Site&amp;#39;&lt;/span> -Filter &lt;span class="s2">&amp;#34;system.webServer/asp&amp;#34;&lt;/span> -Name &lt;span class="s2">&amp;#34;enableParentPaths&amp;#34;&lt;/span> -Value &lt;span class="s1">&amp;#39;True&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-WebConfigurationProperty -Location &lt;span class="s1">&amp;#39;Default Web Site&amp;#39;&lt;/span> -Filter &lt;span class="s2">&amp;#34;system.webServer/asp/limits&amp;#34;&lt;/span> -Name &lt;span class="s2">&amp;#34;maxRequestEntityAllowed&amp;#34;&lt;/span> -Value 2000000000&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>We configure the default application pool and set properties for the default web site.&lt;/p>
-&lt;h4 id="enabling-fusion-logs">Enabling Fusion Logs
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;span class="lnt">5
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">RUN&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name ForceLog -Value &lt;span class="m">1&lt;/span> -Type DWord&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name LogFailures -Value &lt;span class="m">1&lt;/span> -Type DWord&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name LogResourceBinds -Value &lt;span class="m">1&lt;/span> -Type DWord&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name LogPath -Value &lt;span class="s1">&amp;#39;C:\FusionLog\&amp;#39;&lt;/span> -Type String&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> mkdir C:/FusionLog -Force&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>This section enables Fusion logs for troubleshooting .NET assembly binding issues.&lt;/p>
-&lt;h4 id="setting-up-the-working-directory-and-copying-files">Setting Up the Working Directory and Copying Files
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /inetpub/wwwroot&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/ .&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> cfg/ c:/&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>We set the working directory to the IIS web root and copy the application source and configuration files.&lt;/p>
-&lt;h4 id="setting-the-entry-point">Setting the Entry Point
-&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;C:\\LogMonitor.exe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;C:\\ServiceMonitor.exe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;w3svc&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>Finally, we set the entry point to start the Log Monitor and Service Monitor for IIS.&lt;/p>
-&lt;p>This Dockerfile provides a comprehensive setup for running Classic ASP applications in a containerized environment, ensuring all necessary features and dependencies are installed and configured.&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;span class="lnt">24
-&lt;/span>&lt;span class="lnt">25
-&lt;/span>&lt;span class="lnt">26
-&lt;/span>&lt;span class="lnt">27
-&lt;/span>&lt;span class="lnt">28
-&lt;/span>&lt;span class="lnt">29
-&lt;/span>&lt;span class="lnt">30
-&lt;/span>&lt;span class="lnt">31
-&lt;/span>&lt;span class="lnt">32
-&lt;/span>&lt;span class="lnt">33
-&lt;/span>&lt;span class="lnt">34
-&lt;/span>&lt;span class="lnt">35
-&lt;/span>&lt;span class="lnt">36
-&lt;/span>&lt;span class="lnt">37
-&lt;/span>&lt;span class="lnt">38
-&lt;/span>&lt;span class="lnt">39
-&lt;/span>&lt;span class="lnt">40
-&lt;/span>&lt;span class="lnt">41
-&lt;/span>&lt;span class="lnt">42
-&lt;/span>&lt;span class="lnt">43
-&lt;/span>&lt;span class="lnt">44
-&lt;/span>&lt;span class="lnt">45
-&lt;/span>&lt;span class="lnt">46
-&lt;/span>&lt;span class="lnt">47
-&lt;/span>&lt;span class="lnt">48
-&lt;/span>&lt;span class="lnt">49
-&lt;/span>&lt;span class="lnt">50
-&lt;/span>&lt;span class="lnt">51
-&lt;/span>&lt;span class="lnt">52
-&lt;/span>&lt;span class="lnt">53
-&lt;/span>&lt;span class="lnt">54
-&lt;/span>&lt;span class="lnt">55
-&lt;/span>&lt;span class="lnt">56
-&lt;/span>&lt;span class="lnt">57
-&lt;/span>&lt;span class="lnt">58
-&lt;/span>&lt;span class="lnt">59
-&lt;/span>&lt;span class="lnt">60
-&lt;/span>&lt;span class="lnt">61
-&lt;/span>&lt;span class="lnt">62
-&lt;/span>&lt;span class="lnt">63
-&lt;/span>&lt;span class="lnt">64
-&lt;/span>&lt;span class="lnt">65
-&lt;/span>&lt;span class="lnt">66
-&lt;/span>&lt;span class="lnt">67
-&lt;/span>&lt;span class="lnt">68
-&lt;/span>&lt;span class="lnt">69
-&lt;/span>&lt;span class="lnt">70
-&lt;/span>&lt;span class="lnt">71
-&lt;/span>&lt;span class="lnt">72
-&lt;/span>&lt;span class="lnt">73
-&lt;/span>&lt;span class="lnt">74
-&lt;/span>&lt;span class="lnt">75
-&lt;/span>&lt;span class="lnt">76
-&lt;/span>&lt;span class="lnt">77
-&lt;/span>&lt;span class="lnt">78
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># escape=`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> &lt;span class="nv">LOGMONITOR_VERSION&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>.0&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">SHELL&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;powershell&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;-Command&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;$ErrorActionPreference = &amp;#39;Stop&amp;#39;; $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39;;&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ARG&lt;/span> LOGMONITOR_VERSION&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Install Windows Features&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Install-WindowsFeature Web-ASP&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-CGI&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-ISAPI-Ext&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-ISAPI-Filter&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-Includes&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-HTTP-Errors&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-Common-HTTP&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature Web-Performance&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Install-WindowsFeature WAS&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Import-module IISAdministration&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Enable IIS Features&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Enable-WindowsOptionalFeature -Online -FeatureName IIS-DefaultDocument&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Install C++ 2017 distributions&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Invoke-Expression &lt;span class="o">((&lt;/span>New-Object System.Net.WebClient&lt;span class="o">)&lt;/span>.DownloadString&lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;https://vcredist.com/install.ps1&amp;#39;&lt;/span>&lt;span class="o">))&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> md c:/msi&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Install IIS Rewrite Module&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Invoke-WebRequest &lt;span class="s1">&amp;#39;https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi&amp;#39;&lt;/span> -OutFile c:/msi/rewrite_amd64_en-US.msi&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Start-Process &lt;span class="s1">&amp;#39;c:/msi/rewrite_amd64_en-US.msi&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;/qn&amp;#39;&lt;/span> -PassThru &lt;span class="p">|&lt;/span> Wait-Process&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Install SQL ODBC Driver&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Invoke-WebRequest &lt;span class="s1">&amp;#39;https://download.microsoft.com/download/c/5/4/c54c2bf1-87d0-4f6f-b837-b78d34d4d28a/en-US/18.2.1.1/x64/msodbcsql.msi&amp;#39;&lt;/span> -OutFile c:/msi/msodbcsql.msi&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Start-Process &lt;span class="s1">&amp;#39;c:/msi/msodbcsql.msi&amp;#39;&lt;/span> &lt;span class="s1">&amp;#39;IACCEPTMSODBCSQLLICENSETERMS=YES&amp;#39;&lt;/span> -PassThru &lt;span class="p">|&lt;/span> Wait-Process&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Download Log Monitor&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Invoke-WebRequest -Uri &lt;span class="s2">&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nv">$env&lt;/span>:LOGMONITOR_VERSION&lt;span class="k">)&lt;/span>&lt;span class="s2">/LogMonitor.exe&amp;#34;&lt;/span> -OutFile C:&lt;span class="se">\L&lt;/span>ogMonitor.exe&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Unlock IIS Configuration Sections&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> &lt;span class="p">&amp;amp;&lt;/span> c:&lt;span class="se">\w&lt;/span>indows&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\i&lt;/span>netsrv&lt;span class="se">\a&lt;/span>ppcmd.exe &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> unlock config &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> /section:system.webServer/asp&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="p">&amp;amp;&lt;/span> c:&lt;span class="se">\w&lt;/span>indows&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\i&lt;/span>netsrv&lt;span class="se">\a&lt;/span>ppcmd.exe &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> unlock config &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> /section:system.webServer/handlers&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="p">&amp;amp;&lt;/span> c:&lt;span class="se">\w&lt;/span>indows&lt;span class="se">\s&lt;/span>ystem32&lt;span class="se">\i&lt;/span>netsrv&lt;span class="se">\a&lt;/span>ppcmd.exe &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> unlock config &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> /section:system.webServer/modules&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Configure Default Application Pool&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Import-Module WebAdministration&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span> &lt;span class="o">=&lt;/span> Get-Item IIS:&lt;span class="se">\\&lt;/span>AppPools&lt;span class="se">\\&lt;/span>DefaultAppPool&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.ManagedPipelineMode &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;Integrated&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.ManagedRuntimeVersion &lt;span class="o">=&lt;/span> &lt;span class="s1">&amp;#39;v4.0&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.Enable32BitAppOnWin64 &lt;span class="o">=&lt;/span> &lt;span class="nv">$false&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span>.AutoStart &lt;span class="o">=&lt;/span> &lt;span class="nv">$true&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="nv">$pool&lt;/span> &lt;span class="p">|&lt;/span> Set-Item&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Configure Default Web Site&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Import-Module WebAdministration&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-WebConfigurationProperty -Location &lt;span class="s1">&amp;#39;Default Web Site&amp;#39;&lt;/span> -Filter &lt;span class="s2">&amp;#34;system.webServer/asp&amp;#34;&lt;/span> -Name &lt;span class="s2">&amp;#34;enableParentPaths&amp;#34;&lt;/span> -Value &lt;span class="s1">&amp;#39;True&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-WebConfigurationProperty -Location &lt;span class="s1">&amp;#39;Default Web Site&amp;#39;&lt;/span> -Filter &lt;span class="s2">&amp;#34;system.webServer/asp/limits&amp;#34;&lt;/span> -Name &lt;span class="s2">&amp;#34;maxRequestEntityAllowed&amp;#34;&lt;/span> -Value 2000000000&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Enable Fusion Logs&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># https://stackoverflow.com/a/33013110&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name ForceLog -Value &lt;span class="m">1&lt;/span> -Type DWord&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name LogFailures -Value &lt;span class="m">1&lt;/span> -Type DWord&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name LogResourceBinds -Value &lt;span class="m">1&lt;/span> -Type DWord&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> Set-ItemProperty -Path HKLM:&lt;span class="se">\\&lt;/span>Software&lt;span class="se">\\&lt;/span>Microsoft&lt;span class="se">\\&lt;/span>Fusion -Name LogPath -Value &lt;span class="s1">&amp;#39;C:\FusionLog\&amp;#39;&lt;/span> -Type String&lt;span class="p">;&lt;/span> &lt;span class="sb">`&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> mkdir C:/FusionLog -Force&lt;span class="p">;&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /inetpub/wwwroot&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/ .&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> cfg/ c:/&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;C:\\LogMonitor.exe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;C:\\ServiceMonitor.exe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;w3svc&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Containerization on Alfero Chingono</title><link>https://www.chingono.com/categories/containerization/</link><description>Recent content in Containerization on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 10 Jan 2025 15:38:23 -0500</lastBuildDate><atom:link href="https://www.chingono.com/categories/containerization/index.xml" rel="self" type="application/rss+xml"/><item><title>Dockerfile for containerizing Classic ASP</title><link>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</link><pubDate>Fri, 16 Jun 2023 12:14:12 +0000</pubDate><guid>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/cover.jpg" alt="Featured image of post Dockerfile for containerizing Classic ASP" /&gt;&lt;p&gt;In this blog post, we will walk through a Dockerfile designed for containerizing a Classic ASP application. This Dockerfile is based on the &lt;code&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/code&gt; image and includes several steps to configure the environment for running Classic ASP applications.&lt;/p&gt;
+&lt;h3 id="breakdown-of-the-dockerfile"&gt;Breakdown of the Dockerfile
+&lt;/h3&gt;&lt;h4 id="base-image-and-shell-configuration"&gt;Base Image and Shell Configuration
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; &lt;span class="nv"&gt;LOGMONITOR_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.0&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SHELL&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;powershell&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;-Command&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;$ErrorActionPreference = &amp;#39;Stop&amp;#39;; $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; LOGMONITOR_VERSION&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;We start by specifying the base image, which is a Windows Server Core image with ASP.NET 4.8. The &lt;code&gt;SHELL&lt;/code&gt; instruction sets PowerShell as the default shell for subsequent instructions.&lt;/p&gt;
+&lt;h4 id="installing-windows-features"&gt;Installing Windows Features
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Install-WindowsFeature Web-ASP&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-CGI&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-ISAPI-Ext&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-ISAPI-Filter&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-Includes&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-HTTP-Errors&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-Common-HTTP&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-Performance&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature WAS&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Import-module IISAdministration&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This section installs various IIS features required for running Classic ASP applications, such as ASP, CGI, ISAPI extensions, and more.&lt;/p&gt;
+&lt;h4 id="enabling-iis-features"&gt;Enabling IIS Features
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Enable-WindowsOptionalFeature -Online -FeatureName IIS-DefaultDocument&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Here, we enable additional IIS features like default documents and HTTP errors.&lt;/p&gt;
+&lt;h4 id="installing-dependencies"&gt;Installing Dependencies
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-Expression &lt;span class="o"&gt;((&lt;/span&gt;New-Object System.Net.WebClient&lt;span class="o"&gt;)&lt;/span&gt;.DownloadString&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://vcredist.com/install.ps1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; md c:/msi&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;We install the C++ 2017 redistributable and create a directory for MSI files.&lt;/p&gt;
+&lt;h4 id="installing-iis-rewrite-module-and-sql-odbc-driver"&gt;Installing IIS Rewrite Module and SQL ODBC Driver
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest &lt;span class="s1"&gt;&amp;#39;https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi&amp;#39;&lt;/span&gt; -OutFile c:/msi/rewrite_amd64_en-US.msi&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Start-Process &lt;span class="s1"&gt;&amp;#39;c:/msi/rewrite_amd64_en-US.msi&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/qn&amp;#39;&lt;/span&gt; -PassThru &lt;span class="p"&gt;|&lt;/span&gt; Wait-Process&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest &lt;span class="s1"&gt;&amp;#39;https://download.microsoft.com/download/c/5/4/c54c2bf1-87d0-4f6f-b837-b78d34d4d28a/en-US/18.2.1.1/x64/msodbcsql.msi&amp;#39;&lt;/span&gt; -OutFile c:/msi/msodbcsql.msi&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Start-Process &lt;span class="s1"&gt;&amp;#39;c:/msi/msodbcsql.msi&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;IACCEPTMSODBCSQLLICENSETERMS=YES&amp;#39;&lt;/span&gt; -PassThru &lt;span class="p"&gt;|&lt;/span&gt; Wait-Process&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;These commands download and install the IIS Rewrite Module and the SQL ODBC driver.&lt;/p&gt;
+&lt;h4 id="downloading-log-monitor"&gt;Downloading Log Monitor
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest -Uri &lt;span class="s2"&gt;&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;$env&lt;/span&gt;:LOGMONITOR_VERSION&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;/LogMonitor.exe&amp;#34;&lt;/span&gt; -OutFile C:&lt;span class="se"&gt;\L&lt;/span&gt;ogMonitor.exe&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest -Uri &lt;span class="s2"&gt;&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;$env&lt;/span&gt;:LOGMONITOR_VERSION&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;/LogMonitor.exe&amp;#34;&lt;/span&gt; -OutFile C:&lt;span class="se"&gt;\L&lt;/span&gt;ogMonitor.exe&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This command downloads the Log Monitor tool from the specified GitHub release URL and save it to the container&amp;rsquo;s file system. Log Monitor is a tool used to monitor and manage logs within a Windows container. This step ensures that the Log Monitor tool is available within the container for log management purposes.&lt;/p&gt;
+&lt;h4 id="unlocking-iis-configuration-sections"&gt;Unlocking IIS Configuration Sections
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; c:&lt;span class="se"&gt;\w&lt;/span&gt;indows&lt;span class="se"&gt;\s&lt;/span&gt;ystem32&lt;span class="se"&gt;\i&lt;/span&gt;netsrv&lt;span class="se"&gt;\a&lt;/span&gt;ppcmd.exe &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; unlock config &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/asp&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; c:&lt;span class="se"&gt;\w&lt;/span&gt;indows&lt;span class="se"&gt;\s&lt;/span&gt;ystem32&lt;span class="se"&gt;\i&lt;/span&gt;netsrv&lt;span class="se"&gt;\a&lt;/span&gt;ppcmd.exe &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; unlock config &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/handlers&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; c:&lt;span class="se"&gt;\w&lt;/span&gt;indows&lt;span class="se"&gt;\s&lt;/span&gt;ystem32&lt;span class="se"&gt;\i&lt;/span&gt;netsrv&lt;span class="se"&gt;\a&lt;/span&gt;ppcmd.exe &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; unlock config &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/modules&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This section unlocks various IIS configuration sections to allow modifications.&lt;/p&gt;
+&lt;p&gt;In IIS (Internet Information Services), certain configuration sections are locked by default to prevent unauthorized changes that could affect the stability and security of the server. Unlocking these sections is necessary when you need to customize the behavior of your web server beyond the default settings.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;system.webServer/asp&lt;/strong&gt;: Unlocking this section allows you to modify settings related to ASP (Active Server Pages), such as enabling or disabling ASP, configuring script timeouts, and setting debugging options.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;system.webServer/handlers&lt;/strong&gt;: This section controls the handlers that process requests for specific file types or URL patterns. Unlocking it allows you to add, remove, or modify handlers to customize how requests are processed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;system.webServer/modules&lt;/strong&gt;: Modules are components that handle various stages of request processing in IIS. Unlocking this section allows you to enable, disable, or configure modules to extend the functionality of your web server.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By unlocking these sections, you gain the flexibility to tailor the IIS configuration to meet the specific needs of your applications.&lt;/p&gt;
+&lt;h4 id="configuring-default-application-pool-and-web-site"&gt;Configuring Default Application Pool and Web Site
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Import-Module WebAdministration&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Get-Item IIS:&lt;span class="se"&gt;\\&lt;/span&gt;AppPools&lt;span class="se"&gt;\\&lt;/span&gt;DefaultAppPool&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.ManagedPipelineMode &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Integrated&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.ManagedRuntimeVersion &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;v4.0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.Enable32BitAppOnWin64 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.AutoStart &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; Set-Item&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Import-Module WebAdministration&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-WebConfigurationProperty -Location &lt;span class="s1"&gt;&amp;#39;Default Web Site&amp;#39;&lt;/span&gt; -Filter &lt;span class="s2"&gt;&amp;#34;system.webServer/asp&amp;#34;&lt;/span&gt; -Name &lt;span class="s2"&gt;&amp;#34;enableParentPaths&amp;#34;&lt;/span&gt; -Value &lt;span class="s1"&gt;&amp;#39;True&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-WebConfigurationProperty -Location &lt;span class="s1"&gt;&amp;#39;Default Web Site&amp;#39;&lt;/span&gt; -Filter &lt;span class="s2"&gt;&amp;#34;system.webServer/asp/limits&amp;#34;&lt;/span&gt; -Name &lt;span class="s2"&gt;&amp;#34;maxRequestEntityAllowed&amp;#34;&lt;/span&gt; -Value 2000000000&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;We configure the default application pool and set properties for the default web site.&lt;/p&gt;
+&lt;h4 id="enabling-fusion-logs"&gt;Enabling Fusion Logs
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name ForceLog -Value &lt;span class="m"&gt;1&lt;/span&gt; -Type DWord&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name LogFailures -Value &lt;span class="m"&gt;1&lt;/span&gt; -Type DWord&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name LogResourceBinds -Value &lt;span class="m"&gt;1&lt;/span&gt; -Type DWord&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name LogPath -Value &lt;span class="s1"&gt;&amp;#39;C:\FusionLog\&amp;#39;&lt;/span&gt; -Type String&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; mkdir C:/FusionLog -Force&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This section enables Fusion logs for troubleshooting .NET assembly binding issues.&lt;/p&gt;
+&lt;h4 id="setting-up-the-working-directory-and-copying-files"&gt;Setting Up the Working Directory and Copying Files
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/inetpub/wwwroot&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; src/ .&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; cfg/ c:/&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;We set the working directory to the IIS web root and copy the application source and configuration files.&lt;/p&gt;
+&lt;h4 id="setting-the-entry-point"&gt;Setting the Entry Point
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ENTRYPOINT&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;C:\\LogMonitor.exe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\\ServiceMonitor.exe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;w3svc&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Finally, we set the entry point to start the Log Monitor and Service Monitor for IIS.&lt;/p&gt;
+&lt;p&gt;This Dockerfile provides a comprehensive setup for running Classic ASP applications in a containerized environment, ensuring all necessary features and dependencies are installed and configured.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;span class="lnt"&gt;31
+&lt;/span&gt;&lt;span class="lnt"&gt;32
+&lt;/span&gt;&lt;span class="lnt"&gt;33
+&lt;/span&gt;&lt;span class="lnt"&gt;34
+&lt;/span&gt;&lt;span class="lnt"&gt;35
+&lt;/span&gt;&lt;span class="lnt"&gt;36
+&lt;/span&gt;&lt;span class="lnt"&gt;37
+&lt;/span&gt;&lt;span class="lnt"&gt;38
+&lt;/span&gt;&lt;span class="lnt"&gt;39
+&lt;/span&gt;&lt;span class="lnt"&gt;40
+&lt;/span&gt;&lt;span class="lnt"&gt;41
+&lt;/span&gt;&lt;span class="lnt"&gt;42
+&lt;/span&gt;&lt;span class="lnt"&gt;43
+&lt;/span&gt;&lt;span class="lnt"&gt;44
+&lt;/span&gt;&lt;span class="lnt"&gt;45
+&lt;/span&gt;&lt;span class="lnt"&gt;46
+&lt;/span&gt;&lt;span class="lnt"&gt;47
+&lt;/span&gt;&lt;span class="lnt"&gt;48
+&lt;/span&gt;&lt;span class="lnt"&gt;49
+&lt;/span&gt;&lt;span class="lnt"&gt;50
+&lt;/span&gt;&lt;span class="lnt"&gt;51
+&lt;/span&gt;&lt;span class="lnt"&gt;52
+&lt;/span&gt;&lt;span class="lnt"&gt;53
+&lt;/span&gt;&lt;span class="lnt"&gt;54
+&lt;/span&gt;&lt;span class="lnt"&gt;55
+&lt;/span&gt;&lt;span class="lnt"&gt;56
+&lt;/span&gt;&lt;span class="lnt"&gt;57
+&lt;/span&gt;&lt;span class="lnt"&gt;58
+&lt;/span&gt;&lt;span class="lnt"&gt;59
+&lt;/span&gt;&lt;span class="lnt"&gt;60
+&lt;/span&gt;&lt;span class="lnt"&gt;61
+&lt;/span&gt;&lt;span class="lnt"&gt;62
+&lt;/span&gt;&lt;span class="lnt"&gt;63
+&lt;/span&gt;&lt;span class="lnt"&gt;64
+&lt;/span&gt;&lt;span class="lnt"&gt;65
+&lt;/span&gt;&lt;span class="lnt"&gt;66
+&lt;/span&gt;&lt;span class="lnt"&gt;67
+&lt;/span&gt;&lt;span class="lnt"&gt;68
+&lt;/span&gt;&lt;span class="lnt"&gt;69
+&lt;/span&gt;&lt;span class="lnt"&gt;70
+&lt;/span&gt;&lt;span class="lnt"&gt;71
+&lt;/span&gt;&lt;span class="lnt"&gt;72
+&lt;/span&gt;&lt;span class="lnt"&gt;73
+&lt;/span&gt;&lt;span class="lnt"&gt;74
+&lt;/span&gt;&lt;span class="lnt"&gt;75
+&lt;/span&gt;&lt;span class="lnt"&gt;76
+&lt;/span&gt;&lt;span class="lnt"&gt;77
+&lt;/span&gt;&lt;span class="lnt"&gt;78
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# escape=`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; &lt;span class="nv"&gt;LOGMONITOR_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.0&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SHELL&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;powershell&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;-Command&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;$ErrorActionPreference = &amp;#39;Stop&amp;#39;; $ProgressPreference = &amp;#39;SilentlyContinue&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; LOGMONITOR_VERSION&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Install Windows Features&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Install-WindowsFeature Web-ASP&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-CGI&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-ISAPI-Ext&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-ISAPI-Filter&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-Includes&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-HTTP-Errors&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-Common-HTTP&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature Web-Performance&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Install-WindowsFeature WAS&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Import-module IISAdministration&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Enable IIS Features&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Enable-WindowsOptionalFeature -Online -FeatureName IIS-DefaultDocument&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Install C++ 2017 distributions&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-Expression &lt;span class="o"&gt;((&lt;/span&gt;New-Object System.Net.WebClient&lt;span class="o"&gt;)&lt;/span&gt;.DownloadString&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://vcredist.com/install.ps1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; md c:/msi&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Install IIS Rewrite Module&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest &lt;span class="s1"&gt;&amp;#39;https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi&amp;#39;&lt;/span&gt; -OutFile c:/msi/rewrite_amd64_en-US.msi&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Start-Process &lt;span class="s1"&gt;&amp;#39;c:/msi/rewrite_amd64_en-US.msi&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/qn&amp;#39;&lt;/span&gt; -PassThru &lt;span class="p"&gt;|&lt;/span&gt; Wait-Process&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Install SQL ODBC Driver&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest &lt;span class="s1"&gt;&amp;#39;https://download.microsoft.com/download/c/5/4/c54c2bf1-87d0-4f6f-b837-b78d34d4d28a/en-US/18.2.1.1/x64/msodbcsql.msi&amp;#39;&lt;/span&gt; -OutFile c:/msi/msodbcsql.msi&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Start-Process &lt;span class="s1"&gt;&amp;#39;c:/msi/msodbcsql.msi&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;IACCEPTMSODBCSQLLICENSETERMS=YES&amp;#39;&lt;/span&gt; -PassThru &lt;span class="p"&gt;|&lt;/span&gt; Wait-Process&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Download Log Monitor&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest -Uri &lt;span class="s2"&gt;&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;$env&lt;/span&gt;:LOGMONITOR_VERSION&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;/LogMonitor.exe&amp;#34;&lt;/span&gt; -OutFile C:&lt;span class="se"&gt;\L&lt;/span&gt;ogMonitor.exe&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Unlock IIS Configuration Sections&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; c:&lt;span class="se"&gt;\w&lt;/span&gt;indows&lt;span class="se"&gt;\s&lt;/span&gt;ystem32&lt;span class="se"&gt;\i&lt;/span&gt;netsrv&lt;span class="se"&gt;\a&lt;/span&gt;ppcmd.exe &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; unlock config &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/asp&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; c:&lt;span class="se"&gt;\w&lt;/span&gt;indows&lt;span class="se"&gt;\s&lt;/span&gt;ystem32&lt;span class="se"&gt;\i&lt;/span&gt;netsrv&lt;span class="se"&gt;\a&lt;/span&gt;ppcmd.exe &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; unlock config &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/handlers&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; c:&lt;span class="se"&gt;\w&lt;/span&gt;indows&lt;span class="se"&gt;\s&lt;/span&gt;ystem32&lt;span class="se"&gt;\i&lt;/span&gt;netsrv&lt;span class="se"&gt;\a&lt;/span&gt;ppcmd.exe &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; unlock config &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/modules&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Configure Default Application Pool&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Import-Module WebAdministration&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Get-Item IIS:&lt;span class="se"&gt;\\&lt;/span&gt;AppPools&lt;span class="se"&gt;\\&lt;/span&gt;DefaultAppPool&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.ManagedPipelineMode &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Integrated&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.ManagedRuntimeVersion &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;v4.0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.Enable32BitAppOnWin64 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt;.AutoStart &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$pool&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; Set-Item&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Configure Default Web Site&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Import-Module WebAdministration&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-WebConfigurationProperty -Location &lt;span class="s1"&gt;&amp;#39;Default Web Site&amp;#39;&lt;/span&gt; -Filter &lt;span class="s2"&gt;&amp;#34;system.webServer/asp&amp;#34;&lt;/span&gt; -Name &lt;span class="s2"&gt;&amp;#34;enableParentPaths&amp;#34;&lt;/span&gt; -Value &lt;span class="s1"&gt;&amp;#39;True&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-WebConfigurationProperty -Location &lt;span class="s1"&gt;&amp;#39;Default Web Site&amp;#39;&lt;/span&gt; -Filter &lt;span class="s2"&gt;&amp;#34;system.webServer/asp/limits&amp;#34;&lt;/span&gt; -Name &lt;span class="s2"&gt;&amp;#34;maxRequestEntityAllowed&amp;#34;&lt;/span&gt; -Value 2000000000&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Enable Fusion Logs&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# https://stackoverflow.com/a/33013110&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name ForceLog -Value &lt;span class="m"&gt;1&lt;/span&gt; -Type DWord&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name LogFailures -Value &lt;span class="m"&gt;1&lt;/span&gt; -Type DWord&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name LogResourceBinds -Value &lt;span class="m"&gt;1&lt;/span&gt; -Type DWord&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Set-ItemProperty -Path HKLM:&lt;span class="se"&gt;\\&lt;/span&gt;Software&lt;span class="se"&gt;\\&lt;/span&gt;Microsoft&lt;span class="se"&gt;\\&lt;/span&gt;Fusion -Name LogPath -Value &lt;span class="s1"&gt;&amp;#39;C:\FusionLog\&amp;#39;&lt;/span&gt; -Type String&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; mkdir C:/FusionLog -Force&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/inetpub/wwwroot&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; src/ .&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; cfg/ c:/&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ENTRYPOINT&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;C:\\LogMonitor.exe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\\ServiceMonitor.exe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;w3svc&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

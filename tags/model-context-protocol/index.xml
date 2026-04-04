@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Model Context Protocol on Alfero Chingono</title><link>https://www.chingono.com/tags/model-context-protocol/</link><description>Recent content in Model Context Protocol on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/model-context-protocol/index.xml" rel="self" type="application/rss+xml"/><item><title>MCP in Practice: What Anthropic's Model Context Protocol Actually Means for Developers</title><link>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</link><pubDate>Thu, 20 Mar 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</guid><description>&lt;p&gt;When Anthropic announced the &lt;a class="link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener"
+&gt;Model Context Protocol&lt;/a&gt;, the most interesting part to me was not &amp;ldquo;LLMs can call tools.&amp;rdquo; We already knew that. The interesting part was that someone was finally trying to standardize the connection.&lt;/p&gt;
+&lt;p&gt;That may sound like a small distinction, but it is the difference between a clever demo and an architecture you can actually build on.&lt;/p&gt;
+&lt;p&gt;For developers, MCP matters because it turns tool access into something more portable, more inspectable, and less bespoke. Instead of wiring every model to every internal system in a slightly different way, you get a shared protocol for secure, two-way connections between AI clients and the systems where work actually lives.&lt;/p&gt;
+&lt;p&gt;In other words: fewer one-off connectors, fewer weird wrappers, and less glue code pretending to be strategy.&lt;/p&gt;
+&lt;h2 id="the-real-problem-mcp-solves"&gt;The real problem MCP solves
+&lt;/h2&gt;&lt;p&gt;Without a protocol, most AI integrations end up with the same shape:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;custom JSON formats&lt;/li&gt;
+&lt;li&gt;hand-rolled function schemas&lt;/li&gt;
+&lt;li&gt;transport logic mixed into business logic&lt;/li&gt;
+&lt;li&gt;a different adapter for every new client&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can absolutely ship systems that way. Many people already have. But you pay for it later in duplication, debugging, and lock-in.&lt;/p&gt;
+&lt;p&gt;Anthropic&amp;rsquo;s framing resonated with me because it describes a problem I had already been running into while building CueMarshal. I did not need agents that could merely &amp;ldquo;use tools.&amp;rdquo; I needed a stable way for different parts of the system to use the &lt;strong&gt;same tools&lt;/strong&gt; in different contexts.&lt;/p&gt;
+&lt;p&gt;That is where MCP becomes practical.&lt;/p&gt;
+&lt;h2 id="what-it-changed-in-my-own-thinking"&gt;What it changed in my own thinking
+&lt;/h2&gt;&lt;p&gt;In CueMarshal, I ended up with three MCP servers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a &lt;strong&gt;Gitea MCP server&lt;/strong&gt; for issues, pull requests, repositories, workflows, and search&lt;/li&gt;
+&lt;li&gt;a &lt;strong&gt;Conductor MCP server&lt;/strong&gt; for task coordination and agent state&lt;/li&gt;
+&lt;li&gt;a &lt;strong&gt;System MCP server&lt;/strong&gt; for costs, runners, and health&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That split was not arbitrary. It reflected a design choice: organize tool access around bounded responsibilities instead of dumping everything into one giant catch-all toolbox.&lt;/p&gt;
+&lt;p&gt;Even more important, the same MCP server code supports &lt;strong&gt;two transports&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;stdio&lt;/strong&gt; for agent runners&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HTTP/SSE&lt;/strong&gt; for the long-running chat/orchestration layer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is the part I think many developers will underestimate. The value is not just that the model can invoke a tool. The value is that your tool layer stops being trapped inside one execution model.&lt;/p&gt;
+&lt;p&gt;The CueMarshal runners can spawn MCP servers directly as child processes. The Conductor can hold long-lived connections to those same tool surfaces over the network. Same capability, different runtime, no duplicated tool logic.&lt;/p&gt;
+&lt;p&gt;That is not just elegant. It is operationally useful.&lt;/p&gt;
+&lt;h2 id="mcp-is-really-about-interface-discipline"&gt;MCP is really about interface discipline
+&lt;/h2&gt;&lt;p&gt;One thing building AI systems teaches very quickly is that &amp;ldquo;prompting&amp;rdquo; gets too much credit for problems that are really interface problems.&lt;/p&gt;
+&lt;p&gt;If the tool schema is vague, the model will behave vaguely.&lt;/p&gt;
+&lt;p&gt;If the permissions are broad, the behavior will feel risky.&lt;/p&gt;
+&lt;p&gt;If the transport is brittle, the whole system looks flaky even when the reasoning is fine.&lt;/p&gt;
+&lt;p&gt;What I like about MCP is that it nudges teams toward better engineering habits:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Typed tools instead of implied behavior&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Separation between protocol and implementation&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reusable tool layers across multiple clients&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clearer permission boundaries&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That discipline matters even if you never use Anthropic&amp;rsquo;s stack directly.&lt;/p&gt;
+&lt;h2 id="what-developers-should-actually-do-with-it"&gt;What developers should actually do with it
+&lt;/h2&gt;&lt;p&gt;My advice is to treat MCP less like a product feature and more like a systems design decision.&lt;/p&gt;
+&lt;p&gt;If you are building AI-assisted software delivery, internal automation, or even just richer developer tools, start by asking:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What are the real systems my assistant needs to access?&lt;/li&gt;
+&lt;li&gt;Which of those interactions deserve typed, validated interfaces?&lt;/li&gt;
+&lt;li&gt;Which capabilities should be shared across chat, automation, and background agents?&lt;/li&gt;
+&lt;li&gt;Where do I want auditability and permission scoping to live?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That line of thinking will produce a better architecture whether you adopt MCP tomorrow or not.&lt;/p&gt;
+&lt;p&gt;In my own work, it pushed me away from raw &lt;code&gt;curl&lt;/code&gt;-driven integration and toward a universal tool layer. Once I made that shift, a lot of downstream problems became easier: orchestration, reuse, security boundaries, and even explanation. It is easier to trust a system when you can say, very plainly, &amp;ldquo;here are the tools it has, here is what they do, and here is how they are invoked.&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="what-mcp-does-not-solve"&gt;What MCP does &lt;strong&gt;not&lt;/strong&gt; solve
+&lt;/h2&gt;&lt;p&gt;MCP does not magically make an agent reliable.&lt;/p&gt;
+&lt;p&gt;It does not fix poor workflow design.&lt;/p&gt;
+&lt;p&gt;It does not remove the need for human review.&lt;/p&gt;
+&lt;p&gt;And it definitely does not turn vague prompts into good engineering.&lt;/p&gt;
+&lt;p&gt;What it does is give you a cleaner control plane for connecting models to real systems. That is already a meaningful improvement.&lt;/p&gt;
+&lt;p&gt;For me, that is why MCP feels important. Not because it adds more AI theater, but because it reduces architectural friction in a place where friction compounds very fast.&lt;/p&gt;
+&lt;p&gt;If you are curious how that idea plays out in a larger system, I wrote more about the broader coordination problem in &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt; and the orchestration lessons in &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener"
+&gt;Introducing the Model Context Protocol&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://modelcontextprotocol.io/quickstart" target="_blank" rel="noopener"
+&gt;MCP quickstart and specification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/mcp-servers/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal MCP server overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
+&gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
