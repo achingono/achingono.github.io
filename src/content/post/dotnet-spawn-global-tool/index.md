@@ -25,15 +25,15 @@ Back in 2013, I created a nice little sample project demonstrating code generati
 
 I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:
 
-{{< tweet user="achingono" id="936598758682451969" >}}
+{{< x user="achingono" id="936598758682451969" >}}
 
 [Glenn von Breadmeister](https://twitter.com/condrong) was kind enough to respond with:
 
-{{< tweet user="condrong" id="936636161933574144" >}}
+{{< x user="condrong" id="936636161933574144" >}}
 
 And [Andrew Stanton-Nurse](https://twitter.com/anurse) took it further by saying:
 
-{{< tweet user="anurse" id="938069127700156416" >}}
+{{< x user="anurse" id="938069127700156416" >}}
 
 I somewhat forgot about these conversations until recently when I started building another sample project and needed to generate some code for rapid development. Looking around, I couldn't find something that suited my needs and besides, I had a lingering question: "Is razor really that bad at code generation?". I figured maybe it's worth a try.
 
