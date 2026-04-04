@@ -1,9 +1,9 @@
 ---
 author: "Alfero Chingono"
-title: "Automating Owasp Top Ten Scan Reports in Azure Devops"
+title: "Automating OWASP Top Ten Scan Reports in Azure DevOps"
 date: 2024-09-05T09:58:57Z
 draft: false
-description: "Learn how to seamlessly integrate OWASP ZAP security scans into your Azure DevOps pipelines. This guide covers setting up ZAP, converting scan results to NUnit format, and publishing them in Azure DevOps for enhanced visibility and actionability."
+description: "How I automated OWASP ZAP scans in Azure DevOps release pipelines: running the scanner, converting findings to NUnit format, and surfacing vulnerabilities as test results."
 slug: automating-owasp-scan-reports-in-azure-devops
 tags: [
 "OWASP",
@@ -24,9 +24,9 @@ categories: [
 ]
 image: "cover.jpg"
 ---
-Web application security is an ever-critical concern, and scanning for vulnerabilities should be seamlessly integrated into your CI/CD pipelines. If you've been searching for a way to automate OWASP ZAP (Zed Attack Proxy) scans and generate detailed, actionable reports in your Azure DevOps pipelines, you're in the right place.
+Security scanning should be part of the delivery flow, not an afterthought. In this post I walk through how I automated OWASP ZAP scans using Azure DevOps release pipelines and transformed the findings into something teams can actually act on.
 
-In this blog post, I'll walk you through how to automate OWASP ZAP scans using Azure DevOps release pipelines. We'll also explore how to transform the ZAP results into a format suitable for CI/CD integration. Let’s dive right in!
+The approach uses a ZAP Docker container to run baseline scans, a PowerShell script to map findings to OWASP Top 10 categories and convert them to NUnit format, and the standard Azure DevOps publish-test-results task to surface vulnerabilities as visible test failures in your pipeline.
 
 ## Defining Pipeline Environment Variables
 
@@ -277,13 +277,13 @@ This step ensures that vulnerabilities are tracked as test failures, making them
 
 ![Test Results](test-results.jpg)
 
-### Wrapping Up
+### What this gets you
 
-By integrating OWASP ZAP scans with Azure DevOps, you’re not just automating security testing but embedding it into your development lifecycle. The PowerShell script transforms ZAP results into actionable insights that teams can immediately act upon, helping you stay ahead of security risks.
+By integrating OWASP ZAP scans with Azure DevOps, you get security findings surfaced as test failures in the same interface where the rest of your pipeline results live. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion so the results are immediately interpretable without digging into raw XML.
 
-Are you ready to level up your CI/CD pipeline with automated security scans? Give this approach a try, and let me know how it works for you in the comments below.
+One thing I appreciate even more now than when I first wrote this post is that DAST automation is only one part of a strong DevSecOps loop. OWASP ZAP gives us runtime-facing feedback, but the workflow becomes even more powerful when it sits beside static analysis, issue routing, and remediation paths that developers can act on without leaving their normal delivery flow.
 
-Happy securing!
+I explored that next step in [How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)](/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/). If this post shows one generation of automated AppSec reporting, that newer post shows how I now think about turning findings directly into reviewable engineering work.
 
 References:
 

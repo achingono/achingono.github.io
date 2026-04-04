@@ -11,12 +11,13 @@ tags: [
     "inclusion"
 ]
 categories: [
-    "poetry"
+    "poetry",
+    "reflection"
 ]
 image: "cover.png"
 ---
 
-I do not recall writing a poem before, let alone sharing it with a broad audience. So this is a big risk I'm taking all in the pretext of a "growth mindset". However, I had a recent experience that put me in deep thought and sent me on a long walk. During my walk, I came up with the first three lines of this poem. I've been tweaking it a little at a time ever since, and it still feels imperfect. I'm sharing it here because it still needs work and I hope someone will take an interest in improving it.  
+I do not recall writing a poem before, let alone sharing it with a broad audience. So this is a big risk I'm taking under the banner of a "growth mindset". However, I had a recent experience that put me in deep thought and sent me on a long walk. During my walk, I came up with the first three lines of this poem. I've been tweaking it a little at a time ever since, and it still feels imperfect. I'm sharing it here because it still needs work and I hope someone will take an interest in improving it.  
 
 Without further ado, here's my very first poem:
 

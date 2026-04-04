@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts"
 date: 2025-01-10T15:43:12Z
 draft: false
-description: "This post explores how to use Azure deployment scripts and Bicep templates to dynamically query and conditionally deploy resources in Azure App Configuration, ensuring efficient and error-free configuration management."
+description: "How I used Azure deployment scripts and Bicep to dynamically query existing labels and keys in Azure App Configuration and conditionally deploy only what is missing."
 slug: conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts
 tags: [
 "Azure",
@@ -215,9 +215,12 @@ module environments 'environment.bicep' = [
 
 ## Conclusion
 
-This approach automates the process of identifying missing configurations and deploying only the necessary resources. By combining deployment scripts with Bicep’s conditional logic, we’ve achieved a dynamic and scalable solution for managing Azure App Configuration.
+This pattern removes the manual step of checking what already exists before deploying. The deployment scripts query current state, the Bicep conditional logic handles the rest, and the managed identity keeps permissions scoped to what the script actually needs.
 
-Feel free to try this out in your environment and share your feedback. Let me know if you encounter any challenges or have ideas for further optimization!
+## Related Posts
+
+- [Why I Started Building My Own DevOps Platform (And What I Learned)](/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/)
+- [The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/)
 
 References:
 
