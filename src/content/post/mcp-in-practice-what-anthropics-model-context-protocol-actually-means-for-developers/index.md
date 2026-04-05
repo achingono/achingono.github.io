@@ -39,7 +39,7 @@ Without a protocol, most AI integrations end up with the same shape:
 
 You can absolutely ship systems that way. Many people already have. But you pay for it later in duplication, debugging, and lock-in.
 
-Anthropic's framing resonated with me because it describes a problem I had already been running into while building CueMarshal. I did not need agents that could merely "use tools." I needed a stable way for different parts of the system to use the **same tools** in different contexts.
+Anthropic's framing resonated with me because it describes a problem I had already been running into while building [CueMarshal](https://www.cuemarshal.com). I did not need agents that could merely "use tools." I needed a stable way for different parts of the system to use the **same tools** in different contexts.
 
 That is where MCP becomes practical.
 

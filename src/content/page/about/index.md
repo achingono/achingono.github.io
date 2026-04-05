@@ -26,7 +26,7 @@ That is the lens behind this site.
 
 Professionally, my work sits at the intersection of **Platform Engineering, DevEx, cloud automation, and AI-enabled software delivery**. In practice that means things like CI/CD, observability, feature flags, architecture patterns, self-service platforms, and the organizational work required to make those systems actually useful.
 
-Outside of work, I'm building and sharing projects like **CueMarshal** and **FireFly**.
+Outside of work, I'm building and sharing projects like **[CueMarshal](https://www.cuemarshal.com)** and **FireFly**.
 
 - **CueMarshal** is my take on a self-hosted, Git-centric AI DevOps platform.
 - **FireFly** is a visual code stepper and AI tutor designed to help kids actually understand how code executes.

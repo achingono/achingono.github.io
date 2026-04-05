@@ -43,7 +43,7 @@ The pattern I have found most practical looks like this:
 4. keep human review as the merge gate
 5. rescan and repeat
 
-That is what I have been doing across FireFly and CueMarshal.
+That is what I have been doing across FireFly and [CueMarshal](https://www.cuemarshal.com).
 
 ## The FireFly version: temporary SonarQube, durable issues
 

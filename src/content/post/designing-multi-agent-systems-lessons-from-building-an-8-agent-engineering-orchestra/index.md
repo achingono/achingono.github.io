@@ -25,7 +25,7 @@ A lot of "multi-agent" demos are really one agent wearing different hats.
 
 The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.
 
-Building [CueMarshal](https://github.com/cuemarshal/cuemarshal) made that distinction impossible for me to ignore.
+Building [CueMarshal](https://www.cuemarshal.com) made that distinction impossible for me to ignore.
 
 What I wanted was not eight personalities for marketing. I wanted a working system where planning, coding, review, testing, DevOps, documentation, and quality control could be separated cleanly enough to be trustworthy.
 

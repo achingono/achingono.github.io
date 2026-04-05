@@ -23,7 +23,7 @@ image: "cover.png"
 
 For a while, I had the same reaction to most AI-for-software-delivery demos: impressive in a narrow way, but not something I would trust with real work. One tool could write code. Another could summarize a diff. Another could review a pull request. But the hard part of software delivery is rarely one isolated step. It is the handoff between steps.
 
-That was the itch that eventually pushed me to start building [CueMarshal](https://github.com/cuemarshal/cuemarshal).
+That was the itch that eventually pushed me to start building [CueMarshal](https://www.cuemarshal.com).
 
 I did not start with the ambition to build "an AI company" or some abstract autonomous future. I started because I wanted a more coherent delivery system: one place where a task could move from idea to issue to branch to pull request to review without losing context every time responsibility changed hands.
 

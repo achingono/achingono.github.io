@@ -43,7 +43,11 @@ Error: Signal RPC -1: Failed to send message
 
 At first glance, that looks like a Signal transport problem. But that theory fell apart pretty quickly.
 
-I sent a proactive Signal message directly through OpenClaw's normal outbound path, outside cron, and it worked.
+I sent a proactive Signal message directly through OpenClaw's normal outbound path, outside cron, and it worked:
+
+```bash
+openclaw session send --agent personal --message "test delivery"
+```
 
 That mattered a lot.
 
@@ -176,11 +180,32 @@ If the reminder started in Teams, the same rule applies with the Teams session k
 
 I patched the stored failed Signal reminder jobs so they now carry the missing `agentId`, `sessionKey`, and explicit destination metadata.
 
+First I listed the jobs to identify the broken ones:
+
+```bash
+openclaw cron list
+```
+
+Then I edited each failed job to restore the routing context:
+
+```bash
+openclaw cron edit <job-id> \
+  --announce \
+  --agent personal \
+  --session-key agent:personal:signal:direct:uuid:<recipient> \
+  --channel signal \
+  --to uuid:<recipient>
+```
+
 That gave me a clean way to test the actual failing path instead of just assuming the theory was right.
 
 ## The result
 
-After repairing the routing metadata, I reran the missed transit-claim reminder job.
+After repairing the routing metadata, I reran the missed transit-claim reminder job:
+
+```bash
+openclaw cron run <job-id>
+```
 
 Previously its run log ended like this:
 
