@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Asp-Net on Alfero Chingono</title><link>https://www.chingono.com/tags/asp-net/</link><description>Recent content in Asp-Net on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 10 Jan 2025 15:38:23 -0500</lastBuildDate><atom:link href="https://www.chingono.com/tags/asp-net/index.xml" rel="self" type="application/rss+xml"/><item><title>Dockerfile for containerizing Classic ASP</title><link>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</link><pubDate>Fri, 16 Jun 2023 12:14:12 +0000</pubDate><guid>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/cover.jpg" alt="Featured image of post Dockerfile for containerizing Classic ASP" /&gt;&lt;p&gt;In this blog post, we will walk through a Dockerfile designed for containerizing a Classic ASP application. This Dockerfile is based on the &lt;code&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/code&gt; image and includes several steps to configure the environment for running Classic ASP applications.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Asp-Net on Alfero Chingono</title><link>https://www.chingono.com/tags/asp-net/</link><description>Recent content in Asp-Net on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/asp-net/index.xml" rel="self" type="application/rss+xml"/><item><title>Dockerfile for containerizing Classic ASP</title><link>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</link><pubDate>Fri, 16 Jun 2023 12:14:12 +0000</pubDate><guid>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/cover.jpg" alt="Featured image of post Dockerfile for containerizing Classic ASP" /&gt;&lt;p&gt;I needed a Windows container image that could run a Classic ASP application without a lot of manual IIS setup. This Dockerfile starts from &lt;code&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/code&gt; and layers in the IIS features, dependencies, and configuration the app needs.&lt;/p&gt;
 &lt;h3 id="breakdown-of-the-dockerfile"&gt;Breakdown of the Dockerfile
 &lt;/h3&gt;&lt;h4 id="base-image-and-shell-configuration"&gt;Base Image and Shell Configuration
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
@@ -15,7 +15,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; LOGMONITOR_VERSION&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;We start by specifying the base image, which is a Windows Server Core image with ASP.NET 4.8. The &lt;code&gt;SHELL&lt;/code&gt; instruction sets PowerShell as the default shell for subsequent instructions.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;We start with a Windows Server Core image that already includes ASP.NET 4.8, then switch the default shell to PowerShell for the rest of the build.&lt;/p&gt;
 &lt;h4 id="installing-windows-features"&gt;Installing Windows Features
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -43,7 +43,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Import-module IISAdministration&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This section installs various IIS features required for running Classic ASP applications, such as ASP, CGI, ISAPI extensions, and more.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This section installs the IIS features the application depends on, including Classic ASP, CGI, and ISAPI support.&lt;/p&gt;
 &lt;h4 id="enabling-iis-features"&gt;Enabling IIS Features
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -55,7 +55,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Here, we enable additional IIS features like default documents and HTTP errors.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;Here we enable a couple of IIS features that older applications often expect: default documents and HTTP errors.&lt;/p&gt;
 &lt;h4 id="installing-dependencies"&gt;Installing Dependencies
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -97,7 +97,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest -Uri &lt;span class="s2"&gt;&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;$env&lt;/span&gt;:LOGMONITOR_VERSION&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;/LogMonitor.exe&amp;#34;&lt;/span&gt; -OutFile C:&lt;span class="se"&gt;\L&lt;/span&gt;ogMonitor.exe&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This command downloads the Log Monitor tool from the specified GitHub release URL and save it to the container&amp;rsquo;s file system. Log Monitor is a tool used to monitor and manage logs within a Windows container. This step ensures that the Log Monitor tool is available within the container for log management purposes.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This command downloads the Log Monitor tool from the specified GitHub release URL and saves it to the container&amp;rsquo;s file system. Log Monitor makes it much easier to surface logs from a Windows container in a usable way.&lt;/p&gt;
 &lt;h4 id="unlocking-iis-configuration-sections"&gt;Unlocking IIS Configuration Sections
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -123,7 +123,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/modules&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This section unlocks various IIS configuration sections to allow modifications.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This section unlocks the IIS configuration sections we need to change later.&lt;/p&gt;
 &lt;p&gt;In IIS (Internet Information Services), certain configuration sections are locked by default to prevent unauthorized changes that could affect the stability and security of the server. Unlocking these sections is necessary when you need to customize the behavior of your web server beyond the default settings.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;system.webServer/asp&lt;/strong&gt;: Unlocking this section allows you to modify settings related to ASP (Active Server Pages), such as enabling or disabling ASP, configuring script timeouts, and setting debugging options.&lt;/li&gt;
@@ -205,7 +205,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;Finally, we set the entry point to start the Log Monitor and Service Monitor for IIS.&lt;/p&gt;
-&lt;p&gt;This Dockerfile provides a comprehensive setup for running Classic ASP applications in a containerized environment, ensuring all necessary features and dependencies are installed and configured.&lt;/p&gt;
+&lt;p&gt;This Dockerfile sets up the pieces needed to run a Classic ASP application in a container, with the IIS features, dependencies, and runtime configuration handled in the image.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1

@@ -29,7 +29,7 @@
 &lt;h2 id="the-failure-was-hiding-behind-a-second-bug"&gt;The failure was hiding behind a second bug
 &lt;/h2&gt;&lt;p&gt;While tracing the original conversation, I found something even more frustrating.&lt;/p&gt;
 &lt;p&gt;The first time the agent tried to create the reminder, it used invalid CLI flags. Then it tried again with another invalid form. Then it hit a gateway error. After that, instead of telling the user scheduling had failed, it wrote notes into &lt;code&gt;HEARTBEAT.md&lt;/code&gt; and &lt;code&gt;MEMORY.md&lt;/code&gt; and still acted as if the reminder had been set.&lt;/p&gt;
-&lt;p&gt;Not a reminder — that&amp;rsquo;s a private note pretending to be one.&lt;/p&gt;
+&lt;p&gt;That is not a reminder. It is a private note pretending to be one.&lt;/p&gt;
 &lt;p&gt;Later in the same session, the agent finally did create a real cron job. So there were actually two different problems:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;the agent could falsely claim success after &lt;code&gt;cron add&lt;/code&gt; failed&lt;/li&gt;
@@ -231,7 +231,7 @@
 &lt;p&gt;That sounds almost embarrassingly obvious, but it&amp;rsquo;s the kind of failure mode that destroys trust very quickly. A failed reminder should be reported as failed. A note in memory isn&amp;rsquo;t a substitute for delivery. And a scheduler shouldn&amp;rsquo;t quietly lose the route back to the person who asked for the work.&lt;/p&gt;
 &lt;p&gt;Small bug. Important fix.&lt;/p&gt;
 &lt;p&gt;And honestly, those are often the bugs worth writing about.&lt;/p&gt;
-&lt;p&gt;If you&amp;rsquo;re interested in the broader design side of this kind of system, I wrote more about &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;why I started building my own DevOps platform&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;what MCP changed for me in practice&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;what building a real multi-agent system taught me about roles, boundaries, and orchestration&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical — it was architectural.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in the broader design side of this kind of system, I wrote more about &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;why I started building my own DevOps platform&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;what MCP changed for me in practice&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;what building a real multi-agent system taught me about roles, boundaries, and orchestration&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical. It was architectural.&lt;/p&gt;
 &lt;p&gt;Should one agent answer everything?&lt;/p&gt;
 &lt;p&gt;I didn&amp;rsquo;t think so.&lt;/p&gt;
 &lt;h2 id="i-wanted-separation-without-turning-the-system-into-theater"&gt;I wanted separation without turning the system into theater
@@ -350,7 +350,7 @@
 &lt;li&gt;Teams routes to &lt;code&gt;main&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;I like this because it reflects how I actually use those channels.&lt;/p&gt;
-&lt;p&gt;Signal is more personal and direct. Teams is more operational, thread-oriented, work-shaped. The routing isn&amp;rsquo;t arbitrary — it maps the social surface to the agent surface.&lt;/p&gt;
+&lt;p&gt;Signal is more personal and direct. Teams is more operational, thread-oriented, work-shaped. The routing isn&amp;rsquo;t arbitrary; it maps the social surface to the agent surface.&lt;/p&gt;
 &lt;h2 id="the-rest-of-the-config-reinforces-the-separation"&gt;The rest of the config reinforces the separation
 &lt;/h2&gt;&lt;p&gt;A few other config details matter more than they might look.&lt;/p&gt;
 &lt;p&gt;One is:&lt;/p&gt;
@@ -418,7 +418,7 @@ You remove ambiguity.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Outcomes matter, but outcomes that are not made legible, timely, and attributable are often discounted.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;That sentence has stayed with me because it explains something I have seen repeatedly, both in myself and in other high-conscientious operators. We assume that if the work is real, the value will be obvious. In many organizations, that is simply not how visibility works.&lt;/p&gt;
+&lt;p&gt;That sentence has stayed with me because it explains something I have seen repeatedly, both in myself and in other highly conscientious operators. We assume that if the work is real, the value will be obvious. In many organizations, that is simply not how visibility works.&lt;/p&gt;
 &lt;h2 id="the-problem-is-usually-structural-not-personal"&gt;The problem is usually structural, not personal
 &lt;/h2&gt;&lt;p&gt;Most big organizations do not formally say they reward performative busyness over outcomes. In fact, they usually say the opposite.&lt;/p&gt;
 &lt;p&gt;The disconnect shows up in the operating reality.&lt;/p&gt;
@@ -500,10 +500,10 @@ Often it does not.&lt;/p&gt;
 &lt;/h2&gt;&lt;p&gt;I no longer think of visibility as a political side quest. I think of it as part of delivery.&lt;/p&gt;
 &lt;p&gt;If I create meaningful change but fail to make it legible, timely, and attributable, then part of the job is still unfinished.&lt;/p&gt;
 &lt;p&gt;That has changed how I think about platform work, architecture work, and even writing in public. In some ways, building publicly is itself a response to this problem. The work becomes its own audit trail.&lt;/p&gt;
-&lt;p&gt;That is also why this post connects so naturally to &lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here&amp;rsquo;s How I&amp;rsquo;ve Seen It&lt;/a&gt;. Platform work can produce real leverage. But if the leverage stays invisible, the organization often underestimates both the work and the people doing it.&lt;/p&gt;
+&lt;p&gt;That is also why this post connects so naturally to &lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;my DORA post on internal developer platforms&lt;/a&gt;. Platform work can produce real leverage. But if the leverage stays invisible, the organization often underestimates both the work and the people doing it.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here&amp;rsquo;s How I&amp;rsquo;ve Seen It&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;My DORA post on internal developer platforms&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>Inside the Dockerfile Behind My OpenClaw Gateway</title><link>https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/</link><pubDate>Sun, 15 Mar 2026 17:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/cover.png" alt="Featured image of post Inside the Dockerfile Behind My OpenClaw Gateway" /&gt;&lt;p&gt;The first two posts in this series covered the Docker decision and the Signal/Teams channel integration. This one gets into the Dockerfile itself.&lt;/p&gt;
 &lt;p&gt;It&amp;rsquo;s not very long, but it&amp;rsquo;s doing more architectural work than its size suggests.&lt;/p&gt;
@@ -750,7 +750,7 @@ Often it does not.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;This is one reason I still like Docker Compose for personal infrastructure. It doesn&amp;rsquo;t just run containers. It describes the operating assumptions of the stack in one place.&lt;/p&gt;
 &lt;h2 id="the-setup-was-already-hinting-at-the-routing-story"&gt;The setup was already hinting at the routing story
-&lt;/h2&gt;&lt;p&gt;Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly — which agent answers where, what state belongs to which workspace, how does a background task find its way back to the right chat. That&amp;rsquo;s where the series goes next.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly: which agent answers where, what state belongs to which workspace, and how does a background task find its way back to the right chat? That&amp;rsquo;s where the series goes next.&lt;/p&gt;
 &lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)</title><link>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/cover.png" alt="Featured image of post How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)" /&gt;&lt;p&gt;I wrote in 2024 about &lt;a class="link" href="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/" &gt;automating OWASP scan reports in Azure DevOps&lt;/a&gt; because I wanted security scanning to become part of the delivery flow instead of an afterthought.&lt;/p&gt;
 &lt;p&gt;This post is the next step in that same direction.&lt;/p&gt;
 &lt;p&gt;The thing I wanted from SonarQube was not another dashboard full of guilt. I wanted a loop that could actually create work, route it, fix it, and come back cleaner on the next scan.&lt;/p&gt;
@@ -1285,19 +1285,19 @@ Not from a maturity model.&lt;/p&gt;
 &gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/agents/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts</title><link>https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/</link><pubDate>Fri, 10 Jan 2025 15:43:12 +0000</pubDate><guid>https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/cover.jpg" alt="Featured image of post Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts" /&gt;&lt;p&gt;When managing configurations in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview" target="_blank" rel="noopener"
-&gt;Azure App Configuration&lt;/a&gt;, dynamically identifying and conditionally deploying resources can streamline your infrastructure and reduce manual intervention. In this post, I’ll walk you through how I used &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template" target="_blank" rel="noopener"
-&gt;Azure deployment scripts&lt;/a&gt; and Bicep templates to achieve this. Along the way, I’ll explain the logic behind the deployment and the steps required to ensure everything works seamlessly.&lt;/p&gt;
+&lt;/ul&gt;</description></item><item><title>Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts</title><link>https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/</link><pubDate>Fri, 10 Jan 2025 15:43:12 +0000</pubDate><guid>https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/01/10/conditionally-deploying-resources-azure-app-configuration-using-deployment-scripts/cover.jpg" alt="Featured image of post Conditionally Deploying Resources in Azure App Configuration Using Deployment Scripts" /&gt;&lt;p&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview" target="_blank" rel="noopener"
+&gt;Azure App Configuration&lt;/a&gt; gets awkward once you need to seed defaults without duplicating keys that are already there. I used &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template" target="_blank" rel="noopener"
+&gt;Azure deployment scripts&lt;/a&gt; and Bicep to query the current state first, then deploy only what was missing. This post walks through that pattern and the pieces that made it work.&lt;/p&gt;
 &lt;h2 id="problem-statement"&gt;Problem Statement
 &lt;/h2&gt;&lt;p&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview" target="_blank" rel="noopener"
-&gt;Azure App Configuration&lt;/a&gt; allows us to manage configurations centrally, but as environments and configurations evolve, deploying defaults and ensuring environments are properly configured becomes a challenge. Manual processes are prone to errors and inefficiencies, and hardcoding resources isn’t scalable. We needed a solution that dynamically queried existing configurations and conditionally deployed only what was missing.&lt;/p&gt;
+&gt;Azure App Configuration&lt;/a&gt; lets us manage configuration centrally, but once environments drift, seeding defaults becomes messy. Manual checks invite mistakes, and hardcoding resources does not age well. I needed a way to query what already existed and deploy only the missing pieces.&lt;/p&gt;
 &lt;h2 id="solution-overview"&gt;Solution Overview
 &lt;/h2&gt;&lt;p&gt;Using &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template" target="_blank" rel="noopener"
-&gt;Azure deployment scripts&lt;/a&gt; within Bicep, we can:&lt;/p&gt;
+&gt;Azure deployment scripts&lt;/a&gt; inside Bicep, I could:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Query existing labels and keys in Azure App Configuration.&lt;/li&gt;
 &lt;li&gt;Conditionally deploy default settings, environments, and configurations based on the query results.&lt;/li&gt;
-&lt;li&gt;Automate the entire process while maintaining modularity and reusability.&lt;/li&gt;
+&lt;li&gt;Keep the process automated without hardcoding the current state.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id="high-level-architecture"&gt;High-Level Architecture
 &lt;/h3&gt;&lt;ul&gt;
@@ -1615,7 +1615,7 @@ Not from a maturity model.&lt;/p&gt;
 &lt;h2 id="related-posts"&gt;Related Posts
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here&amp;rsquo;s How I&amp;rsquo;ve Seen It&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;My DORA post on internal developer platforms&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ul&gt;
@@ -1636,10 +1636,10 @@ Not from a maturity model.&lt;/p&gt;
 &lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-script-bicep?tabs=CLI" target="_blank" rel="noopener"
 &gt;Use deployment scripts in Bicep&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>Automating Notifications in Azure Devops Using Power Automate</title><link>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</link><pubDate>Tue, 08 Oct 2024 21:11:43 +0000</pubDate><guid>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/cover.png" alt="Featured image of post Automating Notifications in Azure Devops Using Power Automate" /&gt;&lt;p&gt;Managing work items in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops" target="_blank" rel="noopener"
-&gt;Azure DevOps&lt;/a&gt; is crucial for efficient software development. To enhance communication and collaboration, I created a Power Automate flow that automatically notifies team members whenever a work item is updated. This post will guide you through the steps I took to create this flow.&lt;/p&gt;
+&gt;Azure DevOps&lt;/a&gt; gets easier when updates do not depend on someone noticing them manually. I built a Power Automate flow that notifies team members whenever a work item changes. This post walks through how I set it up.&lt;/p&gt;
 &lt;h3 id="why-use-power-automate-for-azure-devops"&gt;Why Use Power Automate for Azure DevOps?
 &lt;/h3&gt;&lt;p&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/power-automate/" target="_blank" rel="noopener"
-&gt;Power Automate&lt;/a&gt; is a powerful tool that integrates seamlessly with Azure DevOps, automating tasks like sending notifications, updating items, or even triggering workflows. By automating notifications, you ensure that relevant team members are instantly informed about the status or changes in work items.&lt;/p&gt;
+&gt;Power Automate&lt;/a&gt; works well with Azure DevOps for tasks like sending notifications, updating items, and kicking off follow-up workflows. In this case, it let me notify the right people as soon as a work item changed status.&lt;/p&gt;
 &lt;h2 id="step-1-setting-up-the-trigger"&gt;Step 1: Setting Up the Trigger
 &lt;/h2&gt;&lt;p&gt;To get started, I needed to create the trigger that fires whenever a work item in Azure DevOps is updated.&lt;/p&gt;
 &lt;ol&gt;
@@ -1673,7 +1673,7 @@ data-flex-basis="182px"
 &lt;p&gt;Add a new &lt;strong&gt;Initialize Variable&lt;/strong&gt; action.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Name the first variable &lt;strong&gt;LastTime&lt;/strong&gt;. Set its type to &lt;code&gt;String&lt;/code&gt; and its initial value to&amp;quot; &lt;code&gt;getPastTime(3, 'Minute')&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Name the first variable &lt;strong&gt;LastTime&lt;/strong&gt;. Set its type to &lt;code&gt;String&lt;/code&gt; and its initial value to &lt;code&gt;getPastTime(3, 'Minute')&lt;/code&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The number &lt;code&gt;3&lt;/code&gt; here needs to match the value in the trigger as mentioned before.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1805,7 +1805,7 @@ data-flex-basis="345px"
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The querystring paramater &lt;code&gt;$expand=relations&lt;/code&gt; which is required for expanding related links in the response.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The query string parameter &lt;code&gt;$expand=relations&lt;/code&gt; is required if you want the response to include related links.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -1843,13 +1843,13 @@ data-flex-basis="324px"
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; We are using the output from our previous step (in this case, &amp;ldquo;Get_WorkItem_Relationships&amp;rdquo; — use the UI to add dynamic content in the expression to make sure you&amp;rsquo;ll have the right value). In addition, we are keeping things simple by converting the JSON to a string, and simply checking if it contains the text &lt;code&gt;&amp;quot;ArtifactLink&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; We are using the output from our previous step; in this case, &lt;code&gt;Get_WorkItem_Relationships&lt;/code&gt;. Use the UI to add dynamic content in the expression so you end up with the right value. To keep things simple, we convert the JSON to a string and check whether it contains the text &lt;code&gt;&amp;quot;ArtifactLink&amp;quot;&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;This will set the variable &lt;code&gt;HasArtifactLinks&lt;/code&gt; to true if there are any links of type &lt;strong&gt;ArtifactLink&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2 id="step-6-handling-different-work-item-states"&gt;Step 6: Handling Different Work Item States
-&lt;/h2&gt;&lt;p&gt;Now comes the interesting part—handling different scenarios based on the work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted the flow to send notifications accordingly.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;Next comes the part where the flow branches by work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted it to send different notifications.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s how I handled it:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -2024,7 +2024,7 @@ data-flex-basis="406px"
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;By setting up this Power Automate flow, I no longer have to worry about manually tracking work item updates or notifying team members. Whether a work item is resolved, blocked, or closed, the flow ensures the right people get notified at the right time. Plus, with the artifact link checks, developers can easily review the associated commits and pull requests.&lt;/p&gt;
+&lt;p&gt;After setting up this Power Automate flow, I no longer had to keep checking work item updates manually. When a work item is resolved, blocked, or closed, the right people get notified. The artifact link check also makes it easier to catch cases where code changed but no commit or pull request was linked.&lt;/p&gt;
 &lt;p&gt;References:&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.2" target="_blank" rel="noopener"
 &gt;Azure DevOps Services REST API Reference&lt;/a&gt;&lt;br&gt;
@@ -2037,7 +2037,7 @@ data-flex-basis="406px"
 &lt;a class="link" href="https://learn.microsoft.com/en-us/connectors/teams/?tabs=text1%2Cdotnet#post-message-in-a-chat-or-channel" target="_blank" rel="noopener"
 &gt;Post message in a chat or channel&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://medium.com/@benjihuser/adding-notifications-to-ms-teams-when-azure-devops-work-items-are-waiting-using-power-automate-b5466eb1cae6" target="_blank" rel="noopener"
-&gt;Adding Notifications to MS Teams when Azure DevOps Work Items are Waiting using Power Automate&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Automating OWASP Top Ten Scan Reports in Azure DevOps</title><link>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</link><pubDate>Thu, 05 Sep 2024 09:58:57 +0000</pubDate><guid>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/cover.jpg" alt="Featured image of post Automating OWASP Top Ten Scan Reports in Azure DevOps" /&gt;&lt;p&gt;Security scanning should be part of the delivery flow, not an afterthought. In this post I walk through how I automated OWASP ZAP scans using Azure DevOps release pipelines and transformed the findings into something teams can actually act on.&lt;/p&gt;
+&gt;Adding Notifications to MS Teams when Azure DevOps Work Items are Waiting using Power Automate&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Automating OWASP Top Ten Scan Reports in Azure DevOps</title><link>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</link><pubDate>Thu, 05 Sep 2024 09:58:57 +0000</pubDate><guid>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/cover.jpg" alt="Featured image of post Automating OWASP Top Ten Scan Reports in Azure DevOps" /&gt;&lt;p&gt;Security scanning should be part of the delivery flow, not an afterthought. In this post I show how I automated OWASP ZAP scans in Azure DevOps release pipelines and turned the findings into something teams can actually act on.&lt;/p&gt;
 &lt;p&gt;The approach uses a ZAP Docker container to run baseline scans, a PowerShell script to map findings to OWASP Top 10 categories and convert them to NUnit format, and the standard Azure DevOps publish-test-results task to surface vulnerabilities as visible test failures in your pipeline.&lt;/p&gt;
 &lt;h2 id="defining-pipeline-environment-variables"&gt;Defining Pipeline Environment Variables
 &lt;/h2&gt;&lt;p&gt;The process begins by defining pipeline variables that will be used by the pipeline tasks. Here is a screenshot of the pipeline variables configuration:&lt;/p&gt;
@@ -2088,7 +2088,7 @@ data-flex-basis="692px"
 &gt;Docker Engine release notes&lt;/a&gt; page to find the latest version of the docker engine.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="running-the-owasp-zap-docker-container"&gt;Running the OWASP ZAP Docker container
-&lt;/h2&gt;&lt;p&gt;The next step leverages a pre-configured OWASP ZAP Docker container:&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;The next step uses a pre-configured OWASP ZAP Docker container:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/owasp-scan.jpg"
 width="1651"
 height="589"
@@ -2143,7 +2143,7 @@ data-flex-basis="672px"
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;This command mounts a working directory to store the results and scans your application’s URL for common vulnerabilities. The results are generated in an XML format by default and stored in a file defined in the &lt;code&gt;REPORT_FILE&lt;/code&gt; variable and located in the folder defined by the &lt;code&gt;WORK_PATH&lt;/code&gt; variable.&lt;/p&gt;
 &lt;h2 id="converting-zap-results-to-nunit-format"&gt;Converting ZAP Results to NUnit Format
-&lt;/h2&gt;&lt;p&gt;While the XML report is comprehensive, integrating its results into your pipeline can be tricky. To make this integration seamless, we’ll transform the ZAP results into NUnit format. NUnit is widely supported by CI/CD tools and allows for easy visualization of test outcomes.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;While the XML report is detailed, integrating its results into your pipeline can still be awkward. To make that easier, we’ll transform the ZAP results into NUnit format. NUnit is widely supported by CI/CD tools and makes test outcomes easier to inspect.&lt;/p&gt;
 &lt;p&gt;In addition, we are only interested in the Top Ten OWASP Vulnerabilities, so this step also filters outcomes by the Top 10 categories.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/transform-report.jpg"
 width="1649"
@@ -2484,7 +2484,7 @@ data-flex-basis="673px"
 &lt;/div&gt;&lt;h3 id="key-features-of-the-script"&gt;Key Features of the Script
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Alert Aggregation:&lt;/strong&gt; Gathers and organizes vulnerability data from ZAP results.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;OWASP Mapping:&lt;/strong&gt; Links CWEs from ZAP alerts to OWASP Top 10 categories. For a comprehensive list of CWE IDs and their mappings to the OWASP Top 10 categories, you can refer to the official OWASP documentation: &lt;a class="link" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener"
+&lt;li&gt;&lt;strong&gt;OWASP Mapping:&lt;/strong&gt; Links CWEs from ZAP alerts to OWASP Top 10 categories. For a full list of CWE IDs and their mappings to the OWASP Top 10 categories, see the official OWASP documentation: &lt;a class="link" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener"
 &gt;OWASP Top Ten Mapping&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;NUnit Format Conversion:&lt;/strong&gt; Outputs the data in NUnit format for easy integration with Azure DevOps.&lt;/li&gt;
 &lt;/ul&gt;
@@ -2512,7 +2512,7 @@ data-flex-grow="114"
 data-flex-basis="274px"
 &gt;&lt;/p&gt;
 &lt;h3 id="what-this-gets-you"&gt;What this gets you
-&lt;/h3&gt;&lt;p&gt;By integrating OWASP ZAP scans with Azure DevOps, you get security findings surfaced as test failures in the same interface where the rest of your pipeline results live. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion so the results are immediately interpretable without digging into raw XML.&lt;/p&gt;
+&lt;/h3&gt;&lt;p&gt;By integrating OWASP ZAP scans with Azure DevOps, security findings show up as test failures in the same interface as the rest of your pipeline results. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion, so you do not have to dig through raw XML to understand what failed.&lt;/p&gt;
 &lt;p&gt;One thing I appreciate even more now than when I first wrote this post is that DAST automation is only one part of a strong DevSecOps loop. OWASP ZAP gives us runtime-facing feedback, but the workflow becomes even more powerful when it sits beside static analysis, issue routing, and remediation paths that developers can act on without leaving their normal delivery flow.&lt;/p&gt;
 &lt;p&gt;I explored that next step in &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)&lt;/a&gt;. If this post shows one generation of automated AppSec reporting, that newer post shows how I now think about turning findings directly into reviewable engineering work.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
@@ -2533,7 +2533,7 @@ data-flex-basis="274px"
 &gt;PowerShell HashTables&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-hashtable?view=powershell-7.4" target="_blank" rel="noopener"
 &gt;Everything you wanted to know about hashtables&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>How to Enable VM Insights on an Azure Virtual Machine Using Bicep</title><link>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</link><pubDate>Thu, 27 Jun 2024 13:31:25 +0000</pubDate><guid>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/cover.jpg" alt="Featured image of post How to Enable VM Insights on an Azure Virtual Machine Using Bicep" /&gt;&lt;p&gt;When it comes to monitoring your virtual machines in Azure, Application Insights provides a powerful and scalable solution for collecting telemetry data. In this blog post, I&amp;rsquo;ll walk you through how to enable VM Insights on an Azure Virtual Machine using a Bicep module I recently worked on.&lt;/p&gt;
+&lt;/ul&gt;</description></item><item><title>How to Enable VM Insights on an Azure Virtual Machine Using Bicep</title><link>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</link><pubDate>Thu, 27 Jun 2024 13:31:25 +0000</pubDate><guid>https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/cover.jpg" alt="Featured image of post How to Enable VM Insights on an Azure Virtual Machine Using Bicep" /&gt;&lt;p&gt;To monitor your virtual machines in Azure, Application Insights gives you a solid way to collect telemetry data. In this post, I&amp;rsquo;ll show you how to enable VM Insights on an Azure Virtual Machine with a Bicep module I recently worked on.&lt;/p&gt;
 &lt;h2 id="the-goal"&gt;The Goal
 &lt;/h2&gt;&lt;p&gt;We aim to:&lt;/p&gt;
 &lt;ol&gt;
@@ -2788,7 +2788,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="conclusion"&gt;Conclusion
-&lt;/h2&gt;&lt;p&gt;This Bicep module simplifies enabling VM Insights on Azure Virtual Machines, ensuring you have comprehensive monitoring and diagnostics. With the telemetry routed to Application Insights, you gain real-time insights into your VM’s health and performance.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;This Bicep module simplifies enabling VM Insights on Azure Virtual Machines, so you get detailed monitoring and diagnostics without manual setup. With telemetry routed to Application Insights, you can watch your VM’s health and performance in real time.&lt;/p&gt;
 &lt;p&gt;Do you have a different approach to enabling VM Insights? Let me know in the comments!&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ul&gt;
@@ -2812,7 +2812,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &gt;Troubleshooting Azure Diagnostics extension - Azure Monitor&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.azure.cn/en-us/azure-monitor//agents/diagnostics-extension-schema-windows" target="_blank" rel="noopener"
 &gt;Windows diagnostics extension schema&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Dockerfile for containerizing Classic ASP</title><link>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</link><pubDate>Fri, 16 Jun 2023 12:14:12 +0000</pubDate><guid>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/cover.jpg" alt="Featured image of post Dockerfile for containerizing Classic ASP" /&gt;&lt;p&gt;In this blog post, we will walk through a Dockerfile designed for containerizing a Classic ASP application. This Dockerfile is based on the &lt;code&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/code&gt; image and includes several steps to configure the environment for running Classic ASP applications.&lt;/p&gt;
+&lt;/ul&gt;</description></item><item><title>Dockerfile for containerizing Classic ASP</title><link>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</link><pubDate>Fri, 16 Jun 2023 12:14:12 +0000</pubDate><guid>https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/06/16/dockerfile-for-containerizing-classic-asp/cover.jpg" alt="Featured image of post Dockerfile for containerizing Classic ASP" /&gt;&lt;p&gt;I needed a Windows container image that could run a Classic ASP application without a lot of manual IIS setup. This Dockerfile starts from &lt;code&gt;mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019&lt;/code&gt; and layers in the IIS features, dependencies, and configuration the app needs.&lt;/p&gt;
 &lt;h3 id="breakdown-of-the-dockerfile"&gt;Breakdown of the Dockerfile
 &lt;/h3&gt;&lt;h4 id="base-image-and-shell-configuration"&gt;Base Image and Shell Configuration
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
@@ -2829,7 +2829,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; LOGMONITOR_VERSION&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;We start by specifying the base image, which is a Windows Server Core image with ASP.NET 4.8. The &lt;code&gt;SHELL&lt;/code&gt; instruction sets PowerShell as the default shell for subsequent instructions.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;We start with a Windows Server Core image that already includes ASP.NET 4.8, then switch the default shell to PowerShell for the rest of the build.&lt;/p&gt;
 &lt;h4 id="installing-windows-features"&gt;Installing Windows Features
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2857,7 +2857,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Import-module IISAdministration&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This section installs various IIS features required for running Classic ASP applications, such as ASP, CGI, ISAPI extensions, and more.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This section installs the IIS features the application depends on, including Classic ASP, CGI, and ISAPI support.&lt;/p&gt;
 &lt;h4 id="enabling-iis-features"&gt;Enabling IIS Features
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2869,7 +2869,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Here, we enable additional IIS features like default documents and HTTP errors.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;Here we enable a couple of IIS features that older applications often expect: default documents and HTTP errors.&lt;/p&gt;
 &lt;h4 id="installing-dependencies"&gt;Installing Dependencies
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2911,7 +2911,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; Invoke-WebRequest -Uri &lt;span class="s2"&gt;&amp;#34;https://github.com/microsoft/windows-container-tools/releases/download/v&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;$env&lt;/span&gt;:LOGMONITOR_VERSION&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;/LogMonitor.exe&amp;#34;&lt;/span&gt; -OutFile C:&lt;span class="se"&gt;\L&lt;/span&gt;ogMonitor.exe&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This command downloads the Log Monitor tool from the specified GitHub release URL and save it to the container&amp;rsquo;s file system. Log Monitor is a tool used to monitor and manage logs within a Windows container. This step ensures that the Log Monitor tool is available within the container for log management purposes.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This command downloads the Log Monitor tool from the specified GitHub release URL and saves it to the container&amp;rsquo;s file system. Log Monitor makes it much easier to surface logs from a Windows container in a usable way.&lt;/p&gt;
 &lt;h4 id="unlocking-iis-configuration-sections"&gt;Unlocking IIS Configuration Sections
 &lt;/h4&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2937,7 +2937,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; /section:system.webServer/modules&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This section unlocks various IIS configuration sections to allow modifications.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This section unlocks the IIS configuration sections we need to change later.&lt;/p&gt;
 &lt;p&gt;In IIS (Internet Information Services), certain configuration sections are locked by default to prevent unauthorized changes that could affect the stability and security of the server. Unlocking these sections is necessary when you need to customize the behavior of your web server beyond the default settings.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;system.webServer/asp&lt;/strong&gt;: Unlocking this section allows you to modify settings related to ASP (Active Server Pages), such as enabling or disabling ASP, configuring script timeouts, and setting debugging options.&lt;/li&gt;
@@ -3019,7 +3019,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;Finally, we set the entry point to start the Log Monitor and Service Monitor for IIS.&lt;/p&gt;
-&lt;p&gt;This Dockerfile provides a comprehensive setup for running Classic ASP applications in a containerized environment, ensuring all necessary features and dependencies are installed and configured.&lt;/p&gt;
+&lt;p&gt;This Dockerfile sets up the pieces needed to run a Classic ASP application in a container, with the IIS features, dependencies, and runtime configuration handled in the image.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
@@ -3182,10 +3182,10 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ENTRYPOINT&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;C:\\LogMonitor.exe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\\ServiceMonitor.exe&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;w3svc&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Consume Secrets in Azure Key vault From Kubernetes On-prem</title><link>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</link><pubDate>Mon, 07 Nov 2022 18:32:15 +0000</pubDate><guid>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/cover.png" alt="Featured image of post Consume Secrets in Azure Key vault From Kubernetes On-prem" /&gt;&lt;p&gt;Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps we followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.&lt;/p&gt;
+&lt;/div&gt;</description></item><item><title>Consume Secrets in Azure Key vault From Kubernetes On-prem</title><link>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</link><pubDate>Mon, 07 Nov 2022 18:32:15 +0000</pubDate><guid>https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/cover.png" alt="Featured image of post Consume Secrets in Azure Key vault From Kubernetes On-prem" /&gt;&lt;p&gt;A customer recently asked whether Azure Key Vault could be used from an on-prem or non-Azure Kubernetes cluster. In this post, I will show the steps we followed to mount Azure Key Vault secrets inside that kind of environment.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/overview" target="_blank" rel="noopener"
-&gt;&lt;strong&gt;Azure Key Vault&lt;/strong&gt;&lt;/a&gt; is one of several key management solutions in Azure, and can be used to Securely store and tightly control access to tokens, passwords, &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/certificates/" target="_blank" rel="noopener"
+&gt;&lt;strong&gt;Azure Key Vault&lt;/strong&gt;&lt;/a&gt; is one of several key management solutions in Azure, and can be used to securely store and tightly control access to tokens, passwords, &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/certificates/" target="_blank" rel="noopener"
 &gt;certificates&lt;/a&gt;, &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/keys/" target="_blank" rel="noopener"
 &gt;API keys&lt;/a&gt;, and other &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/secrets/" target="_blank" rel="noopener"
 &gt;secrets&lt;/a&gt;. Centralizing storage of application secrets in Azure Key Vault allows you to control their distribution. Key Vault greatly reduces the chances that secrets may be accidentally leaked. When using Key Vault, application developers no longer need to store security information in their application. Not having to store security information in applications eliminates the need to make this information part of the code.&lt;/li&gt;
@@ -3193,9 +3193,9 @@ Includes sensitive data such as the storage account key to securely connect to t
 &gt;&lt;strong&gt;Kubernetes&lt;/strong&gt;&lt;/a&gt; is a portable, extensible, open source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem and focuses on the application workloads, not the underlying infrastructure components.&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://secrets-store-csi-driver.sigs.k8s.io/" target="_blank" rel="noopener"
 &gt;&lt;strong&gt;Kubernetes Secrets Store CSI Driver&lt;/strong&gt;&lt;/a&gt; integrates secrets stores with Kubernetes via a &lt;a class="link" href="https://kubernetes-csi.github.io/docs/" target="_blank" rel="noopener"
-&gt;Container Storage Interface (CSI)&lt;/a&gt; volume. It allows Kubernetes to mount multiple secrets, keys, and certificates stored in enterprise-grade external secrets stores, such as Azure Key Vault, into pods as a volume. Once the Volume is attached, the data in it is mounted into the container’s file system.&lt;/li&gt;
+&gt;Container Storage Interface (CSI)&lt;/a&gt; volume. It allows Kubernetes to mount multiple secrets, keys, and certificates stored in enterprise-grade external secrets stores, such as Azure Key Vault, into pods as a volume. Once the volume is attached, the data in it is mounted into the container’s file system.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The Secrets Store CSI Driver on Azure Kubernetes Service (AKS) provides the following methods of identity-based access to your Azure key vault.&lt;/p&gt;
+&lt;p&gt;The Secrets Store CSI Driver on Azure Kubernetes Service (AKS) supports the following identity-based access methods for Azure Key Vault.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;An &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity" target="_blank" rel="noopener"
 &gt;Azure Active Directory pod identity&lt;/a&gt; (preview)&lt;/li&gt;
@@ -3449,7 +3449,7 @@ Includes sensitive data such as the storage account key to securely connect to t
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt;&lt;br&gt;
-Kubernetes Secrets are, by default, stored unencrypted in the API server&amp;rsquo;s underlying data store (etcd). Anyone with API access can retrieve or modify a Secret, and so can anyone with access to etcd. Additionally, anyone who is authorized to create a Pod in a namespace can use that access to read any Secret in that namespace; this includes indirect access such as the ability to create a Deployment.&lt;/p&gt;
+Kubernetes Secrets are, by default, stored unencrypted in the API server&amp;rsquo;s underlying data store (etcd). Anyone with API access can retrieve or modify a Secret, and so can anyone with access to etcd. Anyone who is authorized to create a Pod in a namespace can also use that access to read any Secret in that namespace; this includes indirect access such as the ability to create a Deployment.&lt;/p&gt;
 &lt;p&gt;In order to restrict access to Kubernetes secrets, consider enabling or configuring &lt;a class="link" href="https://kubernetes.io/docs/reference/access-authn-authz/authorization/" target="_blank" rel="noopener"
 &gt;RBAC rules&lt;/a&gt; with least-privilege access to Secrets.&lt;/p&gt;
 &lt;p&gt;See &lt;a class="link" href="https://kubernetes.io/docs/concepts/configuration/secret/#information-security-for-secrets" target="_blank" rel="noopener"
@@ -3632,7 +3632,7 @@ Kubernetes Secrets are, by default, stored unencrypted in the API server&amp;rsq
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl &lt;span class="nb"&gt;exec&lt;/span&gt; busybox-secrets-store-inline -- cat /mnt/secrets-store/Username
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;atomic_fifth
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl &lt;span class="nb"&gt;exec&lt;/span&gt; busybox-secrets-store-inline -- cat /mnt/secrets-store/Username
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl &lt;span class="nb"&gt;exec&lt;/span&gt; busybox-secrets-store-inline -- cat /mnt/secrets-store/Password
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Forty7&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;Scale
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
@@ -3643,7 +3643,7 @@ You can reduce the exposure of your vaults by specifying which IP addresses have
 &lt;p&gt;For more information, see &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/key-vault/general/network-security" target="_blank" rel="noopener"
 &gt;Configure Azure Key Vault firewalls and virtual networks&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;And there you have it! We managed to retrieve Azure Key Vault secrets from an on-prem Kubernetes cluster using a Service Principal. Hope the proves valuable to you, dear reader.&lt;/p&gt;
+&lt;p&gt;That was enough to retrieve Azure Key Vault secrets from an on-prem Kubernetes cluster by using a service principal.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 Thanks to my colleagues &lt;a class="link" href="https://mvp.microsoft.com/en-us/PublicProfile/5002189" target="_blank" rel="noopener"
 &gt;Ravi Yadav&lt;/a&gt; and &lt;a class="link" href="https://hammadaslam.com/" target="_blank" rel="noopener"
@@ -3695,7 +3695,7 @@ Thanks to my colleagues &lt;a class="link" href="https://mvp.microsoft.com/en-us
 &lt;p&gt;&lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741" target="_blank" rel="noopener"
 &gt; [pilot] fails to upload build to TestFlight using api key after iTMSTransporter auto updated to version 3.0.0 with An exception has occurred: issuerId is required error&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;One particular &lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741#issuecomment-1285291626" target="_blank" rel="noopener"
-&gt;comment by Tobias Totzek&lt;/a&gt; provided the exact answer to my problem. I changed the Agent Specification from &lt;code&gt;macos-latest&lt;/code&gt; to &lt;code&gt;macOS-12&lt;/code&gt; and problem solved.&lt;/p&gt;
+&gt;comment by Tobias Totzek&lt;/a&gt; had the fix. I changed the Agent Specification from &lt;code&gt;macos-latest&lt;/code&gt; to &lt;code&gt;macOS-12&lt;/code&gt;, and the error went away.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://github.com/honkmaster" target="_blank" rel="noopener"
 &gt;Tobias Totzek&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Set Calculated Value to Azure Devops Pipeline BuildNumber</title><link>https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/</link><pubDate>Tue, 11 Oct 2022 16:06:49 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/cover.png" alt="Featured image of post Set Calculated Value to Azure Devops Pipeline BuildNumber" /&gt;&lt;p&gt;After migrating a Azure DevOps project from one organization to another, I ran into an issue where the automatically generated build identifiers were out of sync. What do I mean by that? Well, in the old organization, the most recent build id was something like &lt;code&gt;14928&lt;/code&gt;. In Azure DevOps, every build has two primary identifiers, &lt;code&gt;Build.BuildId&lt;/code&gt; and &lt;code&gt;Build.BuildNumber&lt;/code&gt;:&lt;/p&gt;
@@ -4328,14 +4328,14 @@ data-flex-basis="915px"
 &gt;API Management policy reference&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
 &gt;Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" /&gt;&lt;h1 id="adding-azure-functions-support-to-a-devcontainer"&gt;Adding Azure Functions Support to a Devcontainer
-&lt;/h1&gt;&lt;p&gt;Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we&amp;rsquo;ll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.&lt;/p&gt;
+&lt;/h1&gt;&lt;p&gt;I already had a dev container set up and needed to add Azure Functions Core Tools to it. This is the approach that finally worked for me.&lt;/p&gt;
 &lt;h2 id="the-challenge"&gt;The Challenge
-&lt;/h2&gt;&lt;p&gt;Recently, I faced the task of adding support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
-&gt;Azure Functions&lt;/a&gt; to my trusted &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
-&gt;Dev Container&lt;/a&gt;. I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;I needed to add support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
+&gt;Azure Functions&lt;/a&gt; to my existing &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
+&gt;Dev Container&lt;/a&gt;. I tried a few approaches and hit errors along the way. After some digging through the docs and a bit of trial and error, I landed on a version that rebuilt cleanly.&lt;/p&gt;
 &lt;h2 id="the-solution"&gt;The Solution
 &lt;/h2&gt;&lt;p&gt;To begin, I attempted to add the following lines to my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:&lt;/p&gt;
+&lt;p&gt;That version failed when I rebuilt the container. After searching around and comparing a few examples, I landed on this &lt;code&gt;RUN&lt;/code&gt; command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -4375,7 +4375,7 @@ data-flex-basis="915px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;With that, I had a working environment fully loaded with Azure Functions Core Tools and the necessary Visual Studio Code extensions installed. Hope that helps, dear future reader!&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;With that in place, I had a working dev container with Azure Functions Core Tools and the Visual Studio Code extensions I needed.&lt;/p&gt;
 &lt;p&gt;References:&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
 &gt;Use a Docker container as a development environment with Visual Studio Code&lt;/a&gt;&lt;br&gt;
@@ -4705,8 +4705,8 @@ data-flex-basis="915px"
 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/search/tutorial-javascript-overview" target="_blank" rel="noopener"
 &gt;Overview of adding search to a website&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/search/tutorial-javascript-create-load-index" target="_blank" rel="noopener"
-&gt;Create and load Search Index with JavaScript&lt;/a&gt;&lt;/p&gt;</description></item><item><title>The Paradox of Inclusion</title><link>https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/</link><pubDate>Fri, 29 Apr 2022 15:18:21 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/cover.png" alt="Featured image of post The Paradox of Inclusion" /&gt;&lt;p&gt;I do not recall writing a poem before, let alone sharing it with a broad audience. So this is a big risk I&amp;rsquo;m taking under the banner of a &amp;ldquo;growth mindset&amp;rdquo;. However, I had a recent experience that put me in deep thought and sent me on a long walk. During my walk, I came up with the first three lines of this poem. I&amp;rsquo;ve been tweaking it a little at a time ever since, and it still feels imperfect. I&amp;rsquo;m sharing it here because it still needs work and I hope someone will take an interest in improving it.&lt;/p&gt;
-&lt;p&gt;Without further ado, here&amp;rsquo;s my very first poem:&lt;/p&gt;
+&gt;Create and load Search Index with JavaScript&lt;/a&gt;&lt;/p&gt;</description></item><item><title>The Paradox of Inclusion</title><link>https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/</link><pubDate>Fri, 29 Apr 2022 15:18:21 +0000</pubDate><guid>https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/04/29/the-paradox-of-inclusion/cover.png" alt="Featured image of post The Paradox of Inclusion" /&gt;&lt;p&gt;I do not recall writing a poem before, let alone sharing one publicly. So this feels risky. A recent experience sent me on a long walk and gave me the first three lines of this poem. I have been adjusting it a little at a time ever since, and it still feels unfinished. I am sharing it anyway because I suspect it can be better.&lt;/p&gt;
+&lt;p&gt;Here is my first poem:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
@@ -4743,7 +4743,7 @@ data-flex-basis="915px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Yet to be told
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;My hope is that at some point we will find a way to recognize, appreciate, and acknowledge the contradictions inherent in inclusion and use the resulting tensions as springboards to push us forward and closer not backwards and further apart.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;My hope is that, at some point, we find a way to recognize the contradictions inside inclusion and use that tension to move closer together instead of farther apart.&lt;/p&gt;
 &lt;p&gt;Thank you for reading.&lt;/p&gt;
 &lt;p&gt;Reference:&lt;br&gt;
 &lt;a class="link" href="https://ideas.wharton.upenn.edu/wp-content/uploads/2018/07/Ferdman-2017.pdf" target="_blank" rel="noopener"
@@ -4753,7 +4753,7 @@ data-flex-basis="915px"
 &lt;p&gt;Really col &lt;a class="link" href="http://t.co/dzTs3fnv" target="_blank" rel="noopener"
 &gt;http://t.co/dzTs3fnv&lt;/a&gt; &amp;ldquo;Northwind&amp;rdquo; demo app by @achingono on GitHub. Clever use of T4 and more. Starred! &lt;a class="link" href="https://t.co/1GTE055f" target="_blank" rel="noopener"
 &gt;https://t.co/1GTE055f&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;— Scott Hanselman (@shanselman) January 9, 2013&lt;/p&gt;
+&lt;p&gt;Scott Hanselman (@shanselman), January 9, 2013&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:&lt;/p&gt;
 &lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;&lt;a href="https://twitter.com/mkristensen?ref_src=twsrc%5Etfw"&gt;@mkristensen&lt;/a&gt; &lt;a href="https://twitter.com/VisualStudio?ref_src=twsrc%5Etfw"&gt;@VisualStudio&lt;/a&gt; is there an equivalent to T4Scaffolding for &lt;a href="https://twitter.com/hashtag/dotnercore?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#dotnercore&lt;/a&gt;? I need to generate multiple files based on a template.&lt;/p&gt;&amp;mdash; Alfero Chingono (@achingono) &lt;a href="https://twitter.com/achingono/status/936598758682451969?ref_src=twsrc%5Etfw"&gt;December 1, 2017&lt;/a&gt;&lt;/blockquote&gt;
@@ -4847,8 +4847,8 @@ alt="Nuget"
 &lt;/div&gt;&lt;h3 id="response-file"&gt;Response File
 &lt;/h3&gt;&lt;p&gt;A &lt;em&gt;response file&lt;/em&gt; is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code&gt;System.CommandLine&lt;/code&gt; that is useful in two scenarios:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;To invoke a command-line app by specifying input that is longer than the character limit of the terminal.
-To invoke the same command repeatedly without retyping the whole line.&lt;/li&gt;
+&lt;li&gt;To invoke a command-line app by specifying input that is longer than the character limit of the terminal.&lt;/li&gt;
+&lt;li&gt;To invoke the same command repeatedly without retyping the whole line.&lt;/li&gt;
 &lt;li&gt;To use a response file, enter the file name prefixed by an &lt;code&gt;@&lt;/code&gt; sign wherever in the line you want to insert commands, options, and arguments. The following lines are equivalent:&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
@@ -4918,13 +4918,13 @@ To invoke the same command repeatedly without retyping the whole line.&lt;/li&gt
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-console" data-lang="console"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="go"&gt;dotnet tool uninstall -g dotnet-spawn
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Add Favicon to a Hugo-Based Website</title><link>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</link><pubDate>Sun, 27 Mar 2022 18:39:35 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/cover.png" alt="Featured image of post Add Favicon to a Hugo-Based Website" /&gt;&lt;p&gt;A favicon, which is an abbreviation of the word &amp;ldquo;favorite icon&amp;rdquo;, is a small icon that helps users visually identify and distinguish your website. Its main purpose is to help visitors locate your page easier when they have multiple tabs, bookmarks, shortcuts, and address bars open.&lt;/p&gt;
-&lt;p&gt;With so many platforms, devices, icon formats, and dimensions, it&amp;rsquo;s hard to know exactly what you should do to consistently present your website icon/brand everywhere. That&amp;rsquo;s the reason why there are multiple favicon generators available. Just a quick search for &amp;ldquo;favicon generator&amp;rdquo; will reveal a long list of websites that assist in creating favicons supported across a wide range of platforms, and devices.&lt;/p&gt;
-&lt;p&gt;The one I chose for this case was &lt;a class="link" href="https://favicon.io" target="_blank" rel="noopener"
-&gt;favicon.io&lt;/a&gt;. This process could&amp;rsquo;ve been accomplished with &lt;a class="link" href="https://realfavicongenerator.net/" target="_blank" rel="noopener"
-&gt;realfavicongenerator.net&lt;/a&gt; just as well.&lt;/p&gt;
-&lt;p&gt;All I had to do was take a cropped version of my profile picture. It&amp;rsquo;s important that the picture be square, by the way. Then uploaded it to &lt;a class="link" href="https://favicon.io" target="_blank" rel="noopener"
-&gt;favicon.io&lt;/a&gt; and out came a zip file with everything I needed. Once downloaded, I extracted the zip file and copied the contents to the &amp;ldquo;static&amp;rdquo; folder of my Hugo site:&lt;/p&gt;
+&lt;/div&gt;</description></item><item><title>Add Favicon to a Hugo-Based Website</title><link>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</link><pubDate>Sun, 27 Mar 2022 18:39:35 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/cover.png" alt="Featured image of post Add Favicon to a Hugo-Based Website" /&gt;&lt;p&gt;A favicon, short for &amp;ldquo;favorite icon,&amp;rdquo; is the small image people see in browser tabs, bookmarks, and shortcuts. It makes your site easier to spot when the screen is crowded.&lt;/p&gt;
+&lt;p&gt;With so many platforms, devices, icon formats, and sizes to think about, it helps to use a generator instead of assembling every file by hand. A quick search for &amp;ldquo;favicon generator&amp;rdquo; turns up plenty of options.&lt;/p&gt;
+&lt;p&gt;I used &lt;a class="link" href="https://favicon.io" target="_blank" rel="noopener"
+&gt;favicon.io&lt;/a&gt; for this. &lt;a class="link" href="https://realfavicongenerator.net/" target="_blank" rel="noopener"
+&gt;realfavicongenerator.net&lt;/a&gt; would have worked too.&lt;/p&gt;
+&lt;p&gt;I started with a cropped square version of my profile picture, uploaded it to &lt;a class="link" href="https://favicon.io" target="_blank" rel="noopener"
+&gt;favicon.io&lt;/a&gt;, downloaded the generated zip file, and copied its contents into the &lt;code&gt;static&lt;/code&gt; folder of my Hugo site:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2022/03/27/adding-favicon-hugo-site/static-folder.jpg"
 width="409"
 height="360"
@@ -4935,7 +4935,7 @@ class="gallery-image"
 data-flex-grow="113"
 data-flex-basis="272px"
 &gt;&lt;/p&gt;
-&lt;p&gt;The next step was to simply copy the HTML snippet generated on the download page and paste it into &lt;code&gt;layouts/partials/head/custom.html&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Next I copied the HTML snippet from the download page into &lt;code&gt;layouts/partials/head/custom.html&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -4950,7 +4950,7 @@ data-flex-basis="272px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;link&lt;/span&gt; &lt;span class="na"&gt;rel&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;manifest&amp;#34;&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;/site.webmanifest&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;And that was it! I hope you find this post valuable, dear reader. All comments and feedback greatly appreciated.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;And that was it. The site picked up the new favicon right away.&lt;/p&gt;
 &lt;p&gt;References:&lt;br&gt;
 &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack/issues/42#issuecomment-716052364" target="_blank" rel="noopener"
 &gt;Add favicon in config.toml · Issue #42&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Defining A Task for Quickly Creating Hugo Posts In Visual Studio Code</title><link>https://www.chingono.com/blog/2022/03/17/defining-task-quickly-creating-hugo-posts-vscode/</link><pubDate>Thu, 17 Mar 2022 18:39:12 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/17/defining-task-quickly-creating-hugo-posts-vscode/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/17/defining-task-quickly-creating-hugo-posts-vscode/cover.jpg" alt="Featured image of post Defining A Task for Quickly Creating Hugo Posts In Visual Studio Code" /&gt;&lt;p&gt;Now that I have &lt;a class="link" href="https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/" &gt;custom tasks for building and serving my Hugo site in Visual Studio Code&lt;/a&gt;, I wanted to create posts quickly without having to remember the &lt;code&gt;hugo&lt;/code&gt; command. So, this is what I did:&lt;/p&gt;
@@ -5046,8 +5046,8 @@ data-flex-basis="272px"
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;So far I&amp;rsquo;m pretty pleased with my experience with the &lt;a class="link" href="https://gohugo.io/" target="_blank" rel="noopener"
-&gt;Hugo static site generator&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Defining Tasks for Quickly Building and Serving a Hugo Site</title><link>https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/</link><pubDate>Wed, 16 Mar 2022 20:44:03 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/cover.jpg" alt="Featured image of post Defining Tasks for Quickly Building and Serving a Hugo Site" /&gt;&lt;p&gt;Now that I can run the site locally, I needed a quick way to run the &lt;code&gt;hugo&lt;/code&gt; command for creating new blog posts. After quick search on the internet, I found the article &lt;a class="link" href="https://code.visualstudio.com/Docs/editor/tasks" target="_blank" rel="noopener"
-&gt;Tasks in Visual Studio Code&lt;/a&gt; very helpful. In short, I had to define the build task this way:&lt;/p&gt;
+&gt;Hugo static site generator&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Defining Tasks for Quickly Building and Serving a Hugo Site</title><link>https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/</link><pubDate>Wed, 16 Mar 2022 20:44:03 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/16/defining-tasks-quickly-building-serving-hugo-site/cover.jpg" alt="Featured image of post Defining Tasks for Quickly Building and Serving a Hugo Site" /&gt;&lt;p&gt;Once I had the site running locally, I wanted a quicker way to run the &lt;code&gt;hugo&lt;/code&gt; build command from Visual Studio Code. After a bit of searching, I found the article &lt;a class="link" href="https://code.visualstudio.com/Docs/editor/tasks" target="_blank" rel="noopener"
+&gt;Tasks in Visual Studio Code&lt;/a&gt; helpful. In short, I defined the build task like this:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
@@ -5139,7 +5139,7 @@ data-flex-basis="272px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This task executes the &lt;code&gt;hugo server&lt;/code&gt; command. The &lt;code&gt;-D&lt;/code&gt; flag ensures that we can preview content in draft mode, and again, the &lt;code&gt;--source&lt;/code&gt; argument ensures the correct folder is served. It&amp;rsquo;s important to note that the &lt;code&gt;Serve&lt;/code&gt; does not have &lt;code&gt;&amp;quot;isDefault&amp;quot;: true&lt;/code&gt; since we do not want the two tasks to conflict when using the &lt;!-- raw HTML omitted --&gt;Ctrl&lt;!-- raw HTML omitted --&gt;+&lt;!-- raw HTML omitted --&gt;Shift&lt;!-- raw HTML omitted --&gt;+&lt;!-- raw HTML omitted --&gt;B&lt;!-- raw HTML omitted --&gt; keyboard shortcut.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This task executes the &lt;code&gt;hugo server&lt;/code&gt; command. The &lt;code&gt;-D&lt;/code&gt; flag ensures that we can preview content in draft mode, and again, the &lt;code&gt;--source&lt;/code&gt; argument ensures the correct folder is served. The &lt;code&gt;Serve&lt;/code&gt; task does not have &lt;code&gt;&amp;quot;isDefault&amp;quot;: true&lt;/code&gt; because we do not want the two tasks to conflict when using the &lt;!-- raw HTML omitted --&gt;Ctrl&lt;!-- raw HTML omitted --&gt;+&lt;!-- raw HTML omitted --&gt;Shift&lt;!-- raw HTML omitted --&gt;+&lt;!-- raw HTML omitted --&gt;B&lt;!-- raw HTML omitted --&gt; keyboard shortcut.&lt;/p&gt;
 &lt;p&gt;So far I&amp;rsquo;m pretty pleased with my experience with the &lt;a class="link" href="https://gohugo.io/" target="_blank" rel="noopener"
 &gt;Hugo static site generator&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Hugo blog powered by GitHub Pages and GitHub Codespaces</title><link>https://www.chingono.com/blog/2022/03/15/hugo-blog-powered-by-github-pages-codespaces/</link><pubDate>Tue, 15 Mar 2022 00:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2022/03/15/hugo-blog-powered-by-github-pages-codespaces/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/03/15/hugo-blog-powered-by-github-pages-codespaces/cover.jpg" alt="Featured image of post Hugo blog powered by GitHub Pages and GitHub Codespaces" /&gt;&lt;ol&gt;
 &lt;li&gt;
@@ -5654,8 +5654,8 @@ data-flex-basis="360px"
 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/xcode?view=azure-devops" target="_blank" rel="noopener"
 &gt;Build, test, and deploy Xcode apps&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/apps/mobile/app-signing?view=azure-devops&amp;amp;tabs=apple-install-during-build" target="_blank" rel="noopener"
-&gt;Sign your mobile app&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p&gt;This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The previous setup was a follows:
+&gt;Sign your mobile app&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p&gt;This is a continuation of my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The previous setup looked like this:
 &lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture.jpg"
 width="661"
 height="361"
@@ -5666,7 +5666,7 @@ class="gallery-image"
 data-flex-grow="183"
 data-flex-basis="439px"
 &gt;&lt;/p&gt;
-&lt;p&gt;One drawback of this setup was that both the SPA service and the API service had to expose ports in order to be accessible and the ports had to be different. I didn&amp;rsquo;t like that very much and for my learning purposes, I set out to figure out how to accomplish the following setup:&lt;/p&gt;
+&lt;p&gt;One drawback of that setup was that both the SPA service and the API service had to expose different ports to be reachable. I wanted something cleaner for local development, so I set out to make this work:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture.jpg"
 width="661"
 height="361"
@@ -5677,7 +5677,7 @@ class="gallery-image"
 data-flex-grow="183"
 data-flex-basis="439px"
 &gt;&lt;/p&gt;
-&lt;p&gt;The first task was to figure out how to configure NGINX to forward requests to multiple back-end services on the same port. After much research, this is the &lt;code&gt;nginx.conf&lt;/code&gt; I eventually came up with:&lt;/p&gt;
+&lt;p&gt;The first task was figuring out how to configure NGINX to forward requests to multiple backend services on the same port. After a fair amount of reading, this is the &lt;code&gt;nginx.conf&lt;/code&gt; I ended up with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
@@ -5772,7 +5772,7 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;The tricky part was to ensure that only traffic intended for the SPA service was routed there. Somehow, I could not get it to work using just the path directive. I had to resort to regex to get it to work.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;The tricky part was making sure only the traffic intended for the SPA service was routed there. I could not get the path directive alone to do what I wanted, so I used regex.&lt;/p&gt;
 &lt;p&gt;Next, I created a &lt;code&gt;configure-environment.sh&lt;/code&gt; script very similar to the previous article:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -5794,7 +5794,7 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sed -i -e &lt;span class="s1"&gt;&amp;#39;s/PORT/&amp;#39;&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/g&amp;#39;&lt;/span&gt; /etc/nginx/nginx.conf
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Details of the configuration settings are clearly outlined in the referenced articles.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;The referenced articles cover the configuration details well.&lt;/p&gt;
 &lt;p&gt;Next, the &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -5891,10 +5891,10 @@ data-flex-basis="439px"
 &lt;a class="link" href="https://stackoverflow.com/a/8130872" target="_blank" rel="noopener"
 &gt;How can query string parameters be forwarded through a proxy_pass with nginx?&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/a/23134318" target="_blank" rel="noopener"
-&gt;Environment variable substitution in sed&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Restore Database on Container Start Up</title><link>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</link><pubDate>Wed, 21 Apr 2021 10:20:50 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/cover.jpg" alt="Featured image of post Restore Database on Container Start Up" /&gt;&lt;p&gt;This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;One of the main reasons I needed my application container to wait for the database container to be ready was because I needed to initialize and seed the database before launching the application. This created a significant, and somewhat unacceptable, delay in container startup which impacted local development experience and automated UI tests.&lt;/p&gt;
-&lt;p&gt;I went on a quest to search for a solution to this problem and found out that Database engines such as MySQL support the ability to automatically restore database backups when creating a docker container. Surely, Microsoft SQL Server would have the same feature, right? Apparently, not. So I had no choice but to roll out my own solution, right? Right!&lt;/p&gt;
-&lt;p&gt;Now that we agree on the legitimacy of my quest, here are the changes I made to my project.&lt;/p&gt;
+&gt;Environment variable substitution in sed&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Restore Database on Container Start Up</title><link>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</link><pubDate>Wed, 21 Apr 2021 10:20:50 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/cover.jpg" alt="Featured image of post Restore Database on Container Start Up" /&gt;&lt;p&gt;This is a continuation of two earlier posts: &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One of the main reasons I needed my application container to wait for the database container was that I had to initialize and seed the database before launching the app. That delay was starting to hurt local development and automated UI tests.&lt;/p&gt;
+&lt;p&gt;I looked for a cleaner way to handle it. MySQL supports restoring database backups when a container is created, so I assumed Microsoft SQL Server would have something similar. It did not, at least not in the way I needed, so I built my own startup flow.&lt;/p&gt;
+&lt;p&gt;Here are the changes I made to the project.&lt;/p&gt;
 &lt;p&gt;First, I created a &lt;code&gt;entrypoint.sh&lt;/code&gt; bash script with the following contents:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -6109,13 +6109,13 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ENTRYPOINT&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;/bin/entrypoint.sh&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This &lt;code&gt;Dockerfile&lt;/code&gt; basically copies three files into the base MSSQL container:&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This &lt;code&gt;Dockerfile&lt;/code&gt; copies three files into the base MSSQL container:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;entrypoint.sh&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;restore-database.sh&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;database.bak&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Once those three files are copied to the right folders and made executable, the magic happens when the container is created.&lt;/p&gt;
+&lt;p&gt;Once those files are in the right folders and marked executable, the restore flow runs when the container is created.&lt;/p&gt;
 &lt;p&gt;The last step was to update the &lt;code&gt;docker-compose.yml&lt;/code&gt; file with the following changes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -6156,9 +6156,9 @@ data-flex-basis="439px"
 &lt;a class="link" href="https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container" target="_blank" rel="noopener"
 &gt;Restore a SQL Server database in a Linux Docker container&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/a/49383879" target="_blank" rel="noopener"
-&gt;BASH - FOR loop using LS and wildcard&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" /&gt;&lt;p&gt;This is a continuation of my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
-&gt;this article&lt;/a&gt;, I decided to build up on that codebase as a learning opportunity and add a Blazor WASM front-end to the .NET Core API already built.&lt;/p&gt;
-&lt;p&gt;I will not repeat the process details as that is nicely outlined in the referenced article. What I will do here is share my version of the &lt;code&gt;Dockerfile&lt;/code&gt; and the associated script and configuration file.&lt;/p&gt;
+&gt;BASH - FOR loop using LS and wildcard&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" /&gt;&lt;p&gt;This post continues from &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
+&gt;this article&lt;/a&gt;, I used that codebase as a learning exercise and added a Blazor WASM front end to the .NET Core API I had already built.&lt;/p&gt;
+&lt;p&gt;I will not repeat the full process here because the referenced article already covers it well. Instead, I will share my version of the &lt;code&gt;Dockerfile&lt;/code&gt;, plus the supporting script and configuration file.&lt;/p&gt;
 &lt;p&gt;So, here&amp;rsquo;s my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -6274,8 +6274,8 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; --from&lt;span class="o"&gt;=&lt;/span&gt;publish /&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CONFIG&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/wwwroot .&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;You will notice that my &lt;code&gt;Dockerfile&lt;/code&gt; does not have a &lt;code&gt;CMD&lt;/code&gt; or &lt;code&gt;ENTRYPOINT&lt;/code&gt; declaration. That is because the base image I&amp;rsquo;m using to host my application &lt;code&gt;nginx:alpine&lt;/code&gt; already has a very nice feature where it automatically runs all scripts in the &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; folder and executes them before starting up nginx.&lt;/p&gt;
-&lt;p&gt;This allowed me to copy my &lt;code&gt;configure-environment.sh&lt;/code&gt; to the &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; folder, make it executable and let the magic happen.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;You will notice that my &lt;code&gt;Dockerfile&lt;/code&gt; does not have a &lt;code&gt;CMD&lt;/code&gt; or &lt;code&gt;ENTRYPOINT&lt;/code&gt; declaration. That is because the base image I am using to host the application, &lt;code&gt;nginx:alpine&lt;/code&gt;, already runs every script in &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; before starting nginx.&lt;/p&gt;
+&lt;p&gt;That let me copy &lt;code&gt;configure-environment.sh&lt;/code&gt; into &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt;, mark it executable, and let nginx handle the rest.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s my &lt;code&gt;configure-environment.sh&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -6536,7 +6536,7 @@ So, how does my &lt;code&gt;entrypoint.sh&lt;/code&gt; know which server to chec
 &lt;p&gt;As always, all comments and feedback are greatly appreciated.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/questions/39296472/how-to-check-if-an-environment-variable-exists-and-get-its-value" target="_blank" rel="noopener"
-&gt;How to check if an environment variable exists and get its value?&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Mon, 15 Mar 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/cover.png" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" /&gt;&lt;p&gt;In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" &gt;Reference Build Arguments in Docker Startup Script&lt;/a&gt;, I showed how I added reusability to my &lt;code&gt;Dockerfile&lt;/code&gt; by adding build arguments.&lt;/p&gt;
+&gt;How to check if an environment variable exists and get its value?&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Mon, 15 Mar 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/cover.png" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" /&gt;&lt;p&gt;In my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" &gt;Reference Build Arguments in Docker Startup Script&lt;/a&gt;, I showed how I added a bit more reuse to my &lt;code&gt;Dockerfile&lt;/code&gt; with build arguments.&lt;/p&gt;
 &lt;p&gt;The docker builder &lt;a class="link" href="https://docs.docker.com/engine/reference/builder/#cmd" target="_blank" rel="noopener"
 &gt;CMD&lt;/a&gt; reference document states:&lt;/p&gt;
 &lt;blockquote&gt;
@@ -6637,8 +6637,8 @@ So, how does my &lt;code&gt;entrypoint.sh&lt;/code&gt; know which server to chec
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;CMD&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;sh&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;-c&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;$DB_SERVICE $DB_SERVICE_PORT dotnet $ASSEMBLY&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Configuring it this way allows me to supply different arguments when running the container without having to specify &lt;code&gt;entrypoint.sh&lt;/code&gt; every time. Small change, and I hope this proves helpful to you, dear reader. All comments and feedback will be greatly appreciated.&lt;/p&gt;</description></item><item><title>Reference Environment Variables in Docker Startup Script</title><link>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</link><pubDate>Thu, 11 Mar 2021 21:27:40 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/cover.jpg" alt="Featured image of post Reference Environment Variables in Docker Startup Script" /&gt;&lt;p&gt;In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;, I showed how I managed to delay container application code execution until another service is ready to accept tcp connections.&lt;/p&gt;
-&lt;p&gt;If this post, I&amp;rsquo;m going to improve on that solution and make it more reusable by adding environment variables to the the &lt;code&gt;Dockerfile&lt;/code&gt; and to the &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;Configuring it this way lets me supply different arguments when running the container without having to specify &lt;code&gt;entrypoint.sh&lt;/code&gt; every time.&lt;/p&gt;</description></item><item><title>Reference Environment Variables in Docker Startup Script</title><link>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</link><pubDate>Thu, 11 Mar 2021 21:27:40 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/cover.jpg" alt="Featured image of post Reference Environment Variables in Docker Startup Script" /&gt;&lt;p&gt;In my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;, I showed how I delayed container startup until another service was ready to accept TCP connections.&lt;/p&gt;
+&lt;p&gt;In this post, I build on that approach and make it more reusable by adding environment variables to both the &lt;code&gt;Dockerfile&lt;/code&gt; and the &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s the updated &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -6828,11 +6828,10 @@ So, how does my &lt;code&gt;entrypoint.sh&lt;/code&gt; know which server to chec
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; PROJECT: Business.Web&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
-Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;And when I run the Docker image, I can supply the same three environment variables to override the container defaults. That gives me one &lt;code&gt;Dockerfile&lt;/code&gt; I can reuse across different image variations.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://github.com/moby/moby/issues/37345#issuecomment-400245466" target="_blank" rel="noopener"
-&gt;Persisting ENV and ARG settings to all later stages in multi-stage builds&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" /&gt;&lt;p&gt;Recently, I was working on a pet project and had created my &lt;code&gt;Dockerfile&lt;/code&gt; for the ASP.NET Core container as well as the &lt;code&gt;docker-compose.yml&lt;/code&gt; file to compose the services.&lt;/p&gt;
+&gt;Persisting ENV and ARG settings to all later stages in multi-stage builds&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" /&gt;&lt;p&gt;I was working on a pet project and had already created a &lt;code&gt;Dockerfile&lt;/code&gt; for the ASP.NET Core container, along with a &lt;code&gt;docker-compose.yml&lt;/code&gt; file to wire the services together.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s the &lt;code&gt;Dockerfile&lt;/code&gt; I had:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -6983,7 +6982,7 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;ACCEPT_EULA=Y&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;My biggest challenge was that even though I had set the &lt;code&gt;app&lt;/code&gt; service to depend on the &lt;code&gt;db&lt;/code&gt; service, the &lt;code&gt;app&lt;/code&gt; service would start before the &lt;code&gt;db&lt;/code&gt; service was really ready to receive connections. This resulted in .net startup errors, crash loops and the container eventually shutting down:&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;My biggest challenge was that even though I had set the &lt;code&gt;app&lt;/code&gt; service to depend on the &lt;code&gt;db&lt;/code&gt; service, the &lt;code&gt;app&lt;/code&gt; service would still start before the &lt;code&gt;db&lt;/code&gt; service was ready to receive connections. That led to .NET startup errors, crash loops, and eventually a failed container:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -7008,12 +7007,12 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;---&amp;gt; System.Net.Internals.SocketExceptionFactory+ExtendedSocketException (00000001, 11): Resource temporarily unavailable
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Since there was some initialization code and database seeding that had to take place before the application was ready to run, I wanted to ensure that the dotnet code started only when the database container/service was ready to receive connections.&lt;/p&gt;
-&lt;p&gt;After some searching on the internet, I found this answer on the &lt;a class="link" href="https://unix.stackexchange.com" target="_blank" rel="noopener"
+&lt;/div&gt;&lt;p&gt;Because some initialization code and database seeding had to finish before the application could run, I needed the .NET code to start only after the database container was ready to receive connections.&lt;/p&gt;
+&lt;p&gt;After some searching, I found this answer on &lt;a class="link" href="https://unix.stackexchange.com" target="_blank" rel="noopener"
 &gt;Unix StackExchange&lt;/a&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;a class="link" href="https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356" target="_blank" rel="noopener"
 &gt;Testing remote TCP port using telnet by running a one-line command&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Now, I needed to ensure this command runs before launching the .net site, and only after the db server was ready to receive connections on port &lt;code&gt;1433&lt;/code&gt;. So, after some further searching, trial and error, I eventually landed on the following two scripts:&lt;/p&gt;
+&lt;p&gt;I then needed to run that command before launching the .NET site, and only after the &lt;code&gt;db&lt;/code&gt; server was ready to receive connections on port &lt;code&gt;1433&lt;/code&gt;. After some more trial and error, I landed on the following two scripts:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;testconnection.sh&lt;/code&gt; is a copy of the code found on Unix StackExchange:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -7231,7 +7230,7 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; SELECT 1
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;As you can see, this solution allowed my &lt;code&gt;app&lt;/code&gt; container to wait for as long as it needed to before starting the .net application. Hopefully, you find that helpful, dear reader.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This solution let my &lt;code&gt;app&lt;/code&gt; container wait as long as it needed before starting the .NET application.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356" target="_blank" rel="noopener"
 &gt;Testing remote TCP port using telnet by running a one-line command&lt;/a&gt;&lt;br&gt;

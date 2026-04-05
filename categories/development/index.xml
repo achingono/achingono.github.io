@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Development on Alfero Chingono</title><link>https://www.chingono.com/categories/development/</link><description>Recent content in Development on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:26:52 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/development/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" /&gt;&lt;p&gt;While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Development on Alfero Chingono</title><link>https://www.chingono.com/categories/development/</link><description>Recent content in Development on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/development/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" /&gt;&lt;p&gt;While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -27,7 +27,7 @@
 &lt;p&gt;&lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741" target="_blank" rel="noopener"
 &gt; [pilot] fails to upload build to TestFlight using api key after iTMSTransporter auto updated to version 3.0.0 with An exception has occurred: issuerId is required error&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;One particular &lt;a class="link" href="https://github.com/fastlane/fastlane/issues/20741#issuecomment-1285291626" target="_blank" rel="noopener"
-&gt;comment by Tobias Totzek&lt;/a&gt; provided the exact answer to my problem. I changed the Agent Specification from &lt;code&gt;macos-latest&lt;/code&gt; to &lt;code&gt;macOS-12&lt;/code&gt; and problem solved.&lt;/p&gt;
+&gt;comment by Tobias Totzek&lt;/a&gt; had the fix. I changed the Agent Specification from &lt;code&gt;macos-latest&lt;/code&gt; to &lt;code&gt;macOS-12&lt;/code&gt;, and the error went away.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://github.com/honkmaster" target="_blank" rel="noopener"
 &gt;Tobias Totzek&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Set Calculated Value to Azure Devops Pipeline BuildNumber</title><link>https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/</link><pubDate>Tue, 11 Oct 2022 16:06:49 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/11/dynamically-update-azure-devops-pipeline-buildnumber/cover.png" alt="Featured image of post Set Calculated Value to Azure Devops Pipeline BuildNumber" /&gt;&lt;p&gt;After migrating a Azure DevOps project from one organization to another, I ran into an issue where the automatically generated build identifiers were out of sync. What do I mean by that? Well, in the old organization, the most recent build id was something like &lt;code&gt;14928&lt;/code&gt;. In Azure DevOps, every build has two primary identifiers, &lt;code&gt;Build.BuildId&lt;/code&gt; and &lt;code&gt;Build.BuildNumber&lt;/code&gt;:&lt;/p&gt;
@@ -660,14 +660,14 @@ data-flex-basis="915px"
 &gt;API Management policy reference&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/templates/" target="_blank" rel="noopener"
 &gt;Define resources with Bicep, ARM templates, and Terraform AzAPI provider&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Adding Azure Functions Support to a Devcontainer</title><link>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</link><pubDate>Fri, 23 Sep 2022 15:58:13 +0000</pubDate><guid>https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/09/23/adding-azure-functions-support-devcontainer/cover.png" alt="Featured image of post Adding Azure Functions Support to a Devcontainer" /&gt;&lt;h1 id="adding-azure-functions-support-to-a-devcontainer"&gt;Adding Azure Functions Support to a Devcontainer
-&lt;/h1&gt;&lt;p&gt;Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we&amp;rsquo;ll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.&lt;/p&gt;
+&lt;/h1&gt;&lt;p&gt;I already had a dev container set up and needed to add Azure Functions Core Tools to it. This is the approach that finally worked for me.&lt;/p&gt;
 &lt;h2 id="the-challenge"&gt;The Challenge
-&lt;/h2&gt;&lt;p&gt;Recently, I faced the task of adding support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
-&gt;Azure Functions&lt;/a&gt; to my trusted &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
-&gt;Dev Container&lt;/a&gt;. I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;I needed to add support for &lt;a class="link" href="https://azure.microsoft.com/products/functions/" target="_blank" rel="noopener"
+&gt;Azure Functions&lt;/a&gt; to my existing &lt;a class="link" href="https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
+&gt;Dev Container&lt;/a&gt;. I tried a few approaches and hit errors along the way. After some digging through the docs and a bit of trial and error, I landed on a version that rebuilt cleanly.&lt;/p&gt;
 &lt;h2 id="the-solution"&gt;The Solution
 &lt;/h2&gt;&lt;p&gt;To begin, I attempted to add the following lines to my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:&lt;/p&gt;
+&lt;p&gt;That version failed when I rebuilt the container. After searching around and comparing a few examples, I landed on this &lt;code&gt;RUN&lt;/code&gt; command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -707,7 +707,7 @@ data-flex-basis="915px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;With that, I had a working environment fully loaded with Azure Functions Core Tools and the necessary Visual Studio Code extensions installed. Hope that helps, dear future reader!&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;With that in place, I had a working dev container with Azure Functions Core Tools and the Visual Studio Code extensions I needed.&lt;/p&gt;
 &lt;p&gt;References:&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/training/modules/use-docker-container-dev-env-vs-code/" target="_blank" rel="noopener"
 &gt;Use a Docker container as a development environment with Visual Studio Code&lt;/a&gt;&lt;br&gt;
@@ -720,7 +720,7 @@ data-flex-basis="915px"
 &lt;p&gt;Really col &lt;a class="link" href="http://t.co/dzTs3fnv" target="_blank" rel="noopener"
 &gt;http://t.co/dzTs3fnv&lt;/a&gt; &amp;ldquo;Northwind&amp;rdquo; demo app by @achingono on GitHub. Clever use of T4 and more. Starred! &lt;a class="link" href="https://t.co/1GTE055f" target="_blank" rel="noopener"
 &gt;https://t.co/1GTE055f&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;— Scott Hanselman (@shanselman) January 9, 2013&lt;/p&gt;
+&lt;p&gt;Scott Hanselman (@shanselman), January 9, 2013&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:&lt;/p&gt;
 &lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;&lt;a href="https://twitter.com/mkristensen?ref_src=twsrc%5Etfw"&gt;@mkristensen&lt;/a&gt; &lt;a href="https://twitter.com/VisualStudio?ref_src=twsrc%5Etfw"&gt;@VisualStudio&lt;/a&gt; is there an equivalent to T4Scaffolding for &lt;a href="https://twitter.com/hashtag/dotnercore?src=hash&amp;amp;ref_src=twsrc%5Etfw"&gt;#dotnercore&lt;/a&gt;? I need to generate multiple files based on a template.&lt;/p&gt;&amp;mdash; Alfero Chingono (@achingono) &lt;a href="https://twitter.com/achingono/status/936598758682451969?ref_src=twsrc%5Etfw"&gt;December 1, 2017&lt;/a&gt;&lt;/blockquote&gt;
@@ -814,8 +814,8 @@ alt="Nuget"
 &lt;/div&gt;&lt;h3 id="response-file"&gt;Response File
 &lt;/h3&gt;&lt;p&gt;A &lt;em&gt;response file&lt;/em&gt; is a file that contains a set of tokens for a command-line app. Response files are a feature of &lt;code&gt;System.CommandLine&lt;/code&gt; that is useful in two scenarios:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;To invoke a command-line app by specifying input that is longer than the character limit of the terminal.
-To invoke the same command repeatedly without retyping the whole line.&lt;/li&gt;
+&lt;li&gt;To invoke a command-line app by specifying input that is longer than the character limit of the terminal.&lt;/li&gt;
+&lt;li&gt;To invoke the same command repeatedly without retyping the whole line.&lt;/li&gt;
 &lt;li&gt;To use a response file, enter the file name prefixed by an &lt;code&gt;@&lt;/code&gt; sign wherever in the line you want to insert commands, options, and arguments. The following lines are equivalent:&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
@@ -1181,8 +1181,8 @@ data-flex-basis="360px"
 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/ecosystems/xcode?view=azure-devops" target="_blank" rel="noopener"
 &gt;Build, test, and deploy Xcode apps&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/devops/pipelines/apps/mobile/app-signing?view=azure-devops&amp;amp;tabs=apple-install-during-build" target="_blank" rel="noopener"
-&gt;Sign your mobile app&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p&gt;This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The previous setup was a follows:
+&gt;Sign your mobile app&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p&gt;This is a continuation of my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The previous setup looked like this:
 &lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture.jpg"
 width="661"
 height="361"
@@ -1193,7 +1193,7 @@ class="gallery-image"
 data-flex-grow="183"
 data-flex-basis="439px"
 &gt;&lt;/p&gt;
-&lt;p&gt;One drawback of this setup was that both the SPA service and the API service had to expose ports in order to be accessible and the ports had to be different. I didn&amp;rsquo;t like that very much and for my learning purposes, I set out to figure out how to accomplish the following setup:&lt;/p&gt;
+&lt;p&gt;One drawback of that setup was that both the SPA service and the API service had to expose different ports to be reachable. I wanted something cleaner for local development, so I set out to make this work:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture.jpg"
 width="661"
 height="361"
@@ -1204,7 +1204,7 @@ class="gallery-image"
 data-flex-grow="183"
 data-flex-basis="439px"
 &gt;&lt;/p&gt;
-&lt;p&gt;The first task was to figure out how to configure NGINX to forward requests to multiple back-end services on the same port. After much research, this is the &lt;code&gt;nginx.conf&lt;/code&gt; I eventually came up with:&lt;/p&gt;
+&lt;p&gt;The first task was figuring out how to configure NGINX to forward requests to multiple backend services on the same port. After a fair amount of reading, this is the &lt;code&gt;nginx.conf&lt;/code&gt; I ended up with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
@@ -1299,7 +1299,7 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;The tricky part was to ensure that only traffic intended for the SPA service was routed there. Somehow, I could not get it to work using just the path directive. I had to resort to regex to get it to work.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;The tricky part was making sure only the traffic intended for the SPA service was routed there. I could not get the path directive alone to do what I wanted, so I used regex.&lt;/p&gt;
 &lt;p&gt;Next, I created a &lt;code&gt;configure-environment.sh&lt;/code&gt; script very similar to the previous article:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -1321,7 +1321,7 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sed -i -e &lt;span class="s1"&gt;&amp;#39;s/PORT/&amp;#39;&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/g&amp;#39;&lt;/span&gt; /etc/nginx/nginx.conf
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Details of the configuration settings are clearly outlined in the referenced articles.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;The referenced articles cover the configuration details well.&lt;/p&gt;
 &lt;p&gt;Next, the &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -1418,10 +1418,10 @@ data-flex-basis="439px"
 &lt;a class="link" href="https://stackoverflow.com/a/8130872" target="_blank" rel="noopener"
 &gt;How can query string parameters be forwarded through a proxy_pass with nginx?&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/a/23134318" target="_blank" rel="noopener"
-&gt;Environment variable substitution in sed&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Restore Database on Container Start Up</title><link>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</link><pubDate>Wed, 21 Apr 2021 10:20:50 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/cover.jpg" alt="Featured image of post Restore Database on Container Start Up" /&gt;&lt;p&gt;This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;One of the main reasons I needed my application container to wait for the database container to be ready was because I needed to initialize and seed the database before launching the application. This created a significant, and somewhat unacceptable, delay in container startup which impacted local development experience and automated UI tests.&lt;/p&gt;
-&lt;p&gt;I went on a quest to search for a solution to this problem and found out that Database engines such as MySQL support the ability to automatically restore database backups when creating a docker container. Surely, Microsoft SQL Server would have the same feature, right? Apparently, not. So I had no choice but to roll out my own solution, right? Right!&lt;/p&gt;
-&lt;p&gt;Now that we agree on the legitimacy of my quest, here are the changes I made to my project.&lt;/p&gt;
+&gt;Environment variable substitution in sed&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Restore Database on Container Start Up</title><link>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</link><pubDate>Wed, 21 Apr 2021 10:20:50 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/21/restore-database-on-container-start-up/cover.jpg" alt="Featured image of post Restore Database on Container Start Up" /&gt;&lt;p&gt;This is a continuation of two earlier posts: &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One of the main reasons I needed my application container to wait for the database container was that I had to initialize and seed the database before launching the app. That delay was starting to hurt local development and automated UI tests.&lt;/p&gt;
+&lt;p&gt;I looked for a cleaner way to handle it. MySQL supports restoring database backups when a container is created, so I assumed Microsoft SQL Server would have something similar. It did not, at least not in the way I needed, so I built my own startup flow.&lt;/p&gt;
+&lt;p&gt;Here are the changes I made to the project.&lt;/p&gt;
 &lt;p&gt;First, I created a &lt;code&gt;entrypoint.sh&lt;/code&gt; bash script with the following contents:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -1636,13 +1636,13 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ENTRYPOINT&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;/bin/entrypoint.sh&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;This &lt;code&gt;Dockerfile&lt;/code&gt; basically copies three files into the base MSSQL container:&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This &lt;code&gt;Dockerfile&lt;/code&gt; copies three files into the base MSSQL container:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;entrypoint.sh&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;restore-database.sh&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;database.bak&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Once those three files are copied to the right folders and made executable, the magic happens when the container is created.&lt;/p&gt;
+&lt;p&gt;Once those files are in the right folders and marked executable, the restore flow runs when the container is created.&lt;/p&gt;
 &lt;p&gt;The last step was to update the &lt;code&gt;docker-compose.yml&lt;/code&gt; file with the following changes:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -1683,9 +1683,9 @@ data-flex-basis="439px"
 &lt;a class="link" href="https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container" target="_blank" rel="noopener"
 &gt;Restore a SQL Server database in a Linux Docker container&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/a/49383879" target="_blank" rel="noopener"
-&gt;BASH - FOR loop using LS and wildcard&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" /&gt;&lt;p&gt;This is a continuation of my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
-&gt;this article&lt;/a&gt;, I decided to build up on that codebase as a learning opportunity and add a Blazor WASM front-end to the .NET Core API already built.&lt;/p&gt;
-&lt;p&gt;I will not repeat the process details as that is nicely outlined in the referenced article. What I will do here is share my version of the &lt;code&gt;Dockerfile&lt;/code&gt; and the associated script and configuration file.&lt;/p&gt;
+&gt;BASH - FOR loop using LS and wildcard&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" /&gt;&lt;p&gt;This post continues from &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
+&gt;this article&lt;/a&gt;, I used that codebase as a learning exercise and added a Blazor WASM front end to the .NET Core API I had already built.&lt;/p&gt;
+&lt;p&gt;I will not repeat the full process here because the referenced article already covers it well. Instead, I will share my version of the &lt;code&gt;Dockerfile&lt;/code&gt;, plus the supporting script and configuration file.&lt;/p&gt;
 &lt;p&gt;So, here&amp;rsquo;s my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -1801,8 +1801,8 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; --from&lt;span class="o"&gt;=&lt;/span&gt;publish /&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CONFIG&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/wwwroot .&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;You will notice that my &lt;code&gt;Dockerfile&lt;/code&gt; does not have a &lt;code&gt;CMD&lt;/code&gt; or &lt;code&gt;ENTRYPOINT&lt;/code&gt; declaration. That is because the base image I&amp;rsquo;m using to host my application &lt;code&gt;nginx:alpine&lt;/code&gt; already has a very nice feature where it automatically runs all scripts in the &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; folder and executes them before starting up nginx.&lt;/p&gt;
-&lt;p&gt;This allowed me to copy my &lt;code&gt;configure-environment.sh&lt;/code&gt; to the &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; folder, make it executable and let the magic happen.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;You will notice that my &lt;code&gt;Dockerfile&lt;/code&gt; does not have a &lt;code&gt;CMD&lt;/code&gt; or &lt;code&gt;ENTRYPOINT&lt;/code&gt; declaration. That is because the base image I am using to host the application, &lt;code&gt;nginx:alpine&lt;/code&gt;, already runs every script in &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; before starting nginx.&lt;/p&gt;
+&lt;p&gt;That let me copy &lt;code&gt;configure-environment.sh&lt;/code&gt; into &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt;, mark it executable, and let nginx handle the rest.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s my &lt;code&gt;configure-environment.sh&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2063,7 +2063,7 @@ So, how does my &lt;code&gt;entrypoint.sh&lt;/code&gt; know which server to chec
 &lt;p&gt;As always, all comments and feedback are greatly appreciated.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/questions/39296472/how-to-check-if-an-environment-variable-exists-and-get-its-value" target="_blank" rel="noopener"
-&gt;How to check if an environment variable exists and get its value?&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Mon, 15 Mar 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/cover.png" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" /&gt;&lt;p&gt;In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" &gt;Reference Build Arguments in Docker Startup Script&lt;/a&gt;, I showed how I added reusability to my &lt;code&gt;Dockerfile&lt;/code&gt; by adding build arguments.&lt;/p&gt;
+&gt;How to check if an environment variable exists and get its value?&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Combining ENTRYPOINT and CMD in a Dockerfile</title><link>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</link><pubDate>Mon, 15 Mar 2021 17:51:18 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/15/dockerfile-combine-entrypoint-cmd/cover.png" alt="Featured image of post Combining ENTRYPOINT and CMD in a Dockerfile" /&gt;&lt;p&gt;In my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/" &gt;Reference Build Arguments in Docker Startup Script&lt;/a&gt;, I showed how I added a bit more reuse to my &lt;code&gt;Dockerfile&lt;/code&gt; with build arguments.&lt;/p&gt;
 &lt;p&gt;The docker builder &lt;a class="link" href="https://docs.docker.com/engine/reference/builder/#cmd" target="_blank" rel="noopener"
 &gt;CMD&lt;/a&gt; reference document states:&lt;/p&gt;
 &lt;blockquote&gt;
@@ -2164,8 +2164,8 @@ So, how does my &lt;code&gt;entrypoint.sh&lt;/code&gt; know which server to chec
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;CMD&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;sh&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;-c&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;$DB_SERVICE $DB_SERVICE_PORT dotnet $ASSEMBLY&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Configuring it this way allows me to supply different arguments when running the container without having to specify &lt;code&gt;entrypoint.sh&lt;/code&gt; every time. Small change, and I hope this proves helpful to you, dear reader. All comments and feedback will be greatly appreciated.&lt;/p&gt;</description></item><item><title>Reference Environment Variables in Docker Startup Script</title><link>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</link><pubDate>Thu, 11 Mar 2021 21:27:40 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/cover.jpg" alt="Featured image of post Reference Environment Variables in Docker Startup Script" /&gt;&lt;p&gt;In my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;, I showed how I managed to delay container application code execution until another service is ready to accept tcp connections.&lt;/p&gt;
-&lt;p&gt;If this post, I&amp;rsquo;m going to improve on that solution and make it more reusable by adding environment variables to the the &lt;code&gt;Dockerfile&lt;/code&gt; and to the &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;Configuring it this way lets me supply different arguments when running the container without having to specify &lt;code&gt;entrypoint.sh&lt;/code&gt; every time.&lt;/p&gt;</description></item><item><title>Reference Environment Variables in Docker Startup Script</title><link>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</link><pubDate>Thu, 11 Mar 2021 21:27:40 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/11/reference-environment-variables-docker-startup-script/cover.jpg" alt="Featured image of post Reference Environment Variables in Docker Startup Script" /&gt;&lt;p&gt;In my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;, I showed how I delayed container startup until another service was ready to accept TCP connections.&lt;/p&gt;
+&lt;p&gt;In this post, I build on that approach and make it more reusable by adding environment variables to both the &lt;code&gt;Dockerfile&lt;/code&gt; and the &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s the updated &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2355,11 +2355,10 @@ So, how does my &lt;code&gt;entrypoint.sh&lt;/code&gt; know which server to chec
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; PROJECT: Business.Web&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
-Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;And when I run the Docker image, I can supply the same three environment variables to override the container defaults. That gives me one &lt;code&gt;Dockerfile&lt;/code&gt; I can reuse across different image variations.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://github.com/moby/moby/issues/37345#issuecomment-400245466" target="_blank" rel="noopener"
-&gt;Persisting ENV and ARG settings to all later stages in multi-stage builds&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" /&gt;&lt;p&gt;Recently, I was working on a pet project and had created my &lt;code&gt;Dockerfile&lt;/code&gt; for the ASP.NET Core container as well as the &lt;code&gt;docker-compose.yml&lt;/code&gt; file to compose the services.&lt;/p&gt;
+&gt;Persisting ENV and ARG settings to all later stages in multi-stage builds&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Waiting for Docker Service Container Port to Be Ready</title><link>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</link><pubDate>Thu, 04 Mar 2021 12:21:28 +0000</pubDate><guid>https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/cover.jpg" alt="Featured image of post Waiting for Docker Service Container Port to Be Ready" /&gt;&lt;p&gt;I was working on a pet project and had already created a &lt;code&gt;Dockerfile&lt;/code&gt; for the ASP.NET Core container, along with a &lt;code&gt;docker-compose.yml&lt;/code&gt; file to wire the services together.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s the &lt;code&gt;Dockerfile&lt;/code&gt; I had:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2510,7 +2509,7 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;ACCEPT_EULA=Y&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;My biggest challenge was that even though I had set the &lt;code&gt;app&lt;/code&gt; service to depend on the &lt;code&gt;db&lt;/code&gt; service, the &lt;code&gt;app&lt;/code&gt; service would start before the &lt;code&gt;db&lt;/code&gt; service was really ready to receive connections. This resulted in .net startup errors, crash loops and the container eventually shutting down:&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;My biggest challenge was that even though I had set the &lt;code&gt;app&lt;/code&gt; service to depend on the &lt;code&gt;db&lt;/code&gt; service, the &lt;code&gt;app&lt;/code&gt; service would still start before the &lt;code&gt;db&lt;/code&gt; service was ready to receive connections. That led to .NET startup errors, crash loops, and eventually a failed container:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -2535,12 +2534,12 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;---&amp;gt; System.Net.Internals.SocketExceptionFactory+ExtendedSocketException (00000001, 11): Resource temporarily unavailable
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Since there was some initialization code and database seeding that had to take place before the application was ready to run, I wanted to ensure that the dotnet code started only when the database container/service was ready to receive connections.&lt;/p&gt;
-&lt;p&gt;After some searching on the internet, I found this answer on the &lt;a class="link" href="https://unix.stackexchange.com" target="_blank" rel="noopener"
+&lt;/div&gt;&lt;p&gt;Because some initialization code and database seeding had to finish before the application could run, I needed the .NET code to start only after the database container was ready to receive connections.&lt;/p&gt;
+&lt;p&gt;After some searching, I found this answer on &lt;a class="link" href="https://unix.stackexchange.com" target="_blank" rel="noopener"
 &gt;Unix StackExchange&lt;/a&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;a class="link" href="https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356" target="_blank" rel="noopener"
 &gt;Testing remote TCP port using telnet by running a one-line command&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Now, I needed to ensure this command runs before launching the .net site, and only after the db server was ready to receive connections on port &lt;code&gt;1433&lt;/code&gt;. So, after some further searching, trial and error, I eventually landed on the following two scripts:&lt;/p&gt;
+&lt;p&gt;I then needed to run that command before launching the .NET site, and only after the &lt;code&gt;db&lt;/code&gt; server was ready to receive connections on port &lt;code&gt;1433&lt;/code&gt;. After some more trial and error, I landed on the following two scripts:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;testconnection.sh&lt;/code&gt; is a copy of the code found on Unix StackExchange:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -2758,7 +2757,7 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; SELECT 1
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;As you can see, this solution allowed my &lt;code&gt;app&lt;/code&gt; container to wait for as long as it needed to before starting the .net application. Hopefully, you find that helpful, dear reader.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;This solution let my &lt;code&gt;app&lt;/code&gt; container wait as long as it needed before starting the .NET application.&lt;/p&gt;
 &lt;p&gt;Credits:&lt;br&gt;
 &lt;a class="link" href="https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356" target="_blank" rel="noopener"
 &gt;Testing remote TCP port using telnet by running a one-line command&lt;/a&gt;&lt;br&gt;

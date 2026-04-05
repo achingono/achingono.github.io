@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nginx on Alfero Chingono</title><link>https://www.chingono.com/tags/nginx/</link><description>Recent content in Nginx on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 11 Apr 2022 11:53:23 +0000</lastBuildDate><atom:link href="https://www.chingono.com/tags/nginx/index.xml" rel="self" type="application/rss+xml"/><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p&gt;This is a continuation from my previous posts; &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The previous setup was a follows:
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nginx on Alfero Chingono</title><link>https://www.chingono.com/tags/nginx/</link><description>Recent content in Nginx on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/nginx/index.xml" rel="self" type="application/rss+xml"/><item><title>Using Nginx Reverse Proxy for Local Microservice Development</title><link>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</link><pubDate>Tue, 25 May 2021 21:43:26 +0000</pubDate><guid>https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/</guid><description>&lt;p&gt;This is a continuation of my previous post, &lt;a class="link" href="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/" &gt;Dockerizing Blazor Wasm Application&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The previous setup looked like this:
 &lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/3-Service-Architecture.jpg"
 width="661"
 height="361"
@@ -10,7 +10,7 @@ class="gallery-image"
 data-flex-grow="183"
 data-flex-basis="439px"
 &gt;&lt;/p&gt;
-&lt;p&gt;One drawback of this setup was that both the SPA service and the API service had to expose ports in order to be accessible and the ports had to be different. I didn&amp;rsquo;t like that very much and for my learning purposes, I set out to figure out how to accomplish the following setup:&lt;/p&gt;
+&lt;p&gt;One drawback of that setup was that both the SPA service and the API service had to expose different ports to be reachable. I wanted something cleaner for local development, so I set out to make this work:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2021/05/25/using-nginx-reverse-proxy-for-local-microservice-development/4-Service-Architecture.jpg"
 width="661"
 height="361"
@@ -21,7 +21,7 @@ class="gallery-image"
 data-flex-grow="183"
 data-flex-basis="439px"
 &gt;&lt;/p&gt;
-&lt;p&gt;The first task was to figure out how to configure NGINX to forward requests to multiple back-end services on the same port. After much research, this is the &lt;code&gt;nginx.conf&lt;/code&gt; I eventually came up with:&lt;/p&gt;
+&lt;p&gt;The first task was figuring out how to configure NGINX to forward requests to multiple backend services on the same port. After a fair amount of reading, this is the &lt;code&gt;nginx.conf&lt;/code&gt; I ended up with:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
@@ -116,7 +116,7 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;The tricky part was to ensure that only traffic intended for the SPA service was routed there. Somehow, I could not get it to work using just the path directive. I had to resort to regex to get it to work.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;The tricky part was making sure only the traffic intended for the SPA service was routed there. I could not get the path directive alone to do what I wanted, so I used regex.&lt;/p&gt;
 &lt;p&gt;Next, I created a &lt;code&gt;configure-environment.sh&lt;/code&gt; script very similar to the previous article:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -138,7 +138,7 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sed -i -e &lt;span class="s1"&gt;&amp;#39;s/PORT/&amp;#39;&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/g&amp;#39;&lt;/span&gt; /etc/nginx/nginx.conf
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Details of the configuration settings are clearly outlined in the referenced articles.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;The referenced articles cover the configuration details well.&lt;/p&gt;
 &lt;p&gt;Next, the &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -235,9 +235,9 @@ data-flex-basis="439px"
 &lt;a class="link" href="https://stackoverflow.com/a/8130872" target="_blank" rel="noopener"
 &gt;How can query string parameters be forwarded through a proxy_pass with nginx?&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://stackoverflow.com/a/23134318" target="_blank" rel="noopener"
-&gt;Environment variable substitution in sed&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" /&gt;&lt;p&gt;This is a continuation of my previous post; &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
-&gt;this article&lt;/a&gt;, I decided to build up on that codebase as a learning opportunity and add a Blazor WASM front-end to the .NET Core API already built.&lt;/p&gt;
-&lt;p&gt;I will not repeat the process details as that is nicely outlined in the referenced article. What I will do here is share my version of the &lt;code&gt;Dockerfile&lt;/code&gt; and the associated script and configuration file.&lt;/p&gt;
+&gt;Environment variable substitution in sed&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Dockerizing Blazor Wasm Application</title><link>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</link><pubDate>Wed, 07 Apr 2021 18:39:49 +0000</pubDate><guid>https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/</guid><description>&lt;img src="https://www.chingono.com/blog/2021/04/07/dockerizing-blazor-wasm-application/cover.jpg" alt="Featured image of post Dockerizing Blazor Wasm Application" /&gt;&lt;p&gt;This post continues from &lt;a class="link" href="https://www.chingono.com/blog/2021/03/04/waiting-docker-service-container-port-ready/" &gt;Waiting for Docker Service Container Port to Be Ready&lt;/a&gt;. After reading &lt;a class="link" href="https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/" target="_blank" rel="noopener"
+&gt;this article&lt;/a&gt;, I used that codebase as a learning exercise and added a Blazor WASM front end to the .NET Core API I had already built.&lt;/p&gt;
+&lt;p&gt;I will not repeat the full process here because the referenced article already covers it well. Instead, I will share my version of the &lt;code&gt;Dockerfile&lt;/code&gt;, plus the supporting script and configuration file.&lt;/p&gt;
 &lt;p&gt;So, here&amp;rsquo;s my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
@@ -353,8 +353,8 @@ data-flex-basis="439px"
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;COPY&lt;/span&gt; --from&lt;span class="o"&gt;=&lt;/span&gt;publish /&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CONFIG&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/wwwroot .&lt;span class="err"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;You will notice that my &lt;code&gt;Dockerfile&lt;/code&gt; does not have a &lt;code&gt;CMD&lt;/code&gt; or &lt;code&gt;ENTRYPOINT&lt;/code&gt; declaration. That is because the base image I&amp;rsquo;m using to host my application &lt;code&gt;nginx:alpine&lt;/code&gt; already has a very nice feature where it automatically runs all scripts in the &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; folder and executes them before starting up nginx.&lt;/p&gt;
-&lt;p&gt;This allowed me to copy my &lt;code&gt;configure-environment.sh&lt;/code&gt; to the &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; folder, make it executable and let the magic happen.&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;You will notice that my &lt;code&gt;Dockerfile&lt;/code&gt; does not have a &lt;code&gt;CMD&lt;/code&gt; or &lt;code&gt;ENTRYPOINT&lt;/code&gt; declaration. That is because the base image I am using to host the application, &lt;code&gt;nginx:alpine&lt;/code&gt;, already runs every script in &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt; before starting nginx.&lt;/p&gt;
+&lt;p&gt;That let me copy &lt;code&gt;configure-environment.sh&lt;/code&gt; into &lt;code&gt;/docker-entrypoint.d/&lt;/code&gt;, mark it executable, and let nginx handle the rest.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s my &lt;code&gt;configure-environment.sh&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;

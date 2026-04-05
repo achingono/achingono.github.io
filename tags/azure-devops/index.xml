@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure-Devops on Alfero Chingono</title><link>https://www.chingono.com/tags/azure-devops/</link><description>Recent content in Azure-Devops on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 20:02:39 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/azure-devops/index.xml" rel="self" type="application/rss+xml"/><item><title>Automating Notifications in Azure Devops Using Power Automate</title><link>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</link><pubDate>Tue, 08 Oct 2024 21:11:43 +0000</pubDate><guid>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/cover.png" alt="Featured image of post Automating Notifications in Azure Devops Using Power Automate" /&gt;&lt;p&gt;Managing work items in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops" target="_blank" rel="noopener"
-&gt;Azure DevOps&lt;/a&gt; is crucial for efficient software development. To enhance communication and collaboration, I created a Power Automate flow that automatically notifies team members whenever a work item is updated. This post will guide you through the steps I took to create this flow.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure DevOps on Alfero Chingono</title><link>https://www.chingono.com/tags/azure-devops/</link><description>Recent content in Azure DevOps on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/azure-devops/index.xml" rel="self" type="application/rss+xml"/><item><title>Automating Notifications in Azure Devops Using Power Automate</title><link>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</link><pubDate>Tue, 08 Oct 2024 21:11:43 +0000</pubDate><guid>https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/10/08/automating-notifications-in-azure-devops-using-power-automate/cover.png" alt="Featured image of post Automating Notifications in Azure Devops Using Power Automate" /&gt;&lt;p&gt;Managing work items in &lt;a class="link" href="https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops" target="_blank" rel="noopener"
+&gt;Azure DevOps&lt;/a&gt; gets easier when updates do not depend on someone noticing them manually. I built a Power Automate flow that notifies team members whenever a work item changes. This post walks through how I set it up.&lt;/p&gt;
 &lt;h3 id="why-use-power-automate-for-azure-devops"&gt;Why Use Power Automate for Azure DevOps?
 &lt;/h3&gt;&lt;p&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/power-automate/" target="_blank" rel="noopener"
-&gt;Power Automate&lt;/a&gt; is a powerful tool that integrates seamlessly with Azure DevOps, automating tasks like sending notifications, updating items, or even triggering workflows. By automating notifications, you ensure that relevant team members are instantly informed about the status or changes in work items.&lt;/p&gt;
+&gt;Power Automate&lt;/a&gt; works well with Azure DevOps for tasks like sending notifications, updating items, and kicking off follow-up workflows. In this case, it let me notify the right people as soon as a work item changed status.&lt;/p&gt;
 &lt;h2 id="step-1-setting-up-the-trigger"&gt;Step 1: Setting Up the Trigger
 &lt;/h2&gt;&lt;p&gt;To get started, I needed to create the trigger that fires whenever a work item in Azure DevOps is updated.&lt;/p&gt;
 &lt;ol&gt;
@@ -36,7 +36,7 @@ data-flex-basis="182px"
 &lt;p&gt;Add a new &lt;strong&gt;Initialize Variable&lt;/strong&gt; action.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Name the first variable &lt;strong&gt;LastTime&lt;/strong&gt;. Set its type to &lt;code&gt;String&lt;/code&gt; and its initial value to&amp;quot; &lt;code&gt;getPastTime(3, 'Minute')&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Name the first variable &lt;strong&gt;LastTime&lt;/strong&gt;. Set its type to &lt;code&gt;String&lt;/code&gt; and its initial value to &lt;code&gt;getPastTime(3, 'Minute')&lt;/code&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The number &lt;code&gt;3&lt;/code&gt; here needs to match the value in the trigger as mentioned before.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -168,7 +168,7 @@ data-flex-basis="345px"
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The querystring paramater &lt;code&gt;$expand=relations&lt;/code&gt; which is required for expanding related links in the response.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The query string parameter &lt;code&gt;$expand=relations&lt;/code&gt; is required if you want the response to include related links.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -206,13 +206,13 @@ data-flex-basis="324px"
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; We are using the output from our previous step (in this case, &amp;ldquo;Get_WorkItem_Relationships&amp;rdquo; — use the UI to add dynamic content in the expression to make sure you&amp;rsquo;ll have the right value). In addition, we are keeping things simple by converting the JSON to a string, and simply checking if it contains the text &lt;code&gt;&amp;quot;ArtifactLink&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; We are using the output from our previous step; in this case, &lt;code&gt;Get_WorkItem_Relationships&lt;/code&gt;. Use the UI to add dynamic content in the expression so you end up with the right value. To keep things simple, we convert the JSON to a string and check whether it contains the text &lt;code&gt;&amp;quot;ArtifactLink&amp;quot;&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;This will set the variable &lt;code&gt;HasArtifactLinks&lt;/code&gt; to true if there are any links of type &lt;strong&gt;ArtifactLink&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2 id="step-6-handling-different-work-item-states"&gt;Step 6: Handling Different Work Item States
-&lt;/h2&gt;&lt;p&gt;Now comes the interesting part—handling different scenarios based on the work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted the flow to send notifications accordingly.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;Next comes the part where the flow branches by work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted it to send different notifications.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s how I handled it:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -387,7 +387,7 @@ data-flex-basis="406px"
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;By setting up this Power Automate flow, I no longer have to worry about manually tracking work item updates or notifying team members. Whether a work item is resolved, blocked, or closed, the flow ensures the right people get notified at the right time. Plus, with the artifact link checks, developers can easily review the associated commits and pull requests.&lt;/p&gt;
+&lt;p&gt;After setting up this Power Automate flow, I no longer had to keep checking work item updates manually. When a work item is resolved, blocked, or closed, the right people get notified. The artifact link check also makes it easier to catch cases where code changed but no commit or pull request was linked.&lt;/p&gt;
 &lt;p&gt;References:&lt;br&gt;
 &lt;a class="link" href="https://learn.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.2" target="_blank" rel="noopener"
 &gt;Azure DevOps Services REST API Reference&lt;/a&gt;&lt;br&gt;
@@ -400,7 +400,7 @@ data-flex-basis="406px"
 &lt;a class="link" href="https://learn.microsoft.com/en-us/connectors/teams/?tabs=text1%2Cdotnet#post-message-in-a-chat-or-channel" target="_blank" rel="noopener"
 &gt;Post message in a chat or channel&lt;/a&gt;&lt;br&gt;
 &lt;a class="link" href="https://medium.com/@benjihuser/adding-notifications-to-ms-teams-when-azure-devops-work-items-are-waiting-using-power-automate-b5466eb1cae6" target="_blank" rel="noopener"
-&gt;Adding Notifications to MS Teams when Azure DevOps Work Items are Waiting using Power Automate&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Automating OWASP Top Ten Scan Reports in Azure DevOps</title><link>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</link><pubDate>Thu, 05 Sep 2024 09:58:57 +0000</pubDate><guid>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/cover.jpg" alt="Featured image of post Automating OWASP Top Ten Scan Reports in Azure DevOps" /&gt;&lt;p&gt;Security scanning should be part of the delivery flow, not an afterthought. In this post I walk through how I automated OWASP ZAP scans using Azure DevOps release pipelines and transformed the findings into something teams can actually act on.&lt;/p&gt;
+&gt;Adding Notifications to MS Teams when Azure DevOps Work Items are Waiting using Power Automate&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Automating OWASP Top Ten Scan Reports in Azure DevOps</title><link>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</link><pubDate>Thu, 05 Sep 2024 09:58:57 +0000</pubDate><guid>https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/</guid><description>&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/cover.jpg" alt="Featured image of post Automating OWASP Top Ten Scan Reports in Azure DevOps" /&gt;&lt;p&gt;Security scanning should be part of the delivery flow, not an afterthought. In this post I show how I automated OWASP ZAP scans in Azure DevOps release pipelines and turned the findings into something teams can actually act on.&lt;/p&gt;
 &lt;p&gt;The approach uses a ZAP Docker container to run baseline scans, a PowerShell script to map findings to OWASP Top 10 categories and convert them to NUnit format, and the standard Azure DevOps publish-test-results task to surface vulnerabilities as visible test failures in your pipeline.&lt;/p&gt;
 &lt;h2 id="defining-pipeline-environment-variables"&gt;Defining Pipeline Environment Variables
 &lt;/h2&gt;&lt;p&gt;The process begins by defining pipeline variables that will be used by the pipeline tasks. Here is a screenshot of the pipeline variables configuration:&lt;/p&gt;
@@ -451,7 +451,7 @@ data-flex-basis="692px"
 &gt;Docker Engine release notes&lt;/a&gt; page to find the latest version of the docker engine.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="running-the-owasp-zap-docker-container"&gt;Running the OWASP ZAP Docker container
-&lt;/h2&gt;&lt;p&gt;The next step leverages a pre-configured OWASP ZAP Docker container:&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;The next step uses a pre-configured OWASP ZAP Docker container:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/owasp-scan.jpg"
 width="1651"
 height="589"
@@ -506,7 +506,7 @@ data-flex-basis="672px"
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;This command mounts a working directory to store the results and scans your application’s URL for common vulnerabilities. The results are generated in an XML format by default and stored in a file defined in the &lt;code&gt;REPORT_FILE&lt;/code&gt; variable and located in the folder defined by the &lt;code&gt;WORK_PATH&lt;/code&gt; variable.&lt;/p&gt;
 &lt;h2 id="converting-zap-results-to-nunit-format"&gt;Converting ZAP Results to NUnit Format
-&lt;/h2&gt;&lt;p&gt;While the XML report is comprehensive, integrating its results into your pipeline can be tricky. To make this integration seamless, we’ll transform the ZAP results into NUnit format. NUnit is widely supported by CI/CD tools and allows for easy visualization of test outcomes.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;While the XML report is detailed, integrating its results into your pipeline can still be awkward. To make that easier, we’ll transform the ZAP results into NUnit format. NUnit is widely supported by CI/CD tools and makes test outcomes easier to inspect.&lt;/p&gt;
 &lt;p&gt;In addition, we are only interested in the Top Ten OWASP Vulnerabilities, so this step also filters outcomes by the Top 10 categories.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/transform-report.jpg"
 width="1649"
@@ -847,7 +847,7 @@ data-flex-basis="673px"
 &lt;/div&gt;&lt;h3 id="key-features-of-the-script"&gt;Key Features of the Script
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Alert Aggregation:&lt;/strong&gt; Gathers and organizes vulnerability data from ZAP results.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;OWASP Mapping:&lt;/strong&gt; Links CWEs from ZAP alerts to OWASP Top 10 categories. For a comprehensive list of CWE IDs and their mappings to the OWASP Top 10 categories, you can refer to the official OWASP documentation: &lt;a class="link" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener"
+&lt;li&gt;&lt;strong&gt;OWASP Mapping:&lt;/strong&gt; Links CWEs from ZAP alerts to OWASP Top 10 categories. For a full list of CWE IDs and their mappings to the OWASP Top 10 categories, see the official OWASP documentation: &lt;a class="link" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener"
 &gt;OWASP Top Ten Mapping&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;NUnit Format Conversion:&lt;/strong&gt; Outputs the data in NUnit format for easy integration with Azure DevOps.&lt;/li&gt;
 &lt;/ul&gt;
@@ -875,7 +875,7 @@ data-flex-grow="114"
 data-flex-basis="274px"
 &gt;&lt;/p&gt;
 &lt;h3 id="what-this-gets-you"&gt;What this gets you
-&lt;/h3&gt;&lt;p&gt;By integrating OWASP ZAP scans with Azure DevOps, you get security findings surfaced as test failures in the same interface where the rest of your pipeline results live. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion so the results are immediately interpretable without digging into raw XML.&lt;/p&gt;
+&lt;/h3&gt;&lt;p&gt;By integrating OWASP ZAP scans with Azure DevOps, security findings show up as test failures in the same interface as the rest of your pipeline results. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion, so you do not have to dig through raw XML to understand what failed.&lt;/p&gt;
 &lt;p&gt;One thing I appreciate even more now than when I first wrote this post is that DAST automation is only one part of a strong DevSecOps loop. OWASP ZAP gives us runtime-facing feedback, but the workflow becomes even more powerful when it sits beside static analysis, issue routing, and remediation paths that developers can act on without leaving their normal delivery flow.&lt;/p&gt;
 &lt;p&gt;I explored that next step in &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)&lt;/a&gt;. If this post shows one generation of automated AppSec reporting, that newer post shows how I now think about turning findings directly into reviewable engineering work.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
