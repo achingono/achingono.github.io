@@ -1,12 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on Alfero Chingono</title><link>https://www.chingono.com/page/</link><description>Recent content in Pages on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 22 Mar 2022 21:20:06 +0000</lastBuildDate><atom:link href="https://www.chingono.com/page/index.xml" rel="self" type="application/rss+xml"/><item><title>Archives</title><link>https://www.chingono.com/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://www.chingono.com/archives/</guid><description/></item><item><title>About Me</title><link>https://www.chingono.com/about/</link><pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate><guid>https://www.chingono.com/about/</guid><description>&lt;img src="https://www.chingono.com/about/cover.jpg" alt="Featured image of post About Me" /&gt;&lt;p&gt;Hi!&lt;/p&gt;
-&lt;p&gt;My name is Alfero, and I&amp;rsquo;m a programmer with over 20 years’ experience planning, designing and building line of business applications that you&amp;rsquo;ve probably used. In other words, I&amp;rsquo;ve helped envision, design, architect, and led the implementation of full software development life cycle projects for more than two decades.&lt;/p&gt;
-&lt;p&gt;Combining a mix of professional leadership and business strategy, I work with business decision makers to uncover the real drivers behind software-related decisions, determine the optimal course of action and guide the inter-disciplinary teams towards solutions that meet end user needs and business objectives.&lt;/p&gt;
-&lt;p&gt;I currently work out of my home office in Toronto area, Ontario, Canada and while I&amp;rsquo;m currently employed by Microsoft in the Customer Success team as a Cloud Solutions Architect, &lt;strong&gt;this blog, its content and opinions are my own&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;At 19, I began my self-development journey and have since discovered the passion of learning and growing in all dimensions of my life. My general attitude is that there is nothing I cannot learn or do, and I am honored to help folks from all stages of their growth journey!&lt;/p&gt;
-&lt;p&gt;My mission statement is:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Think greatly, Connect deeply, Learn broadly&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;and I intend to do all three with this site. Please feel free to connect with me on &lt;a class="link" href="https://www.linkedin.com/in/achingono/" target="_blank" rel="noopener"
-&gt;LinkedIn&lt;/a&gt; or on &lt;a class="link" href="https://twitter.com/achingono" target="_blank" rel="noopener"
-&gt;Twitter&lt;/a&gt;. Happy coding!&lt;/p&gt;</description></item><item><title>Search</title><link>https://www.chingono.com/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.chingono.com/search/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on Alfero Chingono</title><link>https://www.chingono.com/page/</link><description>Recent content in Pages on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 23:18:06 -0400</lastBuildDate><atom:link href="https://www.chingono.com/page/index.xml" rel="self" type="application/rss+xml"/><item><title>Archives</title><link>https://www.chingono.com/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://www.chingono.com/archives/</guid><description/></item><item><title>About Me</title><link>https://www.chingono.com/about/</link><pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate><guid>https://www.chingono.com/about/</guid><description>&lt;img src="https://www.chingono.com/about/cover.jpg" alt="Featured image of post About Me" /&gt;&lt;p&gt;Hi, I&amp;rsquo;m Alfero.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m a platform engineering leader, architect, and builder based in the Toronto area. I spend most of my time thinking about developer experience, software delivery, cloud platforms, and what agentic AI can do when it&amp;rsquo;s grounded in real engineering constraints instead of hype.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve been building software and leading delivery work for more than two decades. Over the years that has taken me through architecture, DevOps, cloud modernization, engineering leadership, and product delivery. The thread running through all of it is pretty simple: I care about making it easier for teams to ship good software without drowning in friction, fragility, or tool sprawl.&lt;/p&gt;
+&lt;p&gt;That is the lens behind this site.&lt;/p&gt;
+&lt;p&gt;Professionally, my work sits at the intersection of &lt;strong&gt;Platform Engineering, DevEx, cloud automation, and AI-enabled software delivery&lt;/strong&gt;. In practice that means things like CI/CD, observability, feature flags, architecture patterns, self-service platforms, and the organizational work required to make those systems actually useful.&lt;/p&gt;
+&lt;p&gt;Outside of work, I&amp;rsquo;m building and sharing projects like &lt;strong&gt;CueMarshal&lt;/strong&gt; and &lt;strong&gt;FireFly&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CueMarshal&lt;/strong&gt; is my take on a self-hosted, Git-centric AI DevOps platform.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;FireFly&lt;/strong&gt; is a visual code stepper and AI tutor designed to help kids actually understand how code executes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;More recently, I&amp;rsquo;ve also been spending a lot of time with self-hosted agent systems, local AI infrastructure, and the practical side of running tools like OpenClaw in the real world.&lt;/p&gt;
+&lt;p&gt;So if you spend time here, you&amp;rsquo;ll mostly find writing about:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;platform engineering and developer experience&lt;/li&gt;
+&lt;li&gt;agentic AI in practice&lt;/li&gt;
+&lt;li&gt;DevOps, cloud architecture, and delivery modernization&lt;/li&gt;
+&lt;li&gt;building in public&lt;/li&gt;
+&lt;li&gt;the occasional career or leadership lesson when the work behind the work feels worth talking about&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I also care a lot about mentoring, teaching, and helping other builders grow. Over the years that&amp;rsquo;s shown up through leadership roles, mentoring, guest lecturing, and community work.&lt;/p&gt;
+&lt;p&gt;This blog reflects my own work, experiments, and opinions.&lt;/p&gt;
+&lt;p&gt;If any of that overlaps with what you&amp;rsquo;re building, feel free to connect with me on &lt;a class="link" href="https://www.linkedin.com/in/achingono/" target="_blank" rel="noopener"
+&gt;LinkedIn&lt;/a&gt;, follow along on &lt;a class="link" href="https://github.com/achingono" target="_blank" rel="noopener"
+&gt;GitHub&lt;/a&gt;, or say hi on &lt;a class="link" href="https://twitter.com/achingono" target="_blank" rel="noopener"
+&gt;Twitter&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Search</title><link>https://www.chingono.com/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.chingono.com/search/</guid><description/></item></channel></rss>

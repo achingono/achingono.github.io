@@ -1,4 +1,181 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Multi-Agent Systems on Alfero Chingono</title><link>https://www.chingono.com/tags/multi-agent-systems/</link><description>Recent content in Multi-Agent Systems on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 21:58:45 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/multi-agent-systems/index.xml" rel="self" type="application/rss+xml"/><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Multi-Agent Systems on Alfero Chingono</title><link>https://www.chingono.com/tags/multi-agent-systems/</link><description>Recent content in Multi-Agent Systems on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 23:18:06 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/multi-agent-systems/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical — it was architectural.&lt;/p&gt;
+&lt;p&gt;Should one agent answer everything?&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t think so.&lt;/p&gt;
+&lt;h2 id="i-wanted-separation-without-turning-the-system-into-theater"&gt;I wanted separation without turning the system into theater
+&lt;/h2&gt;&lt;p&gt;I&amp;rsquo;m generally skeptical of fake multi-agent setups where the same assistant just changes costumes.&lt;/p&gt;
+&lt;p&gt;What I wanted here was simpler and more practical:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one agent for the main, more operational surface&lt;/li&gt;
+&lt;li&gt;another agent for the more personal, direct-chat surface&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That&amp;rsquo;s how I ended up with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Marshal&lt;/strong&gt; as the &lt;code&gt;main&lt;/code&gt; agent&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ava&lt;/strong&gt; as the &lt;code&gt;personal&lt;/code&gt; agent&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This was not about branding. It was about boundaries.&lt;/p&gt;
+&lt;h2 id="the-split-shows-up-directly-in-config"&gt;The split shows up directly in config
+&lt;/h2&gt;&lt;p&gt;The OpenClaw config defines both the shared defaults and the named agent list:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;agents&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;defaults&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/home/node/.openclaw/workspaces/main&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;list&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Marshal&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/home/node/.openclaw/workspaces/main&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;personal&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Ava&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/home/node/.openclaw/workspaces/personal&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;What I like is that it makes the split durable.&lt;/p&gt;
+&lt;p&gt;This isn&amp;rsquo;t &amp;ldquo;try to remember which tone to use.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;It is separate agent identity, separate workspace, separate routing rules, and separate session histories.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s a much stronger foundation.&lt;/p&gt;
+&lt;h2 id="separate-workspaces-were-part-of-the-point"&gt;Separate workspaces were part of the point
+&lt;/h2&gt;&lt;p&gt;Each agent gets its own workspace directory.&lt;/p&gt;
+&lt;p&gt;That matters because workspaces are not just folders. They&amp;rsquo;re where the agent&amp;rsquo;s local memory, notes, conventions, and operating context live.&lt;/p&gt;
+&lt;p&gt;In my setup:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;main&lt;/code&gt; uses &lt;code&gt;/home/node/.openclaw/workspaces/main&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;personal&lt;/code&gt; uses &lt;code&gt;/home/node/.openclaw/workspaces/personal&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Both workspaces can still see the mounted project repositories, but they do not have to behave like the same conversational surface.&lt;/p&gt;
+&lt;p&gt;I like that a lot.&lt;/p&gt;
+&lt;p&gt;It lets the system stay coherent without forcing every interaction through the same shared context.&lt;/p&gt;
+&lt;h2 id="the-channel-bindings-made-the-split-real"&gt;The channel bindings made the split real
+&lt;/h2&gt;&lt;p&gt;The cleanest part of the setup is the routing section:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;bindings&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;personal&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;signal&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Signal routes to &lt;code&gt;personal&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Teams routes to &lt;code&gt;main&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I like this because it reflects how I actually use those channels.&lt;/p&gt;
+&lt;p&gt;Signal is more personal and direct. Teams is more operational, thread-oriented, work-shaped. The routing isn&amp;rsquo;t arbitrary — it maps the social surface to the agent surface.&lt;/p&gt;
+&lt;h2 id="the-rest-of-the-config-reinforces-the-separation"&gt;The rest of the config reinforces the separation
+&lt;/h2&gt;&lt;p&gt;A few other config details matter more than they might look.&lt;/p&gt;
+&lt;p&gt;One is:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;session&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;dmScope&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;per-channel-peer&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That keeps DM scope tied to the peer within each channel, which makes the session model predictable. A Signal DM and a Teams DM aren&amp;rsquo;t secretly the same conversation just because they involve the same human.&lt;/p&gt;
+&lt;p&gt;Another is the Teams reply behavior:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;replyStyle&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;thread&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;It means routing isn&amp;rsquo;t just &amp;ldquo;channel = Teams.&amp;rdquo; The conversation can carry thread structure too, which becomes very relevant once background tasks and reminders need to find their way back to the right place.&lt;/p&gt;
+&lt;h2 id="the-model-defaults-stay-shared-but-the-identity-does-not"&gt;The model defaults stay shared, but the identity does not
+&lt;/h2&gt;&lt;p&gt;Both agents inherit the same broad model strategy from &lt;code&gt;agents.defaults&lt;/code&gt;: cloud-first, with fallbacks, and Ollama available as the local last resort.&lt;/p&gt;
+&lt;p&gt;I think that&amp;rsquo;s the right trade.&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t need two completely different intelligence stacks. I needed two differently situated agents.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s a useful distinction.&lt;/p&gt;
+&lt;p&gt;Too many AI systems try to create variety through persona language alone. I trust structural differences more than stylistic ones.&lt;/p&gt;
+&lt;h2 id="this-setup-made-later-routing-bugs-easier-to-diagnose"&gt;This setup made later routing bugs easier to diagnose
+&lt;/h2&gt;&lt;p&gt;One side effect of the split is that it made the reminder-delivery bug much easier to reason about later.&lt;/p&gt;
+&lt;p&gt;Because the system was already explicit about:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;which agent owned which channel&lt;/li&gt;
+&lt;li&gt;which workspace belonged to which agent&lt;/li&gt;
+&lt;li&gt;which session route belonged to which conversation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;it became much easier to spot when a background reminder job had lost the routing context it needed.&lt;/p&gt;
+&lt;p&gt;In other words, the multi-agent setup wasn&amp;rsquo;t the source of the bug.&lt;/p&gt;
+&lt;p&gt;It was part of what made the bug diagnosable.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s a nice example of why explicit structure pays off.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;I don&amp;rsquo;t think every AI setup needs multiple agents.&lt;/p&gt;
+&lt;p&gt;But if you&amp;rsquo;re going to split them, I think the split should show up in real places:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;workspaces&lt;/li&gt;
+&lt;li&gt;routing rules&lt;/li&gt;
+&lt;li&gt;session boundaries&lt;/li&gt;
+&lt;li&gt;permissions&lt;/li&gt;
+&lt;li&gt;operational expectations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Otherwise you&amp;rsquo;re mostly decorating one assistant instead of structuring a system.&lt;/p&gt;
+&lt;p&gt;For this setup, the &lt;code&gt;main&lt;/code&gt;/&lt;code&gt;personal&lt;/code&gt; split was just enough structure to feel useful without becoming ceremonial.&lt;/p&gt;
+&lt;p&gt;And it set up the final problem in this series perfectly: what happens when a reminder job is created in one conversation but later forgets how to get back there.&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/" &gt;Why My OpenClaw Reminders Weren&amp;rsquo;t Reaching Signal or Teams&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
 &lt;p&gt;Building &lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;

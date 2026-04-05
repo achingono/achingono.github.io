@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Self-Hosted AI on Alfero Chingono</title><link>https://www.chingono.com/tags/self-hosted-ai/</link><description>Recent content in Self-Hosted AI on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 23:18:06 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/self-hosted-ai/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image</title><link>https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/</link><pubDate>Sun, 15 Mar 2026 13:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/cover.png" alt="Featured image of post How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image" /&gt;&lt;p&gt;In the &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;first post&lt;/a&gt; I explained why I wanted Docker as the foundation. This one is the next practical problem: how to get OpenClaw talking to &lt;strong&gt;Signal&lt;/strong&gt; and &lt;strong&gt;Microsoft Teams&lt;/strong&gt; without turning the host machine into a dependency junk drawer.&lt;/p&gt;
+&lt;p&gt;The short version is that I ended up building a custom image because the base runtime got me close, but not all the way there.&lt;/p&gt;
+&lt;h2 id="signal-and-teams-were-different-kinds-of-problems"&gt;Signal and Teams were different kinds of problems
+&lt;/h2&gt;&lt;p&gt;Signal and Teams pushed on different parts of the system.&lt;/p&gt;
+&lt;p&gt;Signal is much more of a runtime-tooling problem.&lt;/p&gt;
+&lt;p&gt;You need a working Signal CLI runtime in the container and a persistent place to keep Signal state. If the container can send Signal messages but the identity disappears on rebuild, you have not actually solved the problem.&lt;/p&gt;
+&lt;p&gt;Teams is more of a Node/runtime integration problem.&lt;/p&gt;
+&lt;p&gt;It needs the right hosting support in the image, the right webhook port exposed, and the right application credentials sitting in OpenClaw config so the bot framework side can talk to Microsoft properly.&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t want to solve those two things in two completely different operational styles.&lt;/p&gt;
+&lt;p&gt;So I chose one image and one compose layout that could support both.&lt;/p&gt;
+&lt;h2 id="why-i-did-not-stop-at-the-base-openclaw-image"&gt;Why I did not stop at the base OpenClaw image
+&lt;/h2&gt;&lt;p&gt;The base OpenClaw image was a good starting point, but I needed more in the environment:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;signal-cli-native&lt;/code&gt; installed in the container&lt;/li&gt;
+&lt;li&gt;GitHub CLI and SSH tooling for the agent&amp;rsquo;s repo workflows&lt;/li&gt;
+&lt;li&gt;an extra Node modules path for additional runtime packages&lt;/li&gt;
+&lt;li&gt;a clean way for both the gateway container and the CLI container to share the same capabilities&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That led to a custom image tagged locally as &lt;code&gt;openclaw-local:teams&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The name reflects where I started operationally, but the important part is not the tag. The important part is that the image became the place where I declared, very explicitly, &amp;ldquo;this is the OpenClaw runtime I actually depend on.&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="how-i-handled-signal"&gt;How I handled Signal
+&lt;/h2&gt;&lt;p&gt;For Signal, the key decision was to keep the runtime inside the image and the account state outside it.&lt;/p&gt;
+&lt;p&gt;The image installs &lt;code&gt;signal-cli-native&lt;/code&gt;, which gives the container the actual tool it needs to send and receive Signal messages.&lt;/p&gt;
+&lt;p&gt;Then the compose file mounts the Signal data directory into:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/home/node/.local/share/signal-cli
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That was the right split for me:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the image owns the executable&lt;/li&gt;
+&lt;li&gt;the volume owns the durable Signal identity&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This matters more than it sounds.&lt;/p&gt;
+&lt;p&gt;If the image knows how to run Signal but the identity is trapped inside a replaceable container layer, every rebuild becomes risky. If the state is mounted and durable, rebuilds are much less dramatic.&lt;/p&gt;
+&lt;p&gt;On the OpenClaw side, the Signal channel is configured with pairing and allowlists so the bot is not just open to the world. That let me keep Signal useful without letting it become an uncontrolled ingress point.&lt;/p&gt;
+&lt;h2 id="how-i-handled-teams"&gt;How I handled Teams
+&lt;/h2&gt;&lt;p&gt;Teams had a different shape.&lt;/p&gt;
+&lt;p&gt;The container needed the extra Node package support for the Microsoft hosting layer, and the gateway needed to expose the Teams webhook port. In my setup that means port &lt;code&gt;3978&lt;/code&gt; is published by the gateway container so the remote edge can forward &lt;code&gt;/api/messages&lt;/code&gt; traffic back to the local OpenClaw runtime.&lt;/p&gt;
+&lt;p&gt;The actual Teams app credentials live in OpenClaw config, not in the image. That&amp;rsquo;s exactly where I want them.&lt;/p&gt;
+&lt;p&gt;The image should describe runtime capability.&lt;/p&gt;
+&lt;p&gt;The config should describe environment-specific identity.&lt;/p&gt;
+&lt;p&gt;That boundary kept the setup much easier to move, rebuild, and reason about.&lt;/p&gt;
+&lt;h2 id="one-image-two-operational-benefits"&gt;One image, two operational benefits
+&lt;/h2&gt;&lt;p&gt;Using the same custom image for both &lt;code&gt;gateway&lt;/code&gt; and &lt;code&gt;cli&lt;/code&gt; gave me two benefits I really wanted.&lt;/p&gt;
+&lt;p&gt;First, it removed &amp;ldquo;works in one container but not the other&amp;rdquo; drift.&lt;/p&gt;
+&lt;p&gt;If the gateway can use the runtime, the CLI can too. If the CLI can inspect or patch something, it is doing so in the same environment the gateway actually uses. I&amp;rsquo;ve learned to value that kind of consistency a lot.&lt;/p&gt;
+&lt;p&gt;Second, it let me keep the OpenClaw-specific runtime tweaks in one place:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the extra Node modules path&lt;/li&gt;
+&lt;li&gt;the installed system packages&lt;/li&gt;
+&lt;li&gt;Signal CLI&lt;/li&gt;
+&lt;li&gt;GitHub CLI&lt;/li&gt;
+&lt;li&gt;pnpm-prepared extras&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It&amp;rsquo;s a much nicer maintenance story than trying to remember which bits live on the host, which belong to the container, and which only exist in some forgotten shell session.&lt;/p&gt;
+&lt;h2 id="the-compose-file-completed-the-picture"&gt;The compose file completed the picture
+&lt;/h2&gt;&lt;p&gt;The image by itself was not enough. The compose file is what turned it into a working system.&lt;/p&gt;
+&lt;p&gt;That is where I defined the things that make the setup feel real:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;mounted OpenClaw config&lt;/li&gt;
+&lt;li&gt;mounted workspaces&lt;/li&gt;
+&lt;li&gt;mounted Signal data&lt;/li&gt;
+&lt;li&gt;shared access to source repositories&lt;/li&gt;
+&lt;li&gt;local Ollama dependency&lt;/li&gt;
+&lt;li&gt;editor access&lt;/li&gt;
+&lt;li&gt;network sharing between the gateway and CLI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is one reason I still like Docker Compose for personal infrastructure. It doesn&amp;rsquo;t just run containers. It describes the operating assumptions of the stack in one place.&lt;/p&gt;
+&lt;h2 id="the-setup-was-already-hinting-at-the-routing-story"&gt;The setup was already hinting at the routing story
+&lt;/h2&gt;&lt;p&gt;Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly — which agent answers where, what state belongs to which workspace, how does a background task find its way back to the right chat. That&amp;rsquo;s where the series goes next.&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Why I Run OpenClaw in Docker on My Own Machine</title><link>https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/cover.png" alt="Featured image of post Why I Run OpenClaw in Docker on My Own Machine" /&gt;&lt;p&gt;This is the first post in a short series on how I run OpenClaw. It sits earlier than the rest because it is really about the initial Docker Compose setup, before Signal and Teams entered the picture.&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t choose Docker because it&amp;rsquo;s fashionable. I chose it because I wanted the boring things to stay boring.&lt;/p&gt;
+&lt;h2 id="i-wanted-repeatability-more-than-cleverness"&gt;I wanted repeatability more than cleverness
+&lt;/h2&gt;&lt;p&gt;OpenClaw in my setup is not just &amp;ldquo;one process on one machine.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s a local agent gateway, a browser-based editor, an Ollama runtime for local models, a CLI container, persistent state, channel integrations, and a reverse tunnel that exposes selected services through a remote nginx entry point.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s already enough moving parts that I didn&amp;rsquo;t want to manage them as a pile of host-level installs.&lt;/p&gt;
+&lt;p&gt;I have done that sort of thing before. It works right up until:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one package wants a different runtime version&lt;/li&gt;
+&lt;li&gt;one upgrade changes behavior in a way you didn&amp;rsquo;t expect&lt;/li&gt;
+&lt;li&gt;one machine setup detail becomes tribal knowledge&lt;/li&gt;
+&lt;li&gt;one rebuild turns into a half-day archaeology project&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Docker was the easiest way to say: this stack should come up the same way every time.&lt;/p&gt;
+&lt;h2 id="i-wanted-the-odd-dependencies-contained"&gt;I wanted the odd dependencies contained
+&lt;/h2&gt;&lt;p&gt;The biggest reason I didn&amp;rsquo;t want a host-first install was that OpenClaw was going to talk to real channels.&lt;/p&gt;
+&lt;p&gt;That meant the environment needed more than just &amp;ldquo;run the app.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;It needed things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;signal-cli-native&lt;/code&gt; for Signal&lt;/li&gt;
+&lt;li&gt;extra Node modules for the Teams side&lt;/li&gt;
+&lt;li&gt;GitHub CLI and SSH tooling because the agent does real repo work&lt;/li&gt;
+&lt;li&gt;a stable place for OpenClaw config, workspace state, and channel data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;None of that is impossible to manage directly on the host. I just didn&amp;rsquo;t want those concerns smeared across the machine.&lt;/p&gt;
+&lt;p&gt;I wanted the container image to be the integration boundary. That gave me a much cleaner mental model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the host provides Docker, storage mounts, and network access&lt;/li&gt;
+&lt;li&gt;the image defines the runtime and channel dependencies&lt;/li&gt;
+&lt;li&gt;compose defines how the services fit together&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That boundary is much easier to reason about when something breaks.&lt;/p&gt;
+&lt;h2 id="i-still-wanted-persistent-state"&gt;I still wanted persistent state
+&lt;/h2&gt;&lt;p&gt;One thing I don&amp;rsquo;t like about naive container setups is when everything becomes disposable except the part you accidentally needed.&lt;/p&gt;
+&lt;p&gt;I didn&amp;rsquo;t want that here.&lt;/p&gt;
+&lt;p&gt;So the setup is intentionally a mix of &lt;strong&gt;ephemeral runtime&lt;/strong&gt; and &lt;strong&gt;durable mounted state&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The important state lives outside the container:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenClaw config and session state&lt;/li&gt;
+&lt;li&gt;agent workspaces&lt;/li&gt;
+&lt;li&gt;Signal data&lt;/li&gt;
+&lt;li&gt;Ollama model data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I can rebuild or replace the image when I need to, but I don&amp;rsquo;t lose the identity of the system every time I do it. The agents still have their workspaces. The channel state is still there. The local models are still there.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s the behavior I wanted from the start.&lt;/p&gt;
+&lt;h2 id="compose-matched-the-shape-of-the-system"&gt;Compose matched the shape of the system
+&lt;/h2&gt;&lt;p&gt;The Docker Compose layout also ended up matching how I think about OpenClaw operationally.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m not really running &amp;ldquo;one container.&amp;rdquo; I&amp;rsquo;m running a small local AI gateway stack:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;gateway&lt;/strong&gt; for the main OpenClaw runtime and channel/webhook entry points&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;cli&lt;/strong&gt; for interactive management using the same image and runtime assumptions&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;editor&lt;/strong&gt; for browser-based VS Code access&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ollama&lt;/strong&gt; for local inference&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ollama-init&lt;/strong&gt; to pull the local models once and get out of the way&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That separation is useful.&lt;/p&gt;
+&lt;p&gt;The gateway owns the channel-facing behavior. The CLI shares the network namespace so it can talk to the gateway naturally. The editor stays focused on workspace access. Ollama remains local and isolated. Nothing here feels overloaded.&lt;/p&gt;
+&lt;h2 id="running-it-locally-did-not-mean-exposing-it-sloppily"&gt;Running it locally did not mean exposing it sloppily
+&lt;/h2&gt;&lt;p&gt;One reason I like this architecture is that it keeps the heavy lifting on my own machine while still letting me expose selected services in a controlled way.&lt;/p&gt;
+&lt;p&gt;The public entry point is not &amp;ldquo;open every container port to the internet.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Instead, the local stack stays behind Docker, and a reverse SSH tunnel forwards only the ports I explicitly want exposed to a remote VM. nginx on that VM handles TLS termination, routing, and upstream auth.&lt;/p&gt;
+&lt;p&gt;That design worked well with Docker because it kept the local machine focused on running the real services while the remote VM handled the public edge concerns.&lt;/p&gt;
+&lt;p&gt;If I&amp;rsquo;d built this out of ad hoc host installs, I&amp;rsquo;d probably have ended up with a messier boundary between &amp;ldquo;local runtime&amp;rdquo; and &amp;ldquo;public ingress.&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="the-trade-was-absolutely-worth-it"&gt;The trade was absolutely worth it
+&lt;/h2&gt;&lt;p&gt;Docker does add a little ceremony.&lt;/p&gt;
+&lt;p&gt;You have to think about volumes. You have to think about ports. You have to think about image contents and rebuilds. And once you start adding channel integrations, that image becomes part of the product, not just part of the packaging.&lt;/p&gt;
+&lt;p&gt;But for this kind of system, I think that is the right trade.&lt;/p&gt;
+&lt;p&gt;I would much rather spend time shaping one explicit container image and one compose stack than wonder which random host package made the environment drift.&lt;/p&gt;
+&lt;p&gt;For me, Docker made OpenClaw feel less like a clever experiment and more like an actual service I could live with.&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>
