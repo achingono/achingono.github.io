@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Process Redesign Only Works When Ownership Gets Clearer"
-date: 2026-04-05T09:00:00Z
+date: 2026-05-07T09:00:00Z
 draft: true
 description: "A delivery process does not improve because the diagram looks cleaner. It improves when ownership, handoffs, and the definition of done become harder to misread."
 slug: process-redesign-only-works-when-ownership-gets-clearer

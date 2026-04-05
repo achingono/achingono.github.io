@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Building a Microsoft To Do CLI and Wiring It into OpenClaw"
-date: 2026-04-05T09:00:00Z
+date: 2026-04-16T09:00:00Z
 draft: true
 description: "How I built a TypeScript CLI for Microsoft To Do in a single session with Copilot, packaged it with GitHub Actions, and integrated it as a shared OpenClaw skill so every agent can manage my task lists."
 slug: building-a-microsoft-todo-cli-and-wiring-it-into-openclaw

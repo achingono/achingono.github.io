@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Prompting for Product Marketing, Not Just Pretty Pictures"
-date: 2026-04-05T10:00:00Z
+date: 2026-05-14T09:00:00Z
 draft: true
 description: "What iterative AI image prompting taught me about generating usable enterprise visuals instead of generic AI art."
 slug: prompting-for-product-marketing-not-just-pretty-pictures

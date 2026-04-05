@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Adding simplefin-cli to OpenClaw and Scoping It to Dot"
-date: 2026-04-05T15:00:00Z
+date: 2026-04-23T09:00:00Z
 draft: true
 description: "How I installed simplefin-cli in my custom OpenClaw image, persisted its SimpleFin Bridge credentials, and exposed it as a workspace skill that only Dot, my financial agent, can use."
 slug: adding-simplefin-cli-to-openclaw-and-scoping-it-to-dot

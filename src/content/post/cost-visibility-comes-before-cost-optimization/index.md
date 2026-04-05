@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Cost Visibility Comes Before Cost Optimization"
-date: 2026-04-05T13:00:00Z
+date: 2026-06-04T09:00:00Z
 draft: true
 description: "Before teams talk about optimization, they need a cost view that is legible enough to connect spend to architecture, environments, and ownership."
 slug: cost-visibility-comes-before-cost-optimization

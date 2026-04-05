@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "A Good Cloud Diagram Should Expose Trust Boundaries"
-date: 2026-04-05T12:00:00Z
+date: 2026-05-28T09:00:00Z
 draft: true
 description: "A useful Azure reference architecture is less about listing services and more about making trust boundaries, entry points, and data paths obvious."
 slug: a-good-cloud-diagram-should-expose-trust-boundaries
