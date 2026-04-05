@@ -18,7 +18,7 @@ categories: [
 "AI",
 "Education"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Most kids' coding products are better at rewarding momentum than understanding.

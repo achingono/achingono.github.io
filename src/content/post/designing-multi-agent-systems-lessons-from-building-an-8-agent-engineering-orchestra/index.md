@@ -18,7 +18,7 @@ categories: [
 "Platform Engineering",
 "Build in Public"
 ]
-image: ""
+image: "cover.png"
 ---
 
 A lot of "multi-agent" demos are really one agent wearing different hats.

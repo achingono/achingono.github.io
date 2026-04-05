@@ -18,7 +18,7 @@ categories: [
 "Career",
 "Reflection"
 ]
-image: ""
+image: "cover.png"
 ---
 
 There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.

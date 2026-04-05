@@ -18,7 +18,7 @@ categories: [
 "DevSecOps",
 "Automation"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I wrote in 2024 about [automating OWASP scan reports in Azure DevOps](/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/) because I wanted security scanning to become part of the delivery flow instead of an afterthought.

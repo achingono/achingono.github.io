@@ -17,7 +17,7 @@ categories: [
 "Agentic AI",
 "Platform Engineering"
 ]
-image: ""
+image: "cover.png"
 ---
 
 When Anthropic announced the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol), the most interesting part to me was not "LLMs can call tools." We already knew that. The interesting part was that someone was finally trying to standardize the connection.

@@ -17,7 +17,7 @@ categories: [
 "Platform Engineering",
 "Developer Experience"
 ]
-image: ""
+image: "cover.png"
 ---
 
 When the DORA research started surfacing stronger evidence around internal developer platforms, the headline did not surprise me nearly as much as the reactions did.

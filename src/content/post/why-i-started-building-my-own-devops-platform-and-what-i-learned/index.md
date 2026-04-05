@@ -18,7 +18,7 @@ categories: [
 "Platform Engineering",
 "DevOps"
 ]
-image: ""
+image: "cover.png"
 ---
 
 For a while, I had the same reaction to most AI-for-software-delivery demos: impressive in a narrow way, but not something I would trust with real work. One tool could write code. Another could summarize a diff. Another could review a pull request. But the hard part of software delivery is rarely one isolated step. It is the handoff between steps.
