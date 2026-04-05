@@ -75,7 +75,7 @@ This immediately flattened the function and made it much more readable.
 
 ## Leveling Up with TypeScript's `Result` Type
 
-To make this even more robust, I introduced a `Result` type pattern (inspired by Rust or F#). Instead of returning `null` or throwing an error, every step of the process returns an object that explicitly states if it succeeded or failed.
+To make this even more reliable, I introduced a `Result` type pattern (inspired by Rust or F#). Instead of returning `null` or throwing an error, every step of the process returns an object that explicitly states if it succeeded or failed.
 
 ```typescript
 type Result<T, E = string> = 

@@ -18,9 +18,9 @@ categories: [
 image: "cover.jpg"
 ---
 
-This is a continuation of my previous post; [Waiting for Docker Service Container Port to Be Ready]({{< ref "/post/waiting-docker-service-container-port-ready/index.md" >}}). After reading [this article](https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/), I decided to build up on that codebase as a learning opportunity and add a Blazor WASM front-end to the .NET Core API already built.
+This post continues from [Waiting for Docker Service Container Port to Be Ready]({{< ref "/post/waiting-docker-service-container-port-ready/index.md" >}}). After reading [this article](https://www.c-sharpcorner.com/article/dockerizing-blazor-wasm-application/), I used that codebase as a learning exercise and added a Blazor WASM front end to the .NET Core API I had already built.
 
-I will not repeat the process details as that is nicely outlined in the referenced article. What I will do here is share my version of the `Dockerfile` and the associated script and configuration file.
+I will not repeat the full process here because the referenced article already covers it well. Instead, I will share my version of the `Dockerfile`, plus the supporting script and configuration file.
 
 So, here's my `Dockerfile`:
 
@@ -81,9 +81,9 @@ WORKDIR /home/site/wwwroot
 COPY --from=publish /${CONFIG}/wwwroot .
 ```
 
-You will notice that my `Dockerfile` does not have a `CMD` or `ENTRYPOINT` declaration. That is because the base image I'm using to host my application `nginx:alpine` already has a very nice feature where it automatically runs all scripts in the `/docker-entrypoint.d/` folder and executes them before starting up nginx.
+You will notice that my `Dockerfile` does not have a `CMD` or `ENTRYPOINT` declaration. That is because the base image I am using to host the application, `nginx:alpine`, already runs every script in `/docker-entrypoint.d/` before starting nginx.
 
-This allowed me to copy my `configure-environment.sh` to the `/docker-entrypoint.d/` folder, make it executable and let the magic happen.
+That let me copy `configure-environment.sh` into `/docker-entrypoint.d/`, mark it executable, and let nginx handle the rest.
 
 Here's my `configure-environment.sh`:
 

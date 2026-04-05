@@ -21,17 +21,17 @@ image: "cover.png"
 
 # Adding Azure Functions Support to a Devcontainer
 
-Are you looking to develop Azure Functions with ease? Do you already have a dev container set up and want to add Azure Functions Core Tools to it? Look no further! In this guide, we'll walk you through the steps to seamlessly integrate Azure Functions support into your existing dev container.
+I already had a dev container set up and needed to add Azure Functions Core Tools to it. This is the approach that finally worked for me.
 
 ## The Challenge
 
-Recently, I faced the task of adding support for [Azure Functions](https://azure.microsoft.com/products/functions/) to my trusted [Dev Container](https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/). I tried a few approaches, but encountered errors along the way. After extensive research and experimentation, I finally found a solution that worked flawlessly.
+I needed to add support for [Azure Functions](https://azure.microsoft.com/products/functions/) to my existing [Dev Container](https://learn.microsoft.com/training/modules/use-docker-container-dev-env-vs-code/). I tried a few approaches and hit errors along the way. After some digging through the docs and a bit of trial and error, I landed on a version that rebuilt cleanly.
 
 ## The Solution
 
 To begin, I attempted to add the following lines to my `Dockerfile`:
 
-Unfortunately, that resulted in errors when rebuilding the container. So after searching online, and reviewing documentation, I eventually landed on this RUN command:
+That version failed when I rebuilt the container. After searching around and comparing a few examples, I landed on this `RUN` command:
 
 ```Dockerfile
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
@@ -55,7 +55,7 @@ Next, I added the following extensions to the `devcontainer.json` file:
 	]
 ```
 
-With that, I had a working environment fully loaded with Azure Functions Core Tools and the necessary Visual Studio Code extensions installed. Hope that helps, dear future reader!
+With that in place, I had a working dev container with Azure Functions Core Tools and the Visual Studio Code extensions I needed.
 
 References:  
 [Use a Docker container as a development environment with Visual Studio Code](https://learn.microsoft.com/en-us/training/modules/use-docker-container-dev-env-vs-code/)  

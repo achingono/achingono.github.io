@@ -21,11 +21,11 @@ categories: [
 image: "cover.png"
 ---
 
-As we approach the end of 2025, it's worth taking a moment to look back at how the landscape of software engineering has changed in just 12 months.
+By the end of 2025, software engineering felt materially different from a year earlier.
 
 In 2024, AI in software development was mostly about **autocomplete**. We had GitHub Copilot, Cursor, and LLMs that were essentially "very fast search engines with a code editor."
 
-In 2025, everything changed. We moved from "autocomplete" to **autonomy**. This was the year **Agentic AI** became real.
+In 2025, that changed. We moved from **autocomplete** to **autonomy**. This was the year **Agentic AI** started to feel real.
 
 ## The Three Shifts of 2025
 
@@ -51,15 +51,15 @@ In my own work with [CueMarshal](https://www.cuemarshal.com), this shift was the
 
 ## What 2025 Taught Me
 
-The biggest lesson of 2025 for me is that the human role in software engineering is not disappearing—it's being **reframed**.
+The biggest lesson of 2025 for me is that the human role in software engineering is not disappearing. It is being **reframed**.
 
-We are becoming **Architect-Conductors**. Our job is no longer to write every line of code; it is to design the systems, define the constraints, and orchestrate the agents that do the implementation. This requires a much deeper understanding of [Platform Engineering](/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/) and system architecture than ever before.
+More of us are moving into a conductor-architect role. The job is less about writing every line of code and more about designing the system, defining the constraints, and orchestrating the agents doing the implementation. That requires a deeper understanding of [Platform Engineering](/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/) and system architecture than before.
 
 ## Looking Ahead to 2026
 
-If 2025 was the year of "autonomy," I expect 2026 to be the year of **reliability**. We have the tools. We have the protocols. Now, we need to build the governance and the observability layers to make agentic workflows as predictable as a standard CI/CD pipeline.
+If 2025 was the year of "autonomy," I expect 2026 to be the year of **reliability**. We have the tools. We have the protocols. Now we need governance and observability that make agentic workflows as predictable as a standard CI/CD pipeline.
 
-The transition is happening, and it's happening faster than most expected. The question for 2026 isn't "Will you use AI?" It's "How will you orchestrate your agents?"
+The transition is already underway, and it is moving faster than most people expected. The question for 2026 is no longer "Will you use AI?" It is "How will you orchestrate your agents?"
 
 ---
 *Related reading:*

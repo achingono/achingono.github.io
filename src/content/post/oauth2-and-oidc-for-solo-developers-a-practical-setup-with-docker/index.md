@@ -24,7 +24,7 @@ image: "cover.png"
 
 Authentication is the classic "black hole" of side projects. You start with a simple idea, and four days later you're still reading RFC 6749 and wondering if you should just use a password in a plain text file (don't).
 
-For my personal projects like [Famorize](/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/) and [FireFly](/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/), I needed something robust, standards-compliant, and—most importantly—easy to manage across multiple services. I didn't want to pay $50/month for a managed identity provider (IdP) for projects that were still in development, but I also didn't want to roll my own crypto.
+For my personal projects like [Famorize](/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/) and [FireFly](/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/), I needed something standards-compliant and easy to manage across multiple services. It also had to be dependable. I didn't want to pay $50/month for a managed identity provider (IdP) for projects that were still in development, but I also didn't want to roll my own crypto.
 
 The solution was a self-hosted OIDC setup using Docker.
 

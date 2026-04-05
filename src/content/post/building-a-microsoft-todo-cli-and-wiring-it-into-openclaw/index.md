@@ -21,7 +21,7 @@ categories: [
 image: "cover.png"
 ---
 
-I wanted my OpenClaw agents to manage my Microsoft To Do lists — create tasks, track follow-ups, check things off. The problem was that Microsoft doesn't ship a To Do CLI. There's the Graph API, but nothing that an agent can call from a shell prompt with a simple command.
+I wanted my OpenClaw agents to manage my Microsoft To Do lists: create tasks, track follow-ups, and check things off. The problem was that Microsoft doesn't ship a To Do CLI. There's the Graph API, but nothing that an agent can call from a shell prompt with a simple command.
 
 So I built one.
 
@@ -38,10 +38,10 @@ The entire CLI was built in a single Copilot coding agent session. I started wit
 - **Auth commands:** `login` (device-code flow), `status`, `logout`, `print-account`
 - **List commands:** `create`, `list`
 - **Task commands:** `create`, `update`, `complete`, `list`, `get`
-- **Step commands:** `create`, `update`, `complete`, `delete`, `list` — for checklist items within a task
+- **Step commands:** `create`, `update`, `complete`, `delete`, `list` for checklist items within a task
 - **Short-form aliases:** `ms-todo-cli create` as a shortcut for `ms-todo-cli task create`
 
-Everything outputs valid JSON. No plain-text error messages, no Commander help text leaking to stdout. Every response includes `ok: true` or `ok: false` with a structured error code. That was a deliberate design choice — agents need parseable output, not human-friendly paragraphs.
+Everything outputs valid JSON. No plain-text error messages, no Commander help text leaking to stdout. Every response includes `ok: true` or `ok: false` with a structured error code. That was deliberate. Agents need parseable output, not human-friendly paragraphs.
 
 ### The error code system
 
@@ -59,13 +59,13 @@ export const ErrorCodes = {
 } as const;
 ```
 
-This lets an agent react to `AUTH_EXPIRED` differently from `LIST_NOT_FOUND`. In a skill prompt, I can say "if you see `AUTH_REQUIRED`, ask the user to run the login flow" — and the agent can pattern-match on the JSON output reliably.
+This lets an agent react to `AUTH_EXPIRED` differently from `LIST_NOT_FOUND`. In a skill prompt, I can say "if you see `AUTH_REQUIRED`, ask the user to run the login flow," and the agent can pattern-match on the JSON output reliably.
 
 ### Avoiding the O(N) list scan
 
 The Microsoft Graph To Do API is list-scoped. To operate on a task, you need the list ID. If you only have the task ID, you have to enumerate all lists and probe each one until you find the right task.
 
-The initial implementation did this naively — every `task get` or `task update` call fetched all lists first. I added `--list-id` as an optional flag on every task command. When provided, it skips the list scan entirely. The skill prompt teaches agents to cache and reuse list IDs:
+The initial implementation did this naively. Every `task get` or `task update` call fetched all lists first. I added `--list-id` as an optional flag on every task command. When provided, it skips the list scan entirely. The skill prompt teaches agents to cache and reuse list IDs:
 
 ```bash
 # Without list-id: O(N) list scan
@@ -77,7 +77,7 @@ ms-todo-cli task get --task-id "abc123" --list-id "def456"
 
 ## Packaging with GitHub Actions
 
-I wanted the CLI installable from GitHub Releases, not from npm (at least not yet). The CI pipeline builds on three platforms — Ubuntu, macOS, and Windows — runs lint and tests on each, then packages the compiled output as a tarball:
+I wanted the CLI installable from GitHub Releases, not from npm, at least not yet. The CI pipeline builds on three platforms, Ubuntu, macOS, and Windows, runs lint and tests on each, then packages the compiled output as a tarball:
 
 ```yaml
 - name: Create artifact
@@ -86,7 +86,7 @@ I wanted the CLI installable from GitHub Releases, not from npm (at least not ye
 
 On a tagged push (`v*.*.*`), the release job uploads all three tarballs to a GitHub Release with auto-generated release notes.
 
-The resulting tarball isn't a standalone binary — it's a packaged Node CLI with a `#!/usr/bin/env node` shebang. That works well for the OpenClaw gateway, which already has Node.js installed. For distribution outside Docker, a proper `npx`-compatible package or a pkg-compiled binary would be the next step.
+The resulting tarball isn't a standalone binary. It is a packaged Node CLI with a `#!/usr/bin/env node` shebang. That works well for the OpenClaw gateway, which already has Node.js installed. For distribution outside Docker, a proper `npx`-compatible package or a pkg-compiled binary would be the next step.
 
 ## Installing in the gateway Docker image
 
@@ -112,7 +112,7 @@ Two things make this work across container rebuilds:
 
 1. **Token cache volume:** `./data/ms-todo-cli:/home/node/.ms-todo-cli` in `docker-compose.yml` persists the MSAL token cache on the host. Without this, every image rebuild would require re-authenticating.
 
-2. **Client ID environment variable:** `MS_TODO_CLIENT_ID` is set in the `docker-compose.yml` environment for both the `gateway` and `cli` services. The CLI fails fast if this isn't set — no silent fallback to a broken state.
+2. **Client ID environment variable:** `MS_TODO_CLIENT_ID` is set in the `docker-compose.yml` environment for both the `gateway` and `cli` services. The CLI fails fast if this isn't set; there is no silent fallback to a broken state.
 
 ## The OpenClaw skill
 
@@ -141,10 +141,10 @@ The skill is enabled in `openclaw.json` under `skills.entries` and accessible to
 
 ## Authentication: the device-code flow
 
-The CLI uses Microsoft's device-code flow — the only OAuth flow that works without a redirect URI, which is perfect for a headless container:
+The CLI uses Microsoft's device-code flow, the only OAuth flow that works without a redirect URI, which makes it a good fit for a headless container:
 
 1. `ms-todo-cli auth login` contacts Azure AD and receives a device code
-2. It prints the code and URL to stderr (not stdout — keeping stdout clean for JSON)
+2. It prints the code and URL to stderr (not stdout, which keeps stdout clean for JSON)
 3. The user opens the URL in a browser, enters the code, and completes login
 4. The MSAL library caches the refresh token at `~/.ms-todo-cli/msal-cache.json`
 
@@ -160,7 +160,7 @@ With the skill active, any agent can now handle requests like:
 
 The agent runs `ms-todo-cli list list` to find the right list, creates the task with `ms-todo-cli task create`, and reports back with the task title and due date. If I later say "mark that task as done," the agent can complete it by ID.
 
-Checklist steps work the same way. For multi-part follow-ups — "gather the documents, review the draft, submit the form" — the agent creates a parent task and adds each item as a step.
+Checklist steps work the same way. For multi-part follow-ups such as "gather the documents, review the draft, submit the form," the agent creates a parent task and adds each item as a step.
 
 The JSON output means the agent always knows whether the operation succeeded, what error occurred if it didn't, and what IDs to reference for follow-up operations.
 
@@ -173,7 +173,7 @@ A few things are on the list for future iterations:
 - **Recurrence and reminders:** the Graph API supports these, but the CLI doesn't expose them yet.
 - **Linked resources:** To Do tasks can link to emails, URLs, and other Microsoft 365 items. That's a natural extension for agent workflows.
 
-For now, though, the basic CRUD loop — create, list, update, complete — covers the vast majority of what I actually need from a task manager integration.
+For now, though, the basic CRUD loop of create, list, update, and complete covers most of what I actually need from a task manager integration.
 
 ---
 

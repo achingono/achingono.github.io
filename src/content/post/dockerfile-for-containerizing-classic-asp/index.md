@@ -23,7 +23,7 @@ categories: [
 image: "cover.jpg"
 ---
 
-In this blog post, we will walk through a Dockerfile designed for containerizing a Classic ASP application. This Dockerfile is based on the `mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019` image and includes several steps to configure the environment for running Classic ASP applications.
+I needed a Windows container image that could run a Classic ASP application without a lot of manual IIS setup. This Dockerfile starts from `mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019` and layers in the IIS features, dependencies, and configuration the app needs.
 
 ### Breakdown of the Dockerfile
 
@@ -34,7 +34,7 @@ FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 ARG LOGMONITOR_VERSION
 ```
-We start by specifying the base image, which is a Windows Server Core image with ASP.NET 4.8. The `SHELL` instruction sets PowerShell as the default shell for subsequent instructions.
+We start with a Windows Server Core image that already includes ASP.NET 4.8, then switch the default shell to PowerShell for the rest of the build.
 
 #### Installing Windows Features
 ```dockerfile
@@ -49,14 +49,14 @@ RUN Install-WindowsFeature Web-ASP; `
     Install-WindowsFeature WAS; `
     Import-module IISAdministration;
 ```
-This section installs various IIS features required for running Classic ASP applications, such as ASP, CGI, ISAPI extensions, and more.
+This section installs the IIS features the application depends on, including Classic ASP, CGI, and ISAPI support.
 
 #### Enabling IIS Features
 ```dockerfile
 RUN Enable-WindowsOptionalFeature -Online -FeatureName IIS-DefaultDocument; `
     Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpErrors;
 ```
-Here, we enable additional IIS features like default documents and HTTP errors.
+Here we enable a couple of IIS features that older applications often expect: default documents and HTTP errors.
 
 #### Installing Dependencies
 ```dockerfile
@@ -80,7 +80,7 @@ These commands download and install the IIS Rewrite Module and the SQL ODBC driv
 RUN Invoke-WebRequest -Uri "https://github.com/microsoft/windows-container-tools/releases/download/v$($env:LOGMONITOR_VERSION)/LogMonitor.exe" -OutFile C:\LogMonitor.exe;
 RUN Invoke-WebRequest -Uri "https://github.com/microsoft/windows-container-tools/releases/download/v$($env:LOGMONITOR_VERSION)/LogMonitor.exe" -OutFile C:\LogMonitor.exe;
 ```
-This command downloads the Log Monitor tool from the specified GitHub release URL and save it to the container's file system. Log Monitor is a tool used to monitor and manage logs within a Windows container. This step ensures that the Log Monitor tool is available within the container for log management purposes. 
+This command downloads the Log Monitor tool from the specified GitHub release URL and saves it to the container's file system. Log Monitor makes it much easier to surface logs from a Windows container in a usable way.
 
 
 #### Unlocking IIS Configuration Sections
@@ -95,7 +95,7 @@ RUN & c:\windows\system32\inetsrv\appcmd.exe `
       unlock config `
       /section:system.webServer/modules;
 ```
-This section unlocks various IIS configuration sections to allow modifications.
+This section unlocks the IIS configuration sections we need to change later.
 
 In IIS (Internet Information Services), certain configuration sections are locked by default to prevent unauthorized changes that could affect the stability and security of the server. Unlocking these sections is necessary when you need to customize the behavior of your web server beyond the default settings. 
 
@@ -146,7 +146,7 @@ ENTRYPOINT ["C:\\LogMonitor.exe", "C:\\ServiceMonitor.exe", "w3svc"]
 ```
 Finally, we set the entry point to start the Log Monitor and Service Monitor for IIS.
 
-This Dockerfile provides a comprehensive setup for running Classic ASP applications in a containerized environment, ensuring all necessary features and dependencies are installed and configured.
+This Dockerfile sets up the pieces needed to run a Classic ASP application in a container, with the IIS features, dependencies, and runtime configuration handled in the image.
 
 ```dockerfile
 # escape=`

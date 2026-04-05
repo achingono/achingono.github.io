@@ -126,6 +126,6 @@ This is one reason I still like Docker Compose for personal infrastructure. It d
 
 ## The setup was already hinting at the routing story
 
-Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly — which agent answers where, what state belongs to which workspace, how does a background task find its way back to the right chat. That's where the series goes next.
+Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly: which agent answers where, what state belongs to which workspace, and how does a background task find its way back to the right chat? That's where the series goes next.
 
 Next in the series: [Inside the Dockerfile Behind My OpenClaw Gateway](/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/).

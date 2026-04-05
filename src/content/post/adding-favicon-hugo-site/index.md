@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "Add Favicon to a Hugo-Based Website"
 date: 2022-03-27T18:39:35Z
 draft: false
-description: "In this post, I will show how I enhanced the look of my Hugo website by adding a favicon."
+description: "In this post, I show how I updated the look of my Hugo website by adding a favicon."
 slug: adding-favicon-hugo-site
 tags: [
 "hugo",
@@ -15,17 +15,17 @@ categories: [
 ]
 image: "cover.png"
 ---
-A favicon, which is an abbreviation of the word "favorite icon", is a small icon that helps users visually identify and distinguish your website. Its main purpose is to help visitors locate your page easier when they have multiple tabs, bookmarks, shortcuts, and address bars open.
+A favicon, short for "favorite icon," is the small image people see in browser tabs, bookmarks, and shortcuts. It makes your site easier to spot when the screen is crowded.
 
-With so many platforms, devices, icon formats, and dimensions, it's hard to know exactly what you should do to consistently present your website icon/brand everywhere. That's the reason why there are multiple favicon generators available. Just a quick search for "favicon generator" will reveal a long list of websites that assist in creating favicons supported across a wide range of platforms, and devices.
+With so many platforms, devices, icon formats, and sizes to think about, it helps to use a generator instead of assembling every file by hand. A quick search for "favicon generator" turns up plenty of options.
 
-The one I chose for this case was [favicon.io](https://favicon.io). This process could've been accomplished with [realfavicongenerator.net](https://realfavicongenerator.net/) just as well.
+I used [favicon.io](https://favicon.io) for this. [realfavicongenerator.net](https://realfavicongenerator.net/) would have worked too.
 
-All I had to do was take a cropped version of my profile picture. It's important that the picture be square, by the way. Then uploaded it to [favicon.io](https://favicon.io) and out came a zip file with everything I needed. Once downloaded, I extracted the zip file and copied the contents to the "static" folder of my Hugo site:
+I started with a cropped square version of my profile picture, uploaded it to [favicon.io](https://favicon.io), downloaded the generated zip file, and copied its contents into the `static` folder of my Hugo site:
 
 ![Contents of static folder](static-folder.jpg "static folder")
 
-The next step was to simply copy the HTML snippet generated on the download page and paste it into `layouts/partials/head/custom.html`
+Next I copied the HTML snippet from the download page into `layouts/partials/head/custom.html`
 
 ```HTML
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -34,7 +34,7 @@ The next step was to simply copy the HTML snippet generated on the download page
 <link rel="manifest" href="/site.webmanifest">
 ```
 
-And that was it! I hope you find this post valuable, dear reader. All comments and feedback greatly appreciated.
+And that was it. The site picked up the new favicon right away.
 
 References:  
 [Add favicon in config.toml · Issue #42](https://github.com/CaiJimmy/hugo-theme-stack/issues/42#issuecomment-716052364)  

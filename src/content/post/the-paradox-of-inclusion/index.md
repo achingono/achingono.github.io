@@ -17,9 +17,9 @@ categories: [
 image: "cover.png"
 ---
 
-I do not recall writing a poem before, let alone sharing it with a broad audience. So this is a big risk I'm taking under the banner of a "growth mindset". However, I had a recent experience that put me in deep thought and sent me on a long walk. During my walk, I came up with the first three lines of this poem. I've been tweaking it a little at a time ever since, and it still feels imperfect. I'm sharing it here because it still needs work and I hope someone will take an interest in improving it.  
+I do not recall writing a poem before, let alone sharing one publicly. So this feels risky. A recent experience sent me on a long walk and gave me the first three lines of this poem. I have been adjusting it a little at a time ever since, and it still feels unfinished. I am sharing it anyway because I suspect it can be better.
 
-Without further ado, here's my very first poem:
+Here is my first poem:
 
 ```verse
 In the land of diversity and inclusion  
@@ -39,7 +39,7 @@ They have a story
 Yet to be told  
 ```
 
-My hope is that at some point we will find a way to recognize, appreciate, and acknowledge the contradictions inherent in inclusion and use the resulting tensions as springboards to push us forward and closer not backwards and further apart.
+My hope is that, at some point, we find a way to recognize the contradictions inside inclusion and use that tension to move closer together instead of farther apart.
 
 Thank you for reading.  
 

@@ -20,7 +20,7 @@ categories: [
 image: "cover.png"
 ---
 
-By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn't purely technical — it was architectural.
+By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn't purely technical. It was architectural.
 
 Should one agent answer everything?
 
@@ -121,7 +121,7 @@ That means:
 
 I like this because it reflects how I actually use those channels.
 
-Signal is more personal and direct. Teams is more operational, thread-oriented, work-shaped. The routing isn't arbitrary — it maps the social surface to the agent surface.
+Signal is more personal and direct. Teams is more operational, thread-oriented, work-shaped. The routing isn't arbitrary; it maps the social surface to the agent surface.
 
 ## The rest of the config reinforces the separation
 

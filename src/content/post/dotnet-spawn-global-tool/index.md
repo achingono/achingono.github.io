@@ -21,7 +21,7 @@ Back in 2013, I created a nice little sample project demonstrating code generati
 
 > Really col http://t.co/dzTs3fnv "Northwind" demo app by @achingono on GitHub. Clever use of T4 and more. Starred! https://t.co/1GTE055f
 >
-> — Scott Hanselman (@shanselman) January 9, 2013
+> Scott Hanselman (@shanselman), January 9, 2013
 
 I really enjoyed code generation with T4 in Visual Studio that I used it in all my projects. Four years later, I asked the following on Twitter:
 
@@ -95,7 +95,7 @@ Options:
 A _response file_ is a file that contains a set of tokens for a command-line app. Response files are a feature of `System.CommandLine` that is useful in two scenarios:
 
 - To invoke a command-line app by specifying input that is longer than the character limit of the terminal.
-To invoke the same command repeatedly without retyping the whole line.
+- To invoke the same command repeatedly without retyping the whole line.
 - To use a response file, enter the file name prefixed by an `@` sign wherever in the line you want to insert commands, options, and arguments. The following lines are equivalent:
 
 ```console
@@ -138,4 +138,3 @@ You can uninstall the tool using the following command.
 ```console
 dotnet tool uninstall -g dotnet-spawn
 ```
-

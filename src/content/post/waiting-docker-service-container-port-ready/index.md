@@ -18,7 +18,7 @@ categories: [
 ]
 image: "cover.jpg"
 ---
-Recently, I was working on a pet project and had created my `Dockerfile` for the ASP.NET Core container as well as the `docker-compose.yml` file to compose the services.
+I was working on a pet project and had already created a `Dockerfile` for the ASP.NET Core container, along with a `docker-compose.yml` file to wire the services together.
 
 Here's the `Dockerfile` I had:
 
@@ -98,7 +98,7 @@ services:
       - ACCEPT_EULA=Y
 ```
 
-My biggest challenge was that even though I had set the `app` service to depend on the `db` service, the `app` service would start before the `db` service was really ready to receive connections. This resulted in .net startup errors, crash loops and the container eventually shutting down:
+My biggest challenge was that even though I had set the `app` service to depend on the `db` service, the `app` service would still start before the `db` service was ready to receive connections. That led to .NET startup errors, crash loops, and eventually a failed container:
 
 ```log
 info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
@@ -113,13 +113,13 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): A network-related or instanc
 
 ```
 
-Since there was some initialization code and database seeding that had to take place before the application was ready to run, I wanted to ensure that the dotnet code started only when the database container/service was ready to receive connections.
+Because some initialization code and database seeding had to finish before the application could run, I needed the .NET code to start only after the database container was ready to receive connections.
 
-After some searching on the internet, I found this answer on the [Unix StackExchange](https://unix.stackexchange.com):
+After some searching, I found this answer on [Unix StackExchange](https://unix.stackexchange.com):
 
 [Testing remote TCP port using telnet by running a one-line command](https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356)
 
-Now, I needed to ensure this command runs before launching the .net site, and only after the db server was ready to receive connections on port `1433`. So, after some further searching, trial and error, I eventually landed on the following two scripts:
+I then needed to run that command before launching the .NET site, and only after the `db` server was ready to receive connections on port `1433`. After some more trial and error, I landed on the following two scripts:
 
 `testconnection.sh` is a copy of the code found on Unix StackExchange:
 
@@ -237,7 +237,7 @@ info: Microsoft.EntityFrameworkCore.Database.Command[20101]
       SELECT 1
 ```
 
-As you can see, this solution allowed my `app` container to wait for as long as it needed to before starting the .net application. Hopefully, you find that helpful, dear reader.
+This solution let my `app` container wait as long as it needed before starting the .NET application.
 
 Credits:  
 [Testing remote TCP port using telnet by running a one-line command](https://unix.stackexchange.com/questions/86556/testing-remote-tcp-port-using-telnet-by-running-a-one-line-command/406356#406356)  

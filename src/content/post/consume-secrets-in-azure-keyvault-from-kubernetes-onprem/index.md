@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "Consume Secrets in Azure Key vault From Kubernetes On-prem"
 date: 2022-11-07T18:32:15Z
 draft: false
-description: "Using a Service Principal, it is possible to leverage Azure Key Vault on on-prem/non-Azure k8s clusters."
+description: "Using a Service Principal, you can use Azure Key Vault on on-prem or non-Azure Kubernetes clusters."
 slug: consume-secrets-in-azure-keyvault-from-kubernetes-onprem
 tags: [
   "kubernetes",
@@ -20,13 +20,13 @@ categories: [
 image: "cover.png"
 ---
 
-Recently, a customer inquired if there is a way to leverage Azure Key Vault on on-prem/non-Azure k8s clusters. In this blog post, I will show the steps we followed to demonstrate the process of mounting Azure Key Vault secrets inside an on-prem Kubernetes cluster.
+A customer recently asked whether Azure Key Vault could be used from an on-prem or non-Azure Kubernetes cluster. In this post, I will show the steps we followed to mount Azure Key Vault secrets inside that kind of environment.
 
-- [**Azure Key Vault**](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) is one of several key management solutions in Azure, and can be used to Securely store and tightly control access to tokens, passwords, [certificates](https://learn.microsoft.com/en-us/azure/key-vault/certificates/), [API keys](https://learn.microsoft.com/en-us/azure/key-vault/keys/), and other [secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/). Centralizing storage of application secrets in Azure Key Vault allows you to control their distribution. Key Vault greatly reduces the chances that secrets may be accidentally leaked. When using Key Vault, application developers no longer need to store security information in their application. Not having to store security information in applications eliminates the need to make this information part of the code.
+- [**Azure Key Vault**](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) is one of several key management solutions in Azure, and can be used to securely store and tightly control access to tokens, passwords, [certificates](https://learn.microsoft.com/en-us/azure/key-vault/certificates/), [API keys](https://learn.microsoft.com/en-us/azure/key-vault/keys/), and other [secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/). Centralizing storage of application secrets in Azure Key Vault allows you to control their distribution. Key Vault greatly reduces the chances that secrets may be accidentally leaked. When using Key Vault, application developers no longer need to store security information in their application. Not having to store security information in applications eliminates the need to make this information part of the code.
 - [**Kubernetes**](https://kubernetes.io/docs/concepts/overview/) is a portable, extensible, open source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem and focuses on the application workloads, not the underlying infrastructure components.
-- [**Kubernetes Secrets Store CSI Driver**](https://secrets-store-csi-driver.sigs.k8s.io/) integrates secrets stores with Kubernetes via a [Container Storage Interface (CSI)](https://kubernetes-csi.github.io/docs/) volume. It allows Kubernetes to mount multiple secrets, keys, and certificates stored in enterprise-grade external secrets stores, such as Azure Key Vault, into pods as a volume. Once the Volume is attached, the data in it is mounted into the container’s file system.
+- [**Kubernetes Secrets Store CSI Driver**](https://secrets-store-csi-driver.sigs.k8s.io/) integrates secrets stores with Kubernetes via a [Container Storage Interface (CSI)](https://kubernetes-csi.github.io/docs/) volume. It allows Kubernetes to mount multiple secrets, keys, and certificates stored in enterprise-grade external secrets stores, such as Azure Key Vault, into pods as a volume. Once the volume is attached, the data in it is mounted into the container’s file system.
 
-The Secrets Store CSI Driver on Azure Kubernetes Service (AKS) provides the following methods of identity-based access to your Azure key vault.
+The Secrets Store CSI Driver on Azure Kubernetes Service (AKS) supports the following identity-based access methods for Azure Key Vault.
 
 - An [Azure Active Directory pod identity](https://learn.microsoft.com/en-us/azure/aks/use-azure-ad-pod-identity) (preview)
 - An [Azure Active Directory workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) (preview)
@@ -192,7 +192,7 @@ kubectl label secret $SECRET_NAME secrets-store.csi.k8s.io/used=true
 ```
 
 > **NOTE:**  
-> Kubernetes Secrets are, by default, stored unencrypted in the API server's underlying data store (etcd). Anyone with API access can retrieve or modify a Secret, and so can anyone with access to etcd. Additionally, anyone who is authorized to create a Pod in a namespace can use that access to read any Secret in that namespace; this includes indirect access such as the ability to create a Deployment.
+> Kubernetes Secrets are, by default, stored unencrypted in the API server's underlying data store (etcd). Anyone with API access can retrieve or modify a Secret, and so can anyone with access to etcd. Anyone who is authorized to create a Pod in a namespace can also use that access to read any Secret in that namespace; this includes indirect access such as the ability to create a Deployment.
 >
 > In order to restrict access to Kubernetes secrets, consider enabling or configuring [RBAC rules](https://kubernetes.io/docs/reference/access-authn-authz/authorization/) with least-privilege access to Secrets.
 >
@@ -301,7 +301,7 @@ Password
 $ kubectl exec busybox-secrets-store-inline -- cat /mnt/secrets-store/Username
 atomic_fifth
 
-$ kubectl exec busybox-secrets-store-inline -- cat /mnt/secrets-store/Username
+$ kubectl exec busybox-secrets-store-inline -- cat /mnt/secrets-store/Password
 Forty7&Scale
 ```
 
@@ -310,7 +310,7 @@ Forty7&Scale
 >
 > For more information, see [Configure Azure Key Vault firewalls and virtual networks](https://learn.microsoft.com/en-us/azure/key-vault/general/network-security)
 
-And there you have it! We managed to retrieve Azure Key Vault secrets from an on-prem Kubernetes cluster using a Service Principal. Hope the proves valuable to you, dear reader.
+That was enough to retrieve Azure Key Vault secrets from an on-prem Kubernetes cluster by using a service principal.
 
 Credits:  
 Thanks to my colleagues [Ravi Yadav](https://mvp.microsoft.com/en-us/PublicProfile/5002189) and [Hammad Aslam](https://hammadaslam.com/) for the important pointers.

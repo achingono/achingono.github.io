@@ -20,19 +20,19 @@ categories: [
 image: "cover.jpg"
 ---
 
-When managing configurations in [Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview), dynamically identifying and conditionally deploying resources can streamline your infrastructure and reduce manual intervention. In this post, I’ll walk you through how I used [Azure deployment scripts](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template) and Bicep templates to achieve this. Along the way, I’ll explain the logic behind the deployment and the steps required to ensure everything works seamlessly.
+[Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview) gets awkward once you need to seed defaults without duplicating keys that are already there. I used [Azure deployment scripts](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template) and Bicep to query the current state first, then deploy only what was missing. This post walks through that pattern and the pieces that made it work.
 
 ## Problem Statement
 
-[Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview) allows us to manage configurations centrally, but as environments and configurations evolve, deploying defaults and ensuring environments are properly configured becomes a challenge. Manual processes are prone to errors and inefficiencies, and hardcoding resources isn’t scalable. We needed a solution that dynamically queried existing configurations and conditionally deployed only what was missing.
+[Azure App Configuration](https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview) lets us manage configuration centrally, but once environments drift, seeding defaults becomes messy. Manual checks invite mistakes, and hardcoding resources does not age well. I needed a way to query what already existed and deploy only the missing pieces.
 
 ## Solution Overview
 
-Using [Azure deployment scripts](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template) within Bicep, we can:
+Using [Azure deployment scripts](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-script-template) inside Bicep, I could:
 
 1. Query existing labels and keys in Azure App Configuration.
 1. Conditionally deploy default settings, environments, and configurations based on the query results.
-1. Automate the entire process while maintaining modularity and reusability.
+1. Keep the process automated without hardcoding the current state.
 
 ### High-Level Architecture
 
@@ -220,7 +220,7 @@ This pattern removes the manual step of checking what already exists before depl
 ## Related Posts
 
 - [Why I Started Building My Own DevOps Platform (And What I Learned)](/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/)
-- [The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/)
+- [My DORA post on internal developer platforms](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/)
 
 References:
 

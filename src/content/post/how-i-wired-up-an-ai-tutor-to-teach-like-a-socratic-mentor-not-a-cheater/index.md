@@ -67,7 +67,7 @@ To handle this, FireFly has a "Frustration Fuse." If the student asks for the an
 
 We are entering an era where AI-powered personalized learning will be the norm. But if we just build "answer machines," we are doing a disservice to the next generation of learners.
 
-Building FireFly taught me that the most powerful use of AI in education isn't in its ability to know everything—it is in its ability to be a patient, persistent, and occasionally annoying mentor who refuses to let the student take the easy way out.
+Building FireFly taught me that the most powerful use of AI in education isn't knowing everything. It's being a patient, persistent, and occasionally annoying mentor who refuses to let the student take the easy way out.
 
 ---
 *Related reading:*

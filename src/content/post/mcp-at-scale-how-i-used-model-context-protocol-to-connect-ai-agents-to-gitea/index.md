@@ -52,9 +52,9 @@ I built the server in TypeScript using the `@modelcontextprotocol/sdk`. Here is 
 
 ## Scaling to Eight Agents
 
-The beauty of this setup is that all eight CueMarshal agents—from [Marshal (Orchestrator) to Linton (Linter)](/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/)—connect to the same MCP server.
+What makes this setup work is that all eight CueMarshal agents, from [Marshal (Orchestrator) to Linton (Linter)](/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/), connect to the same MCP server.
 
-This ensures that every agent has a "shared reality." If the Reviewer agent (Reese) sees a diff, the Developer agent (Dave) sees the exact same diff through the same tool. This consistency is crucial for complex, multi-step tasks.
+This gives every agent a "shared reality." If the Reviewer agent (Reese) sees a diff, the Developer agent (Dave) sees the exact same diff through the same tool. That consistency matters for complex, multi-step tasks.
 
 ## Security and the "Read-Only" Gate
 

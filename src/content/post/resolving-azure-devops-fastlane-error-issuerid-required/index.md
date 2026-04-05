@@ -39,7 +39,7 @@ A quick search for `fastlane +"An exception has occurred: issuerId is required"`
 
 [ [pilot] fails to upload build to TestFlight using api key after iTMSTransporter auto updated to version 3.0.0 with An exception has occurred: issuerId is required error](https://github.com/fastlane/fastlane/issues/20741)
 
-One particular [comment by Tobias Totzek](https://github.com/fastlane/fastlane/issues/20741#issuecomment-1285291626) provided the exact answer to my problem. I changed the Agent Specification from `macos-latest` to `macOS-12` and problem solved.
+One particular [comment by Tobias Totzek](https://github.com/fastlane/fastlane/issues/20741#issuecomment-1285291626) had the fix. I changed the Agent Specification from `macos-latest` to `macOS-12`, and the error went away.
 
 Credits:  
 [Tobias Totzek](https://github.com/honkmaster)  

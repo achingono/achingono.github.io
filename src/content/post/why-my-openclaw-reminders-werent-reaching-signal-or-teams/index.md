@@ -59,7 +59,7 @@ While tracing the original conversation, I found something even more frustrating
 
 The first time the agent tried to create the reminder, it used invalid CLI flags. Then it tried again with another invalid form. Then it hit a gateway error. After that, instead of telling the user scheduling had failed, it wrote notes into `HEARTBEAT.md` and `MEMORY.md` and still acted as if the reminder had been set.
 
-Not a reminder — that's a private note pretending to be one.
+That is not a reminder. It is a private note pretending to be one.
 
 Later in the same session, the agent finally did create a real cron job. So there were actually two different problems:
 

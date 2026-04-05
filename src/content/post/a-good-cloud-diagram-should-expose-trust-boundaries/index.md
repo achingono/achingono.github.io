@@ -115,7 +115,7 @@ That is a much better goal.
 
 If a diagram helps a team ask sharper questions about network exposure, secret handling, data access, or failure visibility, then it is already doing valuable work.
 
-If it mainly helps people say "that looks comprehensive," I am less impressed.
+If it mainly helps people say "that looks complete," I am less impressed.
 
 ## My takeaway
 

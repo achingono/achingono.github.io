@@ -24,7 +24,7 @@ categories: [
 ]
 image: "cover.jpg"
 ---
-Security scanning should be part of the delivery flow, not an afterthought. In this post I walk through how I automated OWASP ZAP scans using Azure DevOps release pipelines and transformed the findings into something teams can actually act on.
+Security scanning should be part of the delivery flow, not an afterthought. In this post I show how I automated OWASP ZAP scans in Azure DevOps release pipelines and turned the findings into something teams can actually act on.
 
 The approach uses a ZAP Docker container to run baseline scans, a PowerShell script to map findings to OWASP Top 10 categories and convert them to NUnit format, and the standard Azure DevOps publish-test-results task to surface vulnerabilities as visible test failures in your pipeline.
 
@@ -57,7 +57,7 @@ In order to run docker commands, the docker engine will need to be installed on 
 
 ## Running the OWASP ZAP Docker container
 
-The next step leverages a pre-configured OWASP ZAP Docker container:
+The next step uses a pre-configured OWASP ZAP Docker container:
 
 ![Owasp Scan](owasp-scan.jpg)
 
@@ -89,7 +89,7 @@ This command mounts a working directory to store the results and scans your appl
 
 ## Converting ZAP Results to NUnit Format
 
-While the XML report is comprehensive, integrating its results into your pipeline can be tricky. To make this integration seamless, we’ll transform the ZAP results into NUnit format. NUnit is widely supported by CI/CD tools and allows for easy visualization of test outcomes.
+While the XML report is detailed, integrating its results into your pipeline can still be awkward. To make that easier, we’ll transform the ZAP results into NUnit format. NUnit is widely supported by CI/CD tools and makes test outcomes easier to inspect.
 
 In addition, we are only interested in the Top Ten OWASP Vulnerabilities, so this step also filters outcomes by the Top 10 categories.
 
@@ -264,7 +264,7 @@ Write-Host "##vso[task.setvariable variable=resultsFile;]$target"
 ### Key Features of the Script
 
 - **Alert Aggregation:** Gathers and organizes vulnerability data from ZAP results.
-- **OWASP Mapping:** Links CWEs from ZAP alerts to OWASP Top 10 categories. For a comprehensive list of CWE IDs and their mappings to the OWASP Top 10 categories, you can refer to the official OWASP documentation: [OWASP Top Ten Mapping](https://owasp.org/www-project-top-ten/).
+- **OWASP Mapping:** Links CWEs from ZAP alerts to OWASP Top 10 categories. For a full list of CWE IDs and their mappings to the OWASP Top 10 categories, see the official OWASP documentation: [OWASP Top Ten Mapping](https://owasp.org/www-project-top-ten/).
 - **NUnit Format Conversion:** Outputs the data in NUnit format for easy integration with Azure DevOps.
 
 ## Integrating NUnit Results with Azure DevOps
@@ -279,7 +279,7 @@ This step ensures that vulnerabilities are tracked as test failures, making them
 
 ### What this gets you
 
-By integrating OWASP ZAP scans with Azure DevOps, you get security findings surfaced as test failures in the same interface where the rest of your pipeline results live. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion so the results are immediately interpretable without digging into raw XML.
+By integrating OWASP ZAP scans with Azure DevOps, security findings show up as test failures in the same interface as the rest of your pipeline results. The PowerShell script handles the CWE-to-OWASP mapping and NUnit conversion, so you do not have to dig through raw XML to understand what failed.
 
 One thing I appreciate even more now than when I first wrote this post is that DAST automation is only one part of a strong DevSecOps loop. OWASP ZAP gives us runtime-facing feedback, but the workflow becomes even more powerful when it sits beside static analysis, issue routing, and remediation paths that developers can act on without leaving their normal delivery flow.
 

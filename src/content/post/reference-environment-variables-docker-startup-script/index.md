@@ -19,9 +19,9 @@ categories: [
 image: "cover.jpg"
 ---
 
-In my previous post; [Waiting for Docker Service Container Port to Be Ready]({{< ref "/post/waiting-docker-service-container-port-ready/index.md" >}}), I showed how I managed to delay container application code execution until another service is ready to accept tcp connections.
+In my previous post, [Waiting for Docker Service Container Port to Be Ready]({{< ref "/post/waiting-docker-service-container-port-ready/index.md" >}}), I showed how I delayed container startup until another service was ready to accept TCP connections.
 
-If this post, I'm going to improve on that solution and make it more reusable by adding environment variables to the the `Dockerfile` and to the `docker-compose.yml`.
+In this post, I build on that approach and make it more reusable by adding environment variables to both the `Dockerfile` and the `docker-compose.yml`.
 
 Here's the updated `Dockerfile`:
 
@@ -122,8 +122,7 @@ With this setup, I can create multiple image variations with the same `Dockerfil
         PROJECT: Business.Web
 ```
 
-And when I run the docker image, I can also supply the same three environment variables in order to override the container defaults.
-Hopefully this proves helpful to you, dear reader. All feedback will be greatly appreciated.
+And when I run the Docker image, I can supply the same three environment variables to override the container defaults. That gives me one `Dockerfile` I can reuse across different image variations.
 
 Credits:  
 [Persisting ENV and ARG settings to all later stages in multi-stage builds](https://github.com/moby/moby/issues/37345#issuecomment-400245466)

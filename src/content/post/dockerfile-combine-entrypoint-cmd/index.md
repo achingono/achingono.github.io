@@ -18,7 +18,7 @@ categories: [
 ]
 image: "cover.png"
 ---
-In my previous post; [Reference Build Arguments in Docker Startup Script]({{< ref "/post/reference-environment-variables-docker-startup-script/index.md" >}}), I showed how I added reusability to my `Dockerfile` by adding build arguments.
+In my previous post, [Reference Build Arguments in Docker Startup Script]({{< ref "/post/reference-environment-variables-docker-startup-script/index.md" >}}), I showed how I added a bit more reuse to my `Dockerfile` with build arguments.
 
 The docker builder [CMD](https://docs.docker.com/engine/reference/builder/#cmd) reference document states:
 
@@ -74,4 +74,4 @@ ENTRYPOINT [ "./entrypoint.sh" ]
 CMD ["sh", "-c", "$DB_SERVICE $DB_SERVICE_PORT dotnet $ASSEMBLY"]
 ```
 
-Configuring it this way allows me to supply different arguments when running the container without having to specify `entrypoint.sh` every time. Small change, and I hope this proves helpful to you, dear reader. All comments and feedback will be greatly appreciated.
+Configuring it this way lets me supply different arguments when running the container without having to specify `entrypoint.sh` every time.

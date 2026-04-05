@@ -3,7 +3,7 @@ author: "Alfero Chingono"
 title: "How to Enable VM Insights on an Azure Virtual Machine Using Bicep"
 date: 2024-06-27T13:31:25Z
 draft: false
-description: "A step-by-step guide to enabling VM Insights on Azure Virtual Machines using a Bicep module to streamline diagnostics and telemetry collection."
+description: "A step-by-step guide to enabling VM Insights on Azure Virtual Machines using a Bicep module to automate diagnostics and telemetry collection."
 slug: enable-vm-insights-azure-bicep
 tags: [
   Azure,
@@ -19,7 +19,7 @@ categories: [
 ]
 image: "cover.jpg"
 ---
-When it comes to monitoring your virtual machines in Azure, Application Insights provides a powerful and scalable solution for collecting telemetry data. In this blog post, I'll walk you through how to enable VM Insights on an Azure Virtual Machine using a Bicep module I recently worked on.
+To monitor your virtual machines in Azure, Application Insights gives you a solid way to collect telemetry data. In this post, I'll show you how to enable VM Insights on an Azure Virtual Machine with a Bicep module I recently worked on.
 
 ## The Goal
 
@@ -170,7 +170,7 @@ resource extension 'Microsoft.Compute/virtualMachines/extensions@2018-10-01' = {
 
 ## Conclusion
 
-This Bicep module simplifies enabling VM Insights on Azure Virtual Machines, ensuring you have comprehensive monitoring and diagnostics. With the telemetry routed to Application Insights, you gain real-time insights into your VM’s health and performance.
+This Bicep module simplifies enabling VM Insights on Azure Virtual Machines, so you get detailed monitoring and diagnostics without manual setup. With telemetry routed to Application Insights, you can watch your VM’s health and performance in real time.
 
 Do you have a different approach to enabling VM Insights? Let me know in the comments!
 

@@ -34,7 +34,7 @@ I have come to think of that as the **silent excellence trap**.
 
 > Outcomes matter, but outcomes that are not made legible, timely, and attributable are often discounted.
 
-That sentence has stayed with me because it explains something I have seen repeatedly, both in myself and in other high-conscientious operators. We assume that if the work is real, the value will be obvious. In many organizations, that is simply not how visibility works.
+That sentence has stayed with me because it explains something I have seen repeatedly, both in myself and in other highly conscientious operators. We assume that if the work is real, the value will be obvious. In many organizations, that is simply not how visibility works.
 
 ## The problem is usually structural, not personal
 
@@ -166,9 +166,9 @@ If I create meaningful change but fail to make it legible, timely, and attributa
 
 That has changed how I think about platform work, architecture work, and even writing in public. In some ways, building publicly is itself a response to this problem. The work becomes its own audit trail.
 
-That is also why this post connects so naturally to [The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/). Platform work can produce real leverage. But if the leverage stays invisible, the organization often underestimates both the work and the people doing it.
+That is also why this post connects so naturally to [my DORA post on internal developer platforms](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/). Platform work can produce real leverage. But if the leverage stays invisible, the organization often underestimates both the work and the people doing it.
 
 References:
 
-- [The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/)
+- [My DORA post on internal developer platforms](/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/)
 - [Why I Started Building My Own DevOps Platform (And What I Learned)](/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/)

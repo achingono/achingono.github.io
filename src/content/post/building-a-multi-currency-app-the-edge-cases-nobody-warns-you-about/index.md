@@ -24,7 +24,7 @@ When I started building [Famorize](https://www.famorize.com), I thought multi-cu
 
 Wrong.
 
-Dealing with money in software is a masterclass in edge cases, data integrity, and precision. If you're building an app that handles more than one currency—especially one designed for families across borders—the complexity grows exponentially.
+Dealing with money in software is a masterclass in edge cases, data integrity, and precision. If you're building an app that handles more than one currency, especially one designed for families across borders, the complexity stacks up fast.
 
 Here are the four big lessons I learned from building Famorize's multi-currency engine.
 
@@ -58,13 +58,13 @@ Famorize uses a **Currency Metadata** table that defines the "Scale" (decimal pl
 
 If a user in Toronto is sending money to a family member in Nairobi, which currency should the input field show?
 
-The most robust UX pattern I found is to always allow the user to select the **Transaction Currency** but provide a real-time "estimated conversion" into their **Home Currency**. This gives them the confidence of knowing exactly how much they are spending in the units they understand.
+The UX pattern that worked best for me was to always let the user select the **Transaction Currency** while showing a real-time "estimated conversion" into their **Home Currency**. That gives them a clearer sense of how much they are spending in the units they understand.
 
 ## The Result
 
-Building a multi-currency app taught me that "precision" is not just a technical requirement—it's a trust requirement. If a financial app is off by even one cent, the user's trust is broken.
+Building a multi-currency app taught me that "precision" is not just a technical requirement; it is a trust requirement. If a financial app is off by even one cent, the user's trust is broken.
 
-Famorize now handles dozens of currencies with a robust, integer-based engine that I can trust with real family finances. It took more than a weekend, but the lessons were worth the effort.
+Famorize now handles dozens of currencies with an integer-based engine that I can trust with real family finances. It took more than a weekend, but the lessons were worth the effort.
 
 ---
 *Related reading:*

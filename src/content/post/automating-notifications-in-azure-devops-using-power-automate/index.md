@@ -20,11 +20,11 @@ categories: [
 image: "cover.png"
 ---
 
-Managing work items in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops) is crucial for efficient software development. To enhance communication and collaboration, I created a Power Automate flow that automatically notifies team members whenever a work item is updated. This post will guide you through the steps I took to create this flow.
+Managing work items in [Azure DevOps](https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops) gets easier when updates do not depend on someone noticing them manually. I built a Power Automate flow that notifies team members whenever a work item changes. This post walks through how I set it up.
 
 ### Why Use Power Automate for Azure DevOps?
 
-[Power Automate](https://learn.microsoft.com/en-us/power-automate/) is a powerful tool that integrates seamlessly with Azure DevOps, automating tasks like sending notifications, updating items, or even triggering workflows. By automating notifications, you ensure that relevant team members are instantly informed about the status or changes in work items.
+[Power Automate](https://learn.microsoft.com/en-us/power-automate/) works well with Azure DevOps for tasks like sending notifications, updating items, and kicking off follow-up workflows. In this case, it let me notify the right people as soon as a work item changed status.
 
 ## Step 1: Setting Up the Trigger
 
@@ -49,7 +49,7 @@ To keep track of the work item’s state and artifact links, I initialized two v
 Here’s how to set up the variables:
 
 1. Add a new **Initialize Variable** action.
-1. Name the first variable **LastTime**. Set its type to `String` and its initial value to" `getPastTime(3, 'Minute')`.
+1. Name the first variable **LastTime**. Set its type to `String` and its initial value to `getPastTime(3, 'Minute')`.
 
     > **NOTE:** The number `3` here needs to match the value in the trigger as mentioned before.
 1. Add a second **Initialize Variable** action, name this one `HasArtifactLinks`, set its type to `Boolean`, and default it to `false`.
@@ -118,7 +118,7 @@ To handle work item relationships (e.g., linking artifacts), I added the followi
     @{triggerOutputs()?['body/fields']?['System_TeamProject']}/_apis/wit/workitems/@{triggerOutputs()?['body/id']}?$expand=relations&api-version=6.1-preview.3
     ```
 
-    > **NOTE:** The querystring paramater `$expand=relations` which is required for expanding related links in the response.
+    > **NOTE:** The query string parameter `$expand=relations` is required if you want the response to include related links.
 
 1. Rename this action **Get WorkItem Relationships**. We will use this name in subsequent steps when retrieving values from the output of this action.
 
@@ -139,13 +139,13 @@ Once I had the relationships, I needed to update the HasArtifactLinks variable t
     contains(string(body('Get_WorkItem_Relationships')?['relations']),'ArtifactLink')
     ```
 
-    > **NOTE:** We are using the output from our previous step (in this case, "Get_WorkItem_Relationships" — use the UI to add dynamic content in the expression to make sure you'll have the right value). In addition, we are keeping things simple by converting the JSON to a string, and simply checking if it contains the text `"ArtifactLink"`.
+    > **NOTE:** We are using the output from our previous step; in this case, `Get_WorkItem_Relationships`. Use the UI to add dynamic content in the expression so you end up with the right value. To keep things simple, we convert the JSON to a string and check whether it contains the text `"ArtifactLink"`.
 
 This will set the variable `HasArtifactLinks` to true if there are any links of type **ArtifactLink**.
 
 ## Step 6: Handling Different Work Item States
 
-Now comes the interesting part—handling different scenarios based on the work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted the flow to send notifications accordingly.
+Next comes the part where the flow branches by work item state. Depending on whether the work item is Resolved, Closed, or Blocked, I wanted it to send different notifications.
 
 Here's how I handled it:
 
@@ -222,7 +222,7 @@ Here's how I handled it:
 
         ![Action: Post a message in a chat or channel.](notify-createdby.png)
 
-By setting up this Power Automate flow, I no longer have to worry about manually tracking work item updates or notifying team members. Whether a work item is resolved, blocked, or closed, the flow ensures the right people get notified at the right time. Plus, with the artifact link checks, developers can easily review the associated commits and pull requests.
+After setting up this Power Automate flow, I no longer had to keep checking work item updates manually. When a work item is resolved, blocked, or closed, the right people get notified. The artifact link check also makes it easier to catch cases where code changed but no commit or pull request was linked.
 
 References:  
 [Azure DevOps Services REST API Reference](https://learn.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.2)  

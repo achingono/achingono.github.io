@@ -55,7 +55,7 @@ An agentic delivery layer lives *above* your CI/CD. It doesn't replace Jenkins o
 Building this into [my own platform](/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/) taught me that the transition from CI/CD to Agentic Delivery requires a shift in how we think about automation.
 
 1.  **From Scripts to Tools:** In CI/CD, we write shell scripts. In agentic systems, we define [Model Context Protocol (MCP)](/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/) tools. The agent needs a structured way to interact with the world, not just a line of bash.
-2.  **From Success/Failure to "Looks Good to Me":** We are moving from binary pass/fail gates to probabilistic evaluation. This is why [specialized agent roles](/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/) are so important—you want a dedicated "Reviewer" agent whose only job is to be skeptical.
+2.  **From Success/Failure to "Looks Good to Me":** We are moving from binary pass/fail gates to probabilistic evaluation. That is why [specialized agent roles](/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/) matter so much: you want a dedicated "Reviewer" agent whose only job is to be skeptical.
 3.  **Git is still the anchor:** Even with agents doing the heavy lifting, the final source of truth must remain the repository. If it's not in Git, it didn't happen.
 
 ## The 2025 Reality

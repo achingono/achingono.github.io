@@ -16,13 +16,13 @@ categories: [
 image: "cover.jpg"
 ---
 
-This is a continuation from my previous posts; [Dockerizing Blazor Wasm Application]({{< ref "/post/dockerizing-blazor-wasm-application/index.md" >}}) and [Waiting for Docker Service Container Port to Be Ready]({{< ref "/post/waiting-docker-service-container-port-ready/index.md" >}}).
+This is a continuation of two earlier posts: [Dockerizing Blazor Wasm Application]({{< ref "/post/dockerizing-blazor-wasm-application/index.md" >}}) and [Waiting for Docker Service Container Port to Be Ready]({{< ref "/post/waiting-docker-service-container-port-ready/index.md" >}}).
 
-One of the main reasons I needed my application container to wait for the database container to be ready was because I needed to initialize and seed the database before launching the application. This created a significant, and somewhat unacceptable, delay in container startup which impacted local development experience and automated UI tests.
+One of the main reasons I needed my application container to wait for the database container was that I had to initialize and seed the database before launching the app. That delay was starting to hurt local development and automated UI tests.
 
-I went on a quest to search for a solution to this problem and found out that Database engines such as MySQL support the ability to automatically restore database backups when creating a docker container. Surely, Microsoft SQL Server would have the same feature, right? Apparently, not. So I had no choice but to roll out my own solution, right? Right!
+I looked for a cleaner way to handle it. MySQL supports restoring database backups when a container is created, so I assumed Microsoft SQL Server would have something similar. It did not, at least not in the way I needed, so I built my own startup flow.
 
-Now that we agree on the legitimacy of my quest, here are the changes I made to my project.
+Here are the changes I made to the project.
 
 First, I created a `entrypoint.sh` bash script with the following contents:
 
@@ -141,12 +141,12 @@ ENV SCRIPTS_PATH=${SCRIPTS_PATH}
 ENTRYPOINT ["/bin/entrypoint.sh"]
 ```
 
-This `Dockerfile` basically copies three files into the base MSSQL container:
+This `Dockerfile` copies three files into the base MSSQL container:
 - `entrypoint.sh`
 - `restore-database.sh`
 - `database.bak`
 
-Once those three files are copied to the right folders and made executable, the magic happens when the container is created.
+Once those files are in the right folders and marked executable, the restore flow runs when the container is created.
 
 The last step was to update the `docker-compose.yml` file with the following changes:
 

@@ -16,7 +16,7 @@ categories: [
 image: "cover.jpg"
 ---
 
-Now that I can run the site locally, I needed a quick way to run the `hugo` command for creating new blog posts. After quick search on the internet, I found the article [Tasks in Visual Studio Code](https://code.visualstudio.com/Docs/editor/tasks) very helpful. In short, I had to define the build task this way:
+Once I had the site running locally, I wanted a quicker way to run the `hugo` build command from Visual Studio Code. After a bit of searching, I found the article [Tasks in Visual Studio Code](https://code.visualstudio.com/Docs/editor/tasks) helpful. In short, I defined the build task like this:
 
 ```json
 {
@@ -66,6 +66,6 @@ Next, I added another task to run the site locally:
 }
 ```
 
-This task executes the `hugo server` command. The `-D` flag ensures that we can preview content in draft mode, and again, the `--source` argument ensures the correct folder is served. It's important to note that the `Serve` does not have `"isDefault": true` since we do not want the two tasks to conflict when using the <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> keyboard shortcut.
+This task executes the `hugo server` command. The `-D` flag ensures that we can preview content in draft mode, and again, the `--source` argument ensures the correct folder is served. The `Serve` task does not have `"isDefault": true` because we do not want the two tasks to conflict when using the <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> keyboard shortcut.
 
 So far I'm pretty pleased with my experience with the [Hugo static site generator](https://gohugo.io/).

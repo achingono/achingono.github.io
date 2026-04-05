@@ -18,16 +18,16 @@ categories: [
 image: ""
 ---
 
-This is a continuation from my previous posts; [Dockerizing Blazor Wasm Application]({{< ref "/post/dockerizing-blazor-wasm-application/index.md" >}})
+This is a continuation of my previous post, [Dockerizing Blazor Wasm Application]({{< ref "/post/dockerizing-blazor-wasm-application/index.md" >}}).
 
-The previous setup was a follows:
+The previous setup looked like this:
 ![3-Service Architecture](3-Service-Architecture.jpg "3 microservices")
 
-One drawback of this setup was that both the SPA service and the API service had to expose ports in order to be accessible and the ports had to be different. I didn't like that very much and for my learning purposes, I set out to figure out how to accomplish the following setup:
+One drawback of that setup was that both the SPA service and the API service had to expose different ports to be reachable. I wanted something cleaner for local development, so I set out to make this work:
 
 ![4-Service Architecture](4-Service-Architecture.jpg "4 microservices")  
 
-The first task was to figure out how to configure NGINX to forward requests to multiple back-end services on the same port. After much research, this is the `nginx.conf` I eventually came up with:
+The first task was figuring out how to configure NGINX to forward requests to multiple backend services on the same port. After a fair amount of reading, this is the `nginx.conf` I ended up with:
 
 ```conf
 worker_processes 1;
@@ -76,7 +76,7 @@ http {
 }
 ```
 
-The tricky part was to ensure that only traffic intended for the SPA service was routed there. Somehow, I could not get it to work using just the path directive. I had to resort to regex to get it to work.
+The tricky part was making sure only the traffic intended for the SPA service was routed there. I could not get the path directive alone to do what I wanted, so I used regex.
 
 Next, I created a `configure-environment.sh` script very similar to the previous article:
 
@@ -90,7 +90,7 @@ sed -i -e "s|SPA_SERVICE|${SPA_SERVICE}|g" /etc/nginx/nginx.conf
 sed -i -e 's/PORT/'"${PORT}"'/g' /etc/nginx/nginx.conf
 ```
 
-Details of the configuration settings are clearly outlined in the referenced articles.
+The referenced articles cover the configuration details well.
 
 Next, the `Dockerfile`:
 
