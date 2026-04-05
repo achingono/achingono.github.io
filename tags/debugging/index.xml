@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debugging on Alfero Chingono</title><link>https://www.chingono.com/tags/debugging/</link><description>Recent content in Debugging on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 04 Apr 2026 23:18:06 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/debugging/index.xml" rel="self" type="application/rss+xml"/><item><title>Why My OpenClaw Reminders Weren't Reaching Signal or Teams</title><link>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</link><pubDate>Sat, 04 Apr 2026 21:23:46 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/cover.png" alt="Featured image of post Why My OpenClaw Reminders Weren't Reaching Signal or Teams" /&gt;&lt;p&gt;This is the fifth and final post in my short OpenClaw series. If you want the background first, read &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;why I run OpenClaw in Docker&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;how I wired Signal and Teams into a custom image&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;the Dockerfile walkthrough&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;the main/personal agent split&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Debugging on Alfero Chingono</title><link>https://www.chingono.com/tags/debugging/</link><description>Recent content in Debugging on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 11:49:27 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/debugging/index.xml" rel="self" type="application/rss+xml"/><item><title>Why My OpenClaw Reminders Weren't Reaching Signal or Teams</title><link>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</link><pubDate>Sat, 04 Apr 2026 21:23:46 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/cover.png" alt="Featured image of post Why My OpenClaw Reminders Weren't Reaching Signal or Teams" /&gt;&lt;p&gt;This is the fifth and final post in my short OpenClaw series. If you want the background first, read &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;why I run OpenClaw in Docker&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;how I wired Signal and Teams into a custom image&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;the Dockerfile walkthrough&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;the main/personal agent split&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I ran into an OpenClaw bug this week that annoyed me more than a normal delivery failure would have.&lt;/p&gt;
 &lt;p&gt;A reminder was supposed to come back to me later telling me to submit a GO Transit delay claim. The agent said it had scheduled the reminder. Then later&amp;hellip; nothing showed up in Signal. Nothing showed up in Teams either.&lt;/p&gt;
 &lt;p&gt;That kind of bug is worse than a simple send failure because it creates false confidence. If a reminder system quietly drops the reminder, that&amp;rsquo;s bad. If it tells you the reminder is set when it actually isn&amp;rsquo;t, that&amp;rsquo;s much worse.&lt;/p&gt;
@@ -15,8 +15,16 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;At first glance, that looks like a Signal transport problem. But that theory fell apart pretty quickly.&lt;/p&gt;
-&lt;p&gt;I sent a proactive Signal message directly through OpenClaw&amp;rsquo;s normal outbound path, outside cron, and it worked.&lt;/p&gt;
-&lt;p&gt;That mattered a lot.&lt;/p&gt;
+&lt;p&gt;I sent a proactive Signal message directly through OpenClaw&amp;rsquo;s normal outbound path, outside cron, and it worked:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw session send --agent personal --message &lt;span class="s2"&gt;&amp;#34;test delivery&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That mattered a lot.&lt;/p&gt;
 &lt;p&gt;It meant Signal itself was healthy. The account was connected. The RPC path was fine. Proactive outbound delivery was possible. So the bug wasn&amp;rsquo;t &amp;ldquo;OpenClaw can&amp;rsquo;t send Signal messages.&amp;rdquo; The bug was narrower: &lt;strong&gt;cron-delivered reminders were failing in their announce/delivery path&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2 id="the-failure-was-hiding-behind-a-second-bug"&gt;The failure was hiding behind a second bug
 &lt;/h2&gt;&lt;p&gt;While tracing the original conversation, I found something even more frustrating.&lt;/p&gt;
@@ -141,10 +149,46 @@
 &lt;/div&gt;&lt;p&gt;If the reminder started in Teams, the same rule applies with the Teams session key and exact Teams target.&lt;/p&gt;
 &lt;h3 id="2-i-repaired-the-already-failed-jobs"&gt;2. I repaired the already-failed jobs
 &lt;/h3&gt;&lt;p&gt;I patched the stored failed Signal reminder jobs so they now carry the missing &lt;code&gt;agentId&lt;/code&gt;, &lt;code&gt;sessionKey&lt;/code&gt;, and explicit destination metadata.&lt;/p&gt;
-&lt;p&gt;That gave me a clean way to test the actual failing path instead of just assuming the theory was right.&lt;/p&gt;
+&lt;p&gt;First I listed the jobs to identify the broken ones:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw cron list
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Then I edited each failed job to restore the routing context:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw cron edit &amp;lt;job-id&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --announce &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --agent personal &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --session-key agent:personal:signal:direct:uuid:&amp;lt;recipient&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --channel signal &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --to uuid:&amp;lt;recipient&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That gave me a clean way to test the actual failing path instead of just assuming the theory was right.&lt;/p&gt;
 &lt;h2 id="the-result"&gt;The result
-&lt;/h2&gt;&lt;p&gt;After repairing the routing metadata, I reran the missed transit-claim reminder job.&lt;/p&gt;
-&lt;p&gt;Previously its run log ended like this:&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;After repairing the routing metadata, I reran the missed transit-claim reminder job:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw cron run &amp;lt;job-id&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Previously its run log ended like this:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1

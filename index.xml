@@ -15,8 +15,16 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;At first glance, that looks like a Signal transport problem. But that theory fell apart pretty quickly.&lt;/p&gt;
-&lt;p&gt;I sent a proactive Signal message directly through OpenClaw&amp;rsquo;s normal outbound path, outside cron, and it worked.&lt;/p&gt;
-&lt;p&gt;That mattered a lot.&lt;/p&gt;
+&lt;p&gt;I sent a proactive Signal message directly through OpenClaw&amp;rsquo;s normal outbound path, outside cron, and it worked:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw session send --agent personal --message &lt;span class="s2"&gt;&amp;#34;test delivery&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That mattered a lot.&lt;/p&gt;
 &lt;p&gt;It meant Signal itself was healthy. The account was connected. The RPC path was fine. Proactive outbound delivery was possible. So the bug wasn&amp;rsquo;t &amp;ldquo;OpenClaw can&amp;rsquo;t send Signal messages.&amp;rdquo; The bug was narrower: &lt;strong&gt;cron-delivered reminders were failing in their announce/delivery path&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2 id="the-failure-was-hiding-behind-a-second-bug"&gt;The failure was hiding behind a second bug
 &lt;/h2&gt;&lt;p&gt;While tracing the original conversation, I found something even more frustrating.&lt;/p&gt;
@@ -141,10 +149,46 @@
 &lt;/div&gt;&lt;p&gt;If the reminder started in Teams, the same rule applies with the Teams session key and exact Teams target.&lt;/p&gt;
 &lt;h3 id="2-i-repaired-the-already-failed-jobs"&gt;2. I repaired the already-failed jobs
 &lt;/h3&gt;&lt;p&gt;I patched the stored failed Signal reminder jobs so they now carry the missing &lt;code&gt;agentId&lt;/code&gt;, &lt;code&gt;sessionKey&lt;/code&gt;, and explicit destination metadata.&lt;/p&gt;
-&lt;p&gt;That gave me a clean way to test the actual failing path instead of just assuming the theory was right.&lt;/p&gt;
+&lt;p&gt;First I listed the jobs to identify the broken ones:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw cron list
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Then I edited each failed job to restore the routing context:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw cron edit &amp;lt;job-id&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --announce &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --agent personal &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --session-key agent:personal:signal:direct:uuid:&amp;lt;recipient&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --channel signal &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --to uuid:&amp;lt;recipient&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That gave me a clean way to test the actual failing path instead of just assuming the theory was right.&lt;/p&gt;
 &lt;h2 id="the-result"&gt;The result
-&lt;/h2&gt;&lt;p&gt;After repairing the routing metadata, I reran the missed transit-claim reminder job.&lt;/p&gt;
-&lt;p&gt;Previously its run log ended like this:&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;After repairing the routing metadata, I reran the missed transit-claim reminder job:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;openclaw cron run &amp;lt;job-id&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Previously its run log ended like this:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -722,7 +766,8 @@ Often it does not.&lt;/p&gt;
 &lt;li&gt;keep human review as the merge gate&lt;/li&gt;
 &lt;li&gt;rescan and repeat&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;That is what I have been doing across FireFly and CueMarshal.&lt;/p&gt;
+&lt;p&gt;That is what I have been doing across FireFly and &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id="the-firefly-version-temporary-sonarqube-durable-issues"&gt;The FireFly version: temporary SonarQube, durable issues
 &lt;/h2&gt;&lt;p&gt;In &lt;a class="link" href="https://github.com/achingono/firefly" target="_blank" rel="noopener"
 &gt;FireFly&lt;/a&gt;, the workflow is intentionally self-contained.&lt;/p&gt;
@@ -863,7 +908,7 @@ If that task can be routed through an AI-assisted workflow and still land in a h
 &lt;p&gt;For me, Docker made OpenClaw feel less like a clever experiment and more like an actual service I could live with.&lt;/p&gt;
 &lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
-&lt;p&gt;Building &lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&lt;p&gt;Building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
 &lt;p&gt;What I wanted was not eight personalities for marketing. I wanted a working system where planning, coding, review, testing, DevOps, documentation, and quality control could be separated cleanly enough to be trustworthy.&lt;/p&gt;
 &lt;p&gt;That is how the &amp;ldquo;engineering orchestra&amp;rdquo; idea emerged.&lt;/p&gt;
@@ -1124,7 +1169,8 @@ Not from a maturity model.&lt;/p&gt;
 &lt;li&gt;a different adapter for every new client&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;You can absolutely ship systems that way. Many people already have. But you pay for it later in duplication, debugging, and lock-in.&lt;/p&gt;
-&lt;p&gt;Anthropic&amp;rsquo;s framing resonated with me because it describes a problem I had already been running into while building CueMarshal. I did not need agents that could merely &amp;ldquo;use tools.&amp;rdquo; I needed a stable way for different parts of the system to use the &lt;strong&gt;same tools&lt;/strong&gt; in different contexts.&lt;/p&gt;
+&lt;p&gt;Anthropic&amp;rsquo;s framing resonated with me because it describes a problem I had already been running into while building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;. I did not need agents that could merely &amp;ldquo;use tools.&amp;rdquo; I needed a stable way for different parts of the system to use the &lt;strong&gt;same tools&lt;/strong&gt; in different contexts.&lt;/p&gt;
 &lt;p&gt;That is where MCP becomes practical.&lt;/p&gt;
 &lt;h2 id="what-it-changed-in-my-own-thinking"&gt;What it changed in my own thinking
 &lt;/h2&gt;&lt;p&gt;In CueMarshal, I ended up with three MCP servers:&lt;/p&gt;
@@ -1185,7 +1231,7 @@ Not from a maturity model.&lt;/p&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/architecture/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>Why I Started Building My Own DevOps Platform (And What I Learned)</title><link>https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/</link><pubDate>Sat, 15 Feb 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/cover.png" alt="Featured image of post Why I Started Building My Own DevOps Platform (And What I Learned)" /&gt;&lt;p&gt;For a while, I had the same reaction to most AI-for-software-delivery demos: impressive in a narrow way, but not something I would trust with real work. One tool could write code. Another could summarize a diff. Another could review a pull request. But the hard part of software delivery is rarely one isolated step. It is the handoff between steps.&lt;/p&gt;
-&lt;p&gt;That was the itch that eventually pushed me to start building &lt;a class="link" href="https://github.com/cuemarshal/cuemarshal" target="_blank" rel="noopener"
+&lt;p&gt;That was the itch that eventually pushed me to start building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I did not start with the ambition to build &amp;ldquo;an AI company&amp;rdquo; or some abstract autonomous future. I started because I wanted a more coherent delivery system: one place where a task could move from idea to issue to branch to pull request to review without losing context every time responsibility changed hands.&lt;/p&gt;
 &lt;h2 id="the-problem-i-actually-wanted-to-solve"&gt;The problem I actually wanted to solve
@@ -7195,7 +7241,8 @@ Hopefully this proves helpful to you, dear reader. All feedback will be greatly 
 &lt;p&gt;I&amp;rsquo;ve been building software and leading delivery work for more than two decades. Over the years that has taken me through architecture, DevOps, cloud modernization, engineering leadership, and product delivery. The thread running through all of it is pretty simple: I care about making it easier for teams to ship good software without drowning in friction, fragility, or tool sprawl.&lt;/p&gt;
 &lt;p&gt;That is the lens behind this site.&lt;/p&gt;
 &lt;p&gt;Professionally, my work sits at the intersection of &lt;strong&gt;Platform Engineering, DevEx, cloud automation, and AI-enabled software delivery&lt;/strong&gt;. In practice that means things like CI/CD, observability, feature flags, architecture patterns, self-service platforms, and the organizational work required to make those systems actually useful.&lt;/p&gt;
-&lt;p&gt;Outside of work, I&amp;rsquo;m building and sharing projects like &lt;strong&gt;CueMarshal&lt;/strong&gt; and &lt;strong&gt;FireFly&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Outside of work, I&amp;rsquo;m building and sharing projects like &lt;strong&gt;&lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;&lt;/strong&gt; and &lt;strong&gt;FireFly&lt;/strong&gt;.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;CueMarshal&lt;/strong&gt; is my take on a self-hosted, Git-centric AI DevOps platform.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;FireFly&lt;/strong&gt; is a visual code stepper and AI tutor designed to help kids actually understand how code executes.&lt;/li&gt;
