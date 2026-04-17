@@ -17,7 +17,7 @@ categories: [
 "Software Engineering",
 "AI Agents"
 ]
-image: ""
+image: "cover.png"
 ---
 
 The most repeated take on my timeline this month: AI tools widen the gap between senior and junior engineers. I think that is right, but most of the conversation stops at the diagnosis. The harder question is what onboarding looks like when the new-hire default is an AI-assisted first draft they cannot evaluate.

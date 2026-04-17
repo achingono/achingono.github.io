@@ -17,7 +17,7 @@ categories: [
 "AI Agents",
 "OpenClaw"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Running a local model is easy. Running a local model as the brain of an agent that has to call tools, honor schemas, and hand off to other agents is where it gets interesting. This is what I actually had to change inside OpenClaw to make Qwen 3.6 and Gemma 4 work as first-class agent backends — and where I still route to a frontier model on purpose.

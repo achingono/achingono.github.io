@@ -17,7 +17,7 @@ categories: [
 "FinOps",
 "AI Agents"
 ]
-image: ""
+image: "cover.png"
 ---
 
 "A $3,999 Mac Studio pays for itself in five weeks" is a great tweet and a terrible procurement argument. The number is also not wrong — it's just conditional on assumptions nobody writes down. This is the post I wish existed before I started actually running local models for my agents: a FinOps-style walk-through of when local wins, when it loses, and what to measure before you buy.

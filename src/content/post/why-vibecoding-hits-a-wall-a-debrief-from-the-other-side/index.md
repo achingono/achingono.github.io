@@ -16,7 +16,7 @@ categories: [
 "Software Engineering",
 "AI Agents"
 ]
-image: ""
+image: "cover.png"
 ---
 
 The promise of "anyone can build software now" has had a year to play out. What I see in practice is more interesting than either the hype or the backlash: non-engineers absolutely can ship a first version, and they absolutely do hit a wall. The wall is not coding. The wall is everything around the code.

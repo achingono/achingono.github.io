@@ -17,7 +17,7 @@ categories: [
 "Software Engineering",
 "AI Agents"
 ]
-image: ""
+image: "cover.png"
 ---
 
 A lot of smart people are arguing that reviewing AI-generated code line-by-line is unnecessary — that AI code generation is "just a higher level of abstraction," and reading every line is as pointless as reading the assembly your compiler emits. I disagree, and I think the argument sneaks in an assumption that does not hold up under a real incident.

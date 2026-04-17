@@ -17,7 +17,7 @@ categories: [
 "Platform Engineering",
 "FinOps"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Enterprise vendors are converging on a simple pricing story: charge for AI agent seats the same way you already charge for humans. It reads well in a board deck. It falls apart the moment a platform team tries to forecast capacity, because an "agent seat" is not a unit of anything consistent.

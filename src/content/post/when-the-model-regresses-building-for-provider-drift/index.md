@@ -11,13 +11,13 @@ tags: [
 "Platform Engineering",
 "Reliability",
 "OpenClaw",
-"Emanate"
+"Firefly"
 ]
 categories: [
 "Platform Engineering",
 "AI Agents"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Every few weeks, the timeline fills up with the same post: "Claude went from 110 IQ to 50 IQ overnight." Sometimes it is survivorship bias. Sometimes the prompt drifted. But often enough, the model actually did change under you — silent routing changes, quantization updates, safety-layer tweaks — and your agents started failing in ways your tests did not cover.
@@ -42,7 +42,7 @@ The cheapest version of this is boring: stop using floating aliases in productio
 
 The next layer is a golden set. A small, handpicked collection of prompts that represent the work your system actually has to do. Not benchmarks. Real prompts. For each one, record the shape of a correct answer: the JSON schema it must match, the tool calls it should make, the refusal rate you consider acceptable, a few invariant assertions on the output text. Run that set on every model change. When the numbers move, you have evidence, not a vibe.
 
-I keep mine small on purpose. About 40 prompts for the main agent surfaces in Emanate and OpenClaw, weighted toward the ones that have broken in the past. It runs in under two minutes. The only rule is that when it fails, the model change does not ship.
+I keep mine small on purpose. About 40 prompts for the main agent surfaces in [FireFly](https://github.com/achingono/firefly) and OpenClaw, weighted toward the ones that have broken in the past. It runs in under two minutes. The only rule is that when it fails, the model change does not ship.
 
 ## Fallbacks are first-class, but they are not free
 
