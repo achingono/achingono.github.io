@@ -16,7 +16,7 @@ categories: [
 "AI",
 "Design"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Most advice about AI image prompting still sounds like it was written by people who only care whether an image looks impressive in isolation.

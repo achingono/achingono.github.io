@@ -16,7 +16,7 @@ categories: [
 "Platform Engineering",
 "Leadership"
 ]
-image: ""
+image: "cover.png"
 ---
 
 By the time technical debt is obvious, the engineering argument is usually no longer the hard part.

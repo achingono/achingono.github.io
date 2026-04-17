@@ -16,7 +16,7 @@ categories: [
 "DevOps",
 "Software Delivery"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I think a lot of teams underestimate how much damage manual deployment does once a system grows past a certain point.

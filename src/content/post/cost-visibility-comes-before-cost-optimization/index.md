@@ -16,7 +16,7 @@ categories: [
 "FinOps",
 "Azure"
 ]
-image: ""
+image: "cover.png"
 ---
 
 Cloud cost conversations go sideways surprisingly fast when the numbers are technically accurate but structurally vague.

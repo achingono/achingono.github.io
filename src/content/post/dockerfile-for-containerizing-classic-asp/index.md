@@ -20,7 +20,7 @@ categories: [
 "docker",
 "asp-net"
 ]
-image: "cover.jpg"
+image: "cover.png"
 ---
 
 I needed a Windows container image that could run a Classic ASP application without a lot of manual IIS setup. This Dockerfile starts from `mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019` and layers in the IIS features, dependencies, and configuration the app needs.

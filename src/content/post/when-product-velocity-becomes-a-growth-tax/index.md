@@ -16,7 +16,7 @@ categories: [
 "Platform Engineering",
 "Software Delivery"
 ]
-image: ""
+image: "cover.png"
 ---
 
 One of the more expensive patterns in software is this: a company grows because it moves quickly, then later struggles because it kept moving the same way for too long.

@@ -16,7 +16,7 @@ categories: [
 "Development",
 "ASP.NET Core"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I ran into a small OData problem recently that took just long enough to be annoying.

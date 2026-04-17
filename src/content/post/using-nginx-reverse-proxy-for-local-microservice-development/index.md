@@ -15,7 +15,7 @@ categories: [
 "microservices",
 "development"
 ]
-image: ""
+image: "cover.jpg"
 ---
 
 This is a continuation of my previous post, [Dockerizing Blazor Wasm Application]({{< ref "/post/dockerizing-blazor-wasm-application/index.md" >}}).

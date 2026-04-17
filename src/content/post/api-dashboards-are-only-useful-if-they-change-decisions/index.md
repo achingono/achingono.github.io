@@ -16,7 +16,7 @@ categories: [
 "Observability",
 "Platform Engineering"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I have looked at a lot of dashboards that were visually competent and operationally weak.

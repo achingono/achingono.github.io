@@ -16,7 +16,7 @@ categories: [
 "Azure",
 "Architecture"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I like architecture diagrams, but I also think a lot of them fail at the one job that matters most.

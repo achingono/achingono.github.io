@@ -16,7 +16,7 @@ categories: [
 "Software Delivery",
 "Leadership"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I have seen teams redraw a delivery process and change almost nothing.

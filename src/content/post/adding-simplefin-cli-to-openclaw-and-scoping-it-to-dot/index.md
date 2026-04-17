@@ -18,7 +18,7 @@ categories: [
 "Platform Engineering",
 "Build in Public"
 ]
-image: ""
+image: "cover.png"
 ---
 
 I had already wired Microsoft To Do into OpenClaw as a shared skill for all of my agents. The next integration was different.
