@@ -1,4 +1,234 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CueMarshal on Alfero Chingono</title><link>https://www.chingono.com/tags/cuemarshal/</link><description>Recent content in CueMarshal on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 11:49:27 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/cuemarshal/index.xml" rel="self" type="application/rss+xml"/><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CueMarshal on Alfero Chingono</title><link>https://www.chingono.com/tags/cuemarshal/</link><description>Recent content in CueMarshal on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/cuemarshal/index.xml" rel="self" type="application/rss+xml"/><item><title>Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things</title><link>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</link><pubDate>Thu, 09 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/cover.png" alt="Featured image of post Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things" /&gt;&lt;p&gt;The Microsoft Agent Framework 1.0 &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;announcement&lt;/a&gt; dropped on April 3rd. My timeline filled up with variations of &amp;ldquo;it&amp;rsquo;s an incredible time to be an AI Engineer.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;That framing is not wrong. But it is also not the part I care about.&lt;/p&gt;
+&lt;p&gt;What I care about is simpler: does this change anything for people who are already trying to build multi-agent systems that work in production? Not demos. Not prototypes that impress stakeholders for twenty minutes and then quietly get abandoned. Actual systems.&lt;/p&gt;
+&lt;p&gt;I have been building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; for a while now, an 8-agent engineering platform that handles planning, implementation, review, testing, DevOps, and documentation across a self-hosted stack. So the Agent Framework release landed with a bit more context for me than a generic &amp;ldquo;multi-agent is here&amp;rdquo; announcement.&lt;/p&gt;
+&lt;p&gt;A few things stand out. Some of them matter.&lt;/p&gt;
+&lt;h2 id="the-stable-api-commitment-is-the-actual-news"&gt;The stable API commitment is the actual news
+&lt;/h2&gt;&lt;p&gt;I do not get excited about GA announcements just because they happened. I get excited when GA means something specific: stable APIs, a versioning commitment, and the explicit decision that this interface is now something you can build on without expecting the ground to shift under you.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 makes that commitment for both .NET and Python. Backward compatibility going forward. Long-term support.&lt;/p&gt;
+&lt;p&gt;That is not a trivial detail. It is the thing that separates &amp;ldquo;experimental SDK&amp;rdquo; from &amp;ldquo;production dependency.&amp;rdquo; A lot of agentic tooling has been stuck in the first category for longer than most people will admit. Upgrading to the next alpha breaks your prompts, your tool bindings, your middleware, your deployment config, and somehow nobody warned you.&lt;/p&gt;
+&lt;p&gt;Stable APIs also mean stable documentation, which means stable mental models. Those things compound over time in ways that matter.&lt;/p&gt;
+&lt;h2 id="a2a-is-the-piece-i-have-been-watching"&gt;A2A is the piece I have been watching
+&lt;/h2&gt;&lt;p&gt;The Agent-to-Agent (A2A) protocol support is listed as &amp;ldquo;coming soon&amp;rdquo; for the full 1.0 stable tier, but it is in the announcement, and it is the part I think deserves the most attention from people building real systems.&lt;/p&gt;
+&lt;p&gt;The hard problem in multi-agent architecture is not getting one agent to reason well. It is getting multiple agents to coordinate reliably when they are not all running in the same process, or even the same runtime.&lt;/p&gt;
+&lt;p&gt;Right now, most multi-agent systems solve this with some combination of shared databases, message queues, custom APIs, and a lot of hope. That works until it does not. The failure modes are usually subtle: dropped state, competing writes, race conditions that only appear under load, agents that confidently do work that was already done.&lt;/p&gt;
+&lt;p&gt;A2A is trying to make cross-runtime agent collaboration protocol-driven instead of bespoke. Your agents can coordinate with agents running in other frameworks using structured, typed messages, not raw HTTP calls and string parsing.&lt;/p&gt;
+&lt;p&gt;I have spent a non-trivial amount of engineering effort on exactly this problem in CueMarshal. If A2A ends up being as useful as its description suggests, that is real upside for new systems and for existing ones that are currently solving this manually.&lt;/p&gt;
+&lt;h2 id="mcp-support-is-expected-but-worth-noting"&gt;MCP support is expected but worth noting
+&lt;/h2&gt;&lt;p&gt;The &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/" target="_blank" rel="noopener"
+&gt;MCP integration&lt;/a&gt; in Agent Framework is not surprising. MCP has been gaining enough traction that any serious agentic framework needs to support it. But the combination of A2A and MCP in the same SDK is worth thinking about.&lt;/p&gt;
+&lt;p&gt;MCP gives agents a standardized way to discover and invoke external tools. A2A gives agents a standardized way to coordinate with each other. Those two things together start to look like the beginning of a real interface discipline: a shared vocabulary for what agents expose, what they consume, and how they hand off between each other.&lt;/p&gt;
+&lt;p&gt;I wrote about why &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" target="_blank" rel="noopener"
+&gt;MCP matters as a protocol&lt;/a&gt; when Anthropic first announced it. The argument then was that standardization is more valuable than capability for tool access. The same logic applies to A2A. The protocol is not the feature. The shared contract is.&lt;/p&gt;
+&lt;h2 id="declarative-agents-belong-in-version-control"&gt;Declarative agents belong in version control
+&lt;/h2&gt;&lt;p&gt;One specific feature worth calling out: Agent Framework 1.0 supports defining agents&amp;rsquo; instructions, tools, memory configuration, and orchestration topology in version-controlled YAML files.&lt;/p&gt;
+&lt;p&gt;This sounds like a developer ergonomics feature. It is more than that.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in code and your infrastructure lives in code, you can review, audit, diff, and roll back changes to your agent behavior the same way you handle application deployments. You know what changed. You know when. You can trace a behavioral regression to an exact commit.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in a GUI or a database somewhere, you have a different kind of system, one that is harder to inspect and harder to trust.&lt;/p&gt;
+&lt;p&gt;I tend to be opinionated about this: anything that participates in your delivery pipeline should live in Git. Agents are no exception.&lt;/p&gt;
+&lt;h2 id="what-the-framework-still-does-not-answer-for-you"&gt;What the framework still does not answer for you
+&lt;/h2&gt;&lt;p&gt;I want to be clear about something, because I have seen a pattern in how these announcements get received.&lt;/p&gt;
+&lt;p&gt;A good framework reduces the cost of building something. It does not answer the questions you have not asked yet.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 ships with sequential, concurrent, handoff, group chat, and Magentic-One orchestration patterns. Those are real and useful starting points. But they are patterns, not architectures. Using them well still requires you to think carefully about what roles genuinely need to be different, what permissions each role should have, where coordination state lives, how actions are attributed, and what the closed loop looks like that turns outputs into the next inputs.&lt;/p&gt;
+&lt;p&gt;Those questions do not disappear because you have a nice SDK. In my experience, they get easier to articulate once you have shipped a broken version of the system, and that part is not something any framework can skip you past.&lt;/p&gt;
+&lt;p&gt;The DevUI, the browser-based local debugger for visualizing agent execution and message flows, looks genuinely useful for closing that loop faster. Real observability into what agents are doing, in real time, without custom instrumentation, is the kind of thing that makes debugging multi-agent systems feel less like archaeology.&lt;/p&gt;
+&lt;h2 id="where-this-lands-for-me"&gt;Where this lands for me
+&lt;/h2&gt;&lt;p&gt;I am not switching CueMarshal&amp;rsquo;s architecture to Agent Framework. The decisions I have made around self-hosted infrastructure, Gitea, Redis, BullMQ, and the MCP tool layer reflect constraints that have nothing to do with which SDK I use.&lt;/p&gt;
+&lt;p&gt;But I think Agent Framework 1.0 meaningfully lowers the barrier for developers who are trying to build serious agentic systems without first spending months figuring out the underlying coordination problems on their own. The stable APIs, the MCP support, the declarative definitions, and the A2A direction add up to a real foundation, not just a polished demo wrapper.&lt;/p&gt;
+&lt;p&gt;The question worth sitting with is not &amp;ldquo;should I use this framework?&amp;rdquo; It is the same question it has always been: do you actually understand what you are trying to build, and do you understand the coordination problems well enough to make intentional choices, with or without a framework underneath you?&lt;/p&gt;
+&lt;p&gt;If the answer is yes, Agent Framework 1.0 is a reasonable bet for production .NET and Python workloads. That is more than I could have said about most agentic tooling six months ago.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Related reading:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What Anthropic&amp;rsquo;s Model Context Protocol Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;Microsoft Agent Framework 1.0 GA Announcement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.nuget.org/packages/Microsoft.Agents.AI/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (.NET)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pypi.org/project/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (Python)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener"
+&gt;Agent Framework GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Fixing Deep Nesting in TypeScript: A Real Refactor From CueMarshal</title><link>https://www.chingono.com/blog/2026/02/10/fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal/</link><pubDate>Tue, 10 Feb 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/02/10/fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/02/10/fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal/cover.png" alt="Featured image of post Fixing Deep Nesting in TypeScript: A Real Refactor From CueMarshal" /&gt;&lt;p&gt;There&amp;rsquo;s a point in the lifecycle of any project where the &amp;ldquo;quick fix&amp;rdquo; logic starts to pile up. For the &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;Gitea MCP server&lt;/a&gt; in &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, that point was the &lt;code&gt;get_pr_diff&lt;/code&gt; tool.&lt;/p&gt;
+&lt;p&gt;What started as a simple API call had grown into a 150-line function with four levels of nested &lt;code&gt;if/else&lt;/code&gt; statements. It was classic &amp;ldquo;Arrow Code&amp;rdquo;: the logic was pointed so far to the right that it was getting hard to read on a standard monitor.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s how I refactored it and the TypeScript patterns I used to make it maintainable.&lt;/p&gt;
+&lt;h2 id="the-problem-the-arrow-code-trap"&gt;The Problem: The &amp;ldquo;Arrow Code&amp;rdquo; Trap
+&lt;/h2&gt;&lt;p&gt;The original function had to handle multiple failure modes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Check if the repository exists.&lt;/li&gt;
+&lt;li&gt;Check if the pull request exists.&lt;/li&gt;
+&lt;li&gt;Check if the diff is too large for the LLM&amp;rsquo;s context.&lt;/li&gt;
+&lt;li&gt;Handle the Gitea API&amp;rsquo;s specific error formats.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If any of these failed, I had to return a structured error message. This led to a pattern of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;repoExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;prExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;diff&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;await&lt;/span&gt; &lt;span class="nx"&gt;getDiff&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;LIMIT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Success!
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Error: Too large
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Error: PR missing
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Error: Repo missing
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This is hard to follow because the &amp;ldquo;Success&amp;rdquo; case is buried in the middle, and the &amp;ldquo;Error&amp;rdquo; cases are disconnected from their triggers.&lt;/p&gt;
+&lt;h2 id="the-solution-guard-clauses-and-return-early"&gt;The Solution: Guard Clauses and &amp;ldquo;Return Early&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;The first step was to flip the logic. Instead of nesting for success, I used &lt;strong&gt;Guard Clauses&lt;/strong&gt; to return early on failure.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nx"&gt;repoExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Repo missing&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nx"&gt;prExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;PR missing&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;diff&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;await&lt;/span&gt; &lt;span class="nx"&gt;getDiff&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="nx"&gt;LIMIT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Diff too large&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// Success! (Now at the top-level indentation)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;diff&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This immediately flattened the function and made it much more readable.&lt;/p&gt;
+&lt;h2 id="leveling-up-with-typescripts-result-type"&gt;Leveling Up with TypeScript&amp;rsquo;s &lt;code&gt;Result&lt;/code&gt; Type
+&lt;/h2&gt;&lt;p&gt;To make this even more reliable, I introduced a &lt;code&gt;Result&lt;/code&gt; type pattern (inspired by Rust or F#). Instead of returning &lt;code&gt;null&lt;/code&gt; or throwing an error, every step of the process returns an object that explicitly states if it succeeded or failed.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;type&lt;/span&gt; &lt;span class="nx"&gt;Result&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="na"&gt;E &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="na"&gt;string&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;ok&lt;/span&gt;: &lt;span class="kt"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;: &lt;span class="kt"&gt;T&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;ok&lt;/span&gt;: &lt;span class="kt"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;: &lt;span class="kt"&gt;E&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Using this pattern, I could chain the operations together. If any step returns &lt;code&gt;{ ok: false }&lt;/code&gt;, the whole chain stops and returns that error.&lt;/p&gt;
+&lt;h2 id="the-functional-refactor"&gt;The &amp;ldquo;Functional&amp;rdquo; Refactor
+&lt;/h2&gt;&lt;p&gt;The final version of the &lt;code&gt;get_pr_diff&lt;/code&gt; tool now looks like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Validate Inputs:&lt;/strong&gt; A clean, typed function that ensures the repo and PR IDs are valid.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fetch PR Data:&lt;/strong&gt; A separate function that handles the Gitea API call and maps the error codes to human-readable messages.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Process Diff:&lt;/strong&gt; A dedicated function for the logic of truncation and formatting.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By splitting these into small, testable functions, the main &lt;code&gt;execute&lt;/code&gt; method for the tool became a simple 10-line orchestrator.&lt;/p&gt;
+&lt;h2 id="why-this-matters-for-agentic-ai"&gt;Why This Matters for Agentic AI
+&lt;/h2&gt;&lt;p&gt;Refactoring for &amp;ldquo;Clean Code&amp;rdquo; isn&amp;rsquo;t just for human developers anymore. When you are building &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Agentic Orchestras&lt;/a&gt;, your code &lt;em&gt;is&lt;/em&gt; the environment the agent has to reason about.&lt;/p&gt;
+&lt;p&gt;If your codebase is full of deep nesting and &amp;ldquo;spaghetti&amp;rdquo; logic, the AI is more likely to make mistakes when trying to refactor or extend it. Clean, flat, typed code makes your system more &amp;ldquo;agent-friendly.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The refactor of the Gitea MCP server didn&amp;rsquo;t just make my life easier; it made &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;CueMarshal&amp;rsquo;s agents&lt;/a&gt; faster and more reliable.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;MCP at Scale: Connecting AI Agents to Gitea&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from an 8-Agent Orchestra&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>The Year Agentic AI Got Real: A Developer's Retrospective on 2025</title><link>https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/</link><pubDate>Fri, 12 Dec 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/cover.png" alt="Featured image of post The Year Agentic AI Got Real: A Developer's Retrospective on 2025" /&gt;&lt;p&gt;By the end of 2025, software engineering felt materially different from a year earlier.&lt;/p&gt;
+&lt;p&gt;In 2024, AI in software development was mostly about &lt;strong&gt;autocomplete&lt;/strong&gt;. We had GitHub Copilot, Cursor, and LLMs that were essentially &amp;ldquo;very fast search engines with a code editor.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;In 2025, that changed. We moved from &lt;strong&gt;autocomplete&lt;/strong&gt; to &lt;strong&gt;autonomy&lt;/strong&gt;. This was the year &lt;strong&gt;Agentic AI&lt;/strong&gt; started to feel real.&lt;/p&gt;
+&lt;h2 id="the-three-shifts-of-2025"&gt;The Three Shifts of 2025
+&lt;/h2&gt;&lt;p&gt;Three key technical and cultural shifts happened this year that changed how we build and deliver software.&lt;/p&gt;
+&lt;h3 id="1-from-chat-to-task"&gt;1. From &amp;ldquo;Chat&amp;rdquo; to &amp;ldquo;Task&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;At the beginning of the year, we were still &amp;ldquo;chatting&amp;rdquo; with AI. We had to explain the context, provide the files, and then manually copy the code into our editors.&lt;/p&gt;
+&lt;p&gt;By mid-2025, tools like &lt;strong&gt;Copilot Agent Mode&lt;/strong&gt; and specialized platforms like &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;CueMarshal&lt;/a&gt; shifted the interface. Instead of &amp;ldquo;Write a function for X,&amp;rdquo; we started saying &amp;ldquo;Implement the login flow for the new multi-currency engine.&amp;rdquo; The AI became responsible for the &lt;em&gt;task&lt;/em&gt;, not just the &lt;em&gt;output&lt;/em&gt;.&lt;/p&gt;
+&lt;h3 id="2-the-standardization-of-tools-mcp"&gt;2. The Standardization of &amp;ldquo;Tools&amp;rdquo; (MCP)
+&lt;/h3&gt;&lt;p&gt;Before 2025, every agent was its own silo. If you wanted an AI to talk to your database or your issue tracker, you had to write a custom integration.&lt;/p&gt;
+&lt;p&gt;The introduction and rapid adoption of the &lt;strong&gt;Model Context Protocol (MCP)&lt;/strong&gt; changed that. MCP gave us a common language for agents to interact with the world. It turned every API, every database, and every repo into a &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;structured tool&lt;/a&gt; that any agent could use. This was the &amp;ldquo;USB moment&amp;rdquo; for AI agents.&lt;/p&gt;
+&lt;h3 id="3-the-rise-of-the-agentic-orchestra"&gt;3. The Rise of the &amp;ldquo;Agentic Orchestra&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;We realized that one &amp;ldquo;do-it-all&amp;rdquo; agent was a dead end. Instead, the high-performing teams started building &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Agentic Orchestras&lt;/a&gt;: specialized agents for architecture, development, testing, and review, all working together within a Git-native workflow.&lt;/p&gt;
+&lt;p&gt;In my own work with &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, this shift was the difference between an AI that &amp;ldquo;helped&amp;rdquo; me and an AI that &amp;ldquo;worked&amp;rdquo; with me.&lt;/p&gt;
+&lt;h2 id="what-2025-taught-me"&gt;What 2025 Taught Me
+&lt;/h2&gt;&lt;p&gt;The biggest lesson of 2025 for me is that the human role in software engineering is not disappearing. It is being &lt;strong&gt;reframed&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;More of us are moving into a conductor-architect role. The job is less about writing every line of code and more about designing the system, defining the constraints, and orchestrating the agents doing the implementation. That requires a deeper understanding of &lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Platform Engineering&lt;/a&gt; and system architecture than before.&lt;/p&gt;
+&lt;h2 id="looking-ahead-to-2026"&gt;Looking Ahead to 2026
+&lt;/h2&gt;&lt;p&gt;If 2025 was the year of &amp;ldquo;autonomy,&amp;rdquo; I expect 2026 to be the year of &lt;strong&gt;reliability&lt;/strong&gt;. We have the tools. We have the protocols. Now we need governance and observability that make agentic workflows as predictable as a standard CI/CD pipeline.&lt;/p&gt;
+&lt;p&gt;The transition is already underway, and it is moving faster than most people expected. The question for 2026 is no longer &amp;ldquo;Will you use AI?&amp;rdquo; It is &amp;ldquo;How will you orchestrate your agents?&amp;rdquo;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Why Platform Engineering is the Most Underrated Career Path in 2025&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea</title><link>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</link><pubDate>Thu, 27 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/cover.png" alt="Featured image of post MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea" /&gt;&lt;p&gt;When I first wrote about &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in practice&lt;/a&gt;, I saw it as a powerful way to connect desktop tools to LLMs. But the real potential of the Model Context Protocol (MCP) becomes clear when you move it to the server side and use it as the &amp;ldquo;glue&amp;rdquo; for an entire &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;agentic engineering orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, the agents need more than just the ability to &amp;ldquo;read a file.&amp;rdquo; They need to understand the &lt;em&gt;state&lt;/em&gt; of the repository: Which issues are open? What are the pending reviews? Are there conflicting changes in a PR?&lt;/p&gt;
+&lt;p&gt;Instead of writing custom API wrappers for every agent, I built a centralized &lt;strong&gt;MCP Server for Gitea&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-problem-with-traditional-api-wrappers"&gt;The Problem with Traditional API Wrappers
+&lt;/h2&gt;&lt;p&gt;In the early days of CueMarshal, each agent had its own set of &amp;ldquo;tools&amp;rdquo; that were essentially thin wrappers around the Gitea REST API. This led to several issues:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Prompt Bloat:&lt;/strong&gt; Every time an agent started, I had to describe every single API endpoint in its system prompt.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Inconsistent Schema:&lt;/strong&gt; One agent might get the issue body as raw text, while another might get it as HTML, leading to parsing errors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fragility:&lt;/strong&gt; If the API changed, I had to update the tools across all eight agents.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="why-mcp-is-a-better-way"&gt;Why MCP is a Better Way
+&lt;/h2&gt;&lt;p&gt;MCP changes the relationship between the model and the data. Instead of the model &amp;ldquo;knowing&amp;rdquo; how to call an API, the MCP server &amp;ldquo;advertises&amp;rdquo; its capabilities. The model just says &amp;ldquo;I want to list the issues in this repo,&amp;rdquo; and the protocol handles the rest.&lt;/p&gt;
+&lt;h3 id="the-cuemarshal-gitea-mcp-server"&gt;The CueMarshal Gitea MCP Server
+&lt;/h3&gt;&lt;p&gt;I built the server in TypeScript using the &lt;code&gt;@modelcontextprotocol/sdk&lt;/code&gt;. Here is what it exposes to the agents:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Resources:&lt;/strong&gt; Agents can &amp;ldquo;subscribe&amp;rdquo; to a specific file or a pull request. If the file changes, the MCP server can (in theory) notify the agent.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tools:&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;list_repo_issues&lt;/code&gt;: Returns a structured list of issues with metadata.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_pr_diff&lt;/code&gt;: Fetches the unified diff of a pull request.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;create_issue_comment&lt;/code&gt;: Allows agents to &amp;ldquo;talk&amp;rdquo; to humans on the Git platform.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apply_suggestion&lt;/code&gt;: A specialized tool for applying code changes directly to a branch.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="scaling-to-eight-agents"&gt;Scaling to Eight Agents
+&lt;/h2&gt;&lt;p&gt;What makes this setup work is that all eight CueMarshal agents, from &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Marshal (Orchestrator) to Linton (Linter)&lt;/a&gt;, connect to the same MCP server.&lt;/p&gt;
+&lt;p&gt;This gives every agent a &amp;ldquo;shared reality.&amp;rdquo; If the Reviewer agent (Reese) sees a diff, the Developer agent (Dave) sees the exact same diff through the same tool. That consistency matters for complex, multi-step tasks.&lt;/p&gt;
+&lt;h2 id="security-and-the-read-only-gate"&gt;Security and the &amp;ldquo;Read-Only&amp;rdquo; Gate
+&lt;/h2&gt;&lt;p&gt;One of the most important aspects of using MCP at scale is security. My Gitea MCP server implements a strict &lt;strong&gt;Read-Only mode&lt;/strong&gt; by default. An agent has to explicitly request &amp;ldquo;write&amp;rdquo; permissions for specific tools (like &lt;code&gt;apply_suggestion&lt;/code&gt;), and even then, every write action is logged and requires &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;human approval in the final PR&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="the-future-multi-platform-mcp"&gt;The Future: Multi-Platform MCP
+&lt;/h2&gt;&lt;p&gt;The ultimate goal for CueMarshal is to make the agentic layer platform-agnostic. By using MCP, I can eventually swap out the Gitea MCP server for a GitHub or GitLab MCP server without changing a single line of agent code.&lt;/p&gt;
+&lt;p&gt;The protocol &lt;em&gt;is&lt;/em&gt; the abstraction. And it&amp;rsquo;s what makes &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Agentic Delivery&lt;/a&gt; truly possible at scale.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What it Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
 &lt;p&gt;Building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
@@ -96,6 +326,42 @@ If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery</title><link>https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/</link><pubDate>Wed, 18 Jun 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/cover.png" alt="Featured image of post Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery" /&gt;&lt;p&gt;For the last decade, &amp;ldquo;modern&amp;rdquo; software delivery has been defined by CI/CD. We spent years perfecting the art of the deterministic pipeline: code goes in, tests run, artifacts build, and deployments happen. If a human pushes a button (or a branch), the machine follows a script.&lt;/p&gt;
+&lt;p&gt;It works. It is stable. It is the foundation we all build on.&lt;/p&gt;
+&lt;p&gt;But CI/CD has a ceiling. It handles the &lt;em&gt;delivery&lt;/em&gt; of the code, but it is blind to the &lt;em&gt;coordination&lt;/em&gt; of the work. The bottleneck for most engineering teams is no longer how fast the build runs; it is how long an issue sits unassigned, how many times a PR bounces back for minor linting errors, and how much context is lost between a design doc and an implementation.&lt;/p&gt;
+&lt;p&gt;The next layer of software delivery isn&amp;rsquo;t just &amp;ldquo;faster CI.&amp;rdquo; It is &lt;strong&gt;Agentic Delivery&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-coordination-gap"&gt;The Coordination Gap
+&lt;/h2&gt;&lt;p&gt;If you look at a typical engineering day, the actual &amp;ldquo;delivery&amp;rdquo; (the pipeline run) is a tiny fraction of the cycle. Most of the time is spent in the coordination gap:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Context Assembly:&lt;/strong&gt; Figuring out which files matter for a task and what the existing patterns are.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Quality Gating:&lt;/strong&gt; Waiting for a human to notice a typo, a missing test, or a broken internal convention.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Context Handoff:&lt;/strong&gt; Writing the PR description, explaining the &lt;em&gt;why&lt;/em&gt; to a reviewer, and updating the docs.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Traditional CI/CD tools cannot help here because they are stateless and reactive. They don&amp;rsquo;t &amp;ldquo;understand&amp;rdquo; the task; they only know if the exit code was zero.&lt;/p&gt;
+&lt;h2 id="enter-the-agentic-layer"&gt;Enter the Agentic Layer
+&lt;/h2&gt;&lt;p&gt;When I started building &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;CueMarshal&lt;/a&gt;, I realized that the real value of AI agents in DevOps isn&amp;rsquo;t just generating code. It is handling the non-deterministic parts of the workflow that humans find tedious but necessary.&lt;/p&gt;
+&lt;p&gt;An agentic delivery layer lives &lt;em&gt;above&lt;/em&gt; your CI/CD. It doesn&amp;rsquo;t replace Jenkins or GitHub Actions; it uses them.&lt;/p&gt;
+&lt;h3 id="what-an-agentic-layer-actually-does"&gt;What an Agentic Layer actually does:
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Active Monitoring:&lt;/strong&gt; Instead of waiting for a manual trigger, agents can watch for new issues, draft an implementation plan, and open a PR before a human even context-switches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Semantic Quality Gates:&lt;/strong&gt; While a linter checks syntax, an agent can check if the implementation actually matches the requirements in the issue.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Continuous Context Maintenance:&lt;/strong&gt; Agents can keep documentation in sync with code changes in real-time, effectively eliminating &amp;ldquo;doc debt.&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="lessons-from-the-trenches"&gt;Lessons from the Trenches
+&lt;/h2&gt;&lt;p&gt;Building this into &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;my own platform&lt;/a&gt; taught me that the transition from CI/CD to Agentic Delivery requires a shift in how we think about automation.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;From Scripts to Tools:&lt;/strong&gt; In CI/CD, we write shell scripts. In agentic systems, we define &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;Model Context Protocol (MCP)&lt;/a&gt; tools. The agent needs a structured way to interact with the world, not just a line of bash.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;From Success/Failure to &amp;ldquo;Looks Good to Me&amp;rdquo;:&lt;/strong&gt; We are moving from binary pass/fail gates to probabilistic evaluation. That is why &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;specialized agent roles&lt;/a&gt; matter so much: you want a dedicated &amp;ldquo;Reviewer&amp;rdquo; agent whose only job is to be skeptical.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Git is still the anchor:&lt;/strong&gt; Even with agents doing the heavy lifting, the final source of truth must remain the repository. If it&amp;rsquo;s not in Git, it didn&amp;rsquo;t happen.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-2025-reality"&gt;The 2025 Reality
+&lt;/h2&gt;&lt;p&gt;We are past the &amp;ldquo;AI hype&amp;rdquo; phase where we wonder if agents &lt;em&gt;can&lt;/em&gt; do this. In 2025, the question for engineering leaders is how to integrate them without breaking the trust and safety of the delivery pipeline.&lt;/p&gt;
+&lt;p&gt;The teams that win won&amp;rsquo;t be the ones that let AI run wild. They will be the ones that build an agentic layer that respects the rigor of Platform Engineering while reclaiming the hours lost to the coordination gap.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from an 8-Agent Orchestra&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>MCP in Practice: What Anthropic's Model Context Protocol Actually Means for Developers</title><link>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</link><pubDate>Thu, 20 Mar 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/cover.png" alt="Featured image of post MCP in Practice: What Anthropic's Model Context Protocol Actually Means for Developers" /&gt;&lt;p&gt;When Anthropic announced the &lt;a class="link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener"
 &gt;Model Context Protocol&lt;/a&gt;, the most interesting part to me was not &amp;ldquo;LLMs can call tools.&amp;rdquo; We already knew that. The interesting part was that someone was finally trying to standardize the connection.&lt;/p&gt;
 &lt;p&gt;That may sound like a small distinction, but it is the difference between a clever demo and an architecture you can actually build on.&lt;/p&gt;

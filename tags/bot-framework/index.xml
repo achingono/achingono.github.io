@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bot Framework on Alfero Chingono</title><link>https://www.chingono.com/tags/bot-framework/</link><description>Recent content in Bot Framework on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/bot-framework/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Configured Five AI Agents on One Microsoft Teams Bot</title><link>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</link><pubDate>Sun, 12 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/cover.png" alt="Featured image of post How I Configured Five AI Agents on One Microsoft Teams Bot" /&gt;&lt;p&gt;In the &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;previous post&lt;/a&gt; I described splitting OpenClaw into two agents: Marshal for operations and Ava for personal conversations. That setup worked well enough that I wanted to push it further.&lt;/p&gt;
+&lt;p&gt;I had three more personas sitting in the &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; project that had never been deployed as live agents: Dave the Beaver (business advisory), Dot the Parrot (financial advisory), and Reese the Eagle (spiritual / reflective). Instead of spinning up separate bot registrations, I wanted all five agents to share a single Teams bot and route messages based on which channel the conversation happened in.&lt;/p&gt;
+&lt;p&gt;This is how I did it, and the one thing that almost derailed the whole setup.&lt;/p&gt;
+&lt;h2 id="the-architecture-one-bot-five-agents-channel-based-routing"&gt;The architecture: one bot, five agents, channel-based routing
+&lt;/h2&gt;&lt;p&gt;OpenClaw supports multiple agents in a single gateway instance. Each agent gets its own workspace directory (with its own identity, personality, and memory), its own model configuration, and its own API credential rotation. But they all share the same Teams bot registration, the same webhook endpoint, and the same Docker container.&lt;/p&gt;
+&lt;p&gt;The routing is handled by &lt;strong&gt;bindings&lt;/strong&gt; in &lt;code&gt;openclaw.json&lt;/code&gt;. Each binding maps an inbound message pattern to a specific agent:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The first matching binding wins. Specific channel bindings go before the catch-all so that messages in dedicated channels reach the right agent, while everything else falls through to Marshal.&lt;/p&gt;
+&lt;h2 id="what-each-agent-needed"&gt;What each agent needed
+&lt;/h2&gt;&lt;p&gt;Setting up a new agent isn&amp;rsquo;t just adding a name to a list. Each one requires a complete directory tree:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Workspace&lt;/strong&gt; (&lt;code&gt;data/workspaces/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;IDENTITY.md&lt;/code&gt;: the persona, including name, creature emoji, avatar path, and behavioral directives&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SOUL.md&lt;/code&gt;: domain expertise, personality boundaries, and how the agent relates to the others&lt;/li&gt;
+&lt;li&gt;Shared files copied from existing agents: &lt;code&gt;USER.md&lt;/code&gt;, &lt;code&gt;TOOLS.md&lt;/code&gt;, &lt;code&gt;AGENTS.md&lt;/code&gt;, &lt;code&gt;HEARTBEAT.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.openclaw/workspace-state.json&lt;/code&gt;: must include &lt;code&gt;setupCompletedAt&lt;/code&gt; or the agent tries to re-run the bootstrap flow&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;avatars/&lt;/code&gt;: the agent&amp;rsquo;s avatar image&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;memory/&lt;/code&gt;: daily memory files that the agent creates automatically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Config&lt;/strong&gt; (&lt;code&gt;data/config/agents/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;agent/auth-profiles.json&lt;/code&gt;: all API credentials with &lt;code&gt;lastGood&lt;/code&gt; tracking&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;agent/models.json&lt;/code&gt;: model provider configuration&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sessions/sessions.json&lt;/code&gt;: initialized with &lt;code&gt;{ &amp;quot;sessions&amp;quot;: {} }&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;code&gt;auth-profiles.json&lt;/code&gt; files deserve special attention. Each agent maintains its own record of which API credential was last successful. I spread the &lt;code&gt;lastGood&lt;/code&gt; values across agents so they naturally distribute load across Google API keys rather than all hammering the same one.&lt;/p&gt;
+&lt;h2 id="per-agent-model-overrides"&gt;Per-agent model overrides
+&lt;/h2&gt;&lt;p&gt;The existing agents (Marshal and Ava) inherit the global default model. For the three new agents, I wanted to try GitHub Copilot&amp;rsquo;s &lt;code&gt;gpt-5.4&lt;/code&gt; as the primary model instead:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Dave&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;primary&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/gpt-5.4&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;fallbacks&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;google/gemini-3-flash-preview&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/claude-sonnet-4.6&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ollama/llama3.2:3b&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The primary model also needs to appear in the global &lt;code&gt;agents.defaults.models&lt;/code&gt; allowlist. The fallback chain gives each agent three escape hatches before the request fails entirely.&lt;/p&gt;
+&lt;h2 id="the-binding-schema-gotcha"&gt;The binding schema gotcha
+&lt;/h2&gt;&lt;p&gt;My first attempt at bindings used a flat string for the peer ID:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The gateway rejected this with a cryptic &lt;code&gt;bindings.2: Invalid input&lt;/code&gt; error repeated for each new binding. Digging into the Zod validation schema inside the gateway container revealed that &lt;code&gt;peer&lt;/code&gt; must be an object:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Valid &lt;code&gt;kind&lt;/code&gt; values are &lt;code&gt;direct&lt;/code&gt;, &lt;code&gt;group&lt;/code&gt;, &lt;code&gt;channel&lt;/code&gt;, and &lt;code&gt;dm&lt;/code&gt;. Teams channel conversations use &lt;code&gt;channel&lt;/code&gt;. This isn&amp;rsquo;t documented anywhere obvious. I found it by reading the bundled validation code at &lt;code&gt;/app/dist/io-DhtVmzAJ.js&lt;/code&gt; inside the running container.&lt;/p&gt;
+&lt;h2 id="the-real-problem-teams-wasnt-delivering-thread-replies"&gt;The real problem: Teams wasn&amp;rsquo;t delivering thread replies
+&lt;/h2&gt;&lt;p&gt;After fixing the binding schema and restarting the gateway, all five agents responded to @mentions in their respective channels. For a moment, I thought the problem was solved.&lt;/p&gt;
+&lt;p&gt;Then I tried replying in a thread without @mentioning the agent. Nothing. No response from any agent, including Marshal who had been working fine before.&lt;/p&gt;
+&lt;p&gt;I spent a while investigating the OpenClaw side. The gateway config had &lt;code&gt;requireMention: false&lt;/code&gt; set globally for Teams. The mention-gating code clearly showed that when &lt;code&gt;requireMention&lt;/code&gt; is false, no messages are skipped. The gateway logs confirmed that every message it received was dispatched and processed successfully.&lt;/p&gt;
+&lt;p&gt;The problem was that the messages never arrived.&lt;/p&gt;
+&lt;p&gt;Looking at the session history for the spiritual agent, I could see two messages, both sent with @mentions, and responses to both. But the thread reply I sent without @mention was simply absent. Teams never forwarded it to the bot&amp;rsquo;s webhook.&lt;/p&gt;
+&lt;h2 id="rsc-permissions-the-missing-piece"&gt;RSC permissions: the missing piece
+&lt;/h2&gt;&lt;p&gt;The Teams app manifest already had the right RSC permission:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;authorization&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;permissions&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;resourceSpecific&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;ChannelMessage.Read.Group&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Application&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; tells Teams to deliver &lt;em&gt;all&lt;/em&gt; channel messages to the bot. Without it, Teams only delivers @mentions. But there&amp;rsquo;s a catch that&amp;rsquo;s easy to miss:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RSC permissions are evaluated only at installation time.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If the bot was installed in a team before this permission was added to the manifest, Teams doesn&amp;rsquo;t retroactively grant it. The bot continues operating under the old permission set. The fix is to uninstall the bot from the team and reinstall it using the updated app package. The team owner gets a new consent prompt that includes the RSC permissions, and after that, all channel messages start flowing.&lt;/p&gt;
+&lt;p&gt;This is a Teams platform behavior, not an OpenClaw issue. But it&amp;rsquo;s the kind of thing that can waste hours if you&amp;rsquo;re only looking at config files and application logs.&lt;/p&gt;
+&lt;h2 id="two-layers-of-require-mention"&gt;Two layers of &amp;ldquo;require mention&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;There are actually two independent systems controlling whether thread replies trigger a response:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Teams platform:&lt;/strong&gt; controls whether the message is &lt;em&gt;delivered&lt;/em&gt; to the bot webhook. Without &lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; RSC, only @mentions are delivered. With it, all channel messages are delivered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OpenClaw gateway:&lt;/strong&gt; controls whether a &lt;em&gt;delivered&lt;/em&gt; message is &lt;em&gt;processed&lt;/em&gt;. The &lt;code&gt;channels.msteams.requireMention&lt;/code&gt; setting (default: &lt;code&gt;true&lt;/code&gt;) gates this. Even if Teams delivers all messages, OpenClaw will silently drop non-@mention messages unless you set &lt;code&gt;requireMention: false&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both layers need to be configured correctly. Setting &lt;code&gt;requireMention: false&lt;/code&gt; in OpenClaw without RSC permissions means the gateway is ready to process messages that never arrive. Having RSC permissions without &lt;code&gt;requireMention: false&lt;/code&gt; means the messages arrive but get dropped.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;requireMention&lt;/code&gt; setting resolves through a chain: per-channel config → per-team config → global msteams config → &lt;code&gt;true&lt;/code&gt;. If you have per-team entries in the &lt;code&gt;teams&lt;/code&gt; section of your msteams config, those take precedence over the global setting.&lt;/p&gt;
+&lt;h2 id="what-id-do-differently"&gt;What I&amp;rsquo;d do differently
+&lt;/h2&gt;&lt;p&gt;If I were starting over, I&amp;rsquo;d configure the Teams manifest with all RSC permissions from day one, before the first installation. Retrofitting permissions onto an already-installed bot is not hard; you just reinstall. But it&amp;rsquo;s invisible enough that you can spend a long time debugging the wrong layer.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also document the binding schema earlier. The &lt;code&gt;peer&lt;/code&gt; object format is strict and the error message doesn&amp;rsquo;t hint at the structure it expects. Having a working example in your notes saves real time.&lt;/p&gt;
+&lt;h2 id="the-current-state"&gt;The current state
+&lt;/h2&gt;&lt;p&gt;Five agents, one bot registration, one Docker container. Each agent has its own personality, its own model preferences, and its own Teams channel. Marshal handles the catch-all; the others respond in their dedicated channels. The gateway processes every message it receives without requiring @mentions.&lt;/p&gt;
+&lt;p&gt;The next step is reinstalling the Teams app in each team with the updated manifest so that thread replies start flowing without @mention. After that, I want to experiment with cross-agent awareness, letting one agent hand off a conversation to another when the domain shifts.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

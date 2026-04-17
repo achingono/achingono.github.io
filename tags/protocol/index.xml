@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Protocol on Alfero Chingono</title><link>https://www.chingono.com/tags/protocol/</link><description>Recent content in Protocol on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/protocol/index.xml" rel="self" type="application/rss+xml"/><item><title>MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea</title><link>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</link><pubDate>Thu, 27 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/cover.png" alt="Featured image of post MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea" /&gt;&lt;p&gt;When I first wrote about &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in practice&lt;/a&gt;, I saw it as a powerful way to connect desktop tools to LLMs. But the real potential of the Model Context Protocol (MCP) becomes clear when you move it to the server side and use it as the &amp;ldquo;glue&amp;rdquo; for an entire &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;agentic engineering orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, the agents need more than just the ability to &amp;ldquo;read a file.&amp;rdquo; They need to understand the &lt;em&gt;state&lt;/em&gt; of the repository: Which issues are open? What are the pending reviews? Are there conflicting changes in a PR?&lt;/p&gt;
+&lt;p&gt;Instead of writing custom API wrappers for every agent, I built a centralized &lt;strong&gt;MCP Server for Gitea&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-problem-with-traditional-api-wrappers"&gt;The Problem with Traditional API Wrappers
+&lt;/h2&gt;&lt;p&gt;In the early days of CueMarshal, each agent had its own set of &amp;ldquo;tools&amp;rdquo; that were essentially thin wrappers around the Gitea REST API. This led to several issues:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Prompt Bloat:&lt;/strong&gt; Every time an agent started, I had to describe every single API endpoint in its system prompt.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Inconsistent Schema:&lt;/strong&gt; One agent might get the issue body as raw text, while another might get it as HTML, leading to parsing errors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fragility:&lt;/strong&gt; If the API changed, I had to update the tools across all eight agents.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="why-mcp-is-a-better-way"&gt;Why MCP is a Better Way
+&lt;/h2&gt;&lt;p&gt;MCP changes the relationship between the model and the data. Instead of the model &amp;ldquo;knowing&amp;rdquo; how to call an API, the MCP server &amp;ldquo;advertises&amp;rdquo; its capabilities. The model just says &amp;ldquo;I want to list the issues in this repo,&amp;rdquo; and the protocol handles the rest.&lt;/p&gt;
+&lt;h3 id="the-cuemarshal-gitea-mcp-server"&gt;The CueMarshal Gitea MCP Server
+&lt;/h3&gt;&lt;p&gt;I built the server in TypeScript using the &lt;code&gt;@modelcontextprotocol/sdk&lt;/code&gt;. Here is what it exposes to the agents:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Resources:&lt;/strong&gt; Agents can &amp;ldquo;subscribe&amp;rdquo; to a specific file or a pull request. If the file changes, the MCP server can (in theory) notify the agent.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tools:&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;list_repo_issues&lt;/code&gt;: Returns a structured list of issues with metadata.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_pr_diff&lt;/code&gt;: Fetches the unified diff of a pull request.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;create_issue_comment&lt;/code&gt;: Allows agents to &amp;ldquo;talk&amp;rdquo; to humans on the Git platform.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apply_suggestion&lt;/code&gt;: A specialized tool for applying code changes directly to a branch.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="scaling-to-eight-agents"&gt;Scaling to Eight Agents
+&lt;/h2&gt;&lt;p&gt;What makes this setup work is that all eight CueMarshal agents, from &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Marshal (Orchestrator) to Linton (Linter)&lt;/a&gt;, connect to the same MCP server.&lt;/p&gt;
+&lt;p&gt;This gives every agent a &amp;ldquo;shared reality.&amp;rdquo; If the Reviewer agent (Reese) sees a diff, the Developer agent (Dave) sees the exact same diff through the same tool. That consistency matters for complex, multi-step tasks.&lt;/p&gt;
+&lt;h2 id="security-and-the-read-only-gate"&gt;Security and the &amp;ldquo;Read-Only&amp;rdquo; Gate
+&lt;/h2&gt;&lt;p&gt;One of the most important aspects of using MCP at scale is security. My Gitea MCP server implements a strict &lt;strong&gt;Read-Only mode&lt;/strong&gt; by default. An agent has to explicitly request &amp;ldquo;write&amp;rdquo; permissions for specific tools (like &lt;code&gt;apply_suggestion&lt;/code&gt;), and even then, every write action is logged and requires &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;human approval in the final PR&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="the-future-multi-platform-mcp"&gt;The Future: Multi-Platform MCP
+&lt;/h2&gt;&lt;p&gt;The ultimate goal for CueMarshal is to make the agentic layer platform-agnostic. By using MCP, I can eventually swap out the Gitea MCP server for a GitHub or GitLab MCP server without changing a single line of agent code.&lt;/p&gt;
+&lt;p&gt;The protocol &lt;em&gt;is&lt;/em&gt; the abstraction. And it&amp;rsquo;s what makes &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Agentic Delivery&lt;/a&gt; truly possible at scale.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What it Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

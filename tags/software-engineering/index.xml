@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Software Engineering on Alfero Chingono</title><link>https://www.chingono.com/tags/software-engineering/</link><description>Recent content in Software Engineering on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/software-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>Fixing Deep Nesting in TypeScript: A Real Refactor From CueMarshal</title><link>https://www.chingono.com/blog/2026/02/10/fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal/</link><pubDate>Tue, 10 Feb 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/02/10/fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/02/10/fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal/cover.png" alt="Featured image of post Fixing Deep Nesting in TypeScript: A Real Refactor From CueMarshal" /&gt;&lt;p&gt;There&amp;rsquo;s a point in the lifecycle of any project where the &amp;ldquo;quick fix&amp;rdquo; logic starts to pile up. For the &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;Gitea MCP server&lt;/a&gt; in &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, that point was the &lt;code&gt;get_pr_diff&lt;/code&gt; tool.&lt;/p&gt;
+&lt;p&gt;What started as a simple API call had grown into a 150-line function with four levels of nested &lt;code&gt;if/else&lt;/code&gt; statements. It was classic &amp;ldquo;Arrow Code&amp;rdquo;: the logic was pointed so far to the right that it was getting hard to read on a standard monitor.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s how I refactored it and the TypeScript patterns I used to make it maintainable.&lt;/p&gt;
+&lt;h2 id="the-problem-the-arrow-code-trap"&gt;The Problem: The &amp;ldquo;Arrow Code&amp;rdquo; Trap
+&lt;/h2&gt;&lt;p&gt;The original function had to handle multiple failure modes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Check if the repository exists.&lt;/li&gt;
+&lt;li&gt;Check if the pull request exists.&lt;/li&gt;
+&lt;li&gt;Check if the diff is too large for the LLM&amp;rsquo;s context.&lt;/li&gt;
+&lt;li&gt;Handle the Gitea API&amp;rsquo;s specific error formats.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If any of these failed, I had to return a structured error message. This led to a pattern of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;repoExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;prExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;diff&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;await&lt;/span&gt; &lt;span class="nx"&gt;getDiff&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;LIMIT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Success!
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Error: Too large
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Error: PR missing
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Error: Repo missing
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This is hard to follow because the &amp;ldquo;Success&amp;rdquo; case is buried in the middle, and the &amp;ldquo;Error&amp;rdquo; cases are disconnected from their triggers.&lt;/p&gt;
+&lt;h2 id="the-solution-guard-clauses-and-return-early"&gt;The Solution: Guard Clauses and &amp;ldquo;Return Early&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;The first step was to flip the logic. Instead of nesting for success, I used &lt;strong&gt;Guard Clauses&lt;/strong&gt; to return early on failure.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nx"&gt;repoExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Repo missing&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nx"&gt;prExists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;PR missing&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;diff&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;await&lt;/span&gt; &lt;span class="nx"&gt;getDiff&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="nx"&gt;LIMIT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Diff too large&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// Success! (Now at the top-level indentation)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;diff&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This immediately flattened the function and made it much more readable.&lt;/p&gt;
+&lt;h2 id="leveling-up-with-typescripts-result-type"&gt;Leveling Up with TypeScript&amp;rsquo;s &lt;code&gt;Result&lt;/code&gt; Type
+&lt;/h2&gt;&lt;p&gt;To make this even more reliable, I introduced a &lt;code&gt;Result&lt;/code&gt; type pattern (inspired by Rust or F#). Instead of returning &lt;code&gt;null&lt;/code&gt; or throwing an error, every step of the process returns an object that explicitly states if it succeeded or failed.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;type&lt;/span&gt; &lt;span class="nx"&gt;Result&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="na"&gt;E &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="na"&gt;string&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;ok&lt;/span&gt;: &lt;span class="kt"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;: &lt;span class="kt"&gt;T&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;ok&lt;/span&gt;: &lt;span class="kt"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;: &lt;span class="kt"&gt;E&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Using this pattern, I could chain the operations together. If any step returns &lt;code&gt;{ ok: false }&lt;/code&gt;, the whole chain stops and returns that error.&lt;/p&gt;
+&lt;h2 id="the-functional-refactor"&gt;The &amp;ldquo;Functional&amp;rdquo; Refactor
+&lt;/h2&gt;&lt;p&gt;The final version of the &lt;code&gt;get_pr_diff&lt;/code&gt; tool now looks like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Validate Inputs:&lt;/strong&gt; A clean, typed function that ensures the repo and PR IDs are valid.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fetch PR Data:&lt;/strong&gt; A separate function that handles the Gitea API call and maps the error codes to human-readable messages.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Process Diff:&lt;/strong&gt; A dedicated function for the logic of truncation and formatting.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By splitting these into small, testable functions, the main &lt;code&gt;execute&lt;/code&gt; method for the tool became a simple 10-line orchestrator.&lt;/p&gt;
+&lt;h2 id="why-this-matters-for-agentic-ai"&gt;Why This Matters for Agentic AI
+&lt;/h2&gt;&lt;p&gt;Refactoring for &amp;ldquo;Clean Code&amp;rdquo; isn&amp;rsquo;t just for human developers anymore. When you are building &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Agentic Orchestras&lt;/a&gt;, your code &lt;em&gt;is&lt;/em&gt; the environment the agent has to reason about.&lt;/p&gt;
+&lt;p&gt;If your codebase is full of deep nesting and &amp;ldquo;spaghetti&amp;rdquo; logic, the AI is more likely to make mistakes when trying to refactor or extend it. Clean, flat, typed code makes your system more &amp;ldquo;agent-friendly.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The refactor of the Gitea MCP server didn&amp;rsquo;t just make my life easier; it made &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;CueMarshal&amp;rsquo;s agents&lt;/a&gt; faster and more reliable.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;MCP at Scale: Connecting AI Agents to Gitea&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from an 8-Agent Orchestra&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>The Year Agentic AI Got Real: A Developer's Retrospective on 2025</title><link>https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/</link><pubDate>Fri, 12 Dec 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/cover.png" alt="Featured image of post The Year Agentic AI Got Real: A Developer's Retrospective on 2025" /&gt;&lt;p&gt;By the end of 2025, software engineering felt materially different from a year earlier.&lt;/p&gt;
+&lt;p&gt;In 2024, AI in software development was mostly about &lt;strong&gt;autocomplete&lt;/strong&gt;. We had GitHub Copilot, Cursor, and LLMs that were essentially &amp;ldquo;very fast search engines with a code editor.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;In 2025, that changed. We moved from &lt;strong&gt;autocomplete&lt;/strong&gt; to &lt;strong&gt;autonomy&lt;/strong&gt;. This was the year &lt;strong&gt;Agentic AI&lt;/strong&gt; started to feel real.&lt;/p&gt;
+&lt;h2 id="the-three-shifts-of-2025"&gt;The Three Shifts of 2025
+&lt;/h2&gt;&lt;p&gt;Three key technical and cultural shifts happened this year that changed how we build and deliver software.&lt;/p&gt;
+&lt;h3 id="1-from-chat-to-task"&gt;1. From &amp;ldquo;Chat&amp;rdquo; to &amp;ldquo;Task&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;At the beginning of the year, we were still &amp;ldquo;chatting&amp;rdquo; with AI. We had to explain the context, provide the files, and then manually copy the code into our editors.&lt;/p&gt;
+&lt;p&gt;By mid-2025, tools like &lt;strong&gt;Copilot Agent Mode&lt;/strong&gt; and specialized platforms like &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;CueMarshal&lt;/a&gt; shifted the interface. Instead of &amp;ldquo;Write a function for X,&amp;rdquo; we started saying &amp;ldquo;Implement the login flow for the new multi-currency engine.&amp;rdquo; The AI became responsible for the &lt;em&gt;task&lt;/em&gt;, not just the &lt;em&gt;output&lt;/em&gt;.&lt;/p&gt;
+&lt;h3 id="2-the-standardization-of-tools-mcp"&gt;2. The Standardization of &amp;ldquo;Tools&amp;rdquo; (MCP)
+&lt;/h3&gt;&lt;p&gt;Before 2025, every agent was its own silo. If you wanted an AI to talk to your database or your issue tracker, you had to write a custom integration.&lt;/p&gt;
+&lt;p&gt;The introduction and rapid adoption of the &lt;strong&gt;Model Context Protocol (MCP)&lt;/strong&gt; changed that. MCP gave us a common language for agents to interact with the world. It turned every API, every database, and every repo into a &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;structured tool&lt;/a&gt; that any agent could use. This was the &amp;ldquo;USB moment&amp;rdquo; for AI agents.&lt;/p&gt;
+&lt;h3 id="3-the-rise-of-the-agentic-orchestra"&gt;3. The Rise of the &amp;ldquo;Agentic Orchestra&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;We realized that one &amp;ldquo;do-it-all&amp;rdquo; agent was a dead end. Instead, the high-performing teams started building &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Agentic Orchestras&lt;/a&gt;: specialized agents for architecture, development, testing, and review, all working together within a Git-native workflow.&lt;/p&gt;
+&lt;p&gt;In my own work with &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, this shift was the difference between an AI that &amp;ldquo;helped&amp;rdquo; me and an AI that &amp;ldquo;worked&amp;rdquo; with me.&lt;/p&gt;
+&lt;h2 id="what-2025-taught-me"&gt;What 2025 Taught Me
+&lt;/h2&gt;&lt;p&gt;The biggest lesson of 2025 for me is that the human role in software engineering is not disappearing. It is being &lt;strong&gt;reframed&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;More of us are moving into a conductor-architect role. The job is less about writing every line of code and more about designing the system, defining the constraints, and orchestrating the agents doing the implementation. That requires a deeper understanding of &lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Platform Engineering&lt;/a&gt; and system architecture than before.&lt;/p&gt;
+&lt;h2 id="looking-ahead-to-2026"&gt;Looking Ahead to 2026
+&lt;/h2&gt;&lt;p&gt;If 2025 was the year of &amp;ldquo;autonomy,&amp;rdquo; I expect 2026 to be the year of &lt;strong&gt;reliability&lt;/strong&gt;. We have the tools. We have the protocols. Now we need governance and observability that make agentic workflows as predictable as a standard CI/CD pipeline.&lt;/p&gt;
+&lt;p&gt;The transition is already underway, and it is moving faster than most people expected. The question for 2026 is no longer &amp;ldquo;Will you use AI?&amp;rdquo; It is &amp;ldquo;How will you orchestrate your agents?&amp;rdquo;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Why Platform Engineering is the Most Underrated Career Path in 2025&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Why Platform Engineering Is the Most Underrated Career Path in 2025</title><link>https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/</link><pubDate>Fri, 14 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/cover.png" alt="Featured image of post Why Platform Engineering Is the Most Underrated Career Path in 2025" /&gt;&lt;p&gt;A few years ago, the common narrative was that &amp;ldquo;DevOps is dead.&amp;rdquo; That was mostly clickbait, but it pointed at a real problem: the &amp;ldquo;You Build It, You Run It&amp;rdquo; mantra was starting to burn out developers.&lt;/p&gt;
+&lt;p&gt;Asking a full-stack engineer to also be a Kubernetes expert, a security specialist, and a cloud architect is not realistic. It piles too much cognitive load onto one job.&lt;/p&gt;
+&lt;p&gt;That is why I think &lt;strong&gt;Platform Engineering&lt;/strong&gt; remains one of the most underrated career paths in 2025.&lt;/p&gt;
+&lt;h2 id="what-platform-engineering-actually-is"&gt;What Platform Engineering Actually Is
+&lt;/h2&gt;&lt;p&gt;Platform Engineering is the practice of designing and building internal developer platforms (IDPs) that provide clear paved roads. These are self-service workflows that let developers deploy their apps without having to think through the infrastructure from scratch each time.&lt;/p&gt;
+&lt;p&gt;In a mature Platform Engineering organization, a developer should not have to open a ticket to get a database or a staging environment. They should be able to click a button or run a single command and get what they need in minutes, with security and compliance built in.&lt;/p&gt;
+&lt;h2 id="why-it-matters-as-a-career"&gt;Why it matters as a career
+&lt;/h2&gt;&lt;p&gt;If you enjoy systems thinking, automation, and making life easier for other developers, platform engineering is hard to beat. Here is why:&lt;/p&gt;
+&lt;h3 id="1-you-improve-output-across-whole-teams"&gt;1. You improve output across whole teams
+&lt;/h3&gt;&lt;p&gt;As a product engineer, you ship features for users. As a platform engineer, you improve how other engineers ship. If you save 100 developers one hour a week each, that adds up to roughly two and a half weeks of engineering time for the company every month.&lt;/p&gt;
+&lt;h3 id="2-you-sit-at-the-intersection-of-tech-and-strategy"&gt;2. You sit at the intersection of tech and strategy
+&lt;/h3&gt;&lt;p&gt;Platform engineers have to understand the entire stack, from the kernel to the cloud to the CI/CD pipeline. But they also have to think like product managers: what do the internal customers, the developers, actually need to do their jobs well?&lt;/p&gt;
+&lt;p&gt;That puts you in a strong position to influence the technical direction of the company.&lt;/p&gt;
+&lt;h3 id="3-demand-is-ahead-of-supply"&gt;3. Demand is ahead of supply
+&lt;/h3&gt;&lt;p&gt;Every company is becoming a software company, and every software company eventually hits the cognitive-load wall. There are thousands of React developers and Go developers, but far fewer people who can design a reliable self-service platform that balances developer freedom with operational control.&lt;/p&gt;
+&lt;h2 id="the-future-is-agentic-platform-engineering"&gt;The future is agentic platform engineering
+&lt;/h2&gt;&lt;p&gt;In 2025, the platform is no longer just a set of scripts and dashboards. It is starting to become &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;agentic&lt;/a&gt;. We are beginning to build platforms where AI agents can identify bottlenecks, suggest architecture improvements, and even &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;fix SonarQube issues before a human sees them&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you care about delivery infrastructure and AI systems, this is one of the more interesting places to work right now.&lt;/p&gt;
+&lt;h2 id="how-to-get-started"&gt;How to Get Started
+&lt;/h2&gt;&lt;p&gt;If you are already doing &amp;ldquo;DevOps&amp;rdquo; or SRE work, you are halfway there. To move toward Platform Engineering, stop thinking about infrastructure as a pile of resources to manage and start thinking about it as a &lt;strong&gt;product to design&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Start by asking your fellow developers, &amp;ldquo;What is the most frustrating part of your day?&amp;rdquo; Then go build the platform that removes that friction.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs and Productivity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Building a Multi-Currency App: The Edge Cases Nobody Warns You About</title><link>https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/</link><pubDate>Wed, 22 Oct 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/cover.png" alt="Featured image of post Building a Multi-Currency App: The Edge Cases Nobody Warns You About" /&gt;&lt;p&gt;When I started building &lt;a class="link" href="https://www.famorize.com" target="_blank" rel="noopener"
+&gt;Famorize&lt;/a&gt;, I thought multi-currency support would be a weekend feature. &amp;ldquo;Just store the currency code and multiply by the exchange rate, right?&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Wrong.&lt;/p&gt;
+&lt;p&gt;Dealing with money in software is a masterclass in edge cases, data integrity, and precision. If you&amp;rsquo;re building an app that handles more than one currency, especially one designed for families across borders, the complexity stacks up fast.&lt;/p&gt;
+&lt;p&gt;Here are the four big lessons I learned from building Famorize&amp;rsquo;s multi-currency engine.&lt;/p&gt;
+&lt;h2 id="1-never-ever-use-floating-point-numbers"&gt;1. Never, Ever Use Floating Point Numbers
+&lt;/h2&gt;&lt;p&gt;This is the &amp;ldquo;Day 1&amp;rdquo; rule for financial software, yet I still see it in production. Floating point numbers (like &lt;code&gt;double&lt;/code&gt; or &lt;code&gt;float&lt;/code&gt; in most languages) are inherently imprecise for decimals. $0.1 + 0.2$ in IEEE 754 floating point is not $0.3$; it&amp;rsquo;s $0.30000000000000004$.&lt;/p&gt;
+&lt;p&gt;In Famorize, everything is stored as &lt;strong&gt;integers in the smallest unit&lt;/strong&gt; (e.g., cents for USD, yen for JPY, satoshis for BTC). If a transaction is $10.50, it is stored as &lt;code&gt;1050&lt;/code&gt;. This eliminates rounding errors at the database and application levels.&lt;/p&gt;
+&lt;h2 id="2-exchange-rate-drift-and-historic-validity"&gt;2. Exchange Rate &amp;ldquo;Drift&amp;rdquo; and Historic Validity
+&lt;/h2&gt;&lt;p&gt;Exchange rates are not static. If a user recorded a $50 CAD transaction today, it might be worth $37 USD. If they look at that same transaction next year, it should still be $50 CAD. But what was its USD value &lt;em&gt;at the time&lt;/em&gt;?&lt;/p&gt;
+&lt;p&gt;To handle this, Famorize doesn&amp;rsquo;t just store the transaction. It stores:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The Base Amount&lt;/strong&gt; (in the user&amp;rsquo;s home currency).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Original Amount&lt;/strong&gt; (in the transaction currency).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Exchange Rate Used&lt;/strong&gt; (at the time of the transaction).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This &amp;ldquo;Snapshot Pattern&amp;rdquo; ensures that reports are accurate to the moment the money actually moved, not the current market rate.&lt;/p&gt;
+&lt;h2 id="3-the-yen-problem-zero-decimal-currencies"&gt;3. The &amp;ldquo;Yen Problem&amp;rdquo; (Zero-Decimal Currencies)
+&lt;/h2&gt;&lt;p&gt;Most developers assume a currency always has two decimal places. This is a trap.&lt;/p&gt;
+&lt;p&gt;While USD, CAD, and EUR have two (cents), currencies like JPY (Japanese Yen) have zero, and others like BHD (Bahraini Dinar) have three. If your UI or database assumes &lt;code&gt;integer / 100&lt;/code&gt; is the decimal value, you will break for users in Japan or Bahrain.&lt;/p&gt;
+&lt;p&gt;Famorize uses a &lt;strong&gt;Currency Metadata&lt;/strong&gt; table that defines the &amp;ldquo;Scale&amp;rdquo; (decimal places) for every supported currency. The display layer is responsible for formatting based on this scale.&lt;/p&gt;
+&lt;h2 id="4-the-ux-of-which-currency"&gt;4. The UX of &amp;ldquo;Which Currency?&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;If a user in Toronto is sending money to a family member in Nairobi, which currency should the input field show?&lt;/p&gt;
+&lt;p&gt;The UX pattern that worked best for me was to always let the user select the &lt;strong&gt;Transaction Currency&lt;/strong&gt; while showing a real-time &amp;ldquo;estimated conversion&amp;rdquo; into their &lt;strong&gt;Home Currency&lt;/strong&gt;. That gives them a clearer sense of how much they are spending in the units they understand.&lt;/p&gt;
+&lt;h2 id="the-result"&gt;The Result
+&lt;/h2&gt;&lt;p&gt;Building a multi-currency app taught me that &amp;ldquo;precision&amp;rdquo; is not just a technical requirement; it is a trust requirement. If a financial app is off by even one cent, the user&amp;rsquo;s trust is broken.&lt;/p&gt;
+&lt;p&gt;Famorize now handles dozens of currencies with an integer-based engine that I can trust with real family finances. It took more than a weekend, but the lessons were worth the effort.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/09/15/oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker/" &gt;OAuth2 and OIDC for Solo Developers: A Practical Setup With Docker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

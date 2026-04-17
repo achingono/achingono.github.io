@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Risk Management on Alfero Chingono</title><link>https://www.chingono.com/tags/risk-management/</link><description>Recent content in Risk Management on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/risk-management/index.xml" rel="self" type="application/rss+xml"/><item><title>Feature Flags Done Right: A Pattern for Safer Production Deployments</title><link>https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/</link><pubDate>Thu, 10 Jul 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/cover.png" alt="Featured image of post Feature Flags Done Right: A Pattern for Safer Production Deployments" /&gt;&lt;p&gt;There is a common point in a team&amp;rsquo;s growth where &amp;ldquo;moving fast&amp;rdquo; starts to feel like &amp;ldquo;breaking things&amp;rdquo; in a way that is no longer productive. Usually, the first response is to slow down: more manual approvals, longer QA cycles, and stricter deployment windows.&lt;/p&gt;
+&lt;p&gt;But slowing down is a band-aid. The real solution is to decouple &lt;strong&gt;deployment&lt;/strong&gt; from &lt;strong&gt;release&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Deployment is a technical event: the code is in production. Release is a business event: the feature is active for users. If you can&amp;rsquo;t separate these two, you&amp;rsquo;re always one bad merge away from a 3:00 AM incident.&lt;/p&gt;
+&lt;p&gt;Feature flags, or feature management, are what make that separation practical. But doing them &amp;ldquo;right&amp;rdquo; is harder than just wrapping an &lt;code&gt;if&lt;/code&gt; statement around a new function.&lt;/p&gt;
+&lt;h2 id="the-anti-patterns"&gt;The Anti-Patterns
+&lt;/h2&gt;&lt;p&gt;Before we look at the right way, let&amp;rsquo;s look at the ways I&amp;rsquo;ve seen it go wrong:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The &amp;ldquo;Permanent Flag&amp;rdquo; Trap:&lt;/strong&gt; Flags that never get removed. After six months, nobody knows what happens if you turn it off, and the codebase is a minefield of dead branches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Global Config Pattern:&lt;/strong&gt; Using a single large JSON file in a config repo that requires a full redeploy to change a flag. This is not feature management; it&amp;rsquo;s just slow configuration.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Client-Side Only Mistake:&lt;/strong&gt; Thinking flags are only for UI elements. The most powerful flags are often on the backend, controlling database migrations or third-party API integrations.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="a-pattern-for-safer-deployments"&gt;A Pattern for Safer Deployments
+&lt;/h2&gt;&lt;p&gt;When building a feature management framework for a large organization, I&amp;rsquo;ve found three principles make the difference between a useful tool and a burden.&lt;/p&gt;
+&lt;h3 id="1-flags-as-a-first-class-citizen"&gt;1. Flags as a First-Class Citizen
+&lt;/h3&gt;&lt;p&gt;Flags should not be an afterthought. They should be part of the technical design from day one. In a mature Platform Engineering environment, this means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Standardized SDKs:&lt;/strong&gt; Every service should use the same library and pattern for flag evaluation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Auditability:&lt;/strong&gt; Every change to a flag state must be logged: who changed it, when, and why.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Contextual Targeting:&lt;/strong&gt; Flags should support more than just &amp;ldquo;on&amp;rdquo; or &amp;ldquo;off.&amp;rdquo; You need the ability to target by user ID, tenant, region, or percentage-based rollouts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="2-the-lifecycle-of-a-flag"&gt;2. The Lifecycle of a Flag
+&lt;/h3&gt;&lt;p&gt;A flag is technical debt from the moment it is created. To prevent &amp;ldquo;flag rot,&amp;rdquo; you need a lifecycle:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Creation:&lt;/strong&gt; Define the purpose and the &amp;ldquo;kill criteria&amp;rdquo; (e.g., &amp;ldquo;remove after 100% rollout for two weeks&amp;rdquo;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rollout:&lt;/strong&gt; Use progressive delivery. Start with 1%, then 5%, then 25%, monitoring metrics at every step.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cleanup:&lt;/strong&gt; Automated alerts or PRs should remind engineers to remove the flag once the feature is stable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="3-progressive-delivery-and-the-blast-radius"&gt;3. Progressive Delivery and the &amp;ldquo;Blast Radius&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;The ultimate goal of feature flags is to minimize the &amp;ldquo;blast radius&amp;rdquo; of a failure. If a new checkout flow causes a 10% drop in conversions, you don&amp;rsquo;t want to roll back the entire deployment and lose all the other fixes it contained. You want to flip one switch and be back to a known-good state in milliseconds.&lt;/p&gt;
+&lt;p&gt;In a &lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;well-orchestrated platform&lt;/a&gt;, feature flags become the control plane for your production environment.&lt;/p&gt;
+&lt;h2 id="the-human-element"&gt;The Human Element
+&lt;/h2&gt;&lt;p&gt;Feature flags are as much about culture as they are about code. They require trust between Product and Engineering. When Product managers know they can turn a feature off themselves if something looks wrong, they are more willing to let Engineering deploy more frequently.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re still doing &amp;ldquo;big bang&amp;rdquo; releases every two weeks, you&amp;rsquo;re not just slow; you&amp;rsquo;re taking unnecessary risks. Moving to a flag-first model is the single most effective way to improve both your &lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;DORA metrics&lt;/a&gt; and your team&amp;rsquo;s quality of life.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs and Productivity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Why Platform Engineering is the Most Underrated Career Path in 2025&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Platform Engineering on Alfero Chingono</title><link>https://www.chingono.com/tags/platform-engineering/</link><description>Recent content in Platform Engineering on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/platform-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Platform Engineering on Alfero Chingono</title><link>https://www.chingono.com/tags/platform-engineering/</link><description>Recent content in Platform Engineering on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/platform-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
 &lt;p&gt;You reduce risk.
 You simplify delivery.
 You create better defaults.
@@ -164,7 +164,33 @@ Often it does not.&lt;/p&gt;
 &lt;p&gt;But for this kind of system, I think that is the right trade.&lt;/p&gt;
 &lt;p&gt;I would much rather spend time shaping one explicit container image and one compose stack than wonder which random host package made the environment drift.&lt;/p&gt;
 &lt;p&gt;For me, Docker made OpenClaw feel less like a clever experiment and more like an actual service I could live with.&lt;/p&gt;
-&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Why Platform Engineering Is the Most Underrated Career Path in 2025</title><link>https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/</link><pubDate>Fri, 14 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/cover.png" alt="Featured image of post Why Platform Engineering Is the Most Underrated Career Path in 2025" /&gt;&lt;p&gt;A few years ago, the common narrative was that &amp;ldquo;DevOps is dead.&amp;rdquo; That was mostly clickbait, but it pointed at a real problem: the &amp;ldquo;You Build It, You Run It&amp;rdquo; mantra was starting to burn out developers.&lt;/p&gt;
+&lt;p&gt;Asking a full-stack engineer to also be a Kubernetes expert, a security specialist, and a cloud architect is not realistic. It piles too much cognitive load onto one job.&lt;/p&gt;
+&lt;p&gt;That is why I think &lt;strong&gt;Platform Engineering&lt;/strong&gt; remains one of the most underrated career paths in 2025.&lt;/p&gt;
+&lt;h2 id="what-platform-engineering-actually-is"&gt;What Platform Engineering Actually Is
+&lt;/h2&gt;&lt;p&gt;Platform Engineering is the practice of designing and building internal developer platforms (IDPs) that provide clear paved roads. These are self-service workflows that let developers deploy their apps without having to think through the infrastructure from scratch each time.&lt;/p&gt;
+&lt;p&gt;In a mature Platform Engineering organization, a developer should not have to open a ticket to get a database or a staging environment. They should be able to click a button or run a single command and get what they need in minutes, with security and compliance built in.&lt;/p&gt;
+&lt;h2 id="why-it-matters-as-a-career"&gt;Why it matters as a career
+&lt;/h2&gt;&lt;p&gt;If you enjoy systems thinking, automation, and making life easier for other developers, platform engineering is hard to beat. Here is why:&lt;/p&gt;
+&lt;h3 id="1-you-improve-output-across-whole-teams"&gt;1. You improve output across whole teams
+&lt;/h3&gt;&lt;p&gt;As a product engineer, you ship features for users. As a platform engineer, you improve how other engineers ship. If you save 100 developers one hour a week each, that adds up to roughly two and a half weeks of engineering time for the company every month.&lt;/p&gt;
+&lt;h3 id="2-you-sit-at-the-intersection-of-tech-and-strategy"&gt;2. You sit at the intersection of tech and strategy
+&lt;/h3&gt;&lt;p&gt;Platform engineers have to understand the entire stack, from the kernel to the cloud to the CI/CD pipeline. But they also have to think like product managers: what do the internal customers, the developers, actually need to do their jobs well?&lt;/p&gt;
+&lt;p&gt;That puts you in a strong position to influence the technical direction of the company.&lt;/p&gt;
+&lt;h3 id="3-demand-is-ahead-of-supply"&gt;3. Demand is ahead of supply
+&lt;/h3&gt;&lt;p&gt;Every company is becoming a software company, and every software company eventually hits the cognitive-load wall. There are thousands of React developers and Go developers, but far fewer people who can design a reliable self-service platform that balances developer freedom with operational control.&lt;/p&gt;
+&lt;h2 id="the-future-is-agentic-platform-engineering"&gt;The future is agentic platform engineering
+&lt;/h2&gt;&lt;p&gt;In 2025, the platform is no longer just a set of scripts and dashboards. It is starting to become &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;agentic&lt;/a&gt;. We are beginning to build platforms where AI agents can identify bottlenecks, suggest architecture improvements, and even &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;fix SonarQube issues before a human sees them&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you care about delivery infrastructure and AI systems, this is one of the more interesting places to work right now.&lt;/p&gt;
+&lt;h2 id="how-to-get-started"&gt;How to Get Started
+&lt;/h2&gt;&lt;p&gt;If you are already doing &amp;ldquo;DevOps&amp;rdquo; or SRE work, you are halfway there. To move toward Platform Engineering, stop thinking about infrastructure as a pile of resources to manage and start thinking about it as a &lt;strong&gt;product to design&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Start by asking your fellow developers, &amp;ldquo;What is the most frustrating part of your day?&amp;rdquo; Then go build the platform that removes that friction.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs and Productivity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
 &lt;p&gt;Building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
@@ -262,6 +288,44 @@ If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Feature Flags Done Right: A Pattern for Safer Production Deployments</title><link>https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/</link><pubDate>Thu, 10 Jul 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/cover.png" alt="Featured image of post Feature Flags Done Right: A Pattern for Safer Production Deployments" /&gt;&lt;p&gt;There is a common point in a team&amp;rsquo;s growth where &amp;ldquo;moving fast&amp;rdquo; starts to feel like &amp;ldquo;breaking things&amp;rdquo; in a way that is no longer productive. Usually, the first response is to slow down: more manual approvals, longer QA cycles, and stricter deployment windows.&lt;/p&gt;
+&lt;p&gt;But slowing down is a band-aid. The real solution is to decouple &lt;strong&gt;deployment&lt;/strong&gt; from &lt;strong&gt;release&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Deployment is a technical event: the code is in production. Release is a business event: the feature is active for users. If you can&amp;rsquo;t separate these two, you&amp;rsquo;re always one bad merge away from a 3:00 AM incident.&lt;/p&gt;
+&lt;p&gt;Feature flags, or feature management, are what make that separation practical. But doing them &amp;ldquo;right&amp;rdquo; is harder than just wrapping an &lt;code&gt;if&lt;/code&gt; statement around a new function.&lt;/p&gt;
+&lt;h2 id="the-anti-patterns"&gt;The Anti-Patterns
+&lt;/h2&gt;&lt;p&gt;Before we look at the right way, let&amp;rsquo;s look at the ways I&amp;rsquo;ve seen it go wrong:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The &amp;ldquo;Permanent Flag&amp;rdquo; Trap:&lt;/strong&gt; Flags that never get removed. After six months, nobody knows what happens if you turn it off, and the codebase is a minefield of dead branches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Global Config Pattern:&lt;/strong&gt; Using a single large JSON file in a config repo that requires a full redeploy to change a flag. This is not feature management; it&amp;rsquo;s just slow configuration.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Client-Side Only Mistake:&lt;/strong&gt; Thinking flags are only for UI elements. The most powerful flags are often on the backend, controlling database migrations or third-party API integrations.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="a-pattern-for-safer-deployments"&gt;A Pattern for Safer Deployments
+&lt;/h2&gt;&lt;p&gt;When building a feature management framework for a large organization, I&amp;rsquo;ve found three principles make the difference between a useful tool and a burden.&lt;/p&gt;
+&lt;h3 id="1-flags-as-a-first-class-citizen"&gt;1. Flags as a First-Class Citizen
+&lt;/h3&gt;&lt;p&gt;Flags should not be an afterthought. They should be part of the technical design from day one. In a mature Platform Engineering environment, this means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Standardized SDKs:&lt;/strong&gt; Every service should use the same library and pattern for flag evaluation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Auditability:&lt;/strong&gt; Every change to a flag state must be logged: who changed it, when, and why.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Contextual Targeting:&lt;/strong&gt; Flags should support more than just &amp;ldquo;on&amp;rdquo; or &amp;ldquo;off.&amp;rdquo; You need the ability to target by user ID, tenant, region, or percentage-based rollouts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="2-the-lifecycle-of-a-flag"&gt;2. The Lifecycle of a Flag
+&lt;/h3&gt;&lt;p&gt;A flag is technical debt from the moment it is created. To prevent &amp;ldquo;flag rot,&amp;rdquo; you need a lifecycle:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Creation:&lt;/strong&gt; Define the purpose and the &amp;ldquo;kill criteria&amp;rdquo; (e.g., &amp;ldquo;remove after 100% rollout for two weeks&amp;rdquo;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rollout:&lt;/strong&gt; Use progressive delivery. Start with 1%, then 5%, then 25%, monitoring metrics at every step.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cleanup:&lt;/strong&gt; Automated alerts or PRs should remind engineers to remove the flag once the feature is stable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="3-progressive-delivery-and-the-blast-radius"&gt;3. Progressive Delivery and the &amp;ldquo;Blast Radius&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;The ultimate goal of feature flags is to minimize the &amp;ldquo;blast radius&amp;rdquo; of a failure. If a new checkout flow causes a 10% drop in conversions, you don&amp;rsquo;t want to roll back the entire deployment and lose all the other fixes it contained. You want to flip one switch and be back to a known-good state in milliseconds.&lt;/p&gt;
+&lt;p&gt;In a &lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;well-orchestrated platform&lt;/a&gt;, feature flags become the control plane for your production environment.&lt;/p&gt;
+&lt;h2 id="the-human-element"&gt;The Human Element
+&lt;/h2&gt;&lt;p&gt;Feature flags are as much about culture as they are about code. They require trust between Product and Engineering. When Product managers know they can turn a feature off themselves if something looks wrong, they are more willing to let Engineering deploy more frequently.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re still doing &amp;ldquo;big bang&amp;rdquo; releases every two weeks, you&amp;rsquo;re not just slow; you&amp;rsquo;re taking unnecessary risks. Moving to a flag-first model is the single most effective way to improve both your &lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;DORA metrics&lt;/a&gt; and your team&amp;rsquo;s quality of life.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs and Productivity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Why Platform Engineering is the Most Underrated Career Path in 2025&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It</title><link>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</link><pubDate>Thu, 10 Apr 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/cover.png" alt="Featured image of post The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It" /&gt;&lt;p&gt;When the DORA research started surfacing stronger evidence around internal developer platforms, the headline did not surprise me nearly as much as the reactions did.&lt;/p&gt;
 &lt;p&gt;Some people still hear &amp;ldquo;platform engineering&amp;rdquo; and imagine more process, more gates, and another internal team inventing obstacles. That risk is real. But it is only one version of the story.&lt;/p&gt;
 &lt;p&gt;The version I have seen in practice is much simpler: when you reduce cognitive load, standardize the boring parts well, and make the safe path the easy path, teams move faster.&lt;/p&gt;
@@ -389,4 +453,205 @@ Not from a maturity model.&lt;/p&gt;
 &gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/agents/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item><item><title>Technical Debt Is a Capital Allocation Decision</title><link>https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/</link><pubDate>Thu, 07 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/cover.png" alt="Featured image of post Technical Debt Is a Capital Allocation Decision" /&gt;&lt;p&gt;By the time technical debt is obvious, the engineering argument is usually no longer the hard part.&lt;/p&gt;
+&lt;p&gt;People can see the outages.
+They can see the missed commitments.
+They can see the manual work, the duplicated effort, the slow onboarding, the operational fragility.&lt;/p&gt;
+&lt;p&gt;The harder part is helping the business interpret what it is seeing.&lt;/p&gt;
+&lt;p&gt;Is this just a run of unfortunate IT costs?&lt;/p&gt;
+&lt;p&gt;Or is it a sign that the company needs to reallocate capital toward the platform underneath the business?&lt;/p&gt;
+&lt;p&gt;I think the second framing is usually the correct one.&lt;/p&gt;
+&lt;h2 id="technical-debt-is-not-only-a-code-smell"&gt;Technical debt is not only a code smell
+&lt;/h2&gt;&lt;p&gt;One reason these conversations go sideways is that technical debt is still too often described as if it lives mostly in source code.&lt;/p&gt;
+&lt;p&gt;Sometimes it does.&lt;/p&gt;
+&lt;p&gt;But in practice, the more expensive debt usually spans:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;code and schema variation&lt;/li&gt;
+&lt;li&gt;outdated libraries and protocols&lt;/li&gt;
+&lt;li&gt;manual deployment behavior&lt;/li&gt;
+&lt;li&gt;undocumented custom features&lt;/li&gt;
+&lt;li&gt;weak monitoring and recovery capability&lt;/li&gt;
+&lt;li&gt;poor separation of configuration and secrets&lt;/li&gt;
+&lt;li&gt;process models that rely on individuals more than systems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That matters because the remediation strategy changes depending on the frame.&lt;/p&gt;
+&lt;p&gt;If leadership hears &amp;ldquo;developers want to clean up code,&amp;rdquo; the work sounds optional.&lt;/p&gt;
+&lt;p&gt;If leadership hears &amp;ldquo;the current operating model is reducing delivery capacity, increasing risk, and slowing revenue growth,&amp;rdquo; the conversation becomes more honest.&lt;/p&gt;
+&lt;h2 id="some-remediation-costs-are-avoidable-some-are-not"&gt;Some remediation costs are avoidable. Some are not
+&lt;/h2&gt;&lt;p&gt;I think this distinction is useful, especially for leadership and finance conversations.&lt;/p&gt;
+&lt;p&gt;There are costs the business should absolutely try to eliminate.&lt;/p&gt;
+&lt;p&gt;Things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;repeated manual intervention on unstable components&lt;/li&gt;
+&lt;li&gt;professional services spent compensating for poor operational control&lt;/li&gt;
+&lt;li&gt;paying for underperforming service providers without getting the contracted value&lt;/li&gt;
+&lt;li&gt;troubleshooting time caused by undocumented variance&lt;/li&gt;
+&lt;li&gt;support volume created by preventable deployment mistakes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are avoidable costs, or at least reducible ones.&lt;/p&gt;
+&lt;p&gt;But there are also costs that are simply part of maturing a software business.&lt;/p&gt;
+&lt;p&gt;Things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;replacing deprecated dependencies&lt;/li&gt;
+&lt;li&gt;redesigning deployment paths&lt;/li&gt;
+&lt;li&gt;introducing monitoring and alerting&lt;/li&gt;
+&lt;li&gt;centralizing source control and environment management&lt;/li&gt;
+&lt;li&gt;modernizing critical parts of the architecture&lt;/li&gt;
+&lt;li&gt;training teams to work in a safer, more scalable way&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are not accidental expenses.&lt;/p&gt;
+&lt;p&gt;They are the price of remaining operable as the company grows.&lt;/p&gt;
+&lt;p&gt;Treating them as surprising overhead is how organizations stay trapped.&lt;/p&gt;
+&lt;h2 id="the-most-expensive-choice-is-often-delay"&gt;The most expensive choice is often delay
+&lt;/h2&gt;&lt;p&gt;This is the part I think many businesses discover too late.&lt;/p&gt;
+&lt;p&gt;When leaders postpone remediation because the spending feels large, they are still making an investment decision. They are investing in continued fragility.&lt;/p&gt;
+&lt;p&gt;Delay has a return profile too.&lt;/p&gt;
+&lt;p&gt;It buys:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;more downtime risk&lt;/li&gt;
+&lt;li&gt;more customer frustration&lt;/li&gt;
+&lt;li&gt;more operational labor&lt;/li&gt;
+&lt;li&gt;more difficulty launching strategic work&lt;/li&gt;
+&lt;li&gt;more reluctance inside the team to make changes confidently&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In other words, inaction is not free.&lt;/p&gt;
+&lt;p&gt;It is just financed through slower delivery, preventable incidents, and missed opportunity.&lt;/p&gt;
+&lt;h2 id="why-phased-remediation-works-better-than-heroic-transformation"&gt;Why phased remediation works better than heroic transformation
+&lt;/h2&gt;&lt;p&gt;I am skeptical of remediation plans that read like one dramatic act.&lt;/p&gt;
+&lt;p&gt;The better pattern is usually phased, especially in risk-sensitive organizations.&lt;/p&gt;
+&lt;p&gt;Small steps.
+High value.
+Deliberate sequencing.
+Maximum de-risking.&lt;/p&gt;
+&lt;p&gt;That sounds conservative. In practice, it is what allows momentum to survive.&lt;/p&gt;
+&lt;p&gt;I would rather see a company do five grounded things well than announce one total reinvention and spend a year deepening confusion.&lt;/p&gt;
+&lt;p&gt;For older systems, the practical sequence is often something like:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;make the current state more visible&lt;/li&gt;
+&lt;li&gt;centralize source and dependency management&lt;/li&gt;
+&lt;li&gt;reduce environmental variance&lt;/li&gt;
+&lt;li&gt;create safer development and staging loops&lt;/li&gt;
+&lt;li&gt;automate the repeatable paths&lt;/li&gt;
+&lt;li&gt;modernize the architecture in bounded slices&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That sequence is not exciting, but it respects reality.&lt;/p&gt;
+&lt;h2 id="leadership-has-to-fund-the-future-not-just-the-present"&gt;Leadership has to fund the future, not just the present
+&lt;/h2&gt;&lt;p&gt;There is a mindset shift here that matters.&lt;/p&gt;
+&lt;p&gt;If leadership sees modernization only as cost containment, the ambition will usually be too small.&lt;/p&gt;
+&lt;p&gt;The stronger framing is that remediation buys capacity.&lt;/p&gt;
+&lt;p&gt;It buys the ability to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;keep commitments more reliably&lt;/li&gt;
+&lt;li&gt;onboard customers with less operational stress&lt;/li&gt;
+&lt;li&gt;release with less fear&lt;/li&gt;
+&lt;li&gt;reduce reliance on hard-to-replace tribal knowledge&lt;/li&gt;
+&lt;li&gt;give product and revenue work a healthier platform underneath it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just maintenance.&lt;/p&gt;
+&lt;p&gt;That is business enablement.&lt;/p&gt;
+&lt;h2 id="the-it-treadmill-is-real"&gt;The IT treadmill is real
+&lt;/h2&gt;&lt;p&gt;There is one more uncomfortable truth here.&lt;/p&gt;
+&lt;p&gt;Even after a serious remediation program, the work is not over forever.&lt;/p&gt;
+&lt;p&gt;Protocols change.
+Vendors deprecate features.
+Libraries age out.
+Security expectations rise.
+Operating systems move on.&lt;/p&gt;
+&lt;p&gt;This is normal.&lt;/p&gt;
+&lt;p&gt;I think organizations get into trouble when they keep treating updates as exceptional disruptions instead of ongoing budget realities. A healthy platform budget should assume that some amount of modernization is continuous.&lt;/p&gt;
+&lt;p&gt;Not because the team failed.&lt;/p&gt;
+&lt;p&gt;Because software lives in a moving environment.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Technical debt remediation should not be sold as housekeeping.&lt;/p&gt;
+&lt;p&gt;It is a capital allocation decision about what kind of business the company wants to be able to run two years from now.&lt;/p&gt;
+&lt;p&gt;If the current platform is constraining delivery, trust, and growth, then remediation is not a side project competing with the business. It is part of the business finally funding the conditions it needs to keep scaling.&lt;/p&gt;
+&lt;p&gt;That is the real argument.&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;we should clean this up someday.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But &amp;ldquo;we need to invest in a platform that stops charging us interest on every move.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;This is the last post in the series. The first two were &lt;a class="link" href="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/" &gt;When Product Velocity Becomes a Growth Tax&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/" &gt;Why Manual Deployments Keep Legacy Teams Stuck&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>When Product Velocity Becomes a Growth Tax</title><link>https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/</link><pubDate>Tue, 05 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/cover.png" alt="Featured image of post When Product Velocity Becomes a Growth Tax" /&gt;&lt;p&gt;One of the more expensive patterns in software is this: a company grows because it moves quickly, then later struggles because it kept moving the same way for too long.&lt;/p&gt;
+&lt;p&gt;I have seen this most clearly in older product companies that were built by smart, determined people making rational decisions under pressure. A founder writes the first version. Customers arrive. Custom features get added. A few shortcuts are taken because the business needs momentum more than elegance. Then the team grows, the customer base grows, the environments multiply, and the operational model quietly stops scaling.&lt;/p&gt;
+&lt;p&gt;That does not usually look like a strategy problem at first.&lt;/p&gt;
+&lt;p&gt;It looks like missed deadlines.
+It looks like frustrated leadership.
+It looks like a team that supposedly needs to estimate better.&lt;/p&gt;
+&lt;p&gt;But very often the deeper issue is simpler: the organization is still trying to buy velocity using methods that now create drag.&lt;/p&gt;
+&lt;h2 id="the-original-shortcuts-were-often-reasonable"&gt;The original shortcuts were often reasonable
+&lt;/h2&gt;&lt;p&gt;I think this matters, because teams are too quick to moralize technical debt.&lt;/p&gt;
+&lt;p&gt;Many of the decisions that later become expensive started as good business decisions.&lt;/p&gt;
+&lt;p&gt;If you are a growing software company in the early years, shipping quickly is not optional. You need customers. You need proof. You need cash flow. You need the product to keep moving.&lt;/p&gt;
+&lt;p&gt;That usually leads to choices like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;customer-specific customizations&lt;/li&gt;
+&lt;li&gt;infrastructure built one environment at a time&lt;/li&gt;
+&lt;li&gt;manual deployment habits that rely on trusted individuals&lt;/li&gt;
+&lt;li&gt;configuration embedded too close to code&lt;/li&gt;
+&lt;li&gt;process light enough not to slow urgent work down&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That can work for a while.&lt;/p&gt;
+&lt;p&gt;The problem is that those decisions compound. And once they compound far enough, the organization stops getting speed from them.&lt;/p&gt;
+&lt;p&gt;It starts paying interest instead.&lt;/p&gt;
+&lt;h2 id="the-warning-sign-is-usually-operational-not-architectural"&gt;The warning sign is usually operational, not architectural
+&lt;/h2&gt;&lt;p&gt;When a company says, &amp;ldquo;we are struggling to keep commitments,&amp;rdquo; the instinct is often to inspect planning first.&lt;/p&gt;
+&lt;p&gt;Sometimes that is correct.&lt;/p&gt;
+&lt;p&gt;But if the team is supporting product issues, customer-funded custom work, roadmap initiatives, and modernization efforts all at the same time, planning is only one layer of the problem. If every environment is a little different, if releases are manual, if production fixes depend on tribal knowledge, and if custom features are poorly mapped, then the delivery system is already carrying too much hidden variance.&lt;/p&gt;
+&lt;p&gt;That kind of variance does not show up neatly in a sprint board.&lt;/p&gt;
+&lt;p&gt;It shows up as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;longer troubleshooting cycles&lt;/li&gt;
+&lt;li&gt;defensive estimation&lt;/li&gt;
+&lt;li&gt;support interruptions destroying planned work&lt;/li&gt;
+&lt;li&gt;leadership hearing commitments that were never structurally realistic&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is one reason I do not believe an agile coach, by themselves, can solve a system like that.&lt;/p&gt;
+&lt;p&gt;Agile can improve visibility. It can improve flow. It can improve conversations.&lt;/p&gt;
+&lt;p&gt;But it cannot cancel out environment drift.&lt;/p&gt;
+&lt;h2 id="growth-gets-harder-when-every-customer-becomes-a-partial-fork"&gt;Growth gets harder when every customer becomes a partial fork
+&lt;/h2&gt;&lt;p&gt;One of the hardest scaling traps for older products is customer-specific drift.&lt;/p&gt;
+&lt;p&gt;At first, it feels like responsiveness.&lt;/p&gt;
+&lt;p&gt;You say yes to an enterprise request. You implement something valuable. You help close or retain revenue. That can be exactly the right choice.&lt;/p&gt;
+&lt;p&gt;But if the implementation model becomes &amp;ldquo;add one more custom behavior, one more schema difference, one more environment-specific deployment path,&amp;rdquo; then eventually the product stops behaving like a product and starts behaving like a family of loosely related installations.&lt;/p&gt;
+&lt;p&gt;That changes everything.&lt;/p&gt;
+&lt;p&gt;Testing gets harder because you are not really testing one system anymore.&lt;/p&gt;
+&lt;p&gt;Releases get harder because every change has to survive a wider, murkier set of permutations.&lt;/p&gt;
+&lt;p&gt;Onboarding gets harder because new engineers are learning not just a codebase, but a historical record of customer-by-customer divergence.&lt;/p&gt;
+&lt;p&gt;At that point, the company may still be calling itself fast. But it is doing fast-looking work on top of a slow-moving substrate.&lt;/p&gt;
+&lt;h2 id="the-team-is-not-slow-the-system-is-expensive"&gt;The team is not slow. The system is expensive
+&lt;/h2&gt;&lt;p&gt;This is the sentence I wish more leaders were willing to say out loud.&lt;/p&gt;
+&lt;p&gt;When a development team looks inconsistent, the cause is not always capability. Sometimes the system they are operating inside is charging them too much for every change.&lt;/p&gt;
+&lt;p&gt;If developers are working across environments that do not match, touching production-like systems to understand basic behavior, or spending days reconciling code and database mismatches, that is not a motivation problem.&lt;/p&gt;
+&lt;p&gt;It is a cost-of-change problem.&lt;/p&gt;
+&lt;p&gt;The same is true when direct server access is part of the normal workflow.&lt;/p&gt;
+&lt;p&gt;That setup may look faster because it removes ceremony. In reality, it pushes quality control, traceability, and operational safety back onto individual memory and caution. That trade gets worse as the business grows.&lt;/p&gt;
+&lt;h2 id="the-real-ceiling-is-not-technical-it-is-commercial"&gt;The real ceiling is not technical. It is commercial
+&lt;/h2&gt;&lt;p&gt;What makes this pattern serious is that it does not stay inside engineering.&lt;/p&gt;
+&lt;p&gt;Eventually it reaches the commercial edge of the company.&lt;/p&gt;
+&lt;p&gt;Customers who were used to frequent updates start feeling instability.
+Custom work takes longer to deliver.
+Roadmap work competes with support work more aggressively.
+Expansion into new markets slows because the platform underneath the business is too fragile to carry more load confidently.&lt;/p&gt;
+&lt;p&gt;That is when technical debt stops being a developer complaint and becomes a growth constraint.&lt;/p&gt;
+&lt;p&gt;I think that is the frame leaders need most.&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;the code is old.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;the team needs to work differently.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But: &amp;ldquo;the current operating model is now taxing every future move the business wants to make.&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="what-i-would-focus-on-first"&gt;What I would focus on first
+&lt;/h2&gt;&lt;p&gt;If a company finds itself here, I would resist the urge to start with a grand rewrite story.&lt;/p&gt;
+&lt;p&gt;The first job is to reduce variance and recover control.&lt;/p&gt;
+&lt;p&gt;That usually means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;understanding how environments actually differ&lt;/li&gt;
+&lt;li&gt;centralizing source control and deployment logic&lt;/li&gt;
+&lt;li&gt;separating configuration and secrets from code&lt;/li&gt;
+&lt;li&gt;limiting direct production changes&lt;/li&gt;
+&lt;li&gt;making customer-specific differences more explicit than accidental&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are not glamorous steps.&lt;/p&gt;
+&lt;p&gt;They are foundational ones.&lt;/p&gt;
+&lt;p&gt;You do not modernize a delivery system by declaring a new architecture and hoping the old operational mess becomes irrelevant. You modernize it by making the current system more knowable, more repeatable, and less dependent on memory.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Velocity is one of the best things a young software business can have.&lt;/p&gt;
+&lt;p&gt;It is also one of the easiest things to counterfeit.&lt;/p&gt;
+&lt;p&gt;If speed comes from undocumented variation, manual heroics, and an ever-growing number of exceptions, that speed has an expiry date. Eventually it becomes a tax on the very growth it once enabled.&lt;/p&gt;
+&lt;p&gt;That is the trap.&lt;/p&gt;
+&lt;p&gt;The goal is not to regret the early decisions forever. The goal is to recognize when the business has outgrown them and to invest accordingly.&lt;/p&gt;
+&lt;p&gt;This is the first post in a short series. The next one is more operational: &lt;a class="link" href="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/" &gt;Why Manual Deployments Keep Legacy Teams Stuck&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>

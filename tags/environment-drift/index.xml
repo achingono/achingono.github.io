@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Environment Drift on Alfero Chingono</title><link>https://www.chingono.com/tags/environment-drift/</link><description>Recent content in Environment Drift on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/environment-drift/index.xml" rel="self" type="application/rss+xml"/><item><title>Why Manual Deployments Keep Legacy Teams Stuck</title><link>https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/</link><pubDate>Wed, 06 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/cover.png" alt="Featured image of post Why Manual Deployments Keep Legacy Teams Stuck" /&gt;&lt;p&gt;I think a lot of teams underestimate how much damage manual deployment does once a system grows past a certain point.&lt;/p&gt;
+&lt;p&gt;People often describe it as a release inconvenience.&lt;/p&gt;
+&lt;p&gt;It is usually much worse than that.&lt;/p&gt;
+&lt;p&gt;In legacy environments, manual deployment becomes the mechanism that preserves inconsistency. It keeps environments drifting apart. It keeps tacit knowledge in a few people&amp;rsquo;s heads. It keeps production risk tightly coupled to human memory and luck.&lt;/p&gt;
+&lt;p&gt;And then everyone acts surprised when the team cannot deliver predictably.&lt;/p&gt;
+&lt;h2 id="manual-deployment-is-really-a-variance-engine"&gt;Manual deployment is really a variance engine
+&lt;/h2&gt;&lt;p&gt;The most important thing manual deployment creates is not slowness.&lt;/p&gt;
+&lt;p&gt;It is variance.&lt;/p&gt;
+&lt;p&gt;One file gets missed.
+One config value is updated in one place but not another.
+One database object is present in one environment and absent in the next.
+One server carries a library version nobody remembered to document.&lt;/p&gt;
+&lt;p&gt;Each individual mistake can look small.&lt;/p&gt;
+&lt;p&gt;Together they produce a system where every deployment carries fresh uncertainty.&lt;/p&gt;
+&lt;p&gt;That uncertainty is expensive.&lt;/p&gt;
+&lt;p&gt;It shows up in extra validation work, longer war rooms, support tickets that should never have existed, and a general sense that production is fragile even when the change itself is modest.&lt;/p&gt;
+&lt;h2 id="the-problem-gets-nonlinear-as-environments-multiply"&gt;The problem gets nonlinear as environments multiply
+&lt;/h2&gt;&lt;p&gt;This is where legacy SaaS and hosted enterprise products get into real trouble.&lt;/p&gt;
+&lt;p&gt;If you have one production environment, manual deployment is risky.&lt;/p&gt;
+&lt;p&gt;If you have dozens of environments, many with customer-specific differences, manual deployment becomes an operational tax that grows faster than the team does.&lt;/p&gt;
+&lt;p&gt;Every new server or environment adds more than one more target.&lt;/p&gt;
+&lt;p&gt;It adds:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one more place for configuration drift&lt;/li&gt;
+&lt;li&gt;one more place for undocumented differences&lt;/li&gt;
+&lt;li&gt;one more place where code and schema may no longer line up&lt;/li&gt;
+&lt;li&gt;one more place where support has to guess what &amp;ldquo;normal&amp;rdquo; even means&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is why these teams often feel busy all the time while still struggling to create momentum. Too much of the energy is spent re-establishing trust in the environment before real delivery work can even begin.&lt;/p&gt;
+&lt;h2 id="rdp-is-not-a-deployment-strategy"&gt;RDP is not a deployment strategy
+&lt;/h2&gt;&lt;p&gt;I understand why older organizations end up here.&lt;/p&gt;
+&lt;p&gt;Direct server access feels practical.
+It feels immediate.
+It feels like the shortest path between a request and a fix.&lt;/p&gt;
+&lt;p&gt;But once it becomes normal, it undermines the very things the business needs most: repeatability, auditability, and safe change control.&lt;/p&gt;
+&lt;p&gt;When developers are expected to remote into servers, make changes carefully, and remember exactly what they touched, the process is leaning on discipline where it should be leaning on system design.&lt;/p&gt;
+&lt;p&gt;That is not a strong control model.&lt;/p&gt;
+&lt;p&gt;It is a trust fall.&lt;/p&gt;
+&lt;p&gt;And when mistakes inevitably happen, customers do not experience them as a process gap. They experience them as instability.&lt;/p&gt;
+&lt;h2 id="git-on-the-server-can-help-but-it-is-not-the-destination"&gt;&amp;ldquo;Git on the server&amp;rdquo; can help, but it is not the destination
+&lt;/h2&gt;&lt;p&gt;I have seen teams put Git directly on servers as a first move away from ad hoc production edits.&lt;/p&gt;
+&lt;p&gt;I actually think that can be a reasonable transitional step.&lt;/p&gt;
+&lt;p&gt;It gives you some history.
+It gives you a crude rollback surface.
+It creates at least a little more visibility into what changed.&lt;/p&gt;
+&lt;p&gt;But it is still a stabilizer, not a finished strategy.&lt;/p&gt;
+&lt;p&gt;Git on the server does not solve:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;inconsistent deployment logic&lt;/li&gt;
+&lt;li&gt;missing promotion paths between environments&lt;/li&gt;
+&lt;li&gt;schema drift&lt;/li&gt;
+&lt;li&gt;secrets management&lt;/li&gt;
+&lt;li&gt;approval and review controls&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If anything, it mostly helps you see the disorder more clearly.&lt;/p&gt;
+&lt;p&gt;That is useful. It is just not the same as fixing it.&lt;/p&gt;
+&lt;h2 id="staging-that-does-not-match-production-is-a-false-comfort"&gt;Staging that does not match production is a false comfort
+&lt;/h2&gt;&lt;p&gt;Another common trap is a nominal staging environment that is too different from production to be trustworthy.&lt;/p&gt;
+&lt;p&gt;Teams say they tested the change.
+The change still breaks in production.
+Leadership concludes the testing discipline is weak.&lt;/p&gt;
+&lt;p&gt;Sometimes it is.&lt;/p&gt;
+&lt;p&gt;But sometimes the more honest diagnosis is that the environment strategy itself is weak.&lt;/p&gt;
+&lt;p&gt;If production environments have drifted for years and staging has not kept pace, then &amp;ldquo;we validated it in staging&amp;rdquo; does not mean very much. It mostly means the team validated it somewhere else.&lt;/p&gt;
+&lt;p&gt;That distinction matters.&lt;/p&gt;
+&lt;h2 id="predictability-comes-from-convergence"&gt;Predictability comes from convergence
+&lt;/h2&gt;&lt;p&gt;This is why I think deployment modernization has less to do with flashy tooling than people assume.&lt;/p&gt;
+&lt;p&gt;The real goal is convergence.&lt;/p&gt;
+&lt;p&gt;You want code, infrastructure, configuration, and deployment behavior moving toward a system where changes happen through the same repeatable paths.&lt;/p&gt;
+&lt;p&gt;That usually means doing the unglamorous work first:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;document environment differences&lt;/li&gt;
+&lt;li&gt;identify clusters of similar deployments&lt;/li&gt;
+&lt;li&gt;centralize installers, scripts, and dependency versions&lt;/li&gt;
+&lt;li&gt;define a branching and promotion model&lt;/li&gt;
+&lt;li&gt;separate configuration from binaries and source&lt;/li&gt;
+&lt;li&gt;introduce reviewable deployment paths before aiming for full automation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Only after that foundation exists does CI/CD start delivering its full value.&lt;/p&gt;
+&lt;p&gt;Without that foundation, automation can actually harden confusion instead of removing it.&lt;/p&gt;
+&lt;h2 id="why-this-matters-commercially"&gt;Why this matters commercially
+&lt;/h2&gt;&lt;p&gt;I keep coming back to this because it is easy to frame deployment only as an engineering concern.&lt;/p&gt;
+&lt;p&gt;It is not.&lt;/p&gt;
+&lt;p&gt;When releases are risky and inconsistent:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;customer confidence drops&lt;/li&gt;
+&lt;li&gt;support work expands&lt;/li&gt;
+&lt;li&gt;roadmap promises slip&lt;/li&gt;
+&lt;li&gt;new customer onboarding gets slower&lt;/li&gt;
+&lt;li&gt;modernization work competes with avoidable operational cleanup&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just a DevOps inefficiency.&lt;/p&gt;
+&lt;p&gt;It is a business throughput problem.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Manual deployment survives for so long because it can appear to work right up until the system becomes too large for intuition to carry it.&lt;/p&gt;
+&lt;p&gt;After that point, every change costs more than it should, every outage teaches the same lesson again, and every engineer spends too much time navigating the environment instead of improving the product.&lt;/p&gt;
+&lt;p&gt;That is why I think deployment work deserves to be treated as strategic infrastructure, not release plumbing.&lt;/p&gt;
+&lt;p&gt;If the first post in this series was about the growth ceiling, this is the mechanism that often reinforces it every day.&lt;/p&gt;
+&lt;p&gt;The final post is about the money side of that story: &lt;a class="link" href="https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/" &gt;Technical Debt Is a Capital Allocation Decision&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>

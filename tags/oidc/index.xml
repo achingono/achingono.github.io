@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OIDC on Alfero Chingono</title><link>https://www.chingono.com/tags/oidc/</link><description>Recent content in OIDC on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/oidc/index.xml" rel="self" type="application/rss+xml"/><item><title>OAuth2 and OIDC for Solo Developers: A Practical Setup With Docker</title><link>https://www.chingono.com/blog/2025/09/15/oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker/</link><pubDate>Mon, 15 Sep 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/09/15/oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/09/15/oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker/cover.png" alt="Featured image of post OAuth2 and OIDC for Solo Developers: A Practical Setup With Docker" /&gt;&lt;p&gt;Authentication is the classic &amp;ldquo;black hole&amp;rdquo; of side projects. You start with a simple idea, and four days later you&amp;rsquo;re still reading RFC 6749 and wondering if you should just use a password in a plain text file (don&amp;rsquo;t).&lt;/p&gt;
+&lt;p&gt;For my personal projects like &lt;a class="link" href="https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/" &gt;Famorize&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;FireFly&lt;/a&gt;, I needed something standards-compliant and easy to manage across multiple services. It also had to be dependable. I didn&amp;rsquo;t want to pay $50/month for a managed identity provider (IdP) for projects that were still in development, but I also didn&amp;rsquo;t want to roll my own crypto.&lt;/p&gt;
+&lt;p&gt;The solution was a self-hosted OIDC setup using Docker.&lt;/p&gt;
+&lt;h2 id="why-oidc"&gt;Why OIDC?
+&lt;/h2&gt;&lt;p&gt;If you&amp;rsquo;re building a &amp;ldquo;modern&amp;rdquo; app, you&amp;rsquo;re likely using a decoupled architecture: a frontend (React/Next.js/Hugo) and one or more backend APIs. You need a way to:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Log a user in.&lt;/li&gt;
+&lt;li&gt;Prove to the API that the user is who they say they are.&lt;/li&gt;
+&lt;li&gt;Do it securely without sharing passwords everywhere.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;OpenID Connect (OIDC) is the standard way to do this. It sits on top of OAuth2 and provides the &amp;ldquo;identity&amp;rdquo; layer.&lt;/p&gt;
+&lt;h2 id="the-stack"&gt;The Stack
+&lt;/h2&gt;&lt;p&gt;For my local and production environments, I settled on a &amp;ldquo;trio&amp;rdquo; of tools that play very well together in Docker Compose.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Authelia:&lt;/strong&gt; A lightweight, self-hosted IdP. It&amp;rsquo;s fast, has a great UI, and supports multi-factor authentication (MFA) out of the box.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Redis:&lt;/strong&gt; For session storage and rate-limiting.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Nginx Proxy Manager (or Traefik):&lt;/strong&gt; To handle the routing and SSL termination.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="the-local-first-workflow"&gt;The &amp;ldquo;Local First&amp;rdquo; Workflow
+&lt;/h2&gt;&lt;p&gt;The biggest pain point with OIDC is setting it up locally. Most managed services require a public redirect URI, which is a nightmare for &lt;code&gt;localhost&lt;/code&gt; development.&lt;/p&gt;
+&lt;p&gt;With a self-hosted setup, I can use a local domain (like &lt;code&gt;auth.local.chingono.com&lt;/code&gt;) and point it to my Docker container. This means my local development environment is &lt;em&gt;identical&lt;/em&gt; to production. If it works on my machine, the OIDC flow will work in the cloud.&lt;/p&gt;
+&lt;h2 id="key-lessons-learned"&gt;Key Lessons Learned
+&lt;/h2&gt;&lt;p&gt;Building this into my projects taught me a few hard-won lessons:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Scopes and Claims are everything.&lt;/strong&gt; Spend the time to understand the difference. Don&amp;rsquo;t just request &lt;code&gt;openid profile email&lt;/code&gt; and hope for the best. Define only what your app actually needs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HTTPS is non-negotiable.&lt;/strong&gt; Even for local development, OIDC requires secure cookies. Use &lt;code&gt;mkcert&lt;/code&gt; to generate local SSL certificates and save yourself the headache of &amp;ldquo;Insecure Connection&amp;rdquo; errors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Token rotation matters.&lt;/strong&gt; If you&amp;rsquo;re building a long-lived app (like a mobile client for &lt;a class="link" href="https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/" &gt;Famorize&lt;/a&gt;), you need to handle refresh tokens correctly. Don&amp;rsquo;t just set a 30-day expiration on your access tokens.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="why-not-just-use-auth0-or-clerk"&gt;Why Not Just Use Auth0 or Clerk?
+&lt;/h2&gt;&lt;p&gt;Managed services are great for teams with a budget and no time. But as a solo developer who enjoys the &amp;ldquo;Build in Public&amp;rdquo; ethos, I find that owning my identity layer is worth the extra effort. It gives me complete control over the user experience, total data sovereignty, and a much deeper understanding of the security architecture.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in the specific Docker Compose configurations I use, stay tuned for the next post in this &amp;ldquo;Craft&amp;rdquo; series.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/" &gt;Building a Multi-Currency App: The Edge Cases Nobody Warns You About&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,4 +1,366 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Build in Public on Alfero Chingono</title><link>https://www.chingono.com/categories/build-in-public/</link><description>Recent content in Build in Public on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/build-in-public/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical. It was architectural.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Build in Public on Alfero Chingono</title><link>https://www.chingono.com/categories/build-in-public/</link><description>Recent content in Build in Public on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/build-in-public/index.xml" rel="self" type="application/rss+xml"/><item><title>Building a Microsoft To Do CLI and Wiring It into OpenClaw</title><link>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</link><pubDate>Thu, 16 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/cover.png" alt="Featured image of post Building a Microsoft To Do CLI and Wiring It into OpenClaw" /&gt;&lt;p&gt;I wanted my OpenClaw agents to manage my Microsoft To Do lists: create tasks, track follow-ups, and check things off. The problem was that Microsoft doesn&amp;rsquo;t ship a To Do CLI. There&amp;rsquo;s the Graph API, but nothing that an agent can call from a shell prompt with a simple command.&lt;/p&gt;
+&lt;p&gt;So I built one.&lt;/p&gt;
+&lt;h2 id="why-a-cli-and-not-a-direct-api-integration"&gt;Why a CLI and not a direct API integration
+&lt;/h2&gt;&lt;p&gt;OpenClaw agents execute tools as shell commands. That&amp;rsquo;s the integration surface. If I wanted all five agents to manage To Do items, I needed something that could be invoked as a binary, accepted flags, and returned structured output. A CLI fit that model perfectly.&lt;/p&gt;
+&lt;p&gt;I also wanted the tool to exist independently of OpenClaw. It should work on any machine with Node.js and an Azure app registration. OpenClaw would consume it as a skill, but the CLI itself would be a standalone, open-source project.&lt;/p&gt;
+&lt;h2 id="from-zero-to-v001-in-one-session"&gt;From zero to v0.0.1 in one session
+&lt;/h2&gt;&lt;p&gt;The entire CLI was built in a single Copilot coding agent session. I started with &lt;code&gt;npm init&lt;/code&gt;, defined the command structure with Commander.js, and layered on MSAL for auth and Axios for the Graph API. The session produced:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Auth commands:&lt;/strong&gt; &lt;code&gt;login&lt;/code&gt; (device-code flow), &lt;code&gt;status&lt;/code&gt;, &lt;code&gt;logout&lt;/code&gt;, &lt;code&gt;print-account&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Task commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;complete&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;, &lt;code&gt;get&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Step commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;complete&lt;/code&gt;, &lt;code&gt;delete&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt; for checklist items within a task&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Short-form aliases:&lt;/strong&gt; &lt;code&gt;ms-todo-cli create&lt;/code&gt; as a shortcut for &lt;code&gt;ms-todo-cli task create&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Everything outputs valid JSON. No plain-text error messages, no Commander help text leaking to stdout. Every response includes &lt;code&gt;ok: true&lt;/code&gt; or &lt;code&gt;ok: false&lt;/code&gt; with a structured error code. That was deliberate. Agents need parseable output, not human-friendly paragraphs.&lt;/p&gt;
+&lt;h3 id="the-error-code-system"&gt;The error code system
+&lt;/h3&gt;&lt;p&gt;Instead of generic error messages, every failure carries a typed code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;ErrorCodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;AUTH_REQUIRED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AUTH_REQUIRED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;AUTH_EXPIRED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AUTH_EXPIRED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;LIST_NOT_FOUND&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;LIST_NOT_FOUND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;TASK_NOT_FOUND&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;TASK_NOT_FOUND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;VALIDATION_ERROR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;VALIDATION_ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;GRAPH_ERROR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;GRAPH_ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;RATE_LIMITED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;RATE_LIMITED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;as&lt;/span&gt; &lt;span class="kr"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This lets an agent react to &lt;code&gt;AUTH_EXPIRED&lt;/code&gt; differently from &lt;code&gt;LIST_NOT_FOUND&lt;/code&gt;. In a skill prompt, I can say &amp;ldquo;if you see &lt;code&gt;AUTH_REQUIRED&lt;/code&gt;, ask the user to run the login flow,&amp;rdquo; and the agent can pattern-match on the JSON output reliably.&lt;/p&gt;
+&lt;h3 id="avoiding-the-on-list-scan"&gt;Avoiding the O(N) list scan
+&lt;/h3&gt;&lt;p&gt;The Microsoft Graph To Do API is list-scoped. To operate on a task, you need the list ID. If you only have the task ID, you have to enumerate all lists and probe each one until you find the right task.&lt;/p&gt;
+&lt;p&gt;The initial implementation did this naively. Every &lt;code&gt;task get&lt;/code&gt; or &lt;code&gt;task update&lt;/code&gt; call fetched all lists first. I added &lt;code&gt;--list-id&lt;/code&gt; as an optional flag on every task command. When provided, it skips the list scan entirely. The skill prompt teaches agents to cache and reuse list IDs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Without list-id: O(N) list scan&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ms-todo-cli task get --task-id &lt;span class="s2"&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# With list-id: single API call&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ms-todo-cli task get --task-id &lt;span class="s2"&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt; --list-id &lt;span class="s2"&gt;&amp;#34;def456&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="packaging-with-github-actions"&gt;Packaging with GitHub Actions
+&lt;/h2&gt;&lt;p&gt;I wanted the CLI installable from GitHub Releases, not from npm, at least not yet. The CI pipeline builds on three platforms, Ubuntu, macOS, and Windows, runs lint and tests on each, then packages the compiled output as a tarball:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Create artifact&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;run&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;tar -czf ms-todo-cli-${{ matrix.os }}.tar.gz dist package.json package-lock.json README.md LICENSE&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;On a tagged push (&lt;code&gt;v*.*.*&lt;/code&gt;), the release job uploads all three tarballs to a GitHub Release with auto-generated release notes.&lt;/p&gt;
+&lt;p&gt;The resulting tarball isn&amp;rsquo;t a standalone binary. It is a packaged Node CLI with a &lt;code&gt;#!/usr/bin/env node&lt;/code&gt; shebang. That works well for the OpenClaw gateway, which already has Node.js installed. For distribution outside Docker, a proper &lt;code&gt;npx&lt;/code&gt;-compatible package or a pkg-compiled binary would be the next step.&lt;/p&gt;
+&lt;h2 id="installing-in-the-gateway-docker-image"&gt;Installing in the gateway Docker image
+&lt;/h2&gt;&lt;p&gt;The gateway Dockerfile downloads the Ubuntu release tarball and installs it globally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; &lt;span class="nv"&gt;MS_TODO_CLI_RELEASE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;v0.0.1&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; &lt;span class="nv"&gt;tmpdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -d&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; install -d /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl -fsSL -o &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli.tar.gz&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;https://github.com/achingono/ms-todo-cli/releases/download/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MS_TODO_CLI_RELEASE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli-ubuntu-latest.tar.gz&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; tar -xzf &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli.tar.gz&amp;#34;&lt;/span&gt; -C /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; npm install --omit&lt;span class="o"&gt;=&lt;/span&gt;dev --omit&lt;span class="o"&gt;=&lt;/span&gt;optional --ignore-scripts &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod +x /opt/ms-todo-cli/dist/cli.js &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ln -sf /opt/ms-todo-cli/dist/cli.js /usr/local/bin/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The &lt;code&gt;--omit=optional&lt;/code&gt; flag skips &lt;code&gt;keytar&lt;/code&gt;, a native module for OS keychain access that isn&amp;rsquo;t needed in a headless container. The &lt;code&gt;--ignore-scripts&lt;/code&gt; flag avoids post-install compilation surprises.&lt;/p&gt;
+&lt;p&gt;Two things make this work across container rebuilds:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Token cache volume:&lt;/strong&gt; &lt;code&gt;./data/ms-todo-cli:/home/node/.ms-todo-cli&lt;/code&gt; in &lt;code&gt;docker-compose.yml&lt;/code&gt; persists the MSAL token cache on the host. Without this, every image rebuild would require re-authenticating.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Client ID environment variable:&lt;/strong&gt; &lt;code&gt;MS_TODO_CLIENT_ID&lt;/code&gt; is set in the &lt;code&gt;docker-compose.yml&lt;/code&gt; environment for both the &lt;code&gt;gateway&lt;/code&gt; and &lt;code&gt;cli&lt;/code&gt; services. The CLI fails fast if this isn&amp;rsquo;t set; there is no silent fallback to a broken state.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-openclaw-skill"&gt;The OpenClaw skill
+&lt;/h2&gt;&lt;p&gt;With the binary installed, the last piece was teaching the agents how to use it. OpenClaw skills are markdown files with a YAML front matter block:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ms-todo&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Manage Microsoft To Do lists, tasks, and checklist steps...&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;openclaw&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;emoji&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;✅&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;homepage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://github.com/achingono/ms-todo-cli&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;requires&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;{&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;bins&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ms-todo-cli&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;}&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The skill file at &lt;code&gt;data/config/skills/ms-todo/SKILL.md&lt;/code&gt; covers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Auth check first:&lt;/strong&gt; always run &lt;code&gt;ms-todo-cli auth status&lt;/code&gt; before any operation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Duplicate avoidance:&lt;/strong&gt; list tasks in the target list before creating a new one&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List hygiene:&lt;/strong&gt; prefer existing catch-all lists (&lt;code&gt;Tasks&lt;/code&gt;, &lt;code&gt;Inbox&lt;/code&gt;) over creating new ones; ask before creating a new list&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Response format:&lt;/strong&gt; report back with list name, task title, due date, and any steps created&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The skill is enabled in &lt;code&gt;openclaw.json&lt;/code&gt; under &lt;code&gt;skills.entries&lt;/code&gt; and accessible to all five agents without any per-agent allowlist.&lt;/p&gt;
+&lt;h2 id="authentication-the-device-code-flow"&gt;Authentication: the device-code flow
+&lt;/h2&gt;&lt;p&gt;The CLI uses Microsoft&amp;rsquo;s device-code flow, the only OAuth flow that works without a redirect URI, which makes it a good fit for a headless container:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ms-todo-cli auth login&lt;/code&gt; contacts Azure AD and receives a device code&lt;/li&gt;
+&lt;li&gt;It prints the code and URL to stderr (not stdout, which keeps stdout clean for JSON)&lt;/li&gt;
+&lt;li&gt;The user opens the URL in a browser, enters the code, and completes login&lt;/li&gt;
+&lt;li&gt;The MSAL library caches the refresh token at &lt;code&gt;~/.ms-todo-cli/msal-cache.json&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After the initial login, subsequent commands use silent token refresh. The cache file is mode &lt;code&gt;0o600&lt;/code&gt; for minimal exposure.&lt;/p&gt;
+&lt;p&gt;The Azure app registration needs three delegated permissions: &lt;code&gt;Tasks.ReadWrite&lt;/code&gt;, &lt;code&gt;User.Read&lt;/code&gt;, and &lt;code&gt;offline_access&lt;/code&gt;. The app must support &amp;ldquo;Accounts in any organizational directory and personal Microsoft accounts&amp;rdquo; to work with both work/school and personal Microsoft accounts.&lt;/p&gt;
+&lt;h2 id="what-this-unlocks"&gt;What this unlocks
+&lt;/h2&gt;&lt;p&gt;With the skill active, any agent can now handle requests like:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Add &amp;lsquo;Review the quarterly report&amp;rsquo; to my Tasks list, due Friday, high priority.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The agent runs &lt;code&gt;ms-todo-cli list list&lt;/code&gt; to find the right list, creates the task with &lt;code&gt;ms-todo-cli task create&lt;/code&gt;, and reports back with the task title and due date. If I later say &amp;ldquo;mark that task as done,&amp;rdquo; the agent can complete it by ID.&lt;/p&gt;
+&lt;p&gt;Checklist steps work the same way. For multi-part follow-ups such as &amp;ldquo;gather the documents, review the draft, submit the form,&amp;rdquo; the agent creates a parent task and adds each item as a step.&lt;/p&gt;
+&lt;p&gt;The JSON output means the agent always knows whether the operation succeeded, what error occurred if it didn&amp;rsquo;t, and what IDs to reference for follow-up operations.&lt;/p&gt;
+&lt;h2 id="what-id-improve"&gt;What I&amp;rsquo;d improve
+&lt;/h2&gt;&lt;p&gt;A few things are on the list for future iterations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Pagination:&lt;/strong&gt; the current implementation doesn&amp;rsquo;t handle paginated Graph API responses. If a list has more than 100 tasks, it only returns the first page. Fine for now, but it&amp;rsquo;ll bite eventually.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;npm publish:&lt;/strong&gt; publishing to npm would make &lt;code&gt;npx ms-todo-cli&lt;/code&gt; work anywhere, not just in Docker images that install from GitHub Releases.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Recurrence and reminders:&lt;/strong&gt; the Graph API supports these, but the CLI doesn&amp;rsquo;t expose them yet.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linked resources:&lt;/strong&gt; To Do tasks can link to emails, URLs, and other Microsoft 365 items. That&amp;rsquo;s a natural extension for agent workflows.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For now, though, the basic CRUD loop of create, list, update, and complete covers most of what I actually need from a task manager integration.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/05/how-i-configured-five-ai-agents-on-one-teams-bot/" &gt;How I Configured Five AI Agents on One Teams Bot&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>How I Configured Five AI Agents on One Microsoft Teams Bot</title><link>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</link><pubDate>Sun, 12 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/cover.png" alt="Featured image of post How I Configured Five AI Agents on One Microsoft Teams Bot" /&gt;&lt;p&gt;In the &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;previous post&lt;/a&gt; I described splitting OpenClaw into two agents: Marshal for operations and Ava for personal conversations. That setup worked well enough that I wanted to push it further.&lt;/p&gt;
+&lt;p&gt;I had three more personas sitting in the &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; project that had never been deployed as live agents: Dave the Beaver (business advisory), Dot the Parrot (financial advisory), and Reese the Eagle (spiritual / reflective). Instead of spinning up separate bot registrations, I wanted all five agents to share a single Teams bot and route messages based on which channel the conversation happened in.&lt;/p&gt;
+&lt;p&gt;This is how I did it, and the one thing that almost derailed the whole setup.&lt;/p&gt;
+&lt;h2 id="the-architecture-one-bot-five-agents-channel-based-routing"&gt;The architecture: one bot, five agents, channel-based routing
+&lt;/h2&gt;&lt;p&gt;OpenClaw supports multiple agents in a single gateway instance. Each agent gets its own workspace directory (with its own identity, personality, and memory), its own model configuration, and its own API credential rotation. But they all share the same Teams bot registration, the same webhook endpoint, and the same Docker container.&lt;/p&gt;
+&lt;p&gt;The routing is handled by &lt;strong&gt;bindings&lt;/strong&gt; in &lt;code&gt;openclaw.json&lt;/code&gt;. Each binding maps an inbound message pattern to a specific agent:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The first matching binding wins. Specific channel bindings go before the catch-all so that messages in dedicated channels reach the right agent, while everything else falls through to Marshal.&lt;/p&gt;
+&lt;h2 id="what-each-agent-needed"&gt;What each agent needed
+&lt;/h2&gt;&lt;p&gt;Setting up a new agent isn&amp;rsquo;t just adding a name to a list. Each one requires a complete directory tree:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Workspace&lt;/strong&gt; (&lt;code&gt;data/workspaces/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;IDENTITY.md&lt;/code&gt;: the persona, including name, creature emoji, avatar path, and behavioral directives&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SOUL.md&lt;/code&gt;: domain expertise, personality boundaries, and how the agent relates to the others&lt;/li&gt;
+&lt;li&gt;Shared files copied from existing agents: &lt;code&gt;USER.md&lt;/code&gt;, &lt;code&gt;TOOLS.md&lt;/code&gt;, &lt;code&gt;AGENTS.md&lt;/code&gt;, &lt;code&gt;HEARTBEAT.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.openclaw/workspace-state.json&lt;/code&gt;: must include &lt;code&gt;setupCompletedAt&lt;/code&gt; or the agent tries to re-run the bootstrap flow&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;avatars/&lt;/code&gt;: the agent&amp;rsquo;s avatar image&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;memory/&lt;/code&gt;: daily memory files that the agent creates automatically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Config&lt;/strong&gt; (&lt;code&gt;data/config/agents/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;agent/auth-profiles.json&lt;/code&gt;: all API credentials with &lt;code&gt;lastGood&lt;/code&gt; tracking&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;agent/models.json&lt;/code&gt;: model provider configuration&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sessions/sessions.json&lt;/code&gt;: initialized with &lt;code&gt;{ &amp;quot;sessions&amp;quot;: {} }&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;code&gt;auth-profiles.json&lt;/code&gt; files deserve special attention. Each agent maintains its own record of which API credential was last successful. I spread the &lt;code&gt;lastGood&lt;/code&gt; values across agents so they naturally distribute load across Google API keys rather than all hammering the same one.&lt;/p&gt;
+&lt;h2 id="per-agent-model-overrides"&gt;Per-agent model overrides
+&lt;/h2&gt;&lt;p&gt;The existing agents (Marshal and Ava) inherit the global default model. For the three new agents, I wanted to try GitHub Copilot&amp;rsquo;s &lt;code&gt;gpt-5.4&lt;/code&gt; as the primary model instead:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Dave&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;primary&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/gpt-5.4&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;fallbacks&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;google/gemini-3-flash-preview&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/claude-sonnet-4.6&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ollama/llama3.2:3b&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The primary model also needs to appear in the global &lt;code&gt;agents.defaults.models&lt;/code&gt; allowlist. The fallback chain gives each agent three escape hatches before the request fails entirely.&lt;/p&gt;
+&lt;h2 id="the-binding-schema-gotcha"&gt;The binding schema gotcha
+&lt;/h2&gt;&lt;p&gt;My first attempt at bindings used a flat string for the peer ID:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The gateway rejected this with a cryptic &lt;code&gt;bindings.2: Invalid input&lt;/code&gt; error repeated for each new binding. Digging into the Zod validation schema inside the gateway container revealed that &lt;code&gt;peer&lt;/code&gt; must be an object:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Valid &lt;code&gt;kind&lt;/code&gt; values are &lt;code&gt;direct&lt;/code&gt;, &lt;code&gt;group&lt;/code&gt;, &lt;code&gt;channel&lt;/code&gt;, and &lt;code&gt;dm&lt;/code&gt;. Teams channel conversations use &lt;code&gt;channel&lt;/code&gt;. This isn&amp;rsquo;t documented anywhere obvious. I found it by reading the bundled validation code at &lt;code&gt;/app/dist/io-DhtVmzAJ.js&lt;/code&gt; inside the running container.&lt;/p&gt;
+&lt;h2 id="the-real-problem-teams-wasnt-delivering-thread-replies"&gt;The real problem: Teams wasn&amp;rsquo;t delivering thread replies
+&lt;/h2&gt;&lt;p&gt;After fixing the binding schema and restarting the gateway, all five agents responded to @mentions in their respective channels. For a moment, I thought the problem was solved.&lt;/p&gt;
+&lt;p&gt;Then I tried replying in a thread without @mentioning the agent. Nothing. No response from any agent, including Marshal who had been working fine before.&lt;/p&gt;
+&lt;p&gt;I spent a while investigating the OpenClaw side. The gateway config had &lt;code&gt;requireMention: false&lt;/code&gt; set globally for Teams. The mention-gating code clearly showed that when &lt;code&gt;requireMention&lt;/code&gt; is false, no messages are skipped. The gateway logs confirmed that every message it received was dispatched and processed successfully.&lt;/p&gt;
+&lt;p&gt;The problem was that the messages never arrived.&lt;/p&gt;
+&lt;p&gt;Looking at the session history for the spiritual agent, I could see two messages, both sent with @mentions, and responses to both. But the thread reply I sent without @mention was simply absent. Teams never forwarded it to the bot&amp;rsquo;s webhook.&lt;/p&gt;
+&lt;h2 id="rsc-permissions-the-missing-piece"&gt;RSC permissions: the missing piece
+&lt;/h2&gt;&lt;p&gt;The Teams app manifest already had the right RSC permission:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;authorization&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;permissions&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;resourceSpecific&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;ChannelMessage.Read.Group&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Application&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; tells Teams to deliver &lt;em&gt;all&lt;/em&gt; channel messages to the bot. Without it, Teams only delivers @mentions. But there&amp;rsquo;s a catch that&amp;rsquo;s easy to miss:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RSC permissions are evaluated only at installation time.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If the bot was installed in a team before this permission was added to the manifest, Teams doesn&amp;rsquo;t retroactively grant it. The bot continues operating under the old permission set. The fix is to uninstall the bot from the team and reinstall it using the updated app package. The team owner gets a new consent prompt that includes the RSC permissions, and after that, all channel messages start flowing.&lt;/p&gt;
+&lt;p&gt;This is a Teams platform behavior, not an OpenClaw issue. But it&amp;rsquo;s the kind of thing that can waste hours if you&amp;rsquo;re only looking at config files and application logs.&lt;/p&gt;
+&lt;h2 id="two-layers-of-require-mention"&gt;Two layers of &amp;ldquo;require mention&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;There are actually two independent systems controlling whether thread replies trigger a response:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Teams platform:&lt;/strong&gt; controls whether the message is &lt;em&gt;delivered&lt;/em&gt; to the bot webhook. Without &lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; RSC, only @mentions are delivered. With it, all channel messages are delivered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OpenClaw gateway:&lt;/strong&gt; controls whether a &lt;em&gt;delivered&lt;/em&gt; message is &lt;em&gt;processed&lt;/em&gt;. The &lt;code&gt;channels.msteams.requireMention&lt;/code&gt; setting (default: &lt;code&gt;true&lt;/code&gt;) gates this. Even if Teams delivers all messages, OpenClaw will silently drop non-@mention messages unless you set &lt;code&gt;requireMention: false&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both layers need to be configured correctly. Setting &lt;code&gt;requireMention: false&lt;/code&gt; in OpenClaw without RSC permissions means the gateway is ready to process messages that never arrive. Having RSC permissions without &lt;code&gt;requireMention: false&lt;/code&gt; means the messages arrive but get dropped.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;requireMention&lt;/code&gt; setting resolves through a chain: per-channel config → per-team config → global msteams config → &lt;code&gt;true&lt;/code&gt;. If you have per-team entries in the &lt;code&gt;teams&lt;/code&gt; section of your msteams config, those take precedence over the global setting.&lt;/p&gt;
+&lt;h2 id="what-id-do-differently"&gt;What I&amp;rsquo;d do differently
+&lt;/h2&gt;&lt;p&gt;If I were starting over, I&amp;rsquo;d configure the Teams manifest with all RSC permissions from day one, before the first installation. Retrofitting permissions onto an already-installed bot is not hard; you just reinstall. But it&amp;rsquo;s invisible enough that you can spend a long time debugging the wrong layer.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also document the binding schema earlier. The &lt;code&gt;peer&lt;/code&gt; object format is strict and the error message doesn&amp;rsquo;t hint at the structure it expects. Having a working example in your notes saves real time.&lt;/p&gt;
+&lt;h2 id="the-current-state"&gt;The current state
+&lt;/h2&gt;&lt;p&gt;Five agents, one bot registration, one Docker container. Each agent has its own personality, its own model preferences, and its own Teams channel. Marshal handles the catch-all; the others respond in their dedicated channels. The gateway processes every message it receives without requiring @mentions.&lt;/p&gt;
+&lt;p&gt;The next step is reinstalling the Teams app in each team with the updated manifest so that thread replies start flowing without @mention. After that, I want to experiment with cross-agent awareness, letting one agent hand off a conversation to another when the domain shifts.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical. It was architectural.&lt;/p&gt;
 &lt;p&gt;Should one agent answer everything?&lt;/p&gt;
 &lt;p&gt;I didn&amp;rsquo;t think so.&lt;/p&gt;
 &lt;h2 id="i-wanted-separation-without-turning-the-system-into-theater"&gt;I wanted separation without turning the system into theater
@@ -244,7 +606,116 @@
 &lt;p&gt;But for this kind of system, I think that is the right trade.&lt;/p&gt;
 &lt;p&gt;I would much rather spend time shaping one explicit container image and one compose stack than wonder which random host package made the environment drift.&lt;/p&gt;
 &lt;p&gt;For me, Docker made OpenClaw feel less like a clever experiment and more like an actual service I could live with.&lt;/p&gt;
-&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Sandboxed Code Execution for Kids: How Judge0 and Python sys.settrace Power FireFly</title><link>https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/</link><pubDate>Thu, 15 Jan 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/cover.png" alt="Featured image of post Sandboxed Code Execution for Kids: How Judge0 and Python sys.settrace Power FireFly" /&gt;&lt;p&gt;When you build a platform for kids to learn to code, like &lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;FireFly&lt;/a&gt;, the hard problem is &lt;strong&gt;safety&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Letting a developer run arbitrary code in a container is one thing. Letting a 7-year-old, who might accidentally or intentionally write an infinite loop or a memory-hogging script, run code on your servers is another.&lt;/p&gt;
+&lt;p&gt;For FireFly, I needed a solution that was:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Secure:&lt;/strong&gt; No &amp;ldquo;breakouts&amp;rdquo; to the host machine.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fast:&lt;/strong&gt; Near-instant execution so the learning flow isn&amp;rsquo;t broken.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Traceable:&lt;/strong&gt; I needed to know exactly which line was running at any moment so the AI tutor could give grounded feedback.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The solution ended up being a combination of &lt;strong&gt;Judge0&lt;/strong&gt; and &lt;strong&gt;Python&amp;rsquo;s &lt;code&gt;sys.settrace()&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="layer-1-the-hard-sandbox-judge0"&gt;Layer 1: The Hard Sandbox (Judge0)
+&lt;/h2&gt;&lt;p&gt;The first line of defense is &lt;strong&gt;Judge0&lt;/strong&gt;, an open-source online code execution system. I run Judge0 in a set of Docker containers. When a student in FireFly clicks &amp;ldquo;Run,&amp;rdquo; their code is sent to the Judge0 API, which:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Creates a temporary, isolated worker.&lt;/li&gt;
+&lt;li&gt;Enforces strict CPU and memory limits.&lt;/li&gt;
+&lt;li&gt;Limits the execution time to a few seconds.&lt;/li&gt;
+&lt;li&gt;Returns the output (or the error).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This handles the outer safety boundary. Even if a student tries to &lt;code&gt;import os; os.system('rm -rf /')&lt;/code&gt;, Judge0 catches it or confines the damage to a disposable container.&lt;/p&gt;
+&lt;h2 id="layer-2-the-soft-sandbox-python-syssettrace"&gt;Layer 2: The Soft Sandbox (Python &lt;code&gt;sys.settrace&lt;/code&gt;)
+&lt;/h2&gt;&lt;p&gt;Judge0 keeps the system safe, but it does not tell me why a student got stuck. To power a &lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;Socratic AI Tutor&lt;/a&gt;, the system needs to see the internal state of execution: which variables change, and which lines get hit.&lt;/p&gt;
+&lt;p&gt;To do that, I wrap the student&amp;rsquo;s Python code in a tracer script that uses &lt;code&gt;sys.settrace()&lt;/code&gt;. It is a built-in Python hook that lets you run a function for each executed line.&lt;/p&gt;
+&lt;h3 id="how-the-tracer-works"&gt;How the Tracer Works:
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Line-by-line tracking:&lt;/strong&gt; As the code runs, the tracer records the current line number and the values of local variables.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Instruction limit:&lt;/strong&gt; If the code takes too many steps, as in an infinite loop, the tracer raises a custom exception and stops execution before Judge0 has to step in.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;State snapshot:&lt;/strong&gt; At the end of the run, the tracer returns a breadcrumb trail of the execution.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="layer-3-the-ai-tutor-feedback-loop"&gt;Layer 3: The AI Tutor Feedback Loop
+&lt;/h2&gt;&lt;p&gt;The &amp;ldquo;breadcrumb&amp;rdquo; from the tracer is what makes the &lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;FireFly AI Tutor&lt;/a&gt; so effective. Instead of just seeing &amp;ldquo;Error: NameError: name &amp;lsquo;x&amp;rsquo; is not defined,&amp;rdquo; the AI can see: &amp;ldquo;The student defined &lt;code&gt;x&lt;/code&gt; on line 2, but they are trying to use it on line 5 inside a function where it&amp;rsquo;s not in scope.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;This level of detail allows the AI to ask much better &lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;Socratic questions&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="why-this-matters-for-edtech"&gt;Why This Matters for EdTech
+&lt;/h2&gt;&lt;p&gt;We often think of &amp;ldquo;sandboxing&amp;rdquo; as a security feature for protecting servers. In EdTech, it is also a &lt;strong&gt;pedagogical feature&lt;/strong&gt;. A safe, observable environment gives kids room to experiment, break things, and learn from their mistakes without real-world consequences.&lt;/p&gt;
+&lt;p&gt;Building this part of FireFly has been one of the most satisfying engineering problems in the project. It sits right where security requirements and teaching goals meet.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;How I Wired Up an AI Tutor to Teach Like a Socratic Mentor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;Teaching Kids to Code With BKT: Why I Built FireFly&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea</title><link>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</link><pubDate>Thu, 27 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/cover.png" alt="Featured image of post MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea" /&gt;&lt;p&gt;When I first wrote about &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in practice&lt;/a&gt;, I saw it as a powerful way to connect desktop tools to LLMs. But the real potential of the Model Context Protocol (MCP) becomes clear when you move it to the server side and use it as the &amp;ldquo;glue&amp;rdquo; for an entire &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;agentic engineering orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, the agents need more than just the ability to &amp;ldquo;read a file.&amp;rdquo; They need to understand the &lt;em&gt;state&lt;/em&gt; of the repository: Which issues are open? What are the pending reviews? Are there conflicting changes in a PR?&lt;/p&gt;
+&lt;p&gt;Instead of writing custom API wrappers for every agent, I built a centralized &lt;strong&gt;MCP Server for Gitea&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-problem-with-traditional-api-wrappers"&gt;The Problem with Traditional API Wrappers
+&lt;/h2&gt;&lt;p&gt;In the early days of CueMarshal, each agent had its own set of &amp;ldquo;tools&amp;rdquo; that were essentially thin wrappers around the Gitea REST API. This led to several issues:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Prompt Bloat:&lt;/strong&gt; Every time an agent started, I had to describe every single API endpoint in its system prompt.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Inconsistent Schema:&lt;/strong&gt; One agent might get the issue body as raw text, while another might get it as HTML, leading to parsing errors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fragility:&lt;/strong&gt; If the API changed, I had to update the tools across all eight agents.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="why-mcp-is-a-better-way"&gt;Why MCP is a Better Way
+&lt;/h2&gt;&lt;p&gt;MCP changes the relationship between the model and the data. Instead of the model &amp;ldquo;knowing&amp;rdquo; how to call an API, the MCP server &amp;ldquo;advertises&amp;rdquo; its capabilities. The model just says &amp;ldquo;I want to list the issues in this repo,&amp;rdquo; and the protocol handles the rest.&lt;/p&gt;
+&lt;h3 id="the-cuemarshal-gitea-mcp-server"&gt;The CueMarshal Gitea MCP Server
+&lt;/h3&gt;&lt;p&gt;I built the server in TypeScript using the &lt;code&gt;@modelcontextprotocol/sdk&lt;/code&gt;. Here is what it exposes to the agents:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Resources:&lt;/strong&gt; Agents can &amp;ldquo;subscribe&amp;rdquo; to a specific file or a pull request. If the file changes, the MCP server can (in theory) notify the agent.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tools:&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;list_repo_issues&lt;/code&gt;: Returns a structured list of issues with metadata.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_pr_diff&lt;/code&gt;: Fetches the unified diff of a pull request.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;create_issue_comment&lt;/code&gt;: Allows agents to &amp;ldquo;talk&amp;rdquo; to humans on the Git platform.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apply_suggestion&lt;/code&gt;: A specialized tool for applying code changes directly to a branch.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="scaling-to-eight-agents"&gt;Scaling to Eight Agents
+&lt;/h2&gt;&lt;p&gt;What makes this setup work is that all eight CueMarshal agents, from &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Marshal (Orchestrator) to Linton (Linter)&lt;/a&gt;, connect to the same MCP server.&lt;/p&gt;
+&lt;p&gt;This gives every agent a &amp;ldquo;shared reality.&amp;rdquo; If the Reviewer agent (Reese) sees a diff, the Developer agent (Dave) sees the exact same diff through the same tool. That consistency matters for complex, multi-step tasks.&lt;/p&gt;
+&lt;h2 id="security-and-the-read-only-gate"&gt;Security and the &amp;ldquo;Read-Only&amp;rdquo; Gate
+&lt;/h2&gt;&lt;p&gt;One of the most important aspects of using MCP at scale is security. My Gitea MCP server implements a strict &lt;strong&gt;Read-Only mode&lt;/strong&gt; by default. An agent has to explicitly request &amp;ldquo;write&amp;rdquo; permissions for specific tools (like &lt;code&gt;apply_suggestion&lt;/code&gt;), and even then, every write action is logged and requires &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;human approval in the final PR&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="the-future-multi-platform-mcp"&gt;The Future: Multi-Platform MCP
+&lt;/h2&gt;&lt;p&gt;The ultimate goal for CueMarshal is to make the agentic layer platform-agnostic. By using MCP, I can eventually swap out the Gitea MCP server for a GitHub or GitLab MCP server without changing a single line of agent code.&lt;/p&gt;
+&lt;p&gt;The protocol &lt;em&gt;is&lt;/em&gt; the abstraction. And it&amp;rsquo;s what makes &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Agentic Delivery&lt;/a&gt; truly possible at scale.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What it Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Building a Multi-Currency App: The Edge Cases Nobody Warns You About</title><link>https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/</link><pubDate>Wed, 22 Oct 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/cover.png" alt="Featured image of post Building a Multi-Currency App: The Edge Cases Nobody Warns You About" /&gt;&lt;p&gt;When I started building &lt;a class="link" href="https://www.famorize.com" target="_blank" rel="noopener"
+&gt;Famorize&lt;/a&gt;, I thought multi-currency support would be a weekend feature. &amp;ldquo;Just store the currency code and multiply by the exchange rate, right?&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Wrong.&lt;/p&gt;
+&lt;p&gt;Dealing with money in software is a masterclass in edge cases, data integrity, and precision. If you&amp;rsquo;re building an app that handles more than one currency, especially one designed for families across borders, the complexity stacks up fast.&lt;/p&gt;
+&lt;p&gt;Here are the four big lessons I learned from building Famorize&amp;rsquo;s multi-currency engine.&lt;/p&gt;
+&lt;h2 id="1-never-ever-use-floating-point-numbers"&gt;1. Never, Ever Use Floating Point Numbers
+&lt;/h2&gt;&lt;p&gt;This is the &amp;ldquo;Day 1&amp;rdquo; rule for financial software, yet I still see it in production. Floating point numbers (like &lt;code&gt;double&lt;/code&gt; or &lt;code&gt;float&lt;/code&gt; in most languages) are inherently imprecise for decimals. $0.1 + 0.2$ in IEEE 754 floating point is not $0.3$; it&amp;rsquo;s $0.30000000000000004$.&lt;/p&gt;
+&lt;p&gt;In Famorize, everything is stored as &lt;strong&gt;integers in the smallest unit&lt;/strong&gt; (e.g., cents for USD, yen for JPY, satoshis for BTC). If a transaction is $10.50, it is stored as &lt;code&gt;1050&lt;/code&gt;. This eliminates rounding errors at the database and application levels.&lt;/p&gt;
+&lt;h2 id="2-exchange-rate-drift-and-historic-validity"&gt;2. Exchange Rate &amp;ldquo;Drift&amp;rdquo; and Historic Validity
+&lt;/h2&gt;&lt;p&gt;Exchange rates are not static. If a user recorded a $50 CAD transaction today, it might be worth $37 USD. If they look at that same transaction next year, it should still be $50 CAD. But what was its USD value &lt;em&gt;at the time&lt;/em&gt;?&lt;/p&gt;
+&lt;p&gt;To handle this, Famorize doesn&amp;rsquo;t just store the transaction. It stores:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The Base Amount&lt;/strong&gt; (in the user&amp;rsquo;s home currency).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Original Amount&lt;/strong&gt; (in the transaction currency).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Exchange Rate Used&lt;/strong&gt; (at the time of the transaction).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This &amp;ldquo;Snapshot Pattern&amp;rdquo; ensures that reports are accurate to the moment the money actually moved, not the current market rate.&lt;/p&gt;
+&lt;h2 id="3-the-yen-problem-zero-decimal-currencies"&gt;3. The &amp;ldquo;Yen Problem&amp;rdquo; (Zero-Decimal Currencies)
+&lt;/h2&gt;&lt;p&gt;Most developers assume a currency always has two decimal places. This is a trap.&lt;/p&gt;
+&lt;p&gt;While USD, CAD, and EUR have two (cents), currencies like JPY (Japanese Yen) have zero, and others like BHD (Bahraini Dinar) have three. If your UI or database assumes &lt;code&gt;integer / 100&lt;/code&gt; is the decimal value, you will break for users in Japan or Bahrain.&lt;/p&gt;
+&lt;p&gt;Famorize uses a &lt;strong&gt;Currency Metadata&lt;/strong&gt; table that defines the &amp;ldquo;Scale&amp;rdquo; (decimal places) for every supported currency. The display layer is responsible for formatting based on this scale.&lt;/p&gt;
+&lt;h2 id="4-the-ux-of-which-currency"&gt;4. The UX of &amp;ldquo;Which Currency?&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;If a user in Toronto is sending money to a family member in Nairobi, which currency should the input field show?&lt;/p&gt;
+&lt;p&gt;The UX pattern that worked best for me was to always let the user select the &lt;strong&gt;Transaction Currency&lt;/strong&gt; while showing a real-time &amp;ldquo;estimated conversion&amp;rdquo; into their &lt;strong&gt;Home Currency&lt;/strong&gt;. That gives them a clearer sense of how much they are spending in the units they understand.&lt;/p&gt;
+&lt;h2 id="the-result"&gt;The Result
+&lt;/h2&gt;&lt;p&gt;Building a multi-currency app taught me that &amp;ldquo;precision&amp;rdquo; is not just a technical requirement; it is a trust requirement. If a financial app is off by even one cent, the user&amp;rsquo;s trust is broken.&lt;/p&gt;
+&lt;p&gt;Famorize now handles dozens of currencies with an integer-based engine that I can trust with real family finances. It took more than a weekend, but the lessons were worth the effort.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/09/15/oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker/" &gt;OAuth2 and OIDC for Solo Developers: A Practical Setup With Docker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
 &lt;p&gt;Building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
@@ -342,6 +813,39 @@ If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>How I Wired Up an AI Tutor to Teach Like a Socratic Mentor — Not a Cheater</title><link>https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/</link><pubDate>Tue, 05 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/cover.png" alt="Featured image of post How I Wired Up an AI Tutor to Teach Like a Socratic Mentor — Not a Cheater" /&gt;&lt;p&gt;The problem with most &amp;ldquo;AI tutors&amp;rdquo; today is simple: they are too helpful. If a student asks &amp;ldquo;How do I solve for x?&amp;rdquo;, a generic LLM will often just show the steps and give the answer. In an educational context, that isn&amp;rsquo;t teaching; it is a shortcut to a finished worksheet with zero retention.&lt;/p&gt;
+&lt;p&gt;When I started building &lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;FireFly&lt;/a&gt;, my goal was the opposite. I wanted an AI that would act like a &lt;strong&gt;Socratic Mentor&lt;/strong&gt;. It should never give the answer directly. It should only ask the next right question to help the student find the answer themselves.&lt;/p&gt;
+&lt;p&gt;That turned out to be a surprisingly hard technical challenge.&lt;/p&gt;
+&lt;h2 id="the-helpful-assistant-bias"&gt;The &amp;ldquo;Helpful Assistant&amp;rdquo; Bias
+&lt;/h2&gt;&lt;p&gt;Large Language Models (LLMs) are trained to be helpful assistants. Their default behavior is to minimize the &amp;ldquo;effort&amp;rdquo; for the user. In education, you actually want to &lt;em&gt;maximize&lt;/em&gt; the student&amp;rsquo;s cognitive effort within a safe range (the Zone of Proximal Development).&lt;/p&gt;
+&lt;p&gt;To break the LLM&amp;rsquo;s habit of just giving the answer, I had to move beyond simple system prompts and build a more structured interaction loop.&lt;/p&gt;
+&lt;h2 id="three-layers-of-a-socratic-ai"&gt;Three Layers of a Socratic AI
+&lt;/h2&gt;&lt;p&gt;In FireFly, the &amp;ldquo;AI Tutor&amp;rdquo; isn&amp;rsquo;t just one prompt. It is three distinct layers working together.&lt;/p&gt;
+&lt;h3 id="1-the-knowledge-layer-bkt"&gt;1. The Knowledge Layer (BKT)
+&lt;/h3&gt;&lt;p&gt;Before the AI says a word, the system checks the student&amp;rsquo;s current mastery using &lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;Bayesian Knowledge Tracing (BKT)&lt;/a&gt;. If the system knows the student is 90% likely to understand &lt;code&gt;loops&lt;/code&gt; but only 10% likely to understand &lt;code&gt;nested loops&lt;/code&gt;, it passes that context to the LLM.&lt;/p&gt;
+&lt;p&gt;The prompt becomes: &amp;ldquo;The student understands X, but is struggling with Y. Ask a question that bridges the gap.&amp;rdquo;&lt;/p&gt;
+&lt;h3 id="2-the-socratic-constraint"&gt;2. The Socratic Constraint
+&lt;/h3&gt;&lt;p&gt;The core prompt for the FireFly tutor is built around strict negative constraints:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NEVER&lt;/strong&gt; provide the full solution.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NEVER&lt;/strong&gt; point out the exact line of the error.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ALWAYS&lt;/strong&gt; ask a leading question.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ALWAYS&lt;/strong&gt; validate the student&amp;rsquo;s &lt;em&gt;process&lt;/em&gt;, not just their output.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If the student is stuck on a syntax error, the AI might say: &amp;ldquo;I see you&amp;rsquo;re trying to repeat a block of code. Have you looked at where your curly braces are starting and ending?&amp;rdquo;&lt;/p&gt;
+&lt;h3 id="3-the-age-adapted-tone"&gt;3. The Age-Adapted Tone
+&lt;/h3&gt;&lt;p&gt;Teaching a 7-year-old is different from teaching a 15-year-old. FireFly uses different &amp;ldquo;personas&amp;rdquo; depending on the user&amp;rsquo;s profile. For younger kids, the tone is more encouraging and uses metaphors (like &amp;ldquo;the computer is a very literal robot&amp;rdquo;). For older students, the tone is more technical and precise.&lt;/p&gt;
+&lt;h2 id="dealing-with-the-just-tell-me-frustration"&gt;Dealing with the &amp;ldquo;Just Tell Me&amp;rdquo; Frustration
+&lt;/h2&gt;&lt;p&gt;One of the biggest challenges in Socratic teaching is student frustration. When an AI keeps asking questions instead of giving answers, some students will just keep asking &amp;ldquo;Just tell me the answer.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;To handle this, FireFly has a &amp;ldquo;Frustration Fuse.&amp;rdquo; If the student asks for the answer three times in a row, the AI is allowed to provide a &lt;em&gt;hint&lt;/em&gt; that is slightly more direct, or it can offer to &amp;ldquo;reset&amp;rdquo; the problem to an easier version. This keeps the student engaged without breaking the pedagogical goal.&lt;/p&gt;
+&lt;h2 id="why-this-matters"&gt;Why This Matters
+&lt;/h2&gt;&lt;p&gt;We are entering an era where AI-powered personalized learning will be the norm. But if we just build &amp;ldquo;answer machines,&amp;rdquo; we are doing a disservice to the next generation of learners.&lt;/p&gt;
+&lt;p&gt;Building FireFly taught me that the most powerful use of AI in education isn&amp;rsquo;t knowing everything. It&amp;rsquo;s being a patient, persistent, and occasionally annoying mentor who refuses to let the student take the easy way out.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;Teaching Kids to Code With BKT: Why I Built FireFly&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/" &gt;Sandboxed Code Execution for Kids: How Judge0 and Python sys.settrace Power FireFly&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>Teaching Kids to Code With Bayesian Knowledge Tracing: Why I Built FireFly</title><link>https://www.chingono.com/blog/2025/05/08/teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/</link><pubDate>Thu, 08 May 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/05/08/teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/05/08/teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/cover.png" alt="Featured image of post Teaching Kids to Code With Bayesian Knowledge Tracing: Why I Built FireFly" /&gt;&lt;p&gt;Most kids&amp;rsquo; coding products are better at rewarding momentum than understanding.&lt;/p&gt;
 &lt;p&gt;They make it easy to complete the next exercise, collect the badge, and keep moving. What they do not always make easy is answering the question that actually matters: &lt;strong&gt;does the learner understand what the code is doing?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;That question is the reason I started building &lt;a class="link" href="https://github.com/achingono/firefly" target="_blank" rel="noopener"

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Technical Debt on Alfero Chingono</title><link>https://www.chingono.com/tags/technical-debt/</link><description>Recent content in Technical Debt on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/technical-debt/index.xml" rel="self" type="application/rss+xml"/><item><title>Technical Debt Is a Capital Allocation Decision</title><link>https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/</link><pubDate>Thu, 07 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/cover.png" alt="Featured image of post Technical Debt Is a Capital Allocation Decision" /&gt;&lt;p&gt;By the time technical debt is obvious, the engineering argument is usually no longer the hard part.&lt;/p&gt;
+&lt;p&gt;People can see the outages.
+They can see the missed commitments.
+They can see the manual work, the duplicated effort, the slow onboarding, the operational fragility.&lt;/p&gt;
+&lt;p&gt;The harder part is helping the business interpret what it is seeing.&lt;/p&gt;
+&lt;p&gt;Is this just a run of unfortunate IT costs?&lt;/p&gt;
+&lt;p&gt;Or is it a sign that the company needs to reallocate capital toward the platform underneath the business?&lt;/p&gt;
+&lt;p&gt;I think the second framing is usually the correct one.&lt;/p&gt;
+&lt;h2 id="technical-debt-is-not-only-a-code-smell"&gt;Technical debt is not only a code smell
+&lt;/h2&gt;&lt;p&gt;One reason these conversations go sideways is that technical debt is still too often described as if it lives mostly in source code.&lt;/p&gt;
+&lt;p&gt;Sometimes it does.&lt;/p&gt;
+&lt;p&gt;But in practice, the more expensive debt usually spans:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;code and schema variation&lt;/li&gt;
+&lt;li&gt;outdated libraries and protocols&lt;/li&gt;
+&lt;li&gt;manual deployment behavior&lt;/li&gt;
+&lt;li&gt;undocumented custom features&lt;/li&gt;
+&lt;li&gt;weak monitoring and recovery capability&lt;/li&gt;
+&lt;li&gt;poor separation of configuration and secrets&lt;/li&gt;
+&lt;li&gt;process models that rely on individuals more than systems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That matters because the remediation strategy changes depending on the frame.&lt;/p&gt;
+&lt;p&gt;If leadership hears &amp;ldquo;developers want to clean up code,&amp;rdquo; the work sounds optional.&lt;/p&gt;
+&lt;p&gt;If leadership hears &amp;ldquo;the current operating model is reducing delivery capacity, increasing risk, and slowing revenue growth,&amp;rdquo; the conversation becomes more honest.&lt;/p&gt;
+&lt;h2 id="some-remediation-costs-are-avoidable-some-are-not"&gt;Some remediation costs are avoidable. Some are not
+&lt;/h2&gt;&lt;p&gt;I think this distinction is useful, especially for leadership and finance conversations.&lt;/p&gt;
+&lt;p&gt;There are costs the business should absolutely try to eliminate.&lt;/p&gt;
+&lt;p&gt;Things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;repeated manual intervention on unstable components&lt;/li&gt;
+&lt;li&gt;professional services spent compensating for poor operational control&lt;/li&gt;
+&lt;li&gt;paying for underperforming service providers without getting the contracted value&lt;/li&gt;
+&lt;li&gt;troubleshooting time caused by undocumented variance&lt;/li&gt;
+&lt;li&gt;support volume created by preventable deployment mistakes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are avoidable costs, or at least reducible ones.&lt;/p&gt;
+&lt;p&gt;But there are also costs that are simply part of maturing a software business.&lt;/p&gt;
+&lt;p&gt;Things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;replacing deprecated dependencies&lt;/li&gt;
+&lt;li&gt;redesigning deployment paths&lt;/li&gt;
+&lt;li&gt;introducing monitoring and alerting&lt;/li&gt;
+&lt;li&gt;centralizing source control and environment management&lt;/li&gt;
+&lt;li&gt;modernizing critical parts of the architecture&lt;/li&gt;
+&lt;li&gt;training teams to work in a safer, more scalable way&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are not accidental expenses.&lt;/p&gt;
+&lt;p&gt;They are the price of remaining operable as the company grows.&lt;/p&gt;
+&lt;p&gt;Treating them as surprising overhead is how organizations stay trapped.&lt;/p&gt;
+&lt;h2 id="the-most-expensive-choice-is-often-delay"&gt;The most expensive choice is often delay
+&lt;/h2&gt;&lt;p&gt;This is the part I think many businesses discover too late.&lt;/p&gt;
+&lt;p&gt;When leaders postpone remediation because the spending feels large, they are still making an investment decision. They are investing in continued fragility.&lt;/p&gt;
+&lt;p&gt;Delay has a return profile too.&lt;/p&gt;
+&lt;p&gt;It buys:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;more downtime risk&lt;/li&gt;
+&lt;li&gt;more customer frustration&lt;/li&gt;
+&lt;li&gt;more operational labor&lt;/li&gt;
+&lt;li&gt;more difficulty launching strategic work&lt;/li&gt;
+&lt;li&gt;more reluctance inside the team to make changes confidently&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In other words, inaction is not free.&lt;/p&gt;
+&lt;p&gt;It is just financed through slower delivery, preventable incidents, and missed opportunity.&lt;/p&gt;
+&lt;h2 id="why-phased-remediation-works-better-than-heroic-transformation"&gt;Why phased remediation works better than heroic transformation
+&lt;/h2&gt;&lt;p&gt;I am skeptical of remediation plans that read like one dramatic act.&lt;/p&gt;
+&lt;p&gt;The better pattern is usually phased, especially in risk-sensitive organizations.&lt;/p&gt;
+&lt;p&gt;Small steps.
+High value.
+Deliberate sequencing.
+Maximum de-risking.&lt;/p&gt;
+&lt;p&gt;That sounds conservative. In practice, it is what allows momentum to survive.&lt;/p&gt;
+&lt;p&gt;I would rather see a company do five grounded things well than announce one total reinvention and spend a year deepening confusion.&lt;/p&gt;
+&lt;p&gt;For older systems, the practical sequence is often something like:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;make the current state more visible&lt;/li&gt;
+&lt;li&gt;centralize source and dependency management&lt;/li&gt;
+&lt;li&gt;reduce environmental variance&lt;/li&gt;
+&lt;li&gt;create safer development and staging loops&lt;/li&gt;
+&lt;li&gt;automate the repeatable paths&lt;/li&gt;
+&lt;li&gt;modernize the architecture in bounded slices&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That sequence is not exciting, but it respects reality.&lt;/p&gt;
+&lt;h2 id="leadership-has-to-fund-the-future-not-just-the-present"&gt;Leadership has to fund the future, not just the present
+&lt;/h2&gt;&lt;p&gt;There is a mindset shift here that matters.&lt;/p&gt;
+&lt;p&gt;If leadership sees modernization only as cost containment, the ambition will usually be too small.&lt;/p&gt;
+&lt;p&gt;The stronger framing is that remediation buys capacity.&lt;/p&gt;
+&lt;p&gt;It buys the ability to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;keep commitments more reliably&lt;/li&gt;
+&lt;li&gt;onboard customers with less operational stress&lt;/li&gt;
+&lt;li&gt;release with less fear&lt;/li&gt;
+&lt;li&gt;reduce reliance on hard-to-replace tribal knowledge&lt;/li&gt;
+&lt;li&gt;give product and revenue work a healthier platform underneath it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just maintenance.&lt;/p&gt;
+&lt;p&gt;That is business enablement.&lt;/p&gt;
+&lt;h2 id="the-it-treadmill-is-real"&gt;The IT treadmill is real
+&lt;/h2&gt;&lt;p&gt;There is one more uncomfortable truth here.&lt;/p&gt;
+&lt;p&gt;Even after a serious remediation program, the work is not over forever.&lt;/p&gt;
+&lt;p&gt;Protocols change.
+Vendors deprecate features.
+Libraries age out.
+Security expectations rise.
+Operating systems move on.&lt;/p&gt;
+&lt;p&gt;This is normal.&lt;/p&gt;
+&lt;p&gt;I think organizations get into trouble when they keep treating updates as exceptional disruptions instead of ongoing budget realities. A healthy platform budget should assume that some amount of modernization is continuous.&lt;/p&gt;
+&lt;p&gt;Not because the team failed.&lt;/p&gt;
+&lt;p&gt;Because software lives in a moving environment.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Technical debt remediation should not be sold as housekeeping.&lt;/p&gt;
+&lt;p&gt;It is a capital allocation decision about what kind of business the company wants to be able to run two years from now.&lt;/p&gt;
+&lt;p&gt;If the current platform is constraining delivery, trust, and growth, then remediation is not a side project competing with the business. It is part of the business finally funding the conditions it needs to keep scaling.&lt;/p&gt;
+&lt;p&gt;That is the real argument.&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;we should clean this up someday.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But &amp;ldquo;we need to invest in a platform that stops charging us interest on every move.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;This is the last post in the series. The first two were &lt;a class="link" href="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/" &gt;When Product Velocity Becomes a Growth Tax&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/" &gt;Why Manual Deployments Keep Legacy Teams Stuck&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>When Product Velocity Becomes a Growth Tax</title><link>https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/</link><pubDate>Tue, 05 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/cover.png" alt="Featured image of post When Product Velocity Becomes a Growth Tax" /&gt;&lt;p&gt;One of the more expensive patterns in software is this: a company grows because it moves quickly, then later struggles because it kept moving the same way for too long.&lt;/p&gt;
+&lt;p&gt;I have seen this most clearly in older product companies that were built by smart, determined people making rational decisions under pressure. A founder writes the first version. Customers arrive. Custom features get added. A few shortcuts are taken because the business needs momentum more than elegance. Then the team grows, the customer base grows, the environments multiply, and the operational model quietly stops scaling.&lt;/p&gt;
+&lt;p&gt;That does not usually look like a strategy problem at first.&lt;/p&gt;
+&lt;p&gt;It looks like missed deadlines.
+It looks like frustrated leadership.
+It looks like a team that supposedly needs to estimate better.&lt;/p&gt;
+&lt;p&gt;But very often the deeper issue is simpler: the organization is still trying to buy velocity using methods that now create drag.&lt;/p&gt;
+&lt;h2 id="the-original-shortcuts-were-often-reasonable"&gt;The original shortcuts were often reasonable
+&lt;/h2&gt;&lt;p&gt;I think this matters, because teams are too quick to moralize technical debt.&lt;/p&gt;
+&lt;p&gt;Many of the decisions that later become expensive started as good business decisions.&lt;/p&gt;
+&lt;p&gt;If you are a growing software company in the early years, shipping quickly is not optional. You need customers. You need proof. You need cash flow. You need the product to keep moving.&lt;/p&gt;
+&lt;p&gt;That usually leads to choices like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;customer-specific customizations&lt;/li&gt;
+&lt;li&gt;infrastructure built one environment at a time&lt;/li&gt;
+&lt;li&gt;manual deployment habits that rely on trusted individuals&lt;/li&gt;
+&lt;li&gt;configuration embedded too close to code&lt;/li&gt;
+&lt;li&gt;process light enough not to slow urgent work down&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That can work for a while.&lt;/p&gt;
+&lt;p&gt;The problem is that those decisions compound. And once they compound far enough, the organization stops getting speed from them.&lt;/p&gt;
+&lt;p&gt;It starts paying interest instead.&lt;/p&gt;
+&lt;h2 id="the-warning-sign-is-usually-operational-not-architectural"&gt;The warning sign is usually operational, not architectural
+&lt;/h2&gt;&lt;p&gt;When a company says, &amp;ldquo;we are struggling to keep commitments,&amp;rdquo; the instinct is often to inspect planning first.&lt;/p&gt;
+&lt;p&gt;Sometimes that is correct.&lt;/p&gt;
+&lt;p&gt;But if the team is supporting product issues, customer-funded custom work, roadmap initiatives, and modernization efforts all at the same time, planning is only one layer of the problem. If every environment is a little different, if releases are manual, if production fixes depend on tribal knowledge, and if custom features are poorly mapped, then the delivery system is already carrying too much hidden variance.&lt;/p&gt;
+&lt;p&gt;That kind of variance does not show up neatly in a sprint board.&lt;/p&gt;
+&lt;p&gt;It shows up as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;longer troubleshooting cycles&lt;/li&gt;
+&lt;li&gt;defensive estimation&lt;/li&gt;
+&lt;li&gt;support interruptions destroying planned work&lt;/li&gt;
+&lt;li&gt;leadership hearing commitments that were never structurally realistic&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is one reason I do not believe an agile coach, by themselves, can solve a system like that.&lt;/p&gt;
+&lt;p&gt;Agile can improve visibility. It can improve flow. It can improve conversations.&lt;/p&gt;
+&lt;p&gt;But it cannot cancel out environment drift.&lt;/p&gt;
+&lt;h2 id="growth-gets-harder-when-every-customer-becomes-a-partial-fork"&gt;Growth gets harder when every customer becomes a partial fork
+&lt;/h2&gt;&lt;p&gt;One of the hardest scaling traps for older products is customer-specific drift.&lt;/p&gt;
+&lt;p&gt;At first, it feels like responsiveness.&lt;/p&gt;
+&lt;p&gt;You say yes to an enterprise request. You implement something valuable. You help close or retain revenue. That can be exactly the right choice.&lt;/p&gt;
+&lt;p&gt;But if the implementation model becomes &amp;ldquo;add one more custom behavior, one more schema difference, one more environment-specific deployment path,&amp;rdquo; then eventually the product stops behaving like a product and starts behaving like a family of loosely related installations.&lt;/p&gt;
+&lt;p&gt;That changes everything.&lt;/p&gt;
+&lt;p&gt;Testing gets harder because you are not really testing one system anymore.&lt;/p&gt;
+&lt;p&gt;Releases get harder because every change has to survive a wider, murkier set of permutations.&lt;/p&gt;
+&lt;p&gt;Onboarding gets harder because new engineers are learning not just a codebase, but a historical record of customer-by-customer divergence.&lt;/p&gt;
+&lt;p&gt;At that point, the company may still be calling itself fast. But it is doing fast-looking work on top of a slow-moving substrate.&lt;/p&gt;
+&lt;h2 id="the-team-is-not-slow-the-system-is-expensive"&gt;The team is not slow. The system is expensive
+&lt;/h2&gt;&lt;p&gt;This is the sentence I wish more leaders were willing to say out loud.&lt;/p&gt;
+&lt;p&gt;When a development team looks inconsistent, the cause is not always capability. Sometimes the system they are operating inside is charging them too much for every change.&lt;/p&gt;
+&lt;p&gt;If developers are working across environments that do not match, touching production-like systems to understand basic behavior, or spending days reconciling code and database mismatches, that is not a motivation problem.&lt;/p&gt;
+&lt;p&gt;It is a cost-of-change problem.&lt;/p&gt;
+&lt;p&gt;The same is true when direct server access is part of the normal workflow.&lt;/p&gt;
+&lt;p&gt;That setup may look faster because it removes ceremony. In reality, it pushes quality control, traceability, and operational safety back onto individual memory and caution. That trade gets worse as the business grows.&lt;/p&gt;
+&lt;h2 id="the-real-ceiling-is-not-technical-it-is-commercial"&gt;The real ceiling is not technical. It is commercial
+&lt;/h2&gt;&lt;p&gt;What makes this pattern serious is that it does not stay inside engineering.&lt;/p&gt;
+&lt;p&gt;Eventually it reaches the commercial edge of the company.&lt;/p&gt;
+&lt;p&gt;Customers who were used to frequent updates start feeling instability.
+Custom work takes longer to deliver.
+Roadmap work competes with support work more aggressively.
+Expansion into new markets slows because the platform underneath the business is too fragile to carry more load confidently.&lt;/p&gt;
+&lt;p&gt;That is when technical debt stops being a developer complaint and becomes a growth constraint.&lt;/p&gt;
+&lt;p&gt;I think that is the frame leaders need most.&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;the code is old.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;the team needs to work differently.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But: &amp;ldquo;the current operating model is now taxing every future move the business wants to make.&amp;rdquo;&lt;/p&gt;
+&lt;h2 id="what-i-would-focus-on-first"&gt;What I would focus on first
+&lt;/h2&gt;&lt;p&gt;If a company finds itself here, I would resist the urge to start with a grand rewrite story.&lt;/p&gt;
+&lt;p&gt;The first job is to reduce variance and recover control.&lt;/p&gt;
+&lt;p&gt;That usually means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;understanding how environments actually differ&lt;/li&gt;
+&lt;li&gt;centralizing source control and deployment logic&lt;/li&gt;
+&lt;li&gt;separating configuration and secrets from code&lt;/li&gt;
+&lt;li&gt;limiting direct production changes&lt;/li&gt;
+&lt;li&gt;making customer-specific differences more explicit than accidental&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are not glamorous steps.&lt;/p&gt;
+&lt;p&gt;They are foundational ones.&lt;/p&gt;
+&lt;p&gt;You do not modernize a delivery system by declaring a new architecture and hoping the old operational mess becomes irrelevant. You modernize it by making the current system more knowable, more repeatable, and less dependent on memory.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Velocity is one of the best things a young software business can have.&lt;/p&gt;
+&lt;p&gt;It is also one of the easiest things to counterfeit.&lt;/p&gt;
+&lt;p&gt;If speed comes from undocumented variation, manual heroics, and an ever-growing number of exceptions, that speed has an expiry date. Eventually it becomes a tax on the very growth it once enabled.&lt;/p&gt;
+&lt;p&gt;That is the trap.&lt;/p&gt;
+&lt;p&gt;The goal is not to regret the early decisions forever. The goal is to recognize when the business has outgrown them and to invest accordingly.&lt;/p&gt;
+&lt;p&gt;This is the first post in a short series. The next one is more operational: &lt;a class="link" href="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/" &gt;Why Manual Deployments Keep Legacy Teams Stuck&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>

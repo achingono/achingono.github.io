@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Microsoft Agent Framework on Alfero Chingono</title><link>https://www.chingono.com/tags/microsoft-agent-framework/</link><description>Recent content in Microsoft Agent Framework on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/microsoft-agent-framework/index.xml" rel="self" type="application/rss+xml"/><item><title>Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things</title><link>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</link><pubDate>Thu, 09 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/cover.png" alt="Featured image of post Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things" /&gt;&lt;p&gt;The Microsoft Agent Framework 1.0 &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;announcement&lt;/a&gt; dropped on April 3rd. My timeline filled up with variations of &amp;ldquo;it&amp;rsquo;s an incredible time to be an AI Engineer.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;That framing is not wrong. But it is also not the part I care about.&lt;/p&gt;
+&lt;p&gt;What I care about is simpler: does this change anything for people who are already trying to build multi-agent systems that work in production? Not demos. Not prototypes that impress stakeholders for twenty minutes and then quietly get abandoned. Actual systems.&lt;/p&gt;
+&lt;p&gt;I have been building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; for a while now, an 8-agent engineering platform that handles planning, implementation, review, testing, DevOps, and documentation across a self-hosted stack. So the Agent Framework release landed with a bit more context for me than a generic &amp;ldquo;multi-agent is here&amp;rdquo; announcement.&lt;/p&gt;
+&lt;p&gt;A few things stand out. Some of them matter.&lt;/p&gt;
+&lt;h2 id="the-stable-api-commitment-is-the-actual-news"&gt;The stable API commitment is the actual news
+&lt;/h2&gt;&lt;p&gt;I do not get excited about GA announcements just because they happened. I get excited when GA means something specific: stable APIs, a versioning commitment, and the explicit decision that this interface is now something you can build on without expecting the ground to shift under you.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 makes that commitment for both .NET and Python. Backward compatibility going forward. Long-term support.&lt;/p&gt;
+&lt;p&gt;That is not a trivial detail. It is the thing that separates &amp;ldquo;experimental SDK&amp;rdquo; from &amp;ldquo;production dependency.&amp;rdquo; A lot of agentic tooling has been stuck in the first category for longer than most people will admit. Upgrading to the next alpha breaks your prompts, your tool bindings, your middleware, your deployment config, and somehow nobody warned you.&lt;/p&gt;
+&lt;p&gt;Stable APIs also mean stable documentation, which means stable mental models. Those things compound over time in ways that matter.&lt;/p&gt;
+&lt;h2 id="a2a-is-the-piece-i-have-been-watching"&gt;A2A is the piece I have been watching
+&lt;/h2&gt;&lt;p&gt;The Agent-to-Agent (A2A) protocol support is listed as &amp;ldquo;coming soon&amp;rdquo; for the full 1.0 stable tier, but it is in the announcement, and it is the part I think deserves the most attention from people building real systems.&lt;/p&gt;
+&lt;p&gt;The hard problem in multi-agent architecture is not getting one agent to reason well. It is getting multiple agents to coordinate reliably when they are not all running in the same process, or even the same runtime.&lt;/p&gt;
+&lt;p&gt;Right now, most multi-agent systems solve this with some combination of shared databases, message queues, custom APIs, and a lot of hope. That works until it does not. The failure modes are usually subtle: dropped state, competing writes, race conditions that only appear under load, agents that confidently do work that was already done.&lt;/p&gt;
+&lt;p&gt;A2A is trying to make cross-runtime agent collaboration protocol-driven instead of bespoke. Your agents can coordinate with agents running in other frameworks using structured, typed messages, not raw HTTP calls and string parsing.&lt;/p&gt;
+&lt;p&gt;I have spent a non-trivial amount of engineering effort on exactly this problem in CueMarshal. If A2A ends up being as useful as its description suggests, that is real upside for new systems and for existing ones that are currently solving this manually.&lt;/p&gt;
+&lt;h2 id="mcp-support-is-expected-but-worth-noting"&gt;MCP support is expected but worth noting
+&lt;/h2&gt;&lt;p&gt;The &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/" target="_blank" rel="noopener"
+&gt;MCP integration&lt;/a&gt; in Agent Framework is not surprising. MCP has been gaining enough traction that any serious agentic framework needs to support it. But the combination of A2A and MCP in the same SDK is worth thinking about.&lt;/p&gt;
+&lt;p&gt;MCP gives agents a standardized way to discover and invoke external tools. A2A gives agents a standardized way to coordinate with each other. Those two things together start to look like the beginning of a real interface discipline: a shared vocabulary for what agents expose, what they consume, and how they hand off between each other.&lt;/p&gt;
+&lt;p&gt;I wrote about why &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" target="_blank" rel="noopener"
+&gt;MCP matters as a protocol&lt;/a&gt; when Anthropic first announced it. The argument then was that standardization is more valuable than capability for tool access. The same logic applies to A2A. The protocol is not the feature. The shared contract is.&lt;/p&gt;
+&lt;h2 id="declarative-agents-belong-in-version-control"&gt;Declarative agents belong in version control
+&lt;/h2&gt;&lt;p&gt;One specific feature worth calling out: Agent Framework 1.0 supports defining agents&amp;rsquo; instructions, tools, memory configuration, and orchestration topology in version-controlled YAML files.&lt;/p&gt;
+&lt;p&gt;This sounds like a developer ergonomics feature. It is more than that.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in code and your infrastructure lives in code, you can review, audit, diff, and roll back changes to your agent behavior the same way you handle application deployments. You know what changed. You know when. You can trace a behavioral regression to an exact commit.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in a GUI or a database somewhere, you have a different kind of system, one that is harder to inspect and harder to trust.&lt;/p&gt;
+&lt;p&gt;I tend to be opinionated about this: anything that participates in your delivery pipeline should live in Git. Agents are no exception.&lt;/p&gt;
+&lt;h2 id="what-the-framework-still-does-not-answer-for-you"&gt;What the framework still does not answer for you
+&lt;/h2&gt;&lt;p&gt;I want to be clear about something, because I have seen a pattern in how these announcements get received.&lt;/p&gt;
+&lt;p&gt;A good framework reduces the cost of building something. It does not answer the questions you have not asked yet.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 ships with sequential, concurrent, handoff, group chat, and Magentic-One orchestration patterns. Those are real and useful starting points. But they are patterns, not architectures. Using them well still requires you to think carefully about what roles genuinely need to be different, what permissions each role should have, where coordination state lives, how actions are attributed, and what the closed loop looks like that turns outputs into the next inputs.&lt;/p&gt;
+&lt;p&gt;Those questions do not disappear because you have a nice SDK. In my experience, they get easier to articulate once you have shipped a broken version of the system, and that part is not something any framework can skip you past.&lt;/p&gt;
+&lt;p&gt;The DevUI, the browser-based local debugger for visualizing agent execution and message flows, looks genuinely useful for closing that loop faster. Real observability into what agents are doing, in real time, without custom instrumentation, is the kind of thing that makes debugging multi-agent systems feel less like archaeology.&lt;/p&gt;
+&lt;h2 id="where-this-lands-for-me"&gt;Where this lands for me
+&lt;/h2&gt;&lt;p&gt;I am not switching CueMarshal&amp;rsquo;s architecture to Agent Framework. The decisions I have made around self-hosted infrastructure, Gitea, Redis, BullMQ, and the MCP tool layer reflect constraints that have nothing to do with which SDK I use.&lt;/p&gt;
+&lt;p&gt;But I think Agent Framework 1.0 meaningfully lowers the barrier for developers who are trying to build serious agentic systems without first spending months figuring out the underlying coordination problems on their own. The stable APIs, the MCP support, the declarative definitions, and the A2A direction add up to a real foundation, not just a polished demo wrapper.&lt;/p&gt;
+&lt;p&gt;The question worth sitting with is not &amp;ldquo;should I use this framework?&amp;rdquo; It is the same question it has always been: do you actually understand what you are trying to build, and do you understand the coordination problems well enough to make intentional choices, with or without a framework underneath you?&lt;/p&gt;
+&lt;p&gt;If the answer is yes, Agent Framework 1.0 is a reasonable bet for production .NET and Python workloads. That is more than I could have said about most agentic tooling six months ago.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Related reading:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What Anthropic&amp;rsquo;s Model Context Protocol Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;Microsoft Agent Framework 1.0 GA Announcement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.nuget.org/packages/Microsoft.Agents.AI/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (.NET)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pypi.org/project/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (Python)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener"
+&gt;Agent Framework GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

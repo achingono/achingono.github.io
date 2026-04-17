@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GitHub Actions on Alfero Chingono</title><link>https://www.chingono.com/tags/github-actions/</link><description>Recent content in GitHub Actions on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/github-actions/index.xml" rel="self" type="application/rss+xml"/><item><title>Building a Microsoft To Do CLI and Wiring It into OpenClaw</title><link>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</link><pubDate>Thu, 16 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/cover.png" alt="Featured image of post Building a Microsoft To Do CLI and Wiring It into OpenClaw" /&gt;&lt;p&gt;I wanted my OpenClaw agents to manage my Microsoft To Do lists: create tasks, track follow-ups, and check things off. The problem was that Microsoft doesn&amp;rsquo;t ship a To Do CLI. There&amp;rsquo;s the Graph API, but nothing that an agent can call from a shell prompt with a simple command.&lt;/p&gt;
+&lt;p&gt;So I built one.&lt;/p&gt;
+&lt;h2 id="why-a-cli-and-not-a-direct-api-integration"&gt;Why a CLI and not a direct API integration
+&lt;/h2&gt;&lt;p&gt;OpenClaw agents execute tools as shell commands. That&amp;rsquo;s the integration surface. If I wanted all five agents to manage To Do items, I needed something that could be invoked as a binary, accepted flags, and returned structured output. A CLI fit that model perfectly.&lt;/p&gt;
+&lt;p&gt;I also wanted the tool to exist independently of OpenClaw. It should work on any machine with Node.js and an Azure app registration. OpenClaw would consume it as a skill, but the CLI itself would be a standalone, open-source project.&lt;/p&gt;
+&lt;h2 id="from-zero-to-v001-in-one-session"&gt;From zero to v0.0.1 in one session
+&lt;/h2&gt;&lt;p&gt;The entire CLI was built in a single Copilot coding agent session. I started with &lt;code&gt;npm init&lt;/code&gt;, defined the command structure with Commander.js, and layered on MSAL for auth and Axios for the Graph API. The session produced:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Auth commands:&lt;/strong&gt; &lt;code&gt;login&lt;/code&gt; (device-code flow), &lt;code&gt;status&lt;/code&gt;, &lt;code&gt;logout&lt;/code&gt;, &lt;code&gt;print-account&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Task commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;complete&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;, &lt;code&gt;get&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Step commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;complete&lt;/code&gt;, &lt;code&gt;delete&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt; for checklist items within a task&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Short-form aliases:&lt;/strong&gt; &lt;code&gt;ms-todo-cli create&lt;/code&gt; as a shortcut for &lt;code&gt;ms-todo-cli task create&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Everything outputs valid JSON. No plain-text error messages, no Commander help text leaking to stdout. Every response includes &lt;code&gt;ok: true&lt;/code&gt; or &lt;code&gt;ok: false&lt;/code&gt; with a structured error code. That was deliberate. Agents need parseable output, not human-friendly paragraphs.&lt;/p&gt;
+&lt;h3 id="the-error-code-system"&gt;The error code system
+&lt;/h3&gt;&lt;p&gt;Instead of generic error messages, every failure carries a typed code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;ErrorCodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;AUTH_REQUIRED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AUTH_REQUIRED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;AUTH_EXPIRED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AUTH_EXPIRED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;LIST_NOT_FOUND&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;LIST_NOT_FOUND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;TASK_NOT_FOUND&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;TASK_NOT_FOUND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;VALIDATION_ERROR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;VALIDATION_ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;GRAPH_ERROR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;GRAPH_ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;RATE_LIMITED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;RATE_LIMITED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;as&lt;/span&gt; &lt;span class="kr"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This lets an agent react to &lt;code&gt;AUTH_EXPIRED&lt;/code&gt; differently from &lt;code&gt;LIST_NOT_FOUND&lt;/code&gt;. In a skill prompt, I can say &amp;ldquo;if you see &lt;code&gt;AUTH_REQUIRED&lt;/code&gt;, ask the user to run the login flow,&amp;rdquo; and the agent can pattern-match on the JSON output reliably.&lt;/p&gt;
+&lt;h3 id="avoiding-the-on-list-scan"&gt;Avoiding the O(N) list scan
+&lt;/h3&gt;&lt;p&gt;The Microsoft Graph To Do API is list-scoped. To operate on a task, you need the list ID. If you only have the task ID, you have to enumerate all lists and probe each one until you find the right task.&lt;/p&gt;
+&lt;p&gt;The initial implementation did this naively. Every &lt;code&gt;task get&lt;/code&gt; or &lt;code&gt;task update&lt;/code&gt; call fetched all lists first. I added &lt;code&gt;--list-id&lt;/code&gt; as an optional flag on every task command. When provided, it skips the list scan entirely. The skill prompt teaches agents to cache and reuse list IDs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Without list-id: O(N) list scan&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ms-todo-cli task get --task-id &lt;span class="s2"&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# With list-id: single API call&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ms-todo-cli task get --task-id &lt;span class="s2"&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt; --list-id &lt;span class="s2"&gt;&amp;#34;def456&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="packaging-with-github-actions"&gt;Packaging with GitHub Actions
+&lt;/h2&gt;&lt;p&gt;I wanted the CLI installable from GitHub Releases, not from npm, at least not yet. The CI pipeline builds on three platforms, Ubuntu, macOS, and Windows, runs lint and tests on each, then packages the compiled output as a tarball:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Create artifact&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;run&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;tar -czf ms-todo-cli-${{ matrix.os }}.tar.gz dist package.json package-lock.json README.md LICENSE&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;On a tagged push (&lt;code&gt;v*.*.*&lt;/code&gt;), the release job uploads all three tarballs to a GitHub Release with auto-generated release notes.&lt;/p&gt;
+&lt;p&gt;The resulting tarball isn&amp;rsquo;t a standalone binary. It is a packaged Node CLI with a &lt;code&gt;#!/usr/bin/env node&lt;/code&gt; shebang. That works well for the OpenClaw gateway, which already has Node.js installed. For distribution outside Docker, a proper &lt;code&gt;npx&lt;/code&gt;-compatible package or a pkg-compiled binary would be the next step.&lt;/p&gt;
+&lt;h2 id="installing-in-the-gateway-docker-image"&gt;Installing in the gateway Docker image
+&lt;/h2&gt;&lt;p&gt;The gateway Dockerfile downloads the Ubuntu release tarball and installs it globally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; &lt;span class="nv"&gt;MS_TODO_CLI_RELEASE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;v0.0.1&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; &lt;span class="nv"&gt;tmpdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -d&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; install -d /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl -fsSL -o &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli.tar.gz&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;https://github.com/achingono/ms-todo-cli/releases/download/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MS_TODO_CLI_RELEASE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli-ubuntu-latest.tar.gz&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; tar -xzf &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli.tar.gz&amp;#34;&lt;/span&gt; -C /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; npm install --omit&lt;span class="o"&gt;=&lt;/span&gt;dev --omit&lt;span class="o"&gt;=&lt;/span&gt;optional --ignore-scripts &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod +x /opt/ms-todo-cli/dist/cli.js &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ln -sf /opt/ms-todo-cli/dist/cli.js /usr/local/bin/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The &lt;code&gt;--omit=optional&lt;/code&gt; flag skips &lt;code&gt;keytar&lt;/code&gt;, a native module for OS keychain access that isn&amp;rsquo;t needed in a headless container. The &lt;code&gt;--ignore-scripts&lt;/code&gt; flag avoids post-install compilation surprises.&lt;/p&gt;
+&lt;p&gt;Two things make this work across container rebuilds:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Token cache volume:&lt;/strong&gt; &lt;code&gt;./data/ms-todo-cli:/home/node/.ms-todo-cli&lt;/code&gt; in &lt;code&gt;docker-compose.yml&lt;/code&gt; persists the MSAL token cache on the host. Without this, every image rebuild would require re-authenticating.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Client ID environment variable:&lt;/strong&gt; &lt;code&gt;MS_TODO_CLIENT_ID&lt;/code&gt; is set in the &lt;code&gt;docker-compose.yml&lt;/code&gt; environment for both the &lt;code&gt;gateway&lt;/code&gt; and &lt;code&gt;cli&lt;/code&gt; services. The CLI fails fast if this isn&amp;rsquo;t set; there is no silent fallback to a broken state.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-openclaw-skill"&gt;The OpenClaw skill
+&lt;/h2&gt;&lt;p&gt;With the binary installed, the last piece was teaching the agents how to use it. OpenClaw skills are markdown files with a YAML front matter block:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ms-todo&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Manage Microsoft To Do lists, tasks, and checklist steps...&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;openclaw&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;emoji&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;✅&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;homepage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://github.com/achingono/ms-todo-cli&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;requires&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;{&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;bins&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ms-todo-cli&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;}&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The skill file at &lt;code&gt;data/config/skills/ms-todo/SKILL.md&lt;/code&gt; covers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Auth check first:&lt;/strong&gt; always run &lt;code&gt;ms-todo-cli auth status&lt;/code&gt; before any operation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Duplicate avoidance:&lt;/strong&gt; list tasks in the target list before creating a new one&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List hygiene:&lt;/strong&gt; prefer existing catch-all lists (&lt;code&gt;Tasks&lt;/code&gt;, &lt;code&gt;Inbox&lt;/code&gt;) over creating new ones; ask before creating a new list&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Response format:&lt;/strong&gt; report back with list name, task title, due date, and any steps created&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The skill is enabled in &lt;code&gt;openclaw.json&lt;/code&gt; under &lt;code&gt;skills.entries&lt;/code&gt; and accessible to all five agents without any per-agent allowlist.&lt;/p&gt;
+&lt;h2 id="authentication-the-device-code-flow"&gt;Authentication: the device-code flow
+&lt;/h2&gt;&lt;p&gt;The CLI uses Microsoft&amp;rsquo;s device-code flow, the only OAuth flow that works without a redirect URI, which makes it a good fit for a headless container:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ms-todo-cli auth login&lt;/code&gt; contacts Azure AD and receives a device code&lt;/li&gt;
+&lt;li&gt;It prints the code and URL to stderr (not stdout, which keeps stdout clean for JSON)&lt;/li&gt;
+&lt;li&gt;The user opens the URL in a browser, enters the code, and completes login&lt;/li&gt;
+&lt;li&gt;The MSAL library caches the refresh token at &lt;code&gt;~/.ms-todo-cli/msal-cache.json&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After the initial login, subsequent commands use silent token refresh. The cache file is mode &lt;code&gt;0o600&lt;/code&gt; for minimal exposure.&lt;/p&gt;
+&lt;p&gt;The Azure app registration needs three delegated permissions: &lt;code&gt;Tasks.ReadWrite&lt;/code&gt;, &lt;code&gt;User.Read&lt;/code&gt;, and &lt;code&gt;offline_access&lt;/code&gt;. The app must support &amp;ldquo;Accounts in any organizational directory and personal Microsoft accounts&amp;rdquo; to work with both work/school and personal Microsoft accounts.&lt;/p&gt;
+&lt;h2 id="what-this-unlocks"&gt;What this unlocks
+&lt;/h2&gt;&lt;p&gt;With the skill active, any agent can now handle requests like:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Add &amp;lsquo;Review the quarterly report&amp;rsquo; to my Tasks list, due Friday, high priority.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The agent runs &lt;code&gt;ms-todo-cli list list&lt;/code&gt; to find the right list, creates the task with &lt;code&gt;ms-todo-cli task create&lt;/code&gt;, and reports back with the task title and due date. If I later say &amp;ldquo;mark that task as done,&amp;rdquo; the agent can complete it by ID.&lt;/p&gt;
+&lt;p&gt;Checklist steps work the same way. For multi-part follow-ups such as &amp;ldquo;gather the documents, review the draft, submit the form,&amp;rdquo; the agent creates a parent task and adds each item as a step.&lt;/p&gt;
+&lt;p&gt;The JSON output means the agent always knows whether the operation succeeded, what error occurred if it didn&amp;rsquo;t, and what IDs to reference for follow-up operations.&lt;/p&gt;
+&lt;h2 id="what-id-improve"&gt;What I&amp;rsquo;d improve
+&lt;/h2&gt;&lt;p&gt;A few things are on the list for future iterations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Pagination:&lt;/strong&gt; the current implementation doesn&amp;rsquo;t handle paginated Graph API responses. If a list has more than 100 tasks, it only returns the first page. Fine for now, but it&amp;rsquo;ll bite eventually.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;npm publish:&lt;/strong&gt; publishing to npm would make &lt;code&gt;npx ms-todo-cli&lt;/code&gt; work anywhere, not just in Docker images that install from GitHub Releases.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Recurrence and reminders:&lt;/strong&gt; the Graph API supports these, but the CLI doesn&amp;rsquo;t expose them yet.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linked resources:&lt;/strong&gt; To Do tasks can link to emails, URLs, and other Microsoft 365 items. That&amp;rsquo;s a natural extension for agent workflows.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For now, though, the basic CRUD loop of create, list, update, and complete covers most of what I actually need from a task manager integration.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/05/how-i-configured-five-ai-agents-on-one-teams-bot/" &gt;How I Configured Five AI Agents on One Teams Bot&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

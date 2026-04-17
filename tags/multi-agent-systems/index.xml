@@ -1,4 +1,242 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Multi-Agent Systems on Alfero Chingono</title><link>https://www.chingono.com/tags/multi-agent-systems/</link><description>Recent content in Multi-Agent Systems on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/multi-agent-systems/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical. It was architectural.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Multi-Agent Systems on Alfero Chingono</title><link>https://www.chingono.com/tags/multi-agent-systems/</link><description>Recent content in Multi-Agent Systems on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/multi-agent-systems/index.xml" rel="self" type="application/rss+xml"/><item><title>How I Configured Five AI Agents on One Microsoft Teams Bot</title><link>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</link><pubDate>Sun, 12 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/cover.png" alt="Featured image of post How I Configured Five AI Agents on One Microsoft Teams Bot" /&gt;&lt;p&gt;In the &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;previous post&lt;/a&gt; I described splitting OpenClaw into two agents: Marshal for operations and Ava for personal conversations. That setup worked well enough that I wanted to push it further.&lt;/p&gt;
+&lt;p&gt;I had three more personas sitting in the &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; project that had never been deployed as live agents: Dave the Beaver (business advisory), Dot the Parrot (financial advisory), and Reese the Eagle (spiritual / reflective). Instead of spinning up separate bot registrations, I wanted all five agents to share a single Teams bot and route messages based on which channel the conversation happened in.&lt;/p&gt;
+&lt;p&gt;This is how I did it, and the one thing that almost derailed the whole setup.&lt;/p&gt;
+&lt;h2 id="the-architecture-one-bot-five-agents-channel-based-routing"&gt;The architecture: one bot, five agents, channel-based routing
+&lt;/h2&gt;&lt;p&gt;OpenClaw supports multiple agents in a single gateway instance. Each agent gets its own workspace directory (with its own identity, personality, and memory), its own model configuration, and its own API credential rotation. But they all share the same Teams bot registration, the same webhook endpoint, and the same Docker container.&lt;/p&gt;
+&lt;p&gt;The routing is handled by &lt;strong&gt;bindings&lt;/strong&gt; in &lt;code&gt;openclaw.json&lt;/code&gt;. Each binding maps an inbound message pattern to a specific agent:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The first matching binding wins. Specific channel bindings go before the catch-all so that messages in dedicated channels reach the right agent, while everything else falls through to Marshal.&lt;/p&gt;
+&lt;h2 id="what-each-agent-needed"&gt;What each agent needed
+&lt;/h2&gt;&lt;p&gt;Setting up a new agent isn&amp;rsquo;t just adding a name to a list. Each one requires a complete directory tree:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Workspace&lt;/strong&gt; (&lt;code&gt;data/workspaces/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;IDENTITY.md&lt;/code&gt;: the persona, including name, creature emoji, avatar path, and behavioral directives&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SOUL.md&lt;/code&gt;: domain expertise, personality boundaries, and how the agent relates to the others&lt;/li&gt;
+&lt;li&gt;Shared files copied from existing agents: &lt;code&gt;USER.md&lt;/code&gt;, &lt;code&gt;TOOLS.md&lt;/code&gt;, &lt;code&gt;AGENTS.md&lt;/code&gt;, &lt;code&gt;HEARTBEAT.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.openclaw/workspace-state.json&lt;/code&gt;: must include &lt;code&gt;setupCompletedAt&lt;/code&gt; or the agent tries to re-run the bootstrap flow&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;avatars/&lt;/code&gt;: the agent&amp;rsquo;s avatar image&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;memory/&lt;/code&gt;: daily memory files that the agent creates automatically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Config&lt;/strong&gt; (&lt;code&gt;data/config/agents/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;agent/auth-profiles.json&lt;/code&gt;: all API credentials with &lt;code&gt;lastGood&lt;/code&gt; tracking&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;agent/models.json&lt;/code&gt;: model provider configuration&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sessions/sessions.json&lt;/code&gt;: initialized with &lt;code&gt;{ &amp;quot;sessions&amp;quot;: {} }&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;code&gt;auth-profiles.json&lt;/code&gt; files deserve special attention. Each agent maintains its own record of which API credential was last successful. I spread the &lt;code&gt;lastGood&lt;/code&gt; values across agents so they naturally distribute load across Google API keys rather than all hammering the same one.&lt;/p&gt;
+&lt;h2 id="per-agent-model-overrides"&gt;Per-agent model overrides
+&lt;/h2&gt;&lt;p&gt;The existing agents (Marshal and Ava) inherit the global default model. For the three new agents, I wanted to try GitHub Copilot&amp;rsquo;s &lt;code&gt;gpt-5.4&lt;/code&gt; as the primary model instead:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Dave&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;primary&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/gpt-5.4&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;fallbacks&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;google/gemini-3-flash-preview&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/claude-sonnet-4.6&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ollama/llama3.2:3b&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The primary model also needs to appear in the global &lt;code&gt;agents.defaults.models&lt;/code&gt; allowlist. The fallback chain gives each agent three escape hatches before the request fails entirely.&lt;/p&gt;
+&lt;h2 id="the-binding-schema-gotcha"&gt;The binding schema gotcha
+&lt;/h2&gt;&lt;p&gt;My first attempt at bindings used a flat string for the peer ID:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The gateway rejected this with a cryptic &lt;code&gt;bindings.2: Invalid input&lt;/code&gt; error repeated for each new binding. Digging into the Zod validation schema inside the gateway container revealed that &lt;code&gt;peer&lt;/code&gt; must be an object:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Valid &lt;code&gt;kind&lt;/code&gt; values are &lt;code&gt;direct&lt;/code&gt;, &lt;code&gt;group&lt;/code&gt;, &lt;code&gt;channel&lt;/code&gt;, and &lt;code&gt;dm&lt;/code&gt;. Teams channel conversations use &lt;code&gt;channel&lt;/code&gt;. This isn&amp;rsquo;t documented anywhere obvious. I found it by reading the bundled validation code at &lt;code&gt;/app/dist/io-DhtVmzAJ.js&lt;/code&gt; inside the running container.&lt;/p&gt;
+&lt;h2 id="the-real-problem-teams-wasnt-delivering-thread-replies"&gt;The real problem: Teams wasn&amp;rsquo;t delivering thread replies
+&lt;/h2&gt;&lt;p&gt;After fixing the binding schema and restarting the gateway, all five agents responded to @mentions in their respective channels. For a moment, I thought the problem was solved.&lt;/p&gt;
+&lt;p&gt;Then I tried replying in a thread without @mentioning the agent. Nothing. No response from any agent, including Marshal who had been working fine before.&lt;/p&gt;
+&lt;p&gt;I spent a while investigating the OpenClaw side. The gateway config had &lt;code&gt;requireMention: false&lt;/code&gt; set globally for Teams. The mention-gating code clearly showed that when &lt;code&gt;requireMention&lt;/code&gt; is false, no messages are skipped. The gateway logs confirmed that every message it received was dispatched and processed successfully.&lt;/p&gt;
+&lt;p&gt;The problem was that the messages never arrived.&lt;/p&gt;
+&lt;p&gt;Looking at the session history for the spiritual agent, I could see two messages, both sent with @mentions, and responses to both. But the thread reply I sent without @mention was simply absent. Teams never forwarded it to the bot&amp;rsquo;s webhook.&lt;/p&gt;
+&lt;h2 id="rsc-permissions-the-missing-piece"&gt;RSC permissions: the missing piece
+&lt;/h2&gt;&lt;p&gt;The Teams app manifest already had the right RSC permission:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;authorization&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;permissions&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;resourceSpecific&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;ChannelMessage.Read.Group&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Application&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; tells Teams to deliver &lt;em&gt;all&lt;/em&gt; channel messages to the bot. Without it, Teams only delivers @mentions. But there&amp;rsquo;s a catch that&amp;rsquo;s easy to miss:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RSC permissions are evaluated only at installation time.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If the bot was installed in a team before this permission was added to the manifest, Teams doesn&amp;rsquo;t retroactively grant it. The bot continues operating under the old permission set. The fix is to uninstall the bot from the team and reinstall it using the updated app package. The team owner gets a new consent prompt that includes the RSC permissions, and after that, all channel messages start flowing.&lt;/p&gt;
+&lt;p&gt;This is a Teams platform behavior, not an OpenClaw issue. But it&amp;rsquo;s the kind of thing that can waste hours if you&amp;rsquo;re only looking at config files and application logs.&lt;/p&gt;
+&lt;h2 id="two-layers-of-require-mention"&gt;Two layers of &amp;ldquo;require mention&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;There are actually two independent systems controlling whether thread replies trigger a response:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Teams platform:&lt;/strong&gt; controls whether the message is &lt;em&gt;delivered&lt;/em&gt; to the bot webhook. Without &lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; RSC, only @mentions are delivered. With it, all channel messages are delivered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OpenClaw gateway:&lt;/strong&gt; controls whether a &lt;em&gt;delivered&lt;/em&gt; message is &lt;em&gt;processed&lt;/em&gt;. The &lt;code&gt;channels.msteams.requireMention&lt;/code&gt; setting (default: &lt;code&gt;true&lt;/code&gt;) gates this. Even if Teams delivers all messages, OpenClaw will silently drop non-@mention messages unless you set &lt;code&gt;requireMention: false&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both layers need to be configured correctly. Setting &lt;code&gt;requireMention: false&lt;/code&gt; in OpenClaw without RSC permissions means the gateway is ready to process messages that never arrive. Having RSC permissions without &lt;code&gt;requireMention: false&lt;/code&gt; means the messages arrive but get dropped.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;requireMention&lt;/code&gt; setting resolves through a chain: per-channel config → per-team config → global msteams config → &lt;code&gt;true&lt;/code&gt;. If you have per-team entries in the &lt;code&gt;teams&lt;/code&gt; section of your msteams config, those take precedence over the global setting.&lt;/p&gt;
+&lt;h2 id="what-id-do-differently"&gt;What I&amp;rsquo;d do differently
+&lt;/h2&gt;&lt;p&gt;If I were starting over, I&amp;rsquo;d configure the Teams manifest with all RSC permissions from day one, before the first installation. Retrofitting permissions onto an already-installed bot is not hard; you just reinstall. But it&amp;rsquo;s invisible enough that you can spend a long time debugging the wrong layer.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also document the binding schema earlier. The &lt;code&gt;peer&lt;/code&gt; object format is strict and the error message doesn&amp;rsquo;t hint at the structure it expects. Having a working example in your notes saves real time.&lt;/p&gt;
+&lt;h2 id="the-current-state"&gt;The current state
+&lt;/h2&gt;&lt;p&gt;Five agents, one bot registration, one Docker container. Each agent has its own personality, its own model preferences, and its own Teams channel. Marshal handles the catch-all; the others respond in their dedicated channels. The gateway processes every message it receives without requiring @mentions.&lt;/p&gt;
+&lt;p&gt;The next step is reinstalling the Teams app in each team with the updated manifest so that thread replies start flowing without @mention. After that, I want to experiment with cross-agent awareness, letting one agent hand off a conversation to another when the domain shifts.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things</title><link>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</link><pubDate>Thu, 09 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/cover.png" alt="Featured image of post Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things" /&gt;&lt;p&gt;The Microsoft Agent Framework 1.0 &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;announcement&lt;/a&gt; dropped on April 3rd. My timeline filled up with variations of &amp;ldquo;it&amp;rsquo;s an incredible time to be an AI Engineer.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;That framing is not wrong. But it is also not the part I care about.&lt;/p&gt;
+&lt;p&gt;What I care about is simpler: does this change anything for people who are already trying to build multi-agent systems that work in production? Not demos. Not prototypes that impress stakeholders for twenty minutes and then quietly get abandoned. Actual systems.&lt;/p&gt;
+&lt;p&gt;I have been building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; for a while now, an 8-agent engineering platform that handles planning, implementation, review, testing, DevOps, and documentation across a self-hosted stack. So the Agent Framework release landed with a bit more context for me than a generic &amp;ldquo;multi-agent is here&amp;rdquo; announcement.&lt;/p&gt;
+&lt;p&gt;A few things stand out. Some of them matter.&lt;/p&gt;
+&lt;h2 id="the-stable-api-commitment-is-the-actual-news"&gt;The stable API commitment is the actual news
+&lt;/h2&gt;&lt;p&gt;I do not get excited about GA announcements just because they happened. I get excited when GA means something specific: stable APIs, a versioning commitment, and the explicit decision that this interface is now something you can build on without expecting the ground to shift under you.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 makes that commitment for both .NET and Python. Backward compatibility going forward. Long-term support.&lt;/p&gt;
+&lt;p&gt;That is not a trivial detail. It is the thing that separates &amp;ldquo;experimental SDK&amp;rdquo; from &amp;ldquo;production dependency.&amp;rdquo; A lot of agentic tooling has been stuck in the first category for longer than most people will admit. Upgrading to the next alpha breaks your prompts, your tool bindings, your middleware, your deployment config, and somehow nobody warned you.&lt;/p&gt;
+&lt;p&gt;Stable APIs also mean stable documentation, which means stable mental models. Those things compound over time in ways that matter.&lt;/p&gt;
+&lt;h2 id="a2a-is-the-piece-i-have-been-watching"&gt;A2A is the piece I have been watching
+&lt;/h2&gt;&lt;p&gt;The Agent-to-Agent (A2A) protocol support is listed as &amp;ldquo;coming soon&amp;rdquo; for the full 1.0 stable tier, but it is in the announcement, and it is the part I think deserves the most attention from people building real systems.&lt;/p&gt;
+&lt;p&gt;The hard problem in multi-agent architecture is not getting one agent to reason well. It is getting multiple agents to coordinate reliably when they are not all running in the same process, or even the same runtime.&lt;/p&gt;
+&lt;p&gt;Right now, most multi-agent systems solve this with some combination of shared databases, message queues, custom APIs, and a lot of hope. That works until it does not. The failure modes are usually subtle: dropped state, competing writes, race conditions that only appear under load, agents that confidently do work that was already done.&lt;/p&gt;
+&lt;p&gt;A2A is trying to make cross-runtime agent collaboration protocol-driven instead of bespoke. Your agents can coordinate with agents running in other frameworks using structured, typed messages, not raw HTTP calls and string parsing.&lt;/p&gt;
+&lt;p&gt;I have spent a non-trivial amount of engineering effort on exactly this problem in CueMarshal. If A2A ends up being as useful as its description suggests, that is real upside for new systems and for existing ones that are currently solving this manually.&lt;/p&gt;
+&lt;h2 id="mcp-support-is-expected-but-worth-noting"&gt;MCP support is expected but worth noting
+&lt;/h2&gt;&lt;p&gt;The &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/" target="_blank" rel="noopener"
+&gt;MCP integration&lt;/a&gt; in Agent Framework is not surprising. MCP has been gaining enough traction that any serious agentic framework needs to support it. But the combination of A2A and MCP in the same SDK is worth thinking about.&lt;/p&gt;
+&lt;p&gt;MCP gives agents a standardized way to discover and invoke external tools. A2A gives agents a standardized way to coordinate with each other. Those two things together start to look like the beginning of a real interface discipline: a shared vocabulary for what agents expose, what they consume, and how they hand off between each other.&lt;/p&gt;
+&lt;p&gt;I wrote about why &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" target="_blank" rel="noopener"
+&gt;MCP matters as a protocol&lt;/a&gt; when Anthropic first announced it. The argument then was that standardization is more valuable than capability for tool access. The same logic applies to A2A. The protocol is not the feature. The shared contract is.&lt;/p&gt;
+&lt;h2 id="declarative-agents-belong-in-version-control"&gt;Declarative agents belong in version control
+&lt;/h2&gt;&lt;p&gt;One specific feature worth calling out: Agent Framework 1.0 supports defining agents&amp;rsquo; instructions, tools, memory configuration, and orchestration topology in version-controlled YAML files.&lt;/p&gt;
+&lt;p&gt;This sounds like a developer ergonomics feature. It is more than that.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in code and your infrastructure lives in code, you can review, audit, diff, and roll back changes to your agent behavior the same way you handle application deployments. You know what changed. You know when. You can trace a behavioral regression to an exact commit.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in a GUI or a database somewhere, you have a different kind of system, one that is harder to inspect and harder to trust.&lt;/p&gt;
+&lt;p&gt;I tend to be opinionated about this: anything that participates in your delivery pipeline should live in Git. Agents are no exception.&lt;/p&gt;
+&lt;h2 id="what-the-framework-still-does-not-answer-for-you"&gt;What the framework still does not answer for you
+&lt;/h2&gt;&lt;p&gt;I want to be clear about something, because I have seen a pattern in how these announcements get received.&lt;/p&gt;
+&lt;p&gt;A good framework reduces the cost of building something. It does not answer the questions you have not asked yet.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 ships with sequential, concurrent, handoff, group chat, and Magentic-One orchestration patterns. Those are real and useful starting points. But they are patterns, not architectures. Using them well still requires you to think carefully about what roles genuinely need to be different, what permissions each role should have, where coordination state lives, how actions are attributed, and what the closed loop looks like that turns outputs into the next inputs.&lt;/p&gt;
+&lt;p&gt;Those questions do not disappear because you have a nice SDK. In my experience, they get easier to articulate once you have shipped a broken version of the system, and that part is not something any framework can skip you past.&lt;/p&gt;
+&lt;p&gt;The DevUI, the browser-based local debugger for visualizing agent execution and message flows, looks genuinely useful for closing that loop faster. Real observability into what agents are doing, in real time, without custom instrumentation, is the kind of thing that makes debugging multi-agent systems feel less like archaeology.&lt;/p&gt;
+&lt;h2 id="where-this-lands-for-me"&gt;Where this lands for me
+&lt;/h2&gt;&lt;p&gt;I am not switching CueMarshal&amp;rsquo;s architecture to Agent Framework. The decisions I have made around self-hosted infrastructure, Gitea, Redis, BullMQ, and the MCP tool layer reflect constraints that have nothing to do with which SDK I use.&lt;/p&gt;
+&lt;p&gt;But I think Agent Framework 1.0 meaningfully lowers the barrier for developers who are trying to build serious agentic systems without first spending months figuring out the underlying coordination problems on their own. The stable APIs, the MCP support, the declarative definitions, and the A2A direction add up to a real foundation, not just a polished demo wrapper.&lt;/p&gt;
+&lt;p&gt;The question worth sitting with is not &amp;ldquo;should I use this framework?&amp;rdquo; It is the same question it has always been: do you actually understand what you are trying to build, and do you understand the coordination problems well enough to make intentional choices, with or without a framework underneath you?&lt;/p&gt;
+&lt;p&gt;If the answer is yes, Agent Framework 1.0 is a reasonable bet for production .NET and Python workloads. That is more than I could have said about most agentic tooling six months ago.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Related reading:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What Anthropic&amp;rsquo;s Model Context Protocol Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;Microsoft Agent Framework 1.0 GA Announcement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.nuget.org/packages/Microsoft.Agents.AI/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (.NET)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pypi.org/project/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (Python)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener"
+&gt;Agent Framework GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>How I Split OpenClaw into Main and Personal Agents</title><link>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</link><pubDate>Fri, 03 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/cover.png" alt="Featured image of post How I Split OpenClaw into Main and Personal Agents" /&gt;&lt;p&gt;By this point in the series, the Docker stack was solid, the custom image was working, and both channel integrations were live. The next question wasn&amp;rsquo;t purely technical. It was architectural.&lt;/p&gt;
 &lt;p&gt;Should one agent answer everything?&lt;/p&gt;
 &lt;p&gt;I didn&amp;rsquo;t think so.&lt;/p&gt;
 &lt;h2 id="i-wanted-separation-without-turning-the-system-into-theater"&gt;I wanted separation without turning the system into theater

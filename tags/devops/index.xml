@@ -1,4 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Alfero Chingono</title><link>https://www.chingono.com/tags/devops/</link><description>Recent content in DevOps on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Alfero Chingono</title><link>https://www.chingono.com/tags/devops/</link><description>Recent content in DevOps on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>Why Platform Engineering Is the Most Underrated Career Path in 2025</title><link>https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/</link><pubDate>Fri, 14 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/cover.png" alt="Featured image of post Why Platform Engineering Is the Most Underrated Career Path in 2025" /&gt;&lt;p&gt;A few years ago, the common narrative was that &amp;ldquo;DevOps is dead.&amp;rdquo; That was mostly clickbait, but it pointed at a real problem: the &amp;ldquo;You Build It, You Run It&amp;rdquo; mantra was starting to burn out developers.&lt;/p&gt;
+&lt;p&gt;Asking a full-stack engineer to also be a Kubernetes expert, a security specialist, and a cloud architect is not realistic. It piles too much cognitive load onto one job.&lt;/p&gt;
+&lt;p&gt;That is why I think &lt;strong&gt;Platform Engineering&lt;/strong&gt; remains one of the most underrated career paths in 2025.&lt;/p&gt;
+&lt;h2 id="what-platform-engineering-actually-is"&gt;What Platform Engineering Actually Is
+&lt;/h2&gt;&lt;p&gt;Platform Engineering is the practice of designing and building internal developer platforms (IDPs) that provide clear paved roads. These are self-service workflows that let developers deploy their apps without having to think through the infrastructure from scratch each time.&lt;/p&gt;
+&lt;p&gt;In a mature Platform Engineering organization, a developer should not have to open a ticket to get a database or a staging environment. They should be able to click a button or run a single command and get what they need in minutes, with security and compliance built in.&lt;/p&gt;
+&lt;h2 id="why-it-matters-as-a-career"&gt;Why it matters as a career
+&lt;/h2&gt;&lt;p&gt;If you enjoy systems thinking, automation, and making life easier for other developers, platform engineering is hard to beat. Here is why:&lt;/p&gt;
+&lt;h3 id="1-you-improve-output-across-whole-teams"&gt;1. You improve output across whole teams
+&lt;/h3&gt;&lt;p&gt;As a product engineer, you ship features for users. As a platform engineer, you improve how other engineers ship. If you save 100 developers one hour a week each, that adds up to roughly two and a half weeks of engineering time for the company every month.&lt;/p&gt;
+&lt;h3 id="2-you-sit-at-the-intersection-of-tech-and-strategy"&gt;2. You sit at the intersection of tech and strategy
+&lt;/h3&gt;&lt;p&gt;Platform engineers have to understand the entire stack, from the kernel to the cloud to the CI/CD pipeline. But they also have to think like product managers: what do the internal customers, the developers, actually need to do their jobs well?&lt;/p&gt;
+&lt;p&gt;That puts you in a strong position to influence the technical direction of the company.&lt;/p&gt;
+&lt;h3 id="3-demand-is-ahead-of-supply"&gt;3. Demand is ahead of supply
+&lt;/h3&gt;&lt;p&gt;Every company is becoming a software company, and every software company eventually hits the cognitive-load wall. There are thousands of React developers and Go developers, but far fewer people who can design a reliable self-service platform that balances developer freedom with operational control.&lt;/p&gt;
+&lt;h2 id="the-future-is-agentic-platform-engineering"&gt;The future is agentic platform engineering
+&lt;/h2&gt;&lt;p&gt;In 2025, the platform is no longer just a set of scripts and dashboards. It is starting to become &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;agentic&lt;/a&gt;. We are beginning to build platforms where AI agents can identify bottlenecks, suggest architecture improvements, and even &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/" &gt;fix SonarQube issues before a human sees them&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you care about delivery infrastructure and AI systems, this is one of the more interesting places to work right now.&lt;/p&gt;
+&lt;h2 id="how-to-get-started"&gt;How to Get Started
+&lt;/h2&gt;&lt;p&gt;If you are already doing &amp;ldquo;DevOps&amp;rdquo; or SRE work, you are halfway there. To move toward Platform Engineering, stop thinking about infrastructure as a pile of resources to manage and start thinking about it as a &lt;strong&gt;product to design&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Start by asking your fellow developers, &amp;ldquo;What is the most frustrating part of your day?&amp;rdquo; Then go build the platform that removes that friction.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs and Productivity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
 &lt;p&gt;Building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
@@ -96,6 +122,80 @@ If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Feature Flags Done Right: A Pattern for Safer Production Deployments</title><link>https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/</link><pubDate>Thu, 10 Jul 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/07/10/feature-flags-done-right-a-pattern-for-safer-production-deployments/cover.png" alt="Featured image of post Feature Flags Done Right: A Pattern for Safer Production Deployments" /&gt;&lt;p&gt;There is a common point in a team&amp;rsquo;s growth where &amp;ldquo;moving fast&amp;rdquo; starts to feel like &amp;ldquo;breaking things&amp;rdquo; in a way that is no longer productive. Usually, the first response is to slow down: more manual approvals, longer QA cycles, and stricter deployment windows.&lt;/p&gt;
+&lt;p&gt;But slowing down is a band-aid. The real solution is to decouple &lt;strong&gt;deployment&lt;/strong&gt; from &lt;strong&gt;release&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Deployment is a technical event: the code is in production. Release is a business event: the feature is active for users. If you can&amp;rsquo;t separate these two, you&amp;rsquo;re always one bad merge away from a 3:00 AM incident.&lt;/p&gt;
+&lt;p&gt;Feature flags, or feature management, are what make that separation practical. But doing them &amp;ldquo;right&amp;rdquo; is harder than just wrapping an &lt;code&gt;if&lt;/code&gt; statement around a new function.&lt;/p&gt;
+&lt;h2 id="the-anti-patterns"&gt;The Anti-Patterns
+&lt;/h2&gt;&lt;p&gt;Before we look at the right way, let&amp;rsquo;s look at the ways I&amp;rsquo;ve seen it go wrong:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The &amp;ldquo;Permanent Flag&amp;rdquo; Trap:&lt;/strong&gt; Flags that never get removed. After six months, nobody knows what happens if you turn it off, and the codebase is a minefield of dead branches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Global Config Pattern:&lt;/strong&gt; Using a single large JSON file in a config repo that requires a full redeploy to change a flag. This is not feature management; it&amp;rsquo;s just slow configuration.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Client-Side Only Mistake:&lt;/strong&gt; Thinking flags are only for UI elements. The most powerful flags are often on the backend, controlling database migrations or third-party API integrations.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="a-pattern-for-safer-deployments"&gt;A Pattern for Safer Deployments
+&lt;/h2&gt;&lt;p&gt;When building a feature management framework for a large organization, I&amp;rsquo;ve found three principles make the difference between a useful tool and a burden.&lt;/p&gt;
+&lt;h3 id="1-flags-as-a-first-class-citizen"&gt;1. Flags as a First-Class Citizen
+&lt;/h3&gt;&lt;p&gt;Flags should not be an afterthought. They should be part of the technical design from day one. In a mature Platform Engineering environment, this means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Standardized SDKs:&lt;/strong&gt; Every service should use the same library and pattern for flag evaluation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Auditability:&lt;/strong&gt; Every change to a flag state must be logged: who changed it, when, and why.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Contextual Targeting:&lt;/strong&gt; Flags should support more than just &amp;ldquo;on&amp;rdquo; or &amp;ldquo;off.&amp;rdquo; You need the ability to target by user ID, tenant, region, or percentage-based rollouts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="2-the-lifecycle-of-a-flag"&gt;2. The Lifecycle of a Flag
+&lt;/h3&gt;&lt;p&gt;A flag is technical debt from the moment it is created. To prevent &amp;ldquo;flag rot,&amp;rdquo; you need a lifecycle:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Creation:&lt;/strong&gt; Define the purpose and the &amp;ldquo;kill criteria&amp;rdquo; (e.g., &amp;ldquo;remove after 100% rollout for two weeks&amp;rdquo;).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rollout:&lt;/strong&gt; Use progressive delivery. Start with 1%, then 5%, then 25%, monitoring metrics at every step.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cleanup:&lt;/strong&gt; Automated alerts or PRs should remind engineers to remove the flag once the feature is stable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="3-progressive-delivery-and-the-blast-radius"&gt;3. Progressive Delivery and the &amp;ldquo;Blast Radius&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;The ultimate goal of feature flags is to minimize the &amp;ldquo;blast radius&amp;rdquo; of a failure. If a new checkout flow causes a 10% drop in conversions, you don&amp;rsquo;t want to roll back the entire deployment and lose all the other fixes it contained. You want to flip one switch and be back to a known-good state in milliseconds.&lt;/p&gt;
+&lt;p&gt;In a &lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;well-orchestrated platform&lt;/a&gt;, feature flags become the control plane for your production environment.&lt;/p&gt;
+&lt;h2 id="the-human-element"&gt;The Human Element
+&lt;/h2&gt;&lt;p&gt;Feature flags are as much about culture as they are about code. They require trust between Product and Engineering. When Product managers know they can turn a feature off themselves if something looks wrong, they are more willing to let Engineering deploy more frequently.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re still doing &amp;ldquo;big bang&amp;rdquo; releases every two weeks, you&amp;rsquo;re not just slow; you&amp;rsquo;re taking unnecessary risks. Moving to a flag-first model is the single most effective way to improve both your &lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;DORA metrics&lt;/a&gt; and your team&amp;rsquo;s quality of life.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-04-10-the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right: IDPs and Productivity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Why Platform Engineering is the Most Underrated Career Path in 2025&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery</title><link>https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/</link><pubDate>Wed, 18 Jun 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/cover.png" alt="Featured image of post Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery" /&gt;&lt;p&gt;For the last decade, &amp;ldquo;modern&amp;rdquo; software delivery has been defined by CI/CD. We spent years perfecting the art of the deterministic pipeline: code goes in, tests run, artifacts build, and deployments happen. If a human pushes a button (or a branch), the machine follows a script.&lt;/p&gt;
+&lt;p&gt;It works. It is stable. It is the foundation we all build on.&lt;/p&gt;
+&lt;p&gt;But CI/CD has a ceiling. It handles the &lt;em&gt;delivery&lt;/em&gt; of the code, but it is blind to the &lt;em&gt;coordination&lt;/em&gt; of the work. The bottleneck for most engineering teams is no longer how fast the build runs; it is how long an issue sits unassigned, how many times a PR bounces back for minor linting errors, and how much context is lost between a design doc and an implementation.&lt;/p&gt;
+&lt;p&gt;The next layer of software delivery isn&amp;rsquo;t just &amp;ldquo;faster CI.&amp;rdquo; It is &lt;strong&gt;Agentic Delivery&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-coordination-gap"&gt;The Coordination Gap
+&lt;/h2&gt;&lt;p&gt;If you look at a typical engineering day, the actual &amp;ldquo;delivery&amp;rdquo; (the pipeline run) is a tiny fraction of the cycle. Most of the time is spent in the coordination gap:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Context Assembly:&lt;/strong&gt; Figuring out which files matter for a task and what the existing patterns are.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Quality Gating:&lt;/strong&gt; Waiting for a human to notice a typo, a missing test, or a broken internal convention.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Context Handoff:&lt;/strong&gt; Writing the PR description, explaining the &lt;em&gt;why&lt;/em&gt; to a reviewer, and updating the docs.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Traditional CI/CD tools cannot help here because they are stateless and reactive. They don&amp;rsquo;t &amp;ldquo;understand&amp;rdquo; the task; they only know if the exit code was zero.&lt;/p&gt;
+&lt;h2 id="enter-the-agentic-layer"&gt;Enter the Agentic Layer
+&lt;/h2&gt;&lt;p&gt;When I started building &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;CueMarshal&lt;/a&gt;, I realized that the real value of AI agents in DevOps isn&amp;rsquo;t just generating code. It is handling the non-deterministic parts of the workflow that humans find tedious but necessary.&lt;/p&gt;
+&lt;p&gt;An agentic delivery layer lives &lt;em&gt;above&lt;/em&gt; your CI/CD. It doesn&amp;rsquo;t replace Jenkins or GitHub Actions; it uses them.&lt;/p&gt;
+&lt;h3 id="what-an-agentic-layer-actually-does"&gt;What an Agentic Layer actually does:
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Active Monitoring:&lt;/strong&gt; Instead of waiting for a manual trigger, agents can watch for new issues, draft an implementation plan, and open a PR before a human even context-switches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Semantic Quality Gates:&lt;/strong&gt; While a linter checks syntax, an agent can check if the implementation actually matches the requirements in the issue.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Continuous Context Maintenance:&lt;/strong&gt; Agents can keep documentation in sync with code changes in real-time, effectively eliminating &amp;ldquo;doc debt.&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="lessons-from-the-trenches"&gt;Lessons from the Trenches
+&lt;/h2&gt;&lt;p&gt;Building this into &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;my own platform&lt;/a&gt; taught me that the transition from CI/CD to Agentic Delivery requires a shift in how we think about automation.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;From Scripts to Tools:&lt;/strong&gt; In CI/CD, we write shell scripts. In agentic systems, we define &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;Model Context Protocol (MCP)&lt;/a&gt; tools. The agent needs a structured way to interact with the world, not just a line of bash.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;From Success/Failure to &amp;ldquo;Looks Good to Me&amp;rdquo;:&lt;/strong&gt; We are moving from binary pass/fail gates to probabilistic evaluation. That is why &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;specialized agent roles&lt;/a&gt; matter so much: you want a dedicated &amp;ldquo;Reviewer&amp;rdquo; agent whose only job is to be skeptical.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Git is still the anchor:&lt;/strong&gt; Even with agents doing the heavy lifting, the final source of truth must remain the repository. If it&amp;rsquo;s not in Git, it didn&amp;rsquo;t happen.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-2025-reality"&gt;The 2025 Reality
+&lt;/h2&gt;&lt;p&gt;We are past the &amp;ldquo;AI hype&amp;rdquo; phase where we wonder if agents &lt;em&gt;can&lt;/em&gt; do this. In 2025, the question for engineering leaders is how to integrate them without breaking the trust and safety of the delivery pipeline.&lt;/p&gt;
+&lt;p&gt;The teams that win won&amp;rsquo;t be the ones that let AI run wild. They will be the ones that build an agentic layer that respects the rigor of Platform Engineering while reclaiming the hours lost to the coordination gap.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from an 8-Agent Orchestra&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It</title><link>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</link><pubDate>Thu, 10 Apr 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/cover.png" alt="Featured image of post The DORA Report Was Right: IDPs Improve Team Productivity by 10% — Here's How I've Seen It" /&gt;&lt;p&gt;When the DORA research started surfacing stronger evidence around internal developer platforms, the headline did not surprise me nearly as much as the reactions did.&lt;/p&gt;
 &lt;p&gt;Some people still hear &amp;ldquo;platform engineering&amp;rdquo; and imagine more process, more gates, and another internal team inventing obstacles. That risk is real. But it is only one version of the story.&lt;/p&gt;
 &lt;p&gt;The version I have seen in practice is much simpler: when you reduce cognitive load, standardize the boring parts well, and make the safe path the easy path, teams move faster.&lt;/p&gt;
@@ -223,7 +323,105 @@ Not from a maturity model.&lt;/p&gt;
 &gt;CueMarshal architecture overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/agents/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" /&gt;&lt;p&gt;While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p&gt;
+&lt;/ul&gt;</description></item><item><title>Why Manual Deployments Keep Legacy Teams Stuck</title><link>https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/</link><pubDate>Wed, 06 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/cover.png" alt="Featured image of post Why Manual Deployments Keep Legacy Teams Stuck" /&gt;&lt;p&gt;I think a lot of teams underestimate how much damage manual deployment does once a system grows past a certain point.&lt;/p&gt;
+&lt;p&gt;People often describe it as a release inconvenience.&lt;/p&gt;
+&lt;p&gt;It is usually much worse than that.&lt;/p&gt;
+&lt;p&gt;In legacy environments, manual deployment becomes the mechanism that preserves inconsistency. It keeps environments drifting apart. It keeps tacit knowledge in a few people&amp;rsquo;s heads. It keeps production risk tightly coupled to human memory and luck.&lt;/p&gt;
+&lt;p&gt;And then everyone acts surprised when the team cannot deliver predictably.&lt;/p&gt;
+&lt;h2 id="manual-deployment-is-really-a-variance-engine"&gt;Manual deployment is really a variance engine
+&lt;/h2&gt;&lt;p&gt;The most important thing manual deployment creates is not slowness.&lt;/p&gt;
+&lt;p&gt;It is variance.&lt;/p&gt;
+&lt;p&gt;One file gets missed.
+One config value is updated in one place but not another.
+One database object is present in one environment and absent in the next.
+One server carries a library version nobody remembered to document.&lt;/p&gt;
+&lt;p&gt;Each individual mistake can look small.&lt;/p&gt;
+&lt;p&gt;Together they produce a system where every deployment carries fresh uncertainty.&lt;/p&gt;
+&lt;p&gt;That uncertainty is expensive.&lt;/p&gt;
+&lt;p&gt;It shows up in extra validation work, longer war rooms, support tickets that should never have existed, and a general sense that production is fragile even when the change itself is modest.&lt;/p&gt;
+&lt;h2 id="the-problem-gets-nonlinear-as-environments-multiply"&gt;The problem gets nonlinear as environments multiply
+&lt;/h2&gt;&lt;p&gt;This is where legacy SaaS and hosted enterprise products get into real trouble.&lt;/p&gt;
+&lt;p&gt;If you have one production environment, manual deployment is risky.&lt;/p&gt;
+&lt;p&gt;If you have dozens of environments, many with customer-specific differences, manual deployment becomes an operational tax that grows faster than the team does.&lt;/p&gt;
+&lt;p&gt;Every new server or environment adds more than one more target.&lt;/p&gt;
+&lt;p&gt;It adds:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one more place for configuration drift&lt;/li&gt;
+&lt;li&gt;one more place for undocumented differences&lt;/li&gt;
+&lt;li&gt;one more place where code and schema may no longer line up&lt;/li&gt;
+&lt;li&gt;one more place where support has to guess what &amp;ldquo;normal&amp;rdquo; even means&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is why these teams often feel busy all the time while still struggling to create momentum. Too much of the energy is spent re-establishing trust in the environment before real delivery work can even begin.&lt;/p&gt;
+&lt;h2 id="rdp-is-not-a-deployment-strategy"&gt;RDP is not a deployment strategy
+&lt;/h2&gt;&lt;p&gt;I understand why older organizations end up here.&lt;/p&gt;
+&lt;p&gt;Direct server access feels practical.
+It feels immediate.
+It feels like the shortest path between a request and a fix.&lt;/p&gt;
+&lt;p&gt;But once it becomes normal, it undermines the very things the business needs most: repeatability, auditability, and safe change control.&lt;/p&gt;
+&lt;p&gt;When developers are expected to remote into servers, make changes carefully, and remember exactly what they touched, the process is leaning on discipline where it should be leaning on system design.&lt;/p&gt;
+&lt;p&gt;That is not a strong control model.&lt;/p&gt;
+&lt;p&gt;It is a trust fall.&lt;/p&gt;
+&lt;p&gt;And when mistakes inevitably happen, customers do not experience them as a process gap. They experience them as instability.&lt;/p&gt;
+&lt;h2 id="git-on-the-server-can-help-but-it-is-not-the-destination"&gt;&amp;ldquo;Git on the server&amp;rdquo; can help, but it is not the destination
+&lt;/h2&gt;&lt;p&gt;I have seen teams put Git directly on servers as a first move away from ad hoc production edits.&lt;/p&gt;
+&lt;p&gt;I actually think that can be a reasonable transitional step.&lt;/p&gt;
+&lt;p&gt;It gives you some history.
+It gives you a crude rollback surface.
+It creates at least a little more visibility into what changed.&lt;/p&gt;
+&lt;p&gt;But it is still a stabilizer, not a finished strategy.&lt;/p&gt;
+&lt;p&gt;Git on the server does not solve:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;inconsistent deployment logic&lt;/li&gt;
+&lt;li&gt;missing promotion paths between environments&lt;/li&gt;
+&lt;li&gt;schema drift&lt;/li&gt;
+&lt;li&gt;secrets management&lt;/li&gt;
+&lt;li&gt;approval and review controls&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If anything, it mostly helps you see the disorder more clearly.&lt;/p&gt;
+&lt;p&gt;That is useful. It is just not the same as fixing it.&lt;/p&gt;
+&lt;h2 id="staging-that-does-not-match-production-is-a-false-comfort"&gt;Staging that does not match production is a false comfort
+&lt;/h2&gt;&lt;p&gt;Another common trap is a nominal staging environment that is too different from production to be trustworthy.&lt;/p&gt;
+&lt;p&gt;Teams say they tested the change.
+The change still breaks in production.
+Leadership concludes the testing discipline is weak.&lt;/p&gt;
+&lt;p&gt;Sometimes it is.&lt;/p&gt;
+&lt;p&gt;But sometimes the more honest diagnosis is that the environment strategy itself is weak.&lt;/p&gt;
+&lt;p&gt;If production environments have drifted for years and staging has not kept pace, then &amp;ldquo;we validated it in staging&amp;rdquo; does not mean very much. It mostly means the team validated it somewhere else.&lt;/p&gt;
+&lt;p&gt;That distinction matters.&lt;/p&gt;
+&lt;h2 id="predictability-comes-from-convergence"&gt;Predictability comes from convergence
+&lt;/h2&gt;&lt;p&gt;This is why I think deployment modernization has less to do with flashy tooling than people assume.&lt;/p&gt;
+&lt;p&gt;The real goal is convergence.&lt;/p&gt;
+&lt;p&gt;You want code, infrastructure, configuration, and deployment behavior moving toward a system where changes happen through the same repeatable paths.&lt;/p&gt;
+&lt;p&gt;That usually means doing the unglamorous work first:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;document environment differences&lt;/li&gt;
+&lt;li&gt;identify clusters of similar deployments&lt;/li&gt;
+&lt;li&gt;centralize installers, scripts, and dependency versions&lt;/li&gt;
+&lt;li&gt;define a branching and promotion model&lt;/li&gt;
+&lt;li&gt;separate configuration from binaries and source&lt;/li&gt;
+&lt;li&gt;introduce reviewable deployment paths before aiming for full automation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Only after that foundation exists does CI/CD start delivering its full value.&lt;/p&gt;
+&lt;p&gt;Without that foundation, automation can actually harden confusion instead of removing it.&lt;/p&gt;
+&lt;h2 id="why-this-matters-commercially"&gt;Why this matters commercially
+&lt;/h2&gt;&lt;p&gt;I keep coming back to this because it is easy to frame deployment only as an engineering concern.&lt;/p&gt;
+&lt;p&gt;It is not.&lt;/p&gt;
+&lt;p&gt;When releases are risky and inconsistent:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;customer confidence drops&lt;/li&gt;
+&lt;li&gt;support work expands&lt;/li&gt;
+&lt;li&gt;roadmap promises slip&lt;/li&gt;
+&lt;li&gt;new customer onboarding gets slower&lt;/li&gt;
+&lt;li&gt;modernization work competes with avoidable operational cleanup&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just a DevOps inefficiency.&lt;/p&gt;
+&lt;p&gt;It is a business throughput problem.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Manual deployment survives for so long because it can appear to work right up until the system becomes too large for intuition to carry it.&lt;/p&gt;
+&lt;p&gt;After that point, every change costs more than it should, every outage teaches the same lesson again, and every engineer spends too much time navigating the environment instead of improving the product.&lt;/p&gt;
+&lt;p&gt;That is why I think deployment work deserves to be treated as strategic infrastructure, not release plumbing.&lt;/p&gt;
+&lt;p&gt;If the first post in this series was about the growth ceiling, this is the mechanism that often reinforces it every day.&lt;/p&gt;
+&lt;p&gt;The final post is about the money side of that story: &lt;a class="link" href="https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/" &gt;Technical Debt Is a Capital Allocation Decision&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'</title><link>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</link><pubDate>Mon, 24 Oct 2022 18:06:36 +0000</pubDate><guid>https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/</guid><description>&lt;img src="https://www.chingono.com/blog/2022/10/24/resolving-azure-devops-fastlane-error-issuerid-required/cover.png" alt="Featured image of post Resolving Azure Devops Fastlane Error 'An exception has occurred: issuerId is required'" /&gt;&lt;p&gt;While releasing an updated version of a mobile application to the App Store Test Flight track, I noticed the following error in the logs:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1

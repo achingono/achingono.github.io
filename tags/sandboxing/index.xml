@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sandboxing on Alfero Chingono</title><link>https://www.chingono.com/tags/sandboxing/</link><description>Recent content in Sandboxing on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/sandboxing/index.xml" rel="self" type="application/rss+xml"/><item><title>Sandboxed Code Execution for Kids: How Judge0 and Python sys.settrace Power FireFly</title><link>https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/</link><pubDate>Thu, 15 Jan 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/01/15/sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly/cover.png" alt="Featured image of post Sandboxed Code Execution for Kids: How Judge0 and Python sys.settrace Power FireFly" /&gt;&lt;p&gt;When you build a platform for kids to learn to code, like &lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;FireFly&lt;/a&gt;, the hard problem is &lt;strong&gt;safety&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Letting a developer run arbitrary code in a container is one thing. Letting a 7-year-old, who might accidentally or intentionally write an infinite loop or a memory-hogging script, run code on your servers is another.&lt;/p&gt;
+&lt;p&gt;For FireFly, I needed a solution that was:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Secure:&lt;/strong&gt; No &amp;ldquo;breakouts&amp;rdquo; to the host machine.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fast:&lt;/strong&gt; Near-instant execution so the learning flow isn&amp;rsquo;t broken.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Traceable:&lt;/strong&gt; I needed to know exactly which line was running at any moment so the AI tutor could give grounded feedback.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The solution ended up being a combination of &lt;strong&gt;Judge0&lt;/strong&gt; and &lt;strong&gt;Python&amp;rsquo;s &lt;code&gt;sys.settrace()&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="layer-1-the-hard-sandbox-judge0"&gt;Layer 1: The Hard Sandbox (Judge0)
+&lt;/h2&gt;&lt;p&gt;The first line of defense is &lt;strong&gt;Judge0&lt;/strong&gt;, an open-source online code execution system. I run Judge0 in a set of Docker containers. When a student in FireFly clicks &amp;ldquo;Run,&amp;rdquo; their code is sent to the Judge0 API, which:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Creates a temporary, isolated worker.&lt;/li&gt;
+&lt;li&gt;Enforces strict CPU and memory limits.&lt;/li&gt;
+&lt;li&gt;Limits the execution time to a few seconds.&lt;/li&gt;
+&lt;li&gt;Returns the output (or the error).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This handles the outer safety boundary. Even if a student tries to &lt;code&gt;import os; os.system('rm -rf /')&lt;/code&gt;, Judge0 catches it or confines the damage to a disposable container.&lt;/p&gt;
+&lt;h2 id="layer-2-the-soft-sandbox-python-syssettrace"&gt;Layer 2: The Soft Sandbox (Python &lt;code&gt;sys.settrace&lt;/code&gt;)
+&lt;/h2&gt;&lt;p&gt;Judge0 keeps the system safe, but it does not tell me why a student got stuck. To power a &lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;Socratic AI Tutor&lt;/a&gt;, the system needs to see the internal state of execution: which variables change, and which lines get hit.&lt;/p&gt;
+&lt;p&gt;To do that, I wrap the student&amp;rsquo;s Python code in a tracer script that uses &lt;code&gt;sys.settrace()&lt;/code&gt;. It is a built-in Python hook that lets you run a function for each executed line.&lt;/p&gt;
+&lt;h3 id="how-the-tracer-works"&gt;How the Tracer Works:
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Line-by-line tracking:&lt;/strong&gt; As the code runs, the tracer records the current line number and the values of local variables.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Instruction limit:&lt;/strong&gt; If the code takes too many steps, as in an infinite loop, the tracer raises a custom exception and stops execution before Judge0 has to step in.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;State snapshot:&lt;/strong&gt; At the end of the run, the tracer returns a breadcrumb trail of the execution.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="layer-3-the-ai-tutor-feedback-loop"&gt;Layer 3: The AI Tutor Feedback Loop
+&lt;/h2&gt;&lt;p&gt;The &amp;ldquo;breadcrumb&amp;rdquo; from the tracer is what makes the &lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;FireFly AI Tutor&lt;/a&gt; so effective. Instead of just seeing &amp;ldquo;Error: NameError: name &amp;lsquo;x&amp;rsquo; is not defined,&amp;rdquo; the AI can see: &amp;ldquo;The student defined &lt;code&gt;x&lt;/code&gt; on line 2, but they are trying to use it on line 5 inside a function where it&amp;rsquo;s not in scope.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;This level of detail allows the AI to ask much better &lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;Socratic questions&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="why-this-matters-for-edtech"&gt;Why This Matters for EdTech
+&lt;/h2&gt;&lt;p&gt;We often think of &amp;ldquo;sandboxing&amp;rdquo; as a security feature for protecting servers. In EdTech, it is also a &lt;strong&gt;pedagogical feature&lt;/strong&gt;. A safe, observable environment gives kids room to experiment, break things, and learn from their mistakes without real-world consequences.&lt;/p&gt;
+&lt;p&gt;Building this part of FireFly has been one of the most satisfying engineering problems in the project. It sits right where security requirements and teaching goals meet.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/05/how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater/" &gt;How I Wired Up an AI Tutor to Teach Like a Socratic Mentor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025-05-08-teaching-kids-to-code-with-bayesian-knowledge-tracing-why-i-built-firefly/" &gt;Teaching Kids to Code With BKT: Why I Built FireFly&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

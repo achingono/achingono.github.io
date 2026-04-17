@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Leadership on Alfero Chingono</title><link>https://www.chingono.com/tags/leadership/</link><description>Recent content in Leadership on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/leadership/index.xml" rel="self" type="application/rss+xml"/><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Leadership on Alfero Chingono</title><link>https://www.chingono.com/tags/leadership/</link><description>Recent content in Leadership on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/leadership/index.xml" rel="self" type="application/rss+xml"/><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
 &lt;p&gt;You reduce risk.
 You simplify delivery.
 You create better defaults.
@@ -95,4 +95,119 @@ Often it does not.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;My DORA post on internal developer platforms&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item><item><title>Technical Debt Is a Capital Allocation Decision</title><link>https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/</link><pubDate>Thu, 07 Dec 2023 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/</guid><description>&lt;img src="https://www.chingono.com/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/cover.png" alt="Featured image of post Technical Debt Is a Capital Allocation Decision" /&gt;&lt;p&gt;By the time technical debt is obvious, the engineering argument is usually no longer the hard part.&lt;/p&gt;
+&lt;p&gt;People can see the outages.
+They can see the missed commitments.
+They can see the manual work, the duplicated effort, the slow onboarding, the operational fragility.&lt;/p&gt;
+&lt;p&gt;The harder part is helping the business interpret what it is seeing.&lt;/p&gt;
+&lt;p&gt;Is this just a run of unfortunate IT costs?&lt;/p&gt;
+&lt;p&gt;Or is it a sign that the company needs to reallocate capital toward the platform underneath the business?&lt;/p&gt;
+&lt;p&gt;I think the second framing is usually the correct one.&lt;/p&gt;
+&lt;h2 id="technical-debt-is-not-only-a-code-smell"&gt;Technical debt is not only a code smell
+&lt;/h2&gt;&lt;p&gt;One reason these conversations go sideways is that technical debt is still too often described as if it lives mostly in source code.&lt;/p&gt;
+&lt;p&gt;Sometimes it does.&lt;/p&gt;
+&lt;p&gt;But in practice, the more expensive debt usually spans:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;code and schema variation&lt;/li&gt;
+&lt;li&gt;outdated libraries and protocols&lt;/li&gt;
+&lt;li&gt;manual deployment behavior&lt;/li&gt;
+&lt;li&gt;undocumented custom features&lt;/li&gt;
+&lt;li&gt;weak monitoring and recovery capability&lt;/li&gt;
+&lt;li&gt;poor separation of configuration and secrets&lt;/li&gt;
+&lt;li&gt;process models that rely on individuals more than systems&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That matters because the remediation strategy changes depending on the frame.&lt;/p&gt;
+&lt;p&gt;If leadership hears &amp;ldquo;developers want to clean up code,&amp;rdquo; the work sounds optional.&lt;/p&gt;
+&lt;p&gt;If leadership hears &amp;ldquo;the current operating model is reducing delivery capacity, increasing risk, and slowing revenue growth,&amp;rdquo; the conversation becomes more honest.&lt;/p&gt;
+&lt;h2 id="some-remediation-costs-are-avoidable-some-are-not"&gt;Some remediation costs are avoidable. Some are not
+&lt;/h2&gt;&lt;p&gt;I think this distinction is useful, especially for leadership and finance conversations.&lt;/p&gt;
+&lt;p&gt;There are costs the business should absolutely try to eliminate.&lt;/p&gt;
+&lt;p&gt;Things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;repeated manual intervention on unstable components&lt;/li&gt;
+&lt;li&gt;professional services spent compensating for poor operational control&lt;/li&gt;
+&lt;li&gt;paying for underperforming service providers without getting the contracted value&lt;/li&gt;
+&lt;li&gt;troubleshooting time caused by undocumented variance&lt;/li&gt;
+&lt;li&gt;support volume created by preventable deployment mistakes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are avoidable costs, or at least reducible ones.&lt;/p&gt;
+&lt;p&gt;But there are also costs that are simply part of maturing a software business.&lt;/p&gt;
+&lt;p&gt;Things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;replacing deprecated dependencies&lt;/li&gt;
+&lt;li&gt;redesigning deployment paths&lt;/li&gt;
+&lt;li&gt;introducing monitoring and alerting&lt;/li&gt;
+&lt;li&gt;centralizing source control and environment management&lt;/li&gt;
+&lt;li&gt;modernizing critical parts of the architecture&lt;/li&gt;
+&lt;li&gt;training teams to work in a safer, more scalable way&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are not accidental expenses.&lt;/p&gt;
+&lt;p&gt;They are the price of remaining operable as the company grows.&lt;/p&gt;
+&lt;p&gt;Treating them as surprising overhead is how organizations stay trapped.&lt;/p&gt;
+&lt;h2 id="the-most-expensive-choice-is-often-delay"&gt;The most expensive choice is often delay
+&lt;/h2&gt;&lt;p&gt;This is the part I think many businesses discover too late.&lt;/p&gt;
+&lt;p&gt;When leaders postpone remediation because the spending feels large, they are still making an investment decision. They are investing in continued fragility.&lt;/p&gt;
+&lt;p&gt;Delay has a return profile too.&lt;/p&gt;
+&lt;p&gt;It buys:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;more downtime risk&lt;/li&gt;
+&lt;li&gt;more customer frustration&lt;/li&gt;
+&lt;li&gt;more operational labor&lt;/li&gt;
+&lt;li&gt;more difficulty launching strategic work&lt;/li&gt;
+&lt;li&gt;more reluctance inside the team to make changes confidently&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In other words, inaction is not free.&lt;/p&gt;
+&lt;p&gt;It is just financed through slower delivery, preventable incidents, and missed opportunity.&lt;/p&gt;
+&lt;h2 id="why-phased-remediation-works-better-than-heroic-transformation"&gt;Why phased remediation works better than heroic transformation
+&lt;/h2&gt;&lt;p&gt;I am skeptical of remediation plans that read like one dramatic act.&lt;/p&gt;
+&lt;p&gt;The better pattern is usually phased, especially in risk-sensitive organizations.&lt;/p&gt;
+&lt;p&gt;Small steps.
+High value.
+Deliberate sequencing.
+Maximum de-risking.&lt;/p&gt;
+&lt;p&gt;That sounds conservative. In practice, it is what allows momentum to survive.&lt;/p&gt;
+&lt;p&gt;I would rather see a company do five grounded things well than announce one total reinvention and spend a year deepening confusion.&lt;/p&gt;
+&lt;p&gt;For older systems, the practical sequence is often something like:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;make the current state more visible&lt;/li&gt;
+&lt;li&gt;centralize source and dependency management&lt;/li&gt;
+&lt;li&gt;reduce environmental variance&lt;/li&gt;
+&lt;li&gt;create safer development and staging loops&lt;/li&gt;
+&lt;li&gt;automate the repeatable paths&lt;/li&gt;
+&lt;li&gt;modernize the architecture in bounded slices&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;That sequence is not exciting, but it respects reality.&lt;/p&gt;
+&lt;h2 id="leadership-has-to-fund-the-future-not-just-the-present"&gt;Leadership has to fund the future, not just the present
+&lt;/h2&gt;&lt;p&gt;There is a mindset shift here that matters.&lt;/p&gt;
+&lt;p&gt;If leadership sees modernization only as cost containment, the ambition will usually be too small.&lt;/p&gt;
+&lt;p&gt;The stronger framing is that remediation buys capacity.&lt;/p&gt;
+&lt;p&gt;It buys the ability to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;keep commitments more reliably&lt;/li&gt;
+&lt;li&gt;onboard customers with less operational stress&lt;/li&gt;
+&lt;li&gt;release with less fear&lt;/li&gt;
+&lt;li&gt;reduce reliance on hard-to-replace tribal knowledge&lt;/li&gt;
+&lt;li&gt;give product and revenue work a healthier platform underneath it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is not just maintenance.&lt;/p&gt;
+&lt;p&gt;That is business enablement.&lt;/p&gt;
+&lt;h2 id="the-it-treadmill-is-real"&gt;The IT treadmill is real
+&lt;/h2&gt;&lt;p&gt;There is one more uncomfortable truth here.&lt;/p&gt;
+&lt;p&gt;Even after a serious remediation program, the work is not over forever.&lt;/p&gt;
+&lt;p&gt;Protocols change.
+Vendors deprecate features.
+Libraries age out.
+Security expectations rise.
+Operating systems move on.&lt;/p&gt;
+&lt;p&gt;This is normal.&lt;/p&gt;
+&lt;p&gt;I think organizations get into trouble when they keep treating updates as exceptional disruptions instead of ongoing budget realities. A healthy platform budget should assume that some amount of modernization is continuous.&lt;/p&gt;
+&lt;p&gt;Not because the team failed.&lt;/p&gt;
+&lt;p&gt;Because software lives in a moving environment.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;Technical debt remediation should not be sold as housekeeping.&lt;/p&gt;
+&lt;p&gt;It is a capital allocation decision about what kind of business the company wants to be able to run two years from now.&lt;/p&gt;
+&lt;p&gt;If the current platform is constraining delivery, trust, and growth, then remediation is not a side project competing with the business. It is part of the business finally funding the conditions it needs to keep scaling.&lt;/p&gt;
+&lt;p&gt;That is the real argument.&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;we should clean this up someday.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But &amp;ldquo;we need to invest in a platform that stops charging us interest on every move.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;This is the last post in the series. The first two were &lt;a class="link" href="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/" &gt;When Product Velocity Becomes a Growth Tax&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2023/12/06/why-manual-deployments-keep-legacy-teams-stuck/" &gt;Why Manual Deployments Keep Legacy Teams Stuck&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>

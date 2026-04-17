@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Financial Tech on Alfero Chingono</title><link>https://www.chingono.com/tags/financial-tech/</link><description>Recent content in Financial Tech on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/financial-tech/index.xml" rel="self" type="application/rss+xml"/><item><title>Building a Multi-Currency App: The Edge Cases Nobody Warns You About</title><link>https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/</link><pubDate>Wed, 22 Oct 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/10/22/building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about/cover.png" alt="Featured image of post Building a Multi-Currency App: The Edge Cases Nobody Warns You About" /&gt;&lt;p&gt;When I started building &lt;a class="link" href="https://www.famorize.com" target="_blank" rel="noopener"
+&gt;Famorize&lt;/a&gt;, I thought multi-currency support would be a weekend feature. &amp;ldquo;Just store the currency code and multiply by the exchange rate, right?&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Wrong.&lt;/p&gt;
+&lt;p&gt;Dealing with money in software is a masterclass in edge cases, data integrity, and precision. If you&amp;rsquo;re building an app that handles more than one currency, especially one designed for families across borders, the complexity stacks up fast.&lt;/p&gt;
+&lt;p&gt;Here are the four big lessons I learned from building Famorize&amp;rsquo;s multi-currency engine.&lt;/p&gt;
+&lt;h2 id="1-never-ever-use-floating-point-numbers"&gt;1. Never, Ever Use Floating Point Numbers
+&lt;/h2&gt;&lt;p&gt;This is the &amp;ldquo;Day 1&amp;rdquo; rule for financial software, yet I still see it in production. Floating point numbers (like &lt;code&gt;double&lt;/code&gt; or &lt;code&gt;float&lt;/code&gt; in most languages) are inherently imprecise for decimals. $0.1 + 0.2$ in IEEE 754 floating point is not $0.3$; it&amp;rsquo;s $0.30000000000000004$.&lt;/p&gt;
+&lt;p&gt;In Famorize, everything is stored as &lt;strong&gt;integers in the smallest unit&lt;/strong&gt; (e.g., cents for USD, yen for JPY, satoshis for BTC). If a transaction is $10.50, it is stored as &lt;code&gt;1050&lt;/code&gt;. This eliminates rounding errors at the database and application levels.&lt;/p&gt;
+&lt;h2 id="2-exchange-rate-drift-and-historic-validity"&gt;2. Exchange Rate &amp;ldquo;Drift&amp;rdquo; and Historic Validity
+&lt;/h2&gt;&lt;p&gt;Exchange rates are not static. If a user recorded a $50 CAD transaction today, it might be worth $37 USD. If they look at that same transaction next year, it should still be $50 CAD. But what was its USD value &lt;em&gt;at the time&lt;/em&gt;?&lt;/p&gt;
+&lt;p&gt;To handle this, Famorize doesn&amp;rsquo;t just store the transaction. It stores:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The Base Amount&lt;/strong&gt; (in the user&amp;rsquo;s home currency).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Original Amount&lt;/strong&gt; (in the transaction currency).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The Exchange Rate Used&lt;/strong&gt; (at the time of the transaction).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This &amp;ldquo;Snapshot Pattern&amp;rdquo; ensures that reports are accurate to the moment the money actually moved, not the current market rate.&lt;/p&gt;
+&lt;h2 id="3-the-yen-problem-zero-decimal-currencies"&gt;3. The &amp;ldquo;Yen Problem&amp;rdquo; (Zero-Decimal Currencies)
+&lt;/h2&gt;&lt;p&gt;Most developers assume a currency always has two decimal places. This is a trap.&lt;/p&gt;
+&lt;p&gt;While USD, CAD, and EUR have two (cents), currencies like JPY (Japanese Yen) have zero, and others like BHD (Bahraini Dinar) have three. If your UI or database assumes &lt;code&gt;integer / 100&lt;/code&gt; is the decimal value, you will break for users in Japan or Bahrain.&lt;/p&gt;
+&lt;p&gt;Famorize uses a &lt;strong&gt;Currency Metadata&lt;/strong&gt; table that defines the &amp;ldquo;Scale&amp;rdquo; (decimal places) for every supported currency. The display layer is responsible for formatting based on this scale.&lt;/p&gt;
+&lt;h2 id="4-the-ux-of-which-currency"&gt;4. The UX of &amp;ldquo;Which Currency?&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;If a user in Toronto is sending money to a family member in Nairobi, which currency should the input field show?&lt;/p&gt;
+&lt;p&gt;The UX pattern that worked best for me was to always let the user select the &lt;strong&gt;Transaction Currency&lt;/strong&gt; while showing a real-time &amp;ldquo;estimated conversion&amp;rdquo; into their &lt;strong&gt;Home Currency&lt;/strong&gt;. That gives them a clearer sense of how much they are spending in the units they understand.&lt;/p&gt;
+&lt;h2 id="the-result"&gt;The Result
+&lt;/h2&gt;&lt;p&gt;Building a multi-currency app taught me that &amp;ldquo;precision&amp;rdquo; is not just a technical requirement; it is a trust requirement. If a financial app is off by even one cent, the user&amp;rsquo;s trust is broken.&lt;/p&gt;
+&lt;p&gt;Famorize now handles dozens of currencies with an integer-based engine that I can trust with real family finances. It took more than a weekend, but the lessons were worth the effort.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/09/15/oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker/" &gt;OAuth2 and OIDC for Solo Developers: A Practical Setup With Docker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

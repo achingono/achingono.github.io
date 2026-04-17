@@ -1,4 +1,426 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Agentic AI on Alfero Chingono</title><link>https://www.chingono.com/categories/agentic-ai/</link><description>Recent content in Agentic AI on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/agentic-ai/index.xml" rel="self" type="application/rss+xml"/><item><title>Why My OpenClaw Reminders Weren't Reaching Signal or Teams</title><link>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</link><pubDate>Sat, 04 Apr 2026 21:23:46 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/cover.png" alt="Featured image of post Why My OpenClaw Reminders Weren't Reaching Signal or Teams" /&gt;&lt;p&gt;This is the fifth and final post in my short OpenClaw series. If you want the background first, read &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;why I run OpenClaw in Docker&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;how I wired Signal and Teams into a custom image&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;the Dockerfile walkthrough&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;the main/personal agent split&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Agentic AI on Alfero Chingono</title><link>https://www.chingono.com/categories/agentic-ai/</link><description>Recent content in Agentic AI on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/categories/agentic-ai/index.xml" rel="self" type="application/rss+xml"/><item><title>Building a Microsoft To Do CLI and Wiring It into OpenClaw</title><link>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</link><pubDate>Thu, 16 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/cover.png" alt="Featured image of post Building a Microsoft To Do CLI and Wiring It into OpenClaw" /&gt;&lt;p&gt;I wanted my OpenClaw agents to manage my Microsoft To Do lists: create tasks, track follow-ups, and check things off. The problem was that Microsoft doesn&amp;rsquo;t ship a To Do CLI. There&amp;rsquo;s the Graph API, but nothing that an agent can call from a shell prompt with a simple command.&lt;/p&gt;
+&lt;p&gt;So I built one.&lt;/p&gt;
+&lt;h2 id="why-a-cli-and-not-a-direct-api-integration"&gt;Why a CLI and not a direct API integration
+&lt;/h2&gt;&lt;p&gt;OpenClaw agents execute tools as shell commands. That&amp;rsquo;s the integration surface. If I wanted all five agents to manage To Do items, I needed something that could be invoked as a binary, accepted flags, and returned structured output. A CLI fit that model perfectly.&lt;/p&gt;
+&lt;p&gt;I also wanted the tool to exist independently of OpenClaw. It should work on any machine with Node.js and an Azure app registration. OpenClaw would consume it as a skill, but the CLI itself would be a standalone, open-source project.&lt;/p&gt;
+&lt;h2 id="from-zero-to-v001-in-one-session"&gt;From zero to v0.0.1 in one session
+&lt;/h2&gt;&lt;p&gt;The entire CLI was built in a single Copilot coding agent session. I started with &lt;code&gt;npm init&lt;/code&gt;, defined the command structure with Commander.js, and layered on MSAL for auth and Axios for the Graph API. The session produced:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Auth commands:&lt;/strong&gt; &lt;code&gt;login&lt;/code&gt; (device-code flow), &lt;code&gt;status&lt;/code&gt;, &lt;code&gt;logout&lt;/code&gt;, &lt;code&gt;print-account&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Task commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;complete&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;, &lt;code&gt;get&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Step commands:&lt;/strong&gt; &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;complete&lt;/code&gt;, &lt;code&gt;delete&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt; for checklist items within a task&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Short-form aliases:&lt;/strong&gt; &lt;code&gt;ms-todo-cli create&lt;/code&gt; as a shortcut for &lt;code&gt;ms-todo-cli task create&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Everything outputs valid JSON. No plain-text error messages, no Commander help text leaking to stdout. Every response includes &lt;code&gt;ok: true&lt;/code&gt; or &lt;code&gt;ok: false&lt;/code&gt; with a structured error code. That was deliberate. Agents need parseable output, not human-friendly paragraphs.&lt;/p&gt;
+&lt;h3 id="the-error-code-system"&gt;The error code system
+&lt;/h3&gt;&lt;p&gt;Instead of generic error messages, every failure carries a typed code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;ErrorCodes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;AUTH_REQUIRED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AUTH_REQUIRED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;AUTH_EXPIRED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AUTH_EXPIRED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;LIST_NOT_FOUND&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;LIST_NOT_FOUND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;TASK_NOT_FOUND&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;TASK_NOT_FOUND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;VALIDATION_ERROR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;VALIDATION_ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;GRAPH_ERROR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;GRAPH_ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;RATE_LIMITED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;RATE_LIMITED&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;as&lt;/span&gt; &lt;span class="kr"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;This lets an agent react to &lt;code&gt;AUTH_EXPIRED&lt;/code&gt; differently from &lt;code&gt;LIST_NOT_FOUND&lt;/code&gt;. In a skill prompt, I can say &amp;ldquo;if you see &lt;code&gt;AUTH_REQUIRED&lt;/code&gt;, ask the user to run the login flow,&amp;rdquo; and the agent can pattern-match on the JSON output reliably.&lt;/p&gt;
+&lt;h3 id="avoiding-the-on-list-scan"&gt;Avoiding the O(N) list scan
+&lt;/h3&gt;&lt;p&gt;The Microsoft Graph To Do API is list-scoped. To operate on a task, you need the list ID. If you only have the task ID, you have to enumerate all lists and probe each one until you find the right task.&lt;/p&gt;
+&lt;p&gt;The initial implementation did this naively. Every &lt;code&gt;task get&lt;/code&gt; or &lt;code&gt;task update&lt;/code&gt; call fetched all lists first. I added &lt;code&gt;--list-id&lt;/code&gt; as an optional flag on every task command. When provided, it skips the list scan entirely. The skill prompt teaches agents to cache and reuse list IDs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Without list-id: O(N) list scan&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ms-todo-cli task get --task-id &lt;span class="s2"&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# With list-id: single API call&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ms-todo-cli task get --task-id &lt;span class="s2"&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt; --list-id &lt;span class="s2"&gt;&amp;#34;def456&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="packaging-with-github-actions"&gt;Packaging with GitHub Actions
+&lt;/h2&gt;&lt;p&gt;I wanted the CLI installable from GitHub Releases, not from npm, at least not yet. The CI pipeline builds on three platforms, Ubuntu, macOS, and Windows, runs lint and tests on each, then packages the compiled output as a tarball:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Create artifact&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;run&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;tar -czf ms-todo-cli-${{ matrix.os }}.tar.gz dist package.json package-lock.json README.md LICENSE&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;On a tagged push (&lt;code&gt;v*.*.*&lt;/code&gt;), the release job uploads all three tarballs to a GitHub Release with auto-generated release notes.&lt;/p&gt;
+&lt;p&gt;The resulting tarball isn&amp;rsquo;t a standalone binary. It is a packaged Node CLI with a &lt;code&gt;#!/usr/bin/env node&lt;/code&gt; shebang. That works well for the OpenClaw gateway, which already has Node.js installed. For distribution outside Docker, a proper &lt;code&gt;npx&lt;/code&gt;-compatible package or a pkg-compiled binary would be the next step.&lt;/p&gt;
+&lt;h2 id="installing-in-the-gateway-docker-image"&gt;Installing in the gateway Docker image
+&lt;/h2&gt;&lt;p&gt;The gateway Dockerfile downloads the Ubuntu release tarball and installs it globally:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-dockerfile" data-lang="dockerfile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;ARG&lt;/span&gt; &lt;span class="nv"&gt;MS_TODO_CLI_RELEASE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;v0.0.1&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; &lt;span class="nv"&gt;tmpdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -d&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; install -d /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl -fsSL -o &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli.tar.gz&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;https://github.com/achingono/ms-todo-cli/releases/download/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MS_TODO_CLI_RELEASE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli-ubuntu-latest.tar.gz&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; tar -xzf &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;/ms-todo-cli.tar.gz&amp;#34;&lt;/span&gt; -C /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; /opt/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; npm install --omit&lt;span class="o"&gt;=&lt;/span&gt;dev --omit&lt;span class="o"&gt;=&lt;/span&gt;optional --ignore-scripts &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod +x /opt/ms-todo-cli/dist/cli.js &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ln -sf /opt/ms-todo-cli/dist/cli.js /usr/local/bin/ms-todo-cli &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$tmpdir&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The &lt;code&gt;--omit=optional&lt;/code&gt; flag skips &lt;code&gt;keytar&lt;/code&gt;, a native module for OS keychain access that isn&amp;rsquo;t needed in a headless container. The &lt;code&gt;--ignore-scripts&lt;/code&gt; flag avoids post-install compilation surprises.&lt;/p&gt;
+&lt;p&gt;Two things make this work across container rebuilds:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Token cache volume:&lt;/strong&gt; &lt;code&gt;./data/ms-todo-cli:/home/node/.ms-todo-cli&lt;/code&gt; in &lt;code&gt;docker-compose.yml&lt;/code&gt; persists the MSAL token cache on the host. Without this, every image rebuild would require re-authenticating.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Client ID environment variable:&lt;/strong&gt; &lt;code&gt;MS_TODO_CLIENT_ID&lt;/code&gt; is set in the &lt;code&gt;docker-compose.yml&lt;/code&gt; environment for both the &lt;code&gt;gateway&lt;/code&gt; and &lt;code&gt;cli&lt;/code&gt; services. The CLI fails fast if this isn&amp;rsquo;t set; there is no silent fallback to a broken state.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-openclaw-skill"&gt;The OpenClaw skill
+&lt;/h2&gt;&lt;p&gt;With the binary installed, the last piece was teaching the agents how to use it. OpenClaw skills are markdown files with a YAML front matter block:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ms-todo&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Manage Microsoft To Do lists, tasks, and checklist steps...&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;openclaw&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;emoji&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;✅&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;homepage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://github.com/achingono/ms-todo-cli&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;requires&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;{&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;bins&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ms-todo-cli&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;}&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The skill file at &lt;code&gt;data/config/skills/ms-todo/SKILL.md&lt;/code&gt; covers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Auth check first:&lt;/strong&gt; always run &lt;code&gt;ms-todo-cli auth status&lt;/code&gt; before any operation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Duplicate avoidance:&lt;/strong&gt; list tasks in the target list before creating a new one&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;List hygiene:&lt;/strong&gt; prefer existing catch-all lists (&lt;code&gt;Tasks&lt;/code&gt;, &lt;code&gt;Inbox&lt;/code&gt;) over creating new ones; ask before creating a new list&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Response format:&lt;/strong&gt; report back with list name, task title, due date, and any steps created&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The skill is enabled in &lt;code&gt;openclaw.json&lt;/code&gt; under &lt;code&gt;skills.entries&lt;/code&gt; and accessible to all five agents without any per-agent allowlist.&lt;/p&gt;
+&lt;h2 id="authentication-the-device-code-flow"&gt;Authentication: the device-code flow
+&lt;/h2&gt;&lt;p&gt;The CLI uses Microsoft&amp;rsquo;s device-code flow, the only OAuth flow that works without a redirect URI, which makes it a good fit for a headless container:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ms-todo-cli auth login&lt;/code&gt; contacts Azure AD and receives a device code&lt;/li&gt;
+&lt;li&gt;It prints the code and URL to stderr (not stdout, which keeps stdout clean for JSON)&lt;/li&gt;
+&lt;li&gt;The user opens the URL in a browser, enters the code, and completes login&lt;/li&gt;
+&lt;li&gt;The MSAL library caches the refresh token at &lt;code&gt;~/.ms-todo-cli/msal-cache.json&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After the initial login, subsequent commands use silent token refresh. The cache file is mode &lt;code&gt;0o600&lt;/code&gt; for minimal exposure.&lt;/p&gt;
+&lt;p&gt;The Azure app registration needs three delegated permissions: &lt;code&gt;Tasks.ReadWrite&lt;/code&gt;, &lt;code&gt;User.Read&lt;/code&gt;, and &lt;code&gt;offline_access&lt;/code&gt;. The app must support &amp;ldquo;Accounts in any organizational directory and personal Microsoft accounts&amp;rdquo; to work with both work/school and personal Microsoft accounts.&lt;/p&gt;
+&lt;h2 id="what-this-unlocks"&gt;What this unlocks
+&lt;/h2&gt;&lt;p&gt;With the skill active, any agent can now handle requests like:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Add &amp;lsquo;Review the quarterly report&amp;rsquo; to my Tasks list, due Friday, high priority.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The agent runs &lt;code&gt;ms-todo-cli list list&lt;/code&gt; to find the right list, creates the task with &lt;code&gt;ms-todo-cli task create&lt;/code&gt;, and reports back with the task title and due date. If I later say &amp;ldquo;mark that task as done,&amp;rdquo; the agent can complete it by ID.&lt;/p&gt;
+&lt;p&gt;Checklist steps work the same way. For multi-part follow-ups such as &amp;ldquo;gather the documents, review the draft, submit the form,&amp;rdquo; the agent creates a parent task and adds each item as a step.&lt;/p&gt;
+&lt;p&gt;The JSON output means the agent always knows whether the operation succeeded, what error occurred if it didn&amp;rsquo;t, and what IDs to reference for follow-up operations.&lt;/p&gt;
+&lt;h2 id="what-id-improve"&gt;What I&amp;rsquo;d improve
+&lt;/h2&gt;&lt;p&gt;A few things are on the list for future iterations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Pagination:&lt;/strong&gt; the current implementation doesn&amp;rsquo;t handle paginated Graph API responses. If a list has more than 100 tasks, it only returns the first page. Fine for now, but it&amp;rsquo;ll bite eventually.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;npm publish:&lt;/strong&gt; publishing to npm would make &lt;code&gt;npx ms-todo-cli&lt;/code&gt; work anywhere, not just in Docker images that install from GitHub Releases.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Recurrence and reminders:&lt;/strong&gt; the Graph API supports these, but the CLI doesn&amp;rsquo;t expose them yet.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Linked resources:&lt;/strong&gt; To Do tasks can link to emails, URLs, and other Microsoft 365 items. That&amp;rsquo;s a natural extension for agent workflows.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For now, though, the basic CRUD loop of create, list, update, and complete covers most of what I actually need from a task manager integration.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/05/how-i-configured-five-ai-agents-on-one-teams-bot/" &gt;How I Configured Five AI Agents on One Teams Bot&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>How I Configured Five AI Agents on One Microsoft Teams Bot</title><link>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</link><pubDate>Sun, 12 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/12/how-i-configured-five-ai-agents-on-one-teams-bot/cover.png" alt="Featured image of post How I Configured Five AI Agents on One Microsoft Teams Bot" /&gt;&lt;p&gt;In the &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;previous post&lt;/a&gt; I described splitting OpenClaw into two agents: Marshal for operations and Ava for personal conversations. That setup worked well enough that I wanted to push it further.&lt;/p&gt;
+&lt;p&gt;I had three more personas sitting in the &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; project that had never been deployed as live agents: Dave the Beaver (business advisory), Dot the Parrot (financial advisory), and Reese the Eagle (spiritual / reflective). Instead of spinning up separate bot registrations, I wanted all five agents to share a single Teams bot and route messages based on which channel the conversation happened in.&lt;/p&gt;
+&lt;p&gt;This is how I did it, and the one thing that almost derailed the whole setup.&lt;/p&gt;
+&lt;h2 id="the-architecture-one-bot-five-agents-channel-based-routing"&gt;The architecture: one bot, five agents, channel-based routing
+&lt;/h2&gt;&lt;p&gt;OpenClaw supports multiple agents in a single gateway instance. Each agent gets its own workspace directory (with its own identity, personality, and memory), its own model configuration, and its own API credential rotation. But they all share the same Teams bot registration, the same webhook endpoint, and the same Docker container.&lt;/p&gt;
+&lt;p&gt;The routing is handled by &lt;strong&gt;bindings&lt;/strong&gt; in &lt;code&gt;openclaw.json&lt;/code&gt;. Each binding maps an inbound message pattern to a specific agent:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;route&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;agentId&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;match&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;msteams&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The first matching binding wins. Specific channel bindings go before the catch-all so that messages in dedicated channels reach the right agent, while everything else falls through to Marshal.&lt;/p&gt;
+&lt;h2 id="what-each-agent-needed"&gt;What each agent needed
+&lt;/h2&gt;&lt;p&gt;Setting up a new agent isn&amp;rsquo;t just adding a name to a list. Each one requires a complete directory tree:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Workspace&lt;/strong&gt; (&lt;code&gt;data/workspaces/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;IDENTITY.md&lt;/code&gt;: the persona, including name, creature emoji, avatar path, and behavioral directives&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SOUL.md&lt;/code&gt;: domain expertise, personality boundaries, and how the agent relates to the others&lt;/li&gt;
+&lt;li&gt;Shared files copied from existing agents: &lt;code&gt;USER.md&lt;/code&gt;, &lt;code&gt;TOOLS.md&lt;/code&gt;, &lt;code&gt;AGENTS.md&lt;/code&gt;, &lt;code&gt;HEARTBEAT.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.openclaw/workspace-state.json&lt;/code&gt;: must include &lt;code&gt;setupCompletedAt&lt;/code&gt; or the agent tries to re-run the bootstrap flow&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;avatars/&lt;/code&gt;: the agent&amp;rsquo;s avatar image&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;memory/&lt;/code&gt;: daily memory files that the agent creates automatically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Config&lt;/strong&gt; (&lt;code&gt;data/config/agents/&amp;lt;agentId&amp;gt;/&lt;/code&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;agent/auth-profiles.json&lt;/code&gt;: all API credentials with &lt;code&gt;lastGood&lt;/code&gt; tracking&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;agent/models.json&lt;/code&gt;: model provider configuration&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sessions/sessions.json&lt;/code&gt;: initialized with &lt;code&gt;{ &amp;quot;sessions&amp;quot;: {} }&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;code&gt;auth-profiles.json&lt;/code&gt; files deserve special attention. Each agent maintains its own record of which API credential was last successful. I spread the &lt;code&gt;lastGood&lt;/code&gt; values across agents so they naturally distribute load across Google API keys rather than all hammering the same one.&lt;/p&gt;
+&lt;h2 id="per-agent-model-overrides"&gt;Per-agent model overrides
+&lt;/h2&gt;&lt;p&gt;The existing agents (Marshal and Ava) inherit the global default model. For the three new agents, I wanted to try GitHub Copilot&amp;rsquo;s &lt;code&gt;gpt-5.4&lt;/code&gt; as the primary model instead:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Dave&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;workspace&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;business&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;primary&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/gpt-5.4&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;fallbacks&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;google/gemini-3-flash-preview&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;github-copilot/claude-sonnet-4.6&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ollama/llama3.2:3b&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The primary model also needs to appear in the global &lt;code&gt;agents.defaults.models&lt;/code&gt; allowlist. The fallback chain gives each agent three escape hatches before the request fails entirely.&lt;/p&gt;
+&lt;h2 id="the-binding-schema-gotcha"&gt;The binding schema gotcha
+&lt;/h2&gt;&lt;p&gt;My first attempt at bindings used a flat string for the peer ID:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The gateway rejected this with a cryptic &lt;code&gt;bindings.2: Invalid input&lt;/code&gt; error repeated for each new binding. Digging into the Zod validation schema inside the gateway container revealed that &lt;code&gt;peer&lt;/code&gt; must be an object:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;peer&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;channel&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;19:524d24…@thread.tacv2&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Valid &lt;code&gt;kind&lt;/code&gt; values are &lt;code&gt;direct&lt;/code&gt;, &lt;code&gt;group&lt;/code&gt;, &lt;code&gt;channel&lt;/code&gt;, and &lt;code&gt;dm&lt;/code&gt;. Teams channel conversations use &lt;code&gt;channel&lt;/code&gt;. This isn&amp;rsquo;t documented anywhere obvious. I found it by reading the bundled validation code at &lt;code&gt;/app/dist/io-DhtVmzAJ.js&lt;/code&gt; inside the running container.&lt;/p&gt;
+&lt;h2 id="the-real-problem-teams-wasnt-delivering-thread-replies"&gt;The real problem: Teams wasn&amp;rsquo;t delivering thread replies
+&lt;/h2&gt;&lt;p&gt;After fixing the binding schema and restarting the gateway, all five agents responded to @mentions in their respective channels. For a moment, I thought the problem was solved.&lt;/p&gt;
+&lt;p&gt;Then I tried replying in a thread without @mentioning the agent. Nothing. No response from any agent, including Marshal who had been working fine before.&lt;/p&gt;
+&lt;p&gt;I spent a while investigating the OpenClaw side. The gateway config had &lt;code&gt;requireMention: false&lt;/code&gt; set globally for Teams. The mention-gating code clearly showed that when &lt;code&gt;requireMention&lt;/code&gt; is false, no messages are skipped. The gateway logs confirmed that every message it received was dispatched and processed successfully.&lt;/p&gt;
+&lt;p&gt;The problem was that the messages never arrived.&lt;/p&gt;
+&lt;p&gt;Looking at the session history for the spiritual agent, I could see two messages, both sent with @mentions, and responses to both. But the thread reply I sent without @mention was simply absent. Teams never forwarded it to the bot&amp;rsquo;s webhook.&lt;/p&gt;
+&lt;h2 id="rsc-permissions-the-missing-piece"&gt;RSC permissions: the missing piece
+&lt;/h2&gt;&lt;p&gt;The Teams app manifest already had the right RSC permission:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;authorization&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;permissions&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;resourceSpecific&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;ChannelMessage.Read.Group&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Application&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; tells Teams to deliver &lt;em&gt;all&lt;/em&gt; channel messages to the bot. Without it, Teams only delivers @mentions. But there&amp;rsquo;s a catch that&amp;rsquo;s easy to miss:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RSC permissions are evaluated only at installation time.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If the bot was installed in a team before this permission was added to the manifest, Teams doesn&amp;rsquo;t retroactively grant it. The bot continues operating under the old permission set. The fix is to uninstall the bot from the team and reinstall it using the updated app package. The team owner gets a new consent prompt that includes the RSC permissions, and after that, all channel messages start flowing.&lt;/p&gt;
+&lt;p&gt;This is a Teams platform behavior, not an OpenClaw issue. But it&amp;rsquo;s the kind of thing that can waste hours if you&amp;rsquo;re only looking at config files and application logs.&lt;/p&gt;
+&lt;h2 id="two-layers-of-require-mention"&gt;Two layers of &amp;ldquo;require mention&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;There are actually two independent systems controlling whether thread replies trigger a response:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Teams platform:&lt;/strong&gt; controls whether the message is &lt;em&gt;delivered&lt;/em&gt; to the bot webhook. Without &lt;code&gt;ChannelMessage.Read.Group&lt;/code&gt; RSC, only @mentions are delivered. With it, all channel messages are delivered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OpenClaw gateway:&lt;/strong&gt; controls whether a &lt;em&gt;delivered&lt;/em&gt; message is &lt;em&gt;processed&lt;/em&gt;. The &lt;code&gt;channels.msteams.requireMention&lt;/code&gt; setting (default: &lt;code&gt;true&lt;/code&gt;) gates this. Even if Teams delivers all messages, OpenClaw will silently drop non-@mention messages unless you set &lt;code&gt;requireMention: false&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both layers need to be configured correctly. Setting &lt;code&gt;requireMention: false&lt;/code&gt; in OpenClaw without RSC permissions means the gateway is ready to process messages that never arrive. Having RSC permissions without &lt;code&gt;requireMention: false&lt;/code&gt; means the messages arrive but get dropped.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;requireMention&lt;/code&gt; setting resolves through a chain: per-channel config → per-team config → global msteams config → &lt;code&gt;true&lt;/code&gt;. If you have per-team entries in the &lt;code&gt;teams&lt;/code&gt; section of your msteams config, those take precedence over the global setting.&lt;/p&gt;
+&lt;h2 id="what-id-do-differently"&gt;What I&amp;rsquo;d do differently
+&lt;/h2&gt;&lt;p&gt;If I were starting over, I&amp;rsquo;d configure the Teams manifest with all RSC permissions from day one, before the first installation. Retrofitting permissions onto an already-installed bot is not hard; you just reinstall. But it&amp;rsquo;s invisible enough that you can spend a long time debugging the wrong layer.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d also document the binding schema earlier. The &lt;code&gt;peer&lt;/code&gt; object format is strict and the error message doesn&amp;rsquo;t hint at the structure it expects. Having a working example in your notes saves real time.&lt;/p&gt;
+&lt;h2 id="the-current-state"&gt;The current state
+&lt;/h2&gt;&lt;p&gt;Five agents, one bot registration, one Docker container. Each agent has its own personality, its own model preferences, and its own Teams channel. Marshal handles the catch-all; the others respond in their dedicated channels. The gateway processes every message it receives without requiring @mentions.&lt;/p&gt;
+&lt;p&gt;The next step is reinstalling the Teams app in each team with the updated manifest so that thread replies start flowing without @mention. After that, I want to experiment with cross-agent awareness, letting one agent hand off a conversation to another when the domain shifts.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This is part of an ongoing series about running OpenClaw as a self-hosted AI agent stack. Previous posts:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;Why I Run OpenClaw in Docker on My Own Machine&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/09/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things</title><link>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</link><pubDate>Thu, 09 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/09/microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things/cover.png" alt="Featured image of post Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things" /&gt;&lt;p&gt;The Microsoft Agent Framework 1.0 &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;announcement&lt;/a&gt; dropped on April 3rd. My timeline filled up with variations of &amp;ldquo;it&amp;rsquo;s an incredible time to be an AI Engineer.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;That framing is not wrong. But it is also not the part I care about.&lt;/p&gt;
+&lt;p&gt;What I care about is simpler: does this change anything for people who are already trying to build multi-agent systems that work in production? Not demos. Not prototypes that impress stakeholders for twenty minutes and then quietly get abandoned. Actual systems.&lt;/p&gt;
+&lt;p&gt;I have been building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt; for a while now, an 8-agent engineering platform that handles planning, implementation, review, testing, DevOps, and documentation across a self-hosted stack. So the Agent Framework release landed with a bit more context for me than a generic &amp;ldquo;multi-agent is here&amp;rdquo; announcement.&lt;/p&gt;
+&lt;p&gt;A few things stand out. Some of them matter.&lt;/p&gt;
+&lt;h2 id="the-stable-api-commitment-is-the-actual-news"&gt;The stable API commitment is the actual news
+&lt;/h2&gt;&lt;p&gt;I do not get excited about GA announcements just because they happened. I get excited when GA means something specific: stable APIs, a versioning commitment, and the explicit decision that this interface is now something you can build on without expecting the ground to shift under you.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 makes that commitment for both .NET and Python. Backward compatibility going forward. Long-term support.&lt;/p&gt;
+&lt;p&gt;That is not a trivial detail. It is the thing that separates &amp;ldquo;experimental SDK&amp;rdquo; from &amp;ldquo;production dependency.&amp;rdquo; A lot of agentic tooling has been stuck in the first category for longer than most people will admit. Upgrading to the next alpha breaks your prompts, your tool bindings, your middleware, your deployment config, and somehow nobody warned you.&lt;/p&gt;
+&lt;p&gt;Stable APIs also mean stable documentation, which means stable mental models. Those things compound over time in ways that matter.&lt;/p&gt;
+&lt;h2 id="a2a-is-the-piece-i-have-been-watching"&gt;A2A is the piece I have been watching
+&lt;/h2&gt;&lt;p&gt;The Agent-to-Agent (A2A) protocol support is listed as &amp;ldquo;coming soon&amp;rdquo; for the full 1.0 stable tier, but it is in the announcement, and it is the part I think deserves the most attention from people building real systems.&lt;/p&gt;
+&lt;p&gt;The hard problem in multi-agent architecture is not getting one agent to reason well. It is getting multiple agents to coordinate reliably when they are not all running in the same process, or even the same runtime.&lt;/p&gt;
+&lt;p&gt;Right now, most multi-agent systems solve this with some combination of shared databases, message queues, custom APIs, and a lot of hope. That works until it does not. The failure modes are usually subtle: dropped state, competing writes, race conditions that only appear under load, agents that confidently do work that was already done.&lt;/p&gt;
+&lt;p&gt;A2A is trying to make cross-runtime agent collaboration protocol-driven instead of bespoke. Your agents can coordinate with agents running in other frameworks using structured, typed messages, not raw HTTP calls and string parsing.&lt;/p&gt;
+&lt;p&gt;I have spent a non-trivial amount of engineering effort on exactly this problem in CueMarshal. If A2A ends up being as useful as its description suggests, that is real upside for new systems and for existing ones that are currently solving this manually.&lt;/p&gt;
+&lt;h2 id="mcp-support-is-expected-but-worth-noting"&gt;MCP support is expected but worth noting
+&lt;/h2&gt;&lt;p&gt;The &lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/" target="_blank" rel="noopener"
+&gt;MCP integration&lt;/a&gt; in Agent Framework is not surprising. MCP has been gaining enough traction that any serious agentic framework needs to support it. But the combination of A2A and MCP in the same SDK is worth thinking about.&lt;/p&gt;
+&lt;p&gt;MCP gives agents a standardized way to discover and invoke external tools. A2A gives agents a standardized way to coordinate with each other. Those two things together start to look like the beginning of a real interface discipline: a shared vocabulary for what agents expose, what they consume, and how they hand off between each other.&lt;/p&gt;
+&lt;p&gt;I wrote about why &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" target="_blank" rel="noopener"
+&gt;MCP matters as a protocol&lt;/a&gt; when Anthropic first announced it. The argument then was that standardization is more valuable than capability for tool access. The same logic applies to A2A. The protocol is not the feature. The shared contract is.&lt;/p&gt;
+&lt;h2 id="declarative-agents-belong-in-version-control"&gt;Declarative agents belong in version control
+&lt;/h2&gt;&lt;p&gt;One specific feature worth calling out: Agent Framework 1.0 supports defining agents&amp;rsquo; instructions, tools, memory configuration, and orchestration topology in version-controlled YAML files.&lt;/p&gt;
+&lt;p&gt;This sounds like a developer ergonomics feature. It is more than that.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in code and your infrastructure lives in code, you can review, audit, diff, and roll back changes to your agent behavior the same way you handle application deployments. You know what changed. You know when. You can trace a behavioral regression to an exact commit.&lt;/p&gt;
+&lt;p&gt;If your agent definitions live in a GUI or a database somewhere, you have a different kind of system, one that is harder to inspect and harder to trust.&lt;/p&gt;
+&lt;p&gt;I tend to be opinionated about this: anything that participates in your delivery pipeline should live in Git. Agents are no exception.&lt;/p&gt;
+&lt;h2 id="what-the-framework-still-does-not-answer-for-you"&gt;What the framework still does not answer for you
+&lt;/h2&gt;&lt;p&gt;I want to be clear about something, because I have seen a pattern in how these announcements get received.&lt;/p&gt;
+&lt;p&gt;A good framework reduces the cost of building something. It does not answer the questions you have not asked yet.&lt;/p&gt;
+&lt;p&gt;Agent Framework 1.0 ships with sequential, concurrent, handoff, group chat, and Magentic-One orchestration patterns. Those are real and useful starting points. But they are patterns, not architectures. Using them well still requires you to think carefully about what roles genuinely need to be different, what permissions each role should have, where coordination state lives, how actions are attributed, and what the closed loop looks like that turns outputs into the next inputs.&lt;/p&gt;
+&lt;p&gt;Those questions do not disappear because you have a nice SDK. In my experience, they get easier to articulate once you have shipped a broken version of the system, and that part is not something any framework can skip you past.&lt;/p&gt;
+&lt;p&gt;The DevUI, the browser-based local debugger for visualizing agent execution and message flows, looks genuinely useful for closing that loop faster. Real observability into what agents are doing, in real time, without custom instrumentation, is the kind of thing that makes debugging multi-agent systems feel less like archaeology.&lt;/p&gt;
+&lt;h2 id="where-this-lands-for-me"&gt;Where this lands for me
+&lt;/h2&gt;&lt;p&gt;I am not switching CueMarshal&amp;rsquo;s architecture to Agent Framework. The decisions I have made around self-hosted infrastructure, Gitea, Redis, BullMQ, and the MCP tool layer reflect constraints that have nothing to do with which SDK I use.&lt;/p&gt;
+&lt;p&gt;But I think Agent Framework 1.0 meaningfully lowers the barrier for developers who are trying to build serious agentic systems without first spending months figuring out the underlying coordination problems on their own. The stable APIs, the MCP support, the declarative definitions, and the A2A direction add up to a real foundation, not just a polished demo wrapper.&lt;/p&gt;
+&lt;p&gt;The question worth sitting with is not &amp;ldquo;should I use this framework?&amp;rdquo; It is the same question it has always been: do you actually understand what you are trying to build, and do you understand the coordination problems well enough to make intentional choices, with or without a framework underneath you?&lt;/p&gt;
+&lt;p&gt;If the answer is yes, Agent Framework 1.0 is a reasonable bet for production .NET and Python workloads. That is more than I could have said about most agentic tooling six months ago.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Related reading:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What Anthropic&amp;rsquo;s Model Context Protocol Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform (And What I Learned)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-1-0-generally-available/" target="_blank" rel="noopener"
+&gt;Microsoft Agent Framework 1.0 GA Announcement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.nuget.org/packages/Microsoft.Agents.AI/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (.NET)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pypi.org/project/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework SDK (Python)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/microsoft/agent-framework" target="_blank" rel="noopener"
+&gt;Agent Framework GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://learn.microsoft.com/en-us/agent-framework/" target="_blank" rel="noopener"
+&gt;Agent Framework Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Why My OpenClaw Reminders Weren't Reaching Signal or Teams</title><link>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</link><pubDate>Sat, 04 Apr 2026 21:23:46 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/cover.png" alt="Featured image of post Why My OpenClaw Reminders Weren't Reaching Signal or Teams" /&gt;&lt;p&gt;This is the fifth and final post in my short OpenClaw series. If you want the background first, read &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;why I run OpenClaw in Docker&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;how I wired Signal and Teams into a custom image&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;the Dockerfile walkthrough&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;the main/personal agent split&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I ran into an OpenClaw bug this week that annoyed me more than a normal delivery failure would have.&lt;/p&gt;
 &lt;p&gt;A reminder was supposed to come back to me later telling me to submit a GO Transit delay claim. The agent said it had scheduled the reminder. Then later&amp;hellip; nothing showed up in Signal. Nothing showed up in Teams either.&lt;/p&gt;
 &lt;p&gt;That kind of bug is worse than a simple send failure because it creates false confidence. If a reminder system quietly drops the reminder, that&amp;rsquo;s bad. If it tells you the reminder is set when it actually isn&amp;rsquo;t, that&amp;rsquo;s much worse.&lt;/p&gt;
@@ -809,7 +1231,72 @@ If that task can be routed through an AI-assisted workflow and still land in a h
 &lt;p&gt;But for this kind of system, I think that is the right trade.&lt;/p&gt;
 &lt;p&gt;I would much rather spend time shaping one explicit container image and one compose stack than wonder which random host package made the environment drift.&lt;/p&gt;
 &lt;p&gt;For me, Docker made OpenClaw feel less like a clever experiment and more like an actual service I could live with.&lt;/p&gt;
-&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>The Year Agentic AI Got Real: A Developer's Retrospective on 2025</title><link>https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/</link><pubDate>Fri, 12 Dec 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/12/12/the-year-agentic-ai-got-real-a-developers-retrospective-on-2025/cover.png" alt="Featured image of post The Year Agentic AI Got Real: A Developer's Retrospective on 2025" /&gt;&lt;p&gt;By the end of 2025, software engineering felt materially different from a year earlier.&lt;/p&gt;
+&lt;p&gt;In 2024, AI in software development was mostly about &lt;strong&gt;autocomplete&lt;/strong&gt;. We had GitHub Copilot, Cursor, and LLMs that were essentially &amp;ldquo;very fast search engines with a code editor.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;In 2025, that changed. We moved from &lt;strong&gt;autocomplete&lt;/strong&gt; to &lt;strong&gt;autonomy&lt;/strong&gt;. This was the year &lt;strong&gt;Agentic AI&lt;/strong&gt; started to feel real.&lt;/p&gt;
+&lt;h2 id="the-three-shifts-of-2025"&gt;The Three Shifts of 2025
+&lt;/h2&gt;&lt;p&gt;Three key technical and cultural shifts happened this year that changed how we build and deliver software.&lt;/p&gt;
+&lt;h3 id="1-from-chat-to-task"&gt;1. From &amp;ldquo;Chat&amp;rdquo; to &amp;ldquo;Task&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;At the beginning of the year, we were still &amp;ldquo;chatting&amp;rdquo; with AI. We had to explain the context, provide the files, and then manually copy the code into our editors.&lt;/p&gt;
+&lt;p&gt;By mid-2025, tools like &lt;strong&gt;Copilot Agent Mode&lt;/strong&gt; and specialized platforms like &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;CueMarshal&lt;/a&gt; shifted the interface. Instead of &amp;ldquo;Write a function for X,&amp;rdquo; we started saying &amp;ldquo;Implement the login flow for the new multi-currency engine.&amp;rdquo; The AI became responsible for the &lt;em&gt;task&lt;/em&gt;, not just the &lt;em&gt;output&lt;/em&gt;.&lt;/p&gt;
+&lt;h3 id="2-the-standardization-of-tools-mcp"&gt;2. The Standardization of &amp;ldquo;Tools&amp;rdquo; (MCP)
+&lt;/h3&gt;&lt;p&gt;Before 2025, every agent was its own silo. If you wanted an AI to talk to your database or your issue tracker, you had to write a custom integration.&lt;/p&gt;
+&lt;p&gt;The introduction and rapid adoption of the &lt;strong&gt;Model Context Protocol (MCP)&lt;/strong&gt; changed that. MCP gave us a common language for agents to interact with the world. It turned every API, every database, and every repo into a &lt;a class="link" href="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/" &gt;structured tool&lt;/a&gt; that any agent could use. This was the &amp;ldquo;USB moment&amp;rdquo; for AI agents.&lt;/p&gt;
+&lt;h3 id="3-the-rise-of-the-agentic-orchestra"&gt;3. The Rise of the &amp;ldquo;Agentic Orchestra&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;We realized that one &amp;ldquo;do-it-all&amp;rdquo; agent was a dead end. Instead, the high-performing teams started building &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Agentic Orchestras&lt;/a&gt;: specialized agents for architecture, development, testing, and review, all working together within a Git-native workflow.&lt;/p&gt;
+&lt;p&gt;In my own work with &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, this shift was the difference between an AI that &amp;ldquo;helped&amp;rdquo; me and an AI that &amp;ldquo;worked&amp;rdquo; with me.&lt;/p&gt;
+&lt;h2 id="what-2025-taught-me"&gt;What 2025 Taught Me
+&lt;/h2&gt;&lt;p&gt;The biggest lesson of 2025 for me is that the human role in software engineering is not disappearing. It is being &lt;strong&gt;reframed&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;More of us are moving into a conductor-architect role. The job is less about writing every line of code and more about designing the system, defining the constraints, and orchestrating the agents doing the implementation. That requires a deeper understanding of &lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Platform Engineering&lt;/a&gt; and system architecture than before.&lt;/p&gt;
+&lt;h2 id="looking-ahead-to-2026"&gt;Looking Ahead to 2026
+&lt;/h2&gt;&lt;p&gt;If 2025 was the year of &amp;ldquo;autonomy,&amp;rdquo; I expect 2026 to be the year of &lt;strong&gt;reliability&lt;/strong&gt;. We have the tools. We have the protocols. Now we need governance and observability that make agentic workflows as predictable as a standard CI/CD pipeline.&lt;/p&gt;
+&lt;p&gt;The transition is already underway, and it is moving faster than most people expected. The question for 2026 is no longer &amp;ldquo;Will you use AI?&amp;rdquo; It is &amp;ldquo;How will you orchestrate your agents?&amp;rdquo;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/11/14/why-platform-engineering-is-the-most-underrated-career-path-in-2025/" &gt;Why Platform Engineering is the Most Underrated Career Path in 2025&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea</title><link>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</link><pubDate>Thu, 27 Nov 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/11/27/mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea/cover.png" alt="Featured image of post MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea" /&gt;&lt;p&gt;When I first wrote about &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in practice&lt;/a&gt;, I saw it as a powerful way to connect desktop tools to LLMs. But the real potential of the Model Context Protocol (MCP) becomes clear when you move it to the server side and use it as the &amp;ldquo;glue&amp;rdquo; for an entire &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;agentic engineering orchestra&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
+&gt;CueMarshal&lt;/a&gt;, the agents need more than just the ability to &amp;ldquo;read a file.&amp;rdquo; They need to understand the &lt;em&gt;state&lt;/em&gt; of the repository: Which issues are open? What are the pending reviews? Are there conflicting changes in a PR?&lt;/p&gt;
+&lt;p&gt;Instead of writing custom API wrappers for every agent, I built a centralized &lt;strong&gt;MCP Server for Gitea&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-problem-with-traditional-api-wrappers"&gt;The Problem with Traditional API Wrappers
+&lt;/h2&gt;&lt;p&gt;In the early days of CueMarshal, each agent had its own set of &amp;ldquo;tools&amp;rdquo; that were essentially thin wrappers around the Gitea REST API. This led to several issues:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Prompt Bloat:&lt;/strong&gt; Every time an agent started, I had to describe every single API endpoint in its system prompt.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Inconsistent Schema:&lt;/strong&gt; One agent might get the issue body as raw text, while another might get it as HTML, leading to parsing errors.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fragility:&lt;/strong&gt; If the API changed, I had to update the tools across all eight agents.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="why-mcp-is-a-better-way"&gt;Why MCP is a Better Way
+&lt;/h2&gt;&lt;p&gt;MCP changes the relationship between the model and the data. Instead of the model &amp;ldquo;knowing&amp;rdquo; how to call an API, the MCP server &amp;ldquo;advertises&amp;rdquo; its capabilities. The model just says &amp;ldquo;I want to list the issues in this repo,&amp;rdquo; and the protocol handles the rest.&lt;/p&gt;
+&lt;h3 id="the-cuemarshal-gitea-mcp-server"&gt;The CueMarshal Gitea MCP Server
+&lt;/h3&gt;&lt;p&gt;I built the server in TypeScript using the &lt;code&gt;@modelcontextprotocol/sdk&lt;/code&gt;. Here is what it exposes to the agents:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Resources:&lt;/strong&gt; Agents can &amp;ldquo;subscribe&amp;rdquo; to a specific file or a pull request. If the file changes, the MCP server can (in theory) notify the agent.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tools:&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;list_repo_issues&lt;/code&gt;: Returns a structured list of issues with metadata.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_pr_diff&lt;/code&gt;: Fetches the unified diff of a pull request.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;create_issue_comment&lt;/code&gt;: Allows agents to &amp;ldquo;talk&amp;rdquo; to humans on the Git platform.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apply_suggestion&lt;/code&gt;: A specialized tool for applying code changes directly to a branch.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="scaling-to-eight-agents"&gt;Scaling to Eight Agents
+&lt;/h2&gt;&lt;p&gt;What makes this setup work is that all eight CueMarshal agents, from &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Marshal (Orchestrator) to Linton (Linter)&lt;/a&gt;, connect to the same MCP server.&lt;/p&gt;
+&lt;p&gt;This gives every agent a &amp;ldquo;shared reality.&amp;rdquo; If the Reviewer agent (Reese) sees a diff, the Developer agent (Dave) sees the exact same diff through the same tool. That consistency matters for complex, multi-step tasks.&lt;/p&gt;
+&lt;h2 id="security-and-the-read-only-gate"&gt;Security and the &amp;ldquo;Read-Only&amp;rdquo; Gate
+&lt;/h2&gt;&lt;p&gt;One of the most important aspects of using MCP at scale is security. My Gitea MCP server implements a strict &lt;strong&gt;Read-Only mode&lt;/strong&gt; by default. An agent has to explicitly request &amp;ldquo;write&amp;rdquo; permissions for specific tools (like &lt;code&gt;apply_suggestion&lt;/code&gt;), and even then, every write action is logged and requires &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;human approval in the final PR&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="the-future-multi-platform-mcp"&gt;The Future: Multi-Platform MCP
+&lt;/h2&gt;&lt;p&gt;The ultimate goal for CueMarshal is to make the agentic layer platform-agnostic. By using MCP, I can eventually swap out the Gitea MCP server for a GitHub or GitLab MCP server without changing a single line of agent code.&lt;/p&gt;
+&lt;p&gt;The protocol &lt;em&gt;is&lt;/em&gt; the abstraction. And it&amp;rsquo;s what makes &lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Agentic Delivery&lt;/a&gt; truly possible at scale.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;MCP in Practice: What it Actually Means for Developers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/" &gt;Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra</title><link>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</link><pubDate>Thu, 28 Aug 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/cover.png" alt="Featured image of post Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra" /&gt;&lt;p&gt;A lot of &amp;ldquo;multi-agent&amp;rdquo; demos are really one agent wearing different hats.&lt;/p&gt;
 &lt;p&gt;The names change. The prompts change. Sometimes the avatars change. But the authority model, the memory model, and the execution model are all still basically the same. That is fine for a demo. It is much less convincing when you are trying to build a system that can do real engineering work.&lt;/p&gt;
 &lt;p&gt;Building &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
 &gt;CueMarshal&lt;/a&gt; made that distinction impossible for me to ignore.&lt;/p&gt;
@@ -907,6 +1394,42 @@ If the transports are inconsistent, reuse gets expensive.&lt;/p&gt;
 &gt;CueMarshal agent profiles&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/cuemarshal/cuemarshal/blob/main/docs/features/conductor/overview.md" target="_blank" rel="noopener"
 &gt;CueMarshal conductor overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery</title><link>https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/</link><pubDate>Wed, 18 Jun 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/06/18/beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery/cover.png" alt="Featured image of post Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery" /&gt;&lt;p&gt;For the last decade, &amp;ldquo;modern&amp;rdquo; software delivery has been defined by CI/CD. We spent years perfecting the art of the deterministic pipeline: code goes in, tests run, artifacts build, and deployments happen. If a human pushes a button (or a branch), the machine follows a script.&lt;/p&gt;
+&lt;p&gt;It works. It is stable. It is the foundation we all build on.&lt;/p&gt;
+&lt;p&gt;But CI/CD has a ceiling. It handles the &lt;em&gt;delivery&lt;/em&gt; of the code, but it is blind to the &lt;em&gt;coordination&lt;/em&gt; of the work. The bottleneck for most engineering teams is no longer how fast the build runs; it is how long an issue sits unassigned, how many times a PR bounces back for minor linting errors, and how much context is lost between a design doc and an implementation.&lt;/p&gt;
+&lt;p&gt;The next layer of software delivery isn&amp;rsquo;t just &amp;ldquo;faster CI.&amp;rdquo; It is &lt;strong&gt;Agentic Delivery&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id="the-coordination-gap"&gt;The Coordination Gap
+&lt;/h2&gt;&lt;p&gt;If you look at a typical engineering day, the actual &amp;ldquo;delivery&amp;rdquo; (the pipeline run) is a tiny fraction of the cycle. Most of the time is spent in the coordination gap:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Context Assembly:&lt;/strong&gt; Figuring out which files matter for a task and what the existing patterns are.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Quality Gating:&lt;/strong&gt; Waiting for a human to notice a typo, a missing test, or a broken internal convention.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Context Handoff:&lt;/strong&gt; Writing the PR description, explaining the &lt;em&gt;why&lt;/em&gt; to a reviewer, and updating the docs.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Traditional CI/CD tools cannot help here because they are stateless and reactive. They don&amp;rsquo;t &amp;ldquo;understand&amp;rdquo; the task; they only know if the exit code was zero.&lt;/p&gt;
+&lt;h2 id="enter-the-agentic-layer"&gt;Enter the Agentic Layer
+&lt;/h2&gt;&lt;p&gt;When I started building &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;CueMarshal&lt;/a&gt;, I realized that the real value of AI agents in DevOps isn&amp;rsquo;t just generating code. It is handling the non-deterministic parts of the workflow that humans find tedious but necessary.&lt;/p&gt;
+&lt;p&gt;An agentic delivery layer lives &lt;em&gt;above&lt;/em&gt; your CI/CD. It doesn&amp;rsquo;t replace Jenkins or GitHub Actions; it uses them.&lt;/p&gt;
+&lt;h3 id="what-an-agentic-layer-actually-does"&gt;What an Agentic Layer actually does:
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Active Monitoring:&lt;/strong&gt; Instead of waiting for a manual trigger, agents can watch for new issues, draft an implementation plan, and open a PR before a human even context-switches.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Semantic Quality Gates:&lt;/strong&gt; While a linter checks syntax, an agent can check if the implementation actually matches the requirements in the issue.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Continuous Context Maintenance:&lt;/strong&gt; Agents can keep documentation in sync with code changes in real-time, effectively eliminating &amp;ldquo;doc debt.&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="lessons-from-the-trenches"&gt;Lessons from the Trenches
+&lt;/h2&gt;&lt;p&gt;Building this into &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;my own platform&lt;/a&gt; taught me that the transition from CI/CD to Agentic Delivery requires a shift in how we think about automation.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;From Scripts to Tools:&lt;/strong&gt; In CI/CD, we write shell scripts. In agentic systems, we define &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;Model Context Protocol (MCP)&lt;/a&gt; tools. The agent needs a structured way to interact with the world, not just a line of bash.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;From Success/Failure to &amp;ldquo;Looks Good to Me&amp;rdquo;:&lt;/strong&gt; We are moving from binary pass/fail gates to probabilistic evaluation. That is why &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;specialized agent roles&lt;/a&gt; matter so much: you want a dedicated &amp;ldquo;Reviewer&amp;rdquo; agent whose only job is to be skeptical.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Git is still the anchor:&lt;/strong&gt; Even with agents doing the heavy lifting, the final source of truth must remain the repository. If it&amp;rsquo;s not in Git, it didn&amp;rsquo;t happen.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-2025-reality"&gt;The 2025 Reality
+&lt;/h2&gt;&lt;p&gt;We are past the &amp;ldquo;AI hype&amp;rdquo; phase where we wonder if agents &lt;em&gt;can&lt;/em&gt; do this. In 2025, the question for engineering leaders is how to integrate them without breaking the trust and safety of the delivery pipeline.&lt;/p&gt;
+&lt;p&gt;The teams that win won&amp;rsquo;t be the ones that let AI run wild. They will be the ones that build an agentic layer that respects the rigor of Platform Engineering while reclaiming the hours lost to the coordination gap.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related reading:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from an 8-Agent Orchestra&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>MCP in Practice: What Anthropic's Model Context Protocol Actually Means for Developers</title><link>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</link><pubDate>Thu, 20 Mar 2025 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/</guid><description>&lt;img src="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/cover.png" alt="Featured image of post MCP in Practice: What Anthropic's Model Context Protocol Actually Means for Developers" /&gt;&lt;p&gt;When Anthropic announced the &lt;a class="link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener"
 &gt;Model Context Protocol&lt;/a&gt;, the most interesting part to me was not &amp;ldquo;LLMs can call tools.&amp;rdquo; We already knew that. The interesting part was that someone was finally trying to standardize the connection.&lt;/p&gt;
 &lt;p&gt;That may sound like a small distinction, but it is the difference between a clever demo and an architecture you can actually build on.&lt;/p&gt;
