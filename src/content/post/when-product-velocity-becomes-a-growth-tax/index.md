@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "When Product Velocity Becomes a Growth Tax"
 date: 2023-12-05T09:00:00Z
-draft: true
+draft: false
 description: "What I have learned from legacy software teams that optimized for speed for years, only to find that the same choices eventually made growth slower, riskier, and more expensive."
 slug: when-product-velocity-becomes-a-growth-tax
 tags: [

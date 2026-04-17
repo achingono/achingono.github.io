@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "The Year Agentic AI Got Real: A Developer's Retrospective on 2025"
 date: 2025-12-12T09:00:00Z
-draft: true
+draft: false
 description: "Why 2025 was the turning point from 'AI as a chat interface' to 'AI as an autonomous delivery agent,' and what that means for the year ahead."
 slug: the-year-agentic-ai-got-real-a-developers-retrospective-on-2025
 tags: [

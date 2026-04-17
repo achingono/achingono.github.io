@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Why Manual Deployments Keep Legacy Teams Stuck"
 date: 2023-12-06T09:00:00Z
-draft: true
+draft: false
 description: "Manual deployment is not just a release problem. In older systems, it becomes a force multiplier for downtime, environment drift, weak traceability, and missed commitments."
 slug: why-manual-deployments-keep-legacy-teams-stuck
 tags: [

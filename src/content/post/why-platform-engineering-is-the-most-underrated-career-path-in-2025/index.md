@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Why Platform Engineering Is the Most Underrated Career Path in 2025"
 date: 2025-11-14T09:00:00Z
-draft: true
+draft: false
 description: "Platform Engineering is more than 'DevOps with a new name.' It is becoming core infrastructure for high-performing engineering organizations."
 slug: why-platform-engineering-is-the-most-underrated-career-path-in-2025
 tags: [

@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Feature Flags Done Right: A Pattern for Safer Production Deployments"
 date: 2025-07-10T09:00:00Z
-draft: true
+draft: false
 description: "How to move from 'one-off' flags to a solid feature management framework that actually reduces deployment risk in large organizations."
 slug: feature-flags-done-right-a-pattern-for-safer-production-deployments
 tags: [

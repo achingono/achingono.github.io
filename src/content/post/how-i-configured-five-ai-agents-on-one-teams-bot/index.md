@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "How I Configured Five AI Agents on One Microsoft Teams Bot"
 date: 2026-04-12T09:00:00Z
-draft: true
+draft: false
 description: "How I expanded my OpenClaw gateway from two agents to five, routed each to its own Teams channel, and discovered why RSC permissions matter more than config files."
 slug: how-i-configured-five-ai-agents-on-one-teams-bot
 tags: [

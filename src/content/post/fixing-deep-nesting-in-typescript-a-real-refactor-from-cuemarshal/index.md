@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Fixing Deep Nesting in TypeScript: A Real Refactor From CueMarshal"
 date: 2026-02-10T09:00:00Z
-draft: true
+draft: false
 description: "How to handle deeply nested conditional logic without losing your mind. A deep dive into a real refactor of CueMarshal's Gitea MCP server."
 slug: fixing-deep-nesting-in-typescript-a-real-refactor-from-cuemarshal
 tags: [

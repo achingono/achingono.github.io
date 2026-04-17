@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "OAuth2 and OIDC for Solo Developers: A Practical Setup With Docker"
 date: 2025-09-15T09:00:00Z
-draft: true
+draft: false
 description: "Auth is always harder than it looks. Here is how I set up OIDC for my personal projects without spending a fortune on managed services."
 slug: oauth2-and-oidc-for-solo-developers-a-practical-setup-with-docker
 tags: [

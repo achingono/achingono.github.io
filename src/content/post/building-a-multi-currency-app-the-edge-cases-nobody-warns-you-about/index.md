@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Building a Multi-Currency App: The Edge Cases Nobody Warns You About"
 date: 2025-10-22T09:00:00Z
-draft: true
+draft: false
 description: "How Famorize handles global users: floating point errors, exchange rate drift, and the UX of money across borders."
 slug: building-a-multi-currency-app-the-edge-cases-nobody-warns-you-about
 tags: [

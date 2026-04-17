@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "MCP at Scale: How I Used Model Context Protocol to Connect AI Agents to Gitea"
 date: 2025-11-27T09:00:00Z
-draft: true
+draft: false
 description: "Why standard API calls aren't enough for agentic workflows, and how I built an MCP server to give CueMarshal's agents deep repo awareness in Gitea."
 slug: mcp-at-scale-how-i-used-model-context-protocol-to-connect-ai-agents-to-gitea
 tags: [

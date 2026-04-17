@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Technical Debt Is a Capital Allocation Decision"
 date: 2023-12-07T09:00:00Z
-draft: true
+draft: false
 description: "The hardest part of technical debt is not identifying it. It is helping leadership see remediation as business investment instead of a stream of annoying IT costs."
 slug: technical-debt-is-a-capital-allocation-decision
 tags: [

@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Beyond CI/CD: Why AI Agents Are the Next Layer of Software Delivery"
 date: 2025-06-18T09:00:00Z
-draft: true
+draft: false
 description: "Traditional CI/CD is about deterministic pipelines. The next layer is agentic: handling the non-deterministic coordination that actually slows down engineering teams."
 slug: beyond-ci-cd-why-ai-agents-are-the-next-layer-of-software-delivery
 tags: [

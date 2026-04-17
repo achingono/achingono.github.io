@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework 1.0: What It Means If You're Already Building These Things"
 date: 2026-04-09T09:00:00Z
-draft: true
+draft: false
 description: "Microsoft Agent Framework 1.0 just went GA. Here's what actually matters in it: stable APIs, A2A, declarative definitions, and what it still doesn't answer for you."
 slug: microsoft-agent-framework-1-what-it-means-if-youre-already-building-these-things
 tags: [

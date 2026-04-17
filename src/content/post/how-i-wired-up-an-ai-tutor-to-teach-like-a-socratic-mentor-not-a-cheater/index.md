@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "How I Wired Up an AI Tutor to Teach Like a Socratic Mentor — Not a Cheater"
 date: 2025-08-05T09:00:00Z
-draft: true
+draft: false
 description: "Why most AI tutors are just homework-solvers, and how I used specific prompting and Bayesian Knowledge Tracing to make FireFly a real teacher."
 slug: how-i-wired-up-an-ai-tutor-to-teach-like-a-socratic-mentor-not-a-cheater
 tags: [

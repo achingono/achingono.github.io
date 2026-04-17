@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Getting the Filter Inside OData $apply in ASP.NET Core"
 date: 2025-11-04T17:03:29Z
-draft: true
+draft: false
 description: "How I ended up solving a subtle OData problem in ASP.NET Core: applying a filter nested inside $apply so count headers stay accurate for grouped queries."
 slug: getting-the-filter-inside-odata-apply-in-aspnet-core
 tags: [

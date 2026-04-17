@@ -2,7 +2,7 @@
 author: "Alfero Chingono"
 title: "Sandboxed Code Execution for Kids: How Judge0 and Python sys.settrace Power FireFly"
 date: 2026-01-15T09:00:00Z
-draft: true
+draft: false
 description: "Why standard code execution isn't safe for kids, and how I built a secure, traceable environment for FireFly using Judge0 and Python's tracing hooks."
 slug: sandboxed-code-execution-for-kids-how-judge0-and-python-sys-settrace-power-firefly
 tags: [
