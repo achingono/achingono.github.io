@@ -4,6 +4,7 @@ date: "2026-06-14"
 draft: true
 summary: A practical workflow for using one tool to plan, another to execute, and a final pass to review without burning through limits.
 tags: ai, coding-tools, workflows, agentic-ai
+image: cover.jpg
 ---
 
 Recent social posts keep pointing at the same workflow: people plan with one model, execute with another, and then review the result before shipping.
