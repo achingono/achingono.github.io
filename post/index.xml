@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Alfero Chingono</title><link>https://www.chingono.com/post/</link><description>Recent content in Posts on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 16 Jun 2026 08:06:10 -0400</lastBuildDate><atom:link href="https://www.chingono.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>A Good Cloud Diagram Should Expose Trust Boundaries</title><link>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</link><pubDate>Thu, 28 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/cover.png" alt="Featured image of post A Good Cloud Diagram Should Expose Trust Boundaries" /&gt;&lt;p&gt;I like architecture diagrams, but I also think a lot of them fail at the one job that matters most.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Alfero Chingono</title><link>https://www.chingono.com/post/</link><description>Recent content in Posts on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 16 Jun 2026 08:06:14 -0400</lastBuildDate><atom:link href="https://www.chingono.com/post/index.xml" rel="self" type="application/rss+xml"/><item><title>A Good Cloud Diagram Should Expose Trust Boundaries</title><link>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</link><pubDate>Thu, 28 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/cover.png" alt="Featured image of post A Good Cloud Diagram Should Expose Trust Boundaries" /&gt;&lt;p&gt;I like architecture diagrams, but I also think a lot of them fail at the one job that matters most.&lt;/p&gt;
 &lt;p&gt;They show inventory.
 They do not show trust.&lt;/p&gt;
 &lt;p&gt;You can look at the boxes and come away knowing which services exist without really understanding how the system protects data, where public exposure begins, or which boundaries are doing the real work.&lt;/p&gt;
@@ -140,7 +140,182 @@ Product can tell whether an integration is actually getting used the way people 
 &lt;p&gt;When a dashboard can do that, people actually use it.&lt;/p&gt;
 &lt;p&gt;When it cannot, it becomes the kind of thing teams screenshot for status reviews and ignore during real investigation.&lt;/p&gt;
 &lt;p&gt;That is not a tooling failure.&lt;/p&gt;
-&lt;p&gt;It is a design failure.&lt;/p&gt;</description></item><item><title>Building a Microsoft To Do CLI and Wiring It into OpenClaw</title><link>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</link><pubDate>Thu, 16 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/cover.png" alt="Featured image of post Building a Microsoft To Do CLI and Wiring It into OpenClaw" /&gt;&lt;p&gt;I wanted my OpenClaw agents to manage my Microsoft To Do lists: create tasks, track follow-ups, and check things off. The problem was that Microsoft doesn&amp;rsquo;t ship a To Do CLI. There&amp;rsquo;s the Graph API, but nothing that an agent can call from a shell prompt with a simple command.&lt;/p&gt;
+&lt;p&gt;It is a design failure.&lt;/p&gt;</description></item><item><title>Prompting for Product Marketing, Not Just Pretty Pictures</title><link>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</link><pubDate>Thu, 14 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/cover.png" alt="Featured image of post Prompting for Product Marketing, Not Just Pretty Pictures" /&gt;&lt;p&gt;Most advice about AI image prompting still sounds like it was written by people who only care whether an image looks impressive in isolation.&lt;/p&gt;
+&lt;p&gt;That is not usually the real job.&lt;/p&gt;
+&lt;p&gt;If the image is meant to sit in a homepage hero, a banner, or a product marketing layout, then &amp;ldquo;make something beautiful&amp;rdquo; is not enough. The image has to fit a page, a brand, a message, and an audience. That changes the prompting conversation completely.&lt;/p&gt;
+&lt;h2 id="placement-is-not-a-detail"&gt;Placement is not a detail
+&lt;/h2&gt;&lt;p&gt;One of the most useful shifts in my own thinking was realizing that a prompt gets stronger the moment it stops describing only the image and starts describing the placement.&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;A nice business image&amp;rdquo; is vague.&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;A 16:9 banner image for an IT consultancy homepage&amp;rdquo; is already better.&lt;/p&gt;
+&lt;p&gt;Now the model has constraints that matter in the real world:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the image has to survive a wide crop&lt;/li&gt;
+&lt;li&gt;it has to leave room for headline text&lt;/li&gt;
+&lt;li&gt;it has to look believable at website scale&lt;/li&gt;
+&lt;li&gt;it has to support a commercial message, not distract from it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is a different class of prompt.&lt;/p&gt;
+&lt;p&gt;The more you know about where the image will live, the less you need to rely on luck.&lt;/p&gt;
+&lt;h2 id="enterprise-visuals-fail-when-the-context-is-generic"&gt;Enterprise visuals fail when the context is generic
+&lt;/h2&gt;&lt;p&gt;This is where a lot of AI-generated business imagery goes wrong.&lt;/p&gt;
+&lt;p&gt;The prompt says &amp;ldquo;professional,&amp;rdquo; but the result says &amp;ldquo;stock-photo-ish.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The prompt says &amp;ldquo;modern office,&amp;rdquo; but the result has no relationship to the product being sold.&lt;/p&gt;
+&lt;p&gt;The prompt says &amp;ldquo;homepage banner,&amp;rdquo; but the composition fights the layout instead of supporting it.&lt;/p&gt;
+&lt;p&gt;Usable product marketing visuals usually need more context than that. In practice, I have found it helps to specify some combination of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;role or persona&lt;/li&gt;
+&lt;li&gt;emotional tone&lt;/li&gt;
+&lt;li&gt;scene type&lt;/li&gt;
+&lt;li&gt;aspect ratio&lt;/li&gt;
+&lt;li&gt;website or campaign context&lt;/li&gt;
+&lt;li&gt;whether the image should include people at all&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Even that list is not about perfection. It is about reducing ambiguity in the same way a good creative brief does.&lt;/p&gt;
+&lt;h2 id="iteration-is-not-failure"&gt;Iteration is not failure
+&lt;/h2&gt;&lt;p&gt;Another thing I do not buy is the idea that a good prompt should somehow produce the final result in one heroic shot.&lt;/p&gt;
+&lt;p&gt;That is not how design work behaves.&lt;/p&gt;
+&lt;p&gt;The more realistic pattern is iterative:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;get the composition roughly right&lt;/li&gt;
+&lt;li&gt;expand or reframe for the actual layout&lt;/li&gt;
+&lt;li&gt;add detail where the image still feels thin&lt;/li&gt;
+&lt;li&gt;remove elements that make the image less usable&lt;/li&gt;
+&lt;li&gt;tighten the tone until it fits the page&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That kind of iteration does not mean the first prompt failed. It means the work is behaving like creative work.&lt;/p&gt;
+&lt;p&gt;I think people underestimate how important that mindset is. If you approach AI image generation as a slot machine, the results stay shallow. If you approach it more like art direction, the quality of your prompts changes.&lt;/p&gt;
+&lt;h2 id="representation-deserves-intention"&gt;Representation deserves intention
+&lt;/h2&gt;&lt;p&gt;There is another layer here that matters and should not be treated as incidental.&lt;/p&gt;
+&lt;p&gt;If you are generating enterprise imagery that includes people, you are also making choices about whose professionalism gets centered and how competence gets depicted. That is not political garnish. It is part of the message.&lt;/p&gt;
+&lt;p&gt;When teams say they care about representation but leave the visuals to chance, they usually end up reproducing the same narrow defaults they would have used before.&lt;/p&gt;
+&lt;p&gt;Prompting is one place where that can be corrected deliberately.&lt;/p&gt;
+&lt;p&gt;You can decide that the image should reflect the audience you want to serve.
+You can decide that enterprise competence does not need to look culturally generic.
+You can decide that inclusion belongs in the creative brief, not as an afterthought once the assets are already done.&lt;/p&gt;
+&lt;p&gt;That is part of what makes AI image generation more interesting to me than the usual novelty framing. It gives smaller teams a faster way to be intentional.&lt;/p&gt;
+&lt;h2 id="good-prompts-sound-closer-to-briefs-than-tricks"&gt;Good prompts sound closer to briefs than tricks
+&lt;/h2&gt;&lt;p&gt;I think this is the biggest practical lesson.&lt;/p&gt;
+&lt;p&gt;The best prompts I have seen do not sound clever. They sound grounded.&lt;/p&gt;
+&lt;p&gt;They sound like a designer, marketer, or founder being specific about what the asset is for.&lt;/p&gt;
+&lt;p&gt;That usually means less:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;hyper-detailed adjective stacking&lt;/li&gt;
+&lt;li&gt;trying to outsmart the model&lt;/li&gt;
+&lt;li&gt;chasing a cinematic effect for its own sake&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And more:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;clear publishing context&lt;/li&gt;
+&lt;li&gt;clear subject matter&lt;/li&gt;
+&lt;li&gt;clear composition needs&lt;/li&gt;
+&lt;li&gt;clear emotional direction&lt;/li&gt;
+&lt;li&gt;clear iteration goals&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The prompt becomes stronger because it is less performative.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;I do not think the most useful question is whether AI can make attractive images.&lt;/p&gt;
+&lt;p&gt;It obviously can.&lt;/p&gt;
+&lt;p&gt;The more useful question is whether it can help produce visuals that are fit for real product and marketing surfaces.&lt;/p&gt;
+&lt;p&gt;That is where the discipline starts to matter.&lt;/p&gt;
+&lt;p&gt;Once you anchor the prompt in placement, audience, tone, and iteration, the work gets much closer to creative direction and much further from gimmickry.&lt;/p&gt;
+&lt;p&gt;That is the part I find genuinely useful.&lt;/p&gt;
+&lt;p&gt;Not &amp;ldquo;look what the model made.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But &amp;ldquo;this is now close enough to support the page I am actually trying to ship.&amp;rdquo;&lt;/p&gt;</description></item><item><title>Process Redesign Only Works When Ownership Gets Clearer</title><link>https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/</link><pubDate>Thu, 07 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/cover.png" alt="Featured image of post Process Redesign Only Works When Ownership Gets Clearer" /&gt;&lt;p&gt;I have seen teams redraw a delivery process and change almost nothing.&lt;/p&gt;
+&lt;p&gt;The swimlanes get neater.
+The boxes get renamed.
+Some arrows disappear.
+Everyone feels productive for a week.&lt;/p&gt;
+&lt;p&gt;Then the same confusion returns under slightly better typography.&lt;/p&gt;
+&lt;p&gt;That is why I have become skeptical of process work that is mostly visual. A process redesign only matters if it makes responsibility easier to see. If it does not reduce ambiguity around ownership, sequencing, and completion, it is documentation theater.&lt;/p&gt;
+&lt;h2 id="a-process-map-is-really-a-control-model"&gt;A process map is really a control model
+&lt;/h2&gt;&lt;p&gt;People often treat process diagrams like neutral documentation. I do not think they are neutral at all.&lt;/p&gt;
+&lt;p&gt;A process map tells a team what kind of system it is operating inside.&lt;/p&gt;
+&lt;p&gt;It tells people:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;who is expected to make a decision&lt;/li&gt;
+&lt;li&gt;where work is allowed to pause&lt;/li&gt;
+&lt;li&gt;what has to exist before the next handoff&lt;/li&gt;
+&lt;li&gt;which kinds of work deserve structured review&lt;/li&gt;
+&lt;li&gt;when commercial activity begins to matter, not just technical activity&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is already more than documentation. That is an operating model.&lt;/p&gt;
+&lt;p&gt;Once I started looking at process work that way, I found it easier to tell the difference between a cosmetic update and a useful one.&lt;/p&gt;
+&lt;p&gt;Useful redesigns make it easier to answer uncomfortable questions.&lt;/p&gt;
+&lt;p&gt;Who qualifies the request?
+When does &amp;ldquo;we should do this&amp;rdquo; become &amp;ldquo;we are actually committing to this&amp;rdquo;?
+Who owns the spec?
+Who owns the delivery plan?
+What exactly gets handed over to engineering?
+What exactly gets handed back?&lt;/p&gt;
+&lt;p&gt;If the process cannot answer those questions cleanly, the team will answer them informally instead. That is usually where inconsistency starts.&lt;/p&gt;
+&lt;h2 id="the-dangerous-parts-are-usually-the-silent-decisions"&gt;The dangerous parts are usually the silent decisions
+&lt;/h2&gt;&lt;p&gt;In many delivery environments, the expensive failures do not begin with bad intentions. They begin with silent assumptions.&lt;/p&gt;
+&lt;p&gt;Somebody assumes the scope is clear enough.
+Somebody assumes the request is billable.
+Somebody assumes the handoff contained enough detail.
+Somebody assumes review will happen naturally.
+Somebody assumes invoicing can be sorted out later.&lt;/p&gt;
+&lt;p&gt;Those are all process decisions, whether the organization chooses to name them or not.&lt;/p&gt;
+&lt;p&gt;What I like about a stronger process design is not that it adds more steps. It is that it exposes those decisions before they become rework.&lt;/p&gt;
+&lt;p&gt;That often means introducing clearer moments for things like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;quote creation&lt;/li&gt;
+&lt;li&gt;documented specs&lt;/li&gt;
+&lt;li&gt;story creation&lt;/li&gt;
+&lt;li&gt;delivery-plan updates&lt;/li&gt;
+&lt;li&gt;explicit handover&lt;/li&gt;
+&lt;li&gt;pull request and deployment checkpoints&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;None of that is exciting on its own. The value comes from what it prevents.&lt;/p&gt;
+&lt;p&gt;It prevents teams from pretending that unresolved questions are already settled.&lt;/p&gt;
+&lt;h2 id="handover-is-where-good-intentions-usually-break"&gt;Handover is where good intentions usually break
+&lt;/h2&gt;&lt;p&gt;One of the most revealing parts of any process map is the handover point.&lt;/p&gt;
+&lt;p&gt;That is where vague accountability becomes expensive.&lt;/p&gt;
+&lt;p&gt;A team can be full of capable people and still lose momentum if handovers are weak. Product thinks engineering has enough context. Engineering thinks the real requirements are still moving. QA thinks something is ready because the state says &amp;ldquo;ready.&amp;rdquo; Client-facing teams think delivery is behind when the work was never structurally prepared in the first place.&lt;/p&gt;
+&lt;p&gt;That kind of friction often gets interpreted as a communication problem.&lt;/p&gt;
+&lt;p&gt;Sometimes it is.&lt;/p&gt;
+&lt;p&gt;But just as often it is a design problem. The system has not been explicit enough about what must exist before work changes hands.&lt;/p&gt;
+&lt;p&gt;I think this is why better process redesigns feel less like bureaucracy than people expect. They reduce the amount of interpretive labor everyone has to do. They replace memory and assumption with clearer structure.&lt;/p&gt;
+&lt;h2 id="commercial-flow-matters-too"&gt;Commercial flow matters too
+&lt;/h2&gt;&lt;p&gt;Another mistake I see is treating delivery process as if it is purely an engineering concern.&lt;/p&gt;
+&lt;p&gt;It is not.&lt;/p&gt;
+&lt;p&gt;The moment a request can become scoped, quoted, billed, delivered, and supported, the process is carrying commercial meaning. If those transitions are fuzzy, the business pays for it in more than one way.&lt;/p&gt;
+&lt;p&gt;It pays in:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;slower delivery&lt;/li&gt;
+&lt;li&gt;weaker forecasting&lt;/li&gt;
+&lt;li&gt;messy prioritization&lt;/li&gt;
+&lt;li&gt;invoicing friction&lt;/li&gt;
+&lt;li&gt;customer confusion about what was agreed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is one reason I like process designs that make the commercial path more visible instead of leaving it implied somewhere off to the side. A request is not only a technical event. It is often the beginning of an economic one too.&lt;/p&gt;
+&lt;h2 id="cleaner-ownership-beats-heavier-process"&gt;Cleaner ownership beats heavier process
+&lt;/h2&gt;&lt;p&gt;I do not think the goal should be to create the most complete process possible.&lt;/p&gt;
+&lt;p&gt;The goal should be to make ownership difficult to misread.&lt;/p&gt;
+&lt;p&gt;That is a different standard.&lt;/p&gt;
+&lt;p&gt;It favors:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;fewer hidden decisions&lt;/li&gt;
+&lt;li&gt;clearer role boundaries&lt;/li&gt;
+&lt;li&gt;stronger handoffs&lt;/li&gt;
+&lt;li&gt;visible review points&lt;/li&gt;
+&lt;li&gt;explicit completion criteria&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It is possible to have a long process that still fails at those things.&lt;/p&gt;
+&lt;p&gt;It is also possible to have a fairly lean process that gets them right.&lt;/p&gt;
+&lt;p&gt;That is why I do not judge process quality by the number of steps. I judge it by the amount of guesswork the team still has to do after reading it.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;I do not think process redesign should be sold as maturity for its own sake.&lt;/p&gt;
+&lt;p&gt;The real value is simpler than that.&lt;/p&gt;
+&lt;p&gt;Good process design reduces ambiguity at the places where ambiguity becomes expensive.&lt;/p&gt;
+&lt;p&gt;That means clearer intake.
+Clearer ownership.
+Clearer handoffs.
+Clearer review.
+Clearer delivery follow-through.&lt;/p&gt;
+&lt;p&gt;If a redesign does that, teams usually feel the benefit quickly.&lt;/p&gt;
+&lt;p&gt;If it does not, then it is probably just a new diagram describing the old confusion.&lt;/p&gt;
+&lt;p&gt;This sits close to the same theme I wrote about in &lt;a class="link" href="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/" &gt;When Product Velocity Becomes a Growth Tax&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right&lt;/a&gt;: delivery gets better when the system reduces cognitive drag instead of quietly multiplying it.&lt;/p&gt;</description></item><item><title>Building a Microsoft To Do CLI and Wiring It into OpenClaw</title><link>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</link><pubDate>Thu, 16 Apr 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/16/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/cover.png" alt="Featured image of post Building a Microsoft To Do CLI and Wiring It into OpenClaw" /&gt;&lt;p&gt;I wanted my OpenClaw agents to manage my Microsoft To Do lists: create tasks, track follow-ups, and check things off. The problem was that Microsoft doesn&amp;rsquo;t ship a To Do CLI. There&amp;rsquo;s the Graph API, but nothing that an agent can call from a shell prompt with a simple command.&lt;/p&gt;
 &lt;p&gt;So I built one.&lt;/p&gt;
 &lt;h2 id="why-a-cli-and-not-a-direct-api-integration"&gt;Why a CLI and not a direct API integration
 &lt;/h2&gt;&lt;p&gt;OpenClaw agents execute tools as shell commands. That&amp;rsquo;s the integration surface. If I wanted all five agents to manage To Do items, I needed something that could be invoked as a binary, accepted flags, and returned structured output. A CLI fit that model perfectly.&lt;/p&gt;
