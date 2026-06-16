@@ -1,22 +1,19 @@
 ---
-author: "Alfero Chingono"
-title: "API Dashboards Are Only Useful If They Change Decisions"
-date: 2026-05-21T09:00:00Z
-draft: true
-description: "Traffic charts become useful when they help engineering, support, and product decide what to investigate, fix, or explain next."
+author: Alfero Chingono
+title: API Dashboards Are Only Useful If They Change Decisions
+date: 2026-05-21T09:00:00.000Z
+description: Traffic charts become useful when they help engineering, support, and product decide what to investigate, fix, or explain next.
 slug: api-dashboards-are-only-useful-if-they-change-decisions
-tags: [
-"Observability",
-"API",
-"Monitoring",
-"Platform Engineering",
-"Azure"
-]
-categories: [
-"Observability",
-"Platform Engineering"
-]
-image: "cover.png"
+tags:
+  - Observability
+  - API
+  - Monitoring
+  - Platform Engineering
+  - Azure
+categories:
+  - Observability
+  - Platform Engineering
+image: cover.png
 ---
 
 I have looked at a lot of dashboards that were visually competent and operationally weak.
