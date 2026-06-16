@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Platform Engineering on Alfero Chingono</title><link>https://www.chingono.com/tags/platform-engineering/</link><description>Recent content in Platform Engineering on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Apr 2026 07:57:23 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/platform-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Platform Engineering on Alfero Chingono</title><link>https://www.chingono.com/tags/platform-engineering/</link><description>Recent content in Platform Engineering on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 16 Jun 2026 08:06:05 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/platform-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>A Good Cloud Diagram Should Expose Trust Boundaries</title><link>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</link><pubDate>Thu, 28 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/cover.png" alt="Featured image of post A Good Cloud Diagram Should Expose Trust Boundaries" /&gt;&lt;p&gt;I like architecture diagrams, but I also think a lot of them fail at the one job that matters most.&lt;/p&gt;
+&lt;p&gt;They show inventory.
+They do not show trust.&lt;/p&gt;
+&lt;p&gt;You can look at the boxes and come away knowing which services exist without really understanding how the system protects data, where public exposure begins, or which boundaries are doing the real work.&lt;/p&gt;
+&lt;p&gt;That is why I think a good cloud diagram should make trust boundaries easier to reason about, not just make the estate look organized.&lt;/p&gt;
+&lt;h2 id="most-diagrams-explain-structure-better-than-risk"&gt;Most diagrams explain structure better than risk
+&lt;/h2&gt;&lt;p&gt;This is a common pattern in Azure diagrams.&lt;/p&gt;
+&lt;p&gt;You see a resource group.
+You see networking.
+You see compute.
+You see data stores.
+You see monitoring.&lt;/p&gt;
+&lt;p&gt;All of that is useful, but it still leaves an important question unanswered: where does the system trust less, and where does it trust more?&lt;/p&gt;
+&lt;p&gt;That distinction matters because architecture is not only about components. It is about how confidence changes as traffic moves inward.&lt;/p&gt;
+&lt;p&gt;The external edge should not be treated like the private data plane.
+The application tier should not be treated like the secret store.
+The monitoring surface should not be treated like an optional extra.&lt;/p&gt;
+&lt;p&gt;If the diagram does not make those differences legible, it can still be technically correct while being operationally weak.&lt;/p&gt;
+&lt;h2 id="public-exposure-belongs-at-the-edge"&gt;Public exposure belongs at the edge
+&lt;/h2&gt;&lt;p&gt;One of the things I look for first is whether the diagram makes the entry path obvious.&lt;/p&gt;
+&lt;p&gt;Where does internet-facing traffic land?
+What is responsible for termination, routing, and inspection?
+What sits behind that layer, and what definitely does not?&lt;/p&gt;
+&lt;p&gt;When an architecture shows a public edge feeding an application gateway or equivalent boundary before anything sensitive is touched, the diagram starts telling a better story. It tells me the design is at least trying to respect exposure levels.&lt;/p&gt;
+&lt;p&gt;That story gets weaker when public-facing access looks too casually connected to the rest of the system.&lt;/p&gt;
+&lt;p&gt;I am not saying every architecture needs the same pattern.&lt;/p&gt;
+&lt;p&gt;I am saying the pattern it does use should reveal its security posture clearly enough that someone reviewing the design can see where the blast radius is meant to shrink.&lt;/p&gt;
+&lt;h2 id="private-data-paths-matter-more-than-service-count"&gt;Private data paths matter more than service count
+&lt;/h2&gt;&lt;p&gt;There is a tendency in cloud architecture conversations to spend too much time naming services and not enough time on how those services are reached.&lt;/p&gt;
+&lt;p&gt;I think the path matters more than the label.&lt;/p&gt;
+&lt;p&gt;A SQL database behind a private path tells me something useful.
+A Key Vault accessed through controlled network boundaries tells me something useful.
+A cache that sits inside the right trust zone tells me something useful.&lt;/p&gt;
+&lt;p&gt;Those details reveal whether the architecture is trying to reduce unnecessary exposure or whether it is simply hoping identity controls will compensate for a wide-open topology.&lt;/p&gt;
+&lt;p&gt;That is why I still like diagrams that make private connectivity and restricted service access visible. They force the architecture discussion into a more honest place.&lt;/p&gt;
+&lt;h2 id="supporting-services-are-not-accessories"&gt;Supporting services are not accessories
+&lt;/h2&gt;&lt;p&gt;Another weakness in lightweight diagrams is the way they treat certain components as decorative.&lt;/p&gt;
+&lt;p&gt;Monitoring gets tucked in a corner.
+Certificate handling is implied.
+Secret management is assumed.
+Caching is drawn as a performance detail.&lt;/p&gt;
+&lt;p&gt;In practice, those are not extras.&lt;/p&gt;
+&lt;p&gt;They are part of how the application becomes operable.&lt;/p&gt;
+&lt;p&gt;If Key Vault is missing, secret handling is somebody else&amp;rsquo;s problem.
+If monitoring is absent, incident response becomes guesswork.
+If certificate handling is invisible, trust at the edge becomes fuzzy.&lt;/p&gt;
+&lt;p&gt;The architecture is already making those decisions, whether or not the diagram admits it.&lt;/p&gt;
+&lt;p&gt;That is why I prefer diagrams that treat operational services as part of the architecture&amp;rsquo;s meaning, not just its implementation.&lt;/p&gt;
+&lt;h2 id="reference-architectures-should-help-teams-reason-not-admire"&gt;Reference architectures should help teams reason, not admire
+&lt;/h2&gt;&lt;p&gt;The best reference diagrams I have seen do not try to prove how much the author knows about Azure.&lt;/p&gt;
+&lt;p&gt;They try to help the next person reason about:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;entry points&lt;/li&gt;
+&lt;li&gt;trust zones&lt;/li&gt;
+&lt;li&gt;service-to-service paths&lt;/li&gt;
+&lt;li&gt;sensitive dependencies&lt;/li&gt;
+&lt;li&gt;operational surfaces&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That is a much better goal.&lt;/p&gt;
+&lt;p&gt;If a diagram helps a team ask sharper questions about network exposure, secret handling, data access, or failure visibility, then it is already doing valuable work.&lt;/p&gt;
+&lt;p&gt;If it mainly helps people say &amp;ldquo;that looks complete,&amp;rdquo; I am less impressed.&lt;/p&gt;
+&lt;h2 id="my-takeaway"&gt;My takeaway
+&lt;/h2&gt;&lt;p&gt;I do not think a strong cloud diagram is the one with the most logos.&lt;/p&gt;
+&lt;p&gt;It is the one that makes the architecture&amp;rsquo;s trust model easiest to understand.&lt;/p&gt;
+&lt;p&gt;That means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;public entry should be obvious&lt;/li&gt;
+&lt;li&gt;private data paths should be visible&lt;/li&gt;
+&lt;li&gt;sensitive services should not look casually exposed&lt;/li&gt;
+&lt;li&gt;operational services should appear as first-class parts of the system&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When a diagram does that, it becomes more than a picture of resources.&lt;/p&gt;
+&lt;p&gt;It becomes a usable explanation of how the system intends to stay safe.&lt;/p&gt;
+&lt;p&gt;If you want the implementation side of this conversation, &lt;a class="link" href="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/" &gt;How to Enable VM Insights on an Azure Virtual Machine Using Bicep&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/" &gt;Consuming Secrets in Azure KeyVault From Kubernetes On-Prem&lt;/a&gt; both live adjacent to the same idea: architecture becomes more trustworthy when the operational boundaries are explicit.&lt;/p&gt;</description></item><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
 &lt;p&gt;You reduce risk.
 You simplify delivery.
 You create better defaults.
