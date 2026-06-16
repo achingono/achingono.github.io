@@ -1,22 +1,19 @@
 ---
-author: "Alfero Chingono"
-title: "A Good Cloud Diagram Should Expose Trust Boundaries"
-date: 2026-05-28T09:00:00Z
-draft: true
-description: "A useful Azure reference architecture is less about listing services and more about making trust boundaries, entry points, and data paths obvious."
+author: Alfero Chingono
+title: A Good Cloud Diagram Should Expose Trust Boundaries
+date: 2026-05-28T09:00:00.000Z
+description: A useful Azure reference architecture is less about listing services and more about making trust boundaries, entry points, and data paths obvious.
 slug: a-good-cloud-diagram-should-expose-trust-boundaries
-tags: [
-"Azure",
-"Cloud Architecture",
-"Security",
-"Reference Architecture",
-"Platform Engineering"
-]
-categories: [
-"Azure",
-"Architecture"
-]
-image: "cover.png"
+tags:
+  - Azure
+  - Cloud Architecture
+  - Security
+  - Reference Architecture
+  - Platform Engineering
+categories:
+  - Azure
+  - Architecture
+image: cover.png
 ---
 
 I like architecture diagrams, but I also think a lot of them fail at the one job that matters most.
