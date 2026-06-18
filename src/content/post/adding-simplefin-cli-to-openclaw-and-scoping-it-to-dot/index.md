@@ -1,24 +1,22 @@
 ---
-author: "Alfero Chingono"
-title: "Adding simplefin-cli to OpenClaw and Scoping It to Dot"
-date: 2026-04-23T09:00:00Z
+author: Alfero Chingono
+title: Adding simplefin-cli to OpenClaw and Scoping It to Dot
+date: 2026-04-23T09:00:00.000Z
 draft: true
-description: "How I installed simplefin-cli in my custom OpenClaw image, persisted its SimpleFin Bridge credentials, and exposed it as a workspace skill that only Dot, my financial agent, can use."
+description: How I installed simplefin-cli in my custom OpenClaw image, persisted its SimpleFin Bridge credentials, and exposed it as a workspace skill that only Dot, my financial agent, can use.
 slug: adding-simplefin-cli-to-openclaw-and-scoping-it-to-dot
-tags: [
-"OpenClaw",
-"SimpleFin",
-"CLI",
-"Docker",
-"AI Agents",
-"Personal Finance"
-]
-categories: [
-"Agentic AI",
-"Platform Engineering",
-"Build in Public"
-]
-image: "cover.png"
+tags:
+  - OpenClaw
+  - SimpleFin
+  - CLI
+  - Docker
+  - AI Agents
+  - Personal Finance
+categories:
+  - Agentic AI
+  - Platform Engineering
+  - Build in Public
+image: cover.png
 ---
 
 I had already wired Microsoft To Do into OpenClaw as a shared skill for all of my agents. The next integration was different.
@@ -199,3 +197,4 @@ For now, though, I have the piece I wanted: a financial data tool in the image, 
 - *[How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image](/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/)*
 - *[How I Configured Five AI Agents on One Teams Bot](/blog/2026/04/05/how-i-configured-five-ai-agents-on-one-teams-bot/)*
 - *[Building a Microsoft To Do CLI and Wiring It into OpenClaw](/blog/2026/04/05/building-a-microsoft-todo-cli-and-wiring-it-into-openclaw/)*
+*
