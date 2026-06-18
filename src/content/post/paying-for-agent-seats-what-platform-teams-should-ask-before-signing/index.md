@@ -1,23 +1,21 @@
 ---
-author: "Alfero Chingono"
+author: Alfero Chingono
 title: "Paying for Agent Seats: What Platform Teams Should Ask Before Signing"
-date: 2026-07-16T09:00:00Z
+date: 2026-07-16T09:00:00.000Z
 draft: true
-description: "Per-seat pricing for AI agents breaks capacity planning. Frame the buying conversation around utilization, attribution, and cost-to-serve — not sticker price."
+description: Per-seat pricing for AI agents breaks capacity planning. Frame the buying conversation around utilization, attribution, and cost-to-serve — not sticker price.
 slug: paying-for-agent-seats-what-platform-teams-should-ask-before-signing
-tags: [
-"Platform Engineering",
-"FinOps",
-"AI Agents",
-"Procurement",
-"Enterprise",
-"Cloud Costs"
-]
-categories: [
-"Platform Engineering",
-"FinOps"
-]
-image: "cover.png"
+tags:
+  - Platform Engineering
+  - FinOps
+  - AI Agents
+  - Procurement
+  - Enterprise
+  - Cloud Costs
+categories:
+  - Platform Engineering
+  - FinOps
+image: cover.png
 ---
 
 Enterprise vendors are converging on a simple pricing story: charge for AI agent seats the same way you already charge for humans. It reads well in a board deck. It falls apart the moment a platform team tries to forecast capacity, because an "agent seat" is not a unit of anything consistent.
