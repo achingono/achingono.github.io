@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Leadership on Alfero Chingono</title><link>https://www.chingono.com/tags/leadership/</link><description>Recent content in Leadership on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 16 Jun 2026 08:06:12 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/leadership/index.xml" rel="self" type="application/rss+xml"/><item><title>Process Redesign Only Works When Ownership Gets Clearer</title><link>https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/</link><pubDate>Thu, 07 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/cover.png" alt="Featured image of post Process Redesign Only Works When Ownership Gets Clearer" /&gt;&lt;p&gt;I have seen teams redraw a delivery process and change almost nothing.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Leadership on Alfero Chingono</title><link>https://www.chingono.com/tags/leadership/</link><description>Recent content in Leadership on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 18 Jun 2026 07:22:24 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/leadership/index.xml" rel="self" type="application/rss+xml"/><item><title>Process Redesign Only Works When Ownership Gets Clearer</title><link>https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/</link><pubDate>Thu, 07 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/07/process-redesign-only-works-when-ownership-gets-clearer/cover.png" alt="Featured image of post Process Redesign Only Works When Ownership Gets Clearer" /&gt;&lt;p&gt;I have seen teams redraw a delivery process and change almost nothing.&lt;/p&gt;
 &lt;p&gt;The swimlanes get neater.
 The boxes get renamed.
 Some arrows disappear.
 Everyone feels productive for a week.&lt;/p&gt;
 &lt;p&gt;Then the same confusion returns under slightly better typography.&lt;/p&gt;
-&lt;p&gt;That is why I have become skeptical of process work that is mostly visual. A process redesign only matters if it makes responsibility easier to see. If it does not reduce ambiguity around ownership, sequencing, and completion, it is documentation theater.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s why I&amp;rsquo;m skeptical of process work that is mostly visual. A process redesign only matters if it makes responsibility easier to see. If it doesn&amp;rsquo;t reduce ambiguity around ownership, sequencing, and completion, it is documentation theater.&lt;/p&gt;
 &lt;h2 id="a-process-map-is-really-a-control-model"&gt;A process map is really a control model
-&lt;/h2&gt;&lt;p&gt;People often treat process diagrams like neutral documentation. I do not think they are neutral at all.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;People often treat process diagrams like neutral documentation. I don&amp;rsquo;t think they are neutral at all.&lt;/p&gt;
 &lt;p&gt;A process map tells a team what kind of system it is operating inside.&lt;/p&gt;
 &lt;p&gt;It tells people:&lt;/p&gt;
 &lt;ul&gt;
@@ -14,9 +14,9 @@ Everyone feels productive for a week.&lt;/p&gt;
 &lt;li&gt;where work is allowed to pause&lt;/li&gt;
 &lt;li&gt;what has to exist before the next handoff&lt;/li&gt;
 &lt;li&gt;which kinds of work deserve structured review&lt;/li&gt;
-&lt;li&gt;when commercial activity begins to matter, not just technical activity&lt;/li&gt;
+&lt;li&gt;when commercial activity starts to matter, not just technical activity&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is already more than documentation. That is an operating model.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s already more than documentation. That&amp;rsquo;s an operating model.&lt;/p&gt;
 &lt;p&gt;Once I started looking at process work that way, I found it easier to tell the difference between a cosmetic update and a useful one.&lt;/p&gt;
 &lt;p&gt;Useful redesigns make it easier to answer uncomfortable questions.&lt;/p&gt;
 &lt;p&gt;Who qualifies the request?
@@ -25,9 +25,9 @@ Who owns the spec?
 Who owns the delivery plan?
 What exactly gets handed over to engineering?
 What exactly gets handed back?&lt;/p&gt;
-&lt;p&gt;If the process cannot answer those questions cleanly, the team will answer them informally instead. That is usually where inconsistency starts.&lt;/p&gt;
+&lt;p&gt;If the process can&amp;rsquo;t answer those questions cleanly, the team will answer them informally instead. That&amp;rsquo;s usually where inconsistency starts.&lt;/p&gt;
 &lt;h2 id="the-dangerous-parts-are-usually-the-silent-decisions"&gt;The dangerous parts are usually the silent decisions
-&lt;/h2&gt;&lt;p&gt;In many delivery environments, the expensive failures do not begin with bad intentions. They begin with silent assumptions.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;In many delivery environments, the expensive failures don&amp;rsquo;t begin with bad intentions. They begin with silent assumptions.&lt;/p&gt;
 &lt;p&gt;Somebody assumes the scope is clear enough.
 Somebody assumes the request is billable.
 Somebody assumes the handoff contained enough detail.
@@ -48,15 +48,15 @@ Somebody assumes invoicing can be sorted out later.&lt;/p&gt;
 &lt;p&gt;It prevents teams from pretending that unresolved questions are already settled.&lt;/p&gt;
 &lt;h2 id="handover-is-where-good-intentions-usually-break"&gt;Handover is where good intentions usually break
 &lt;/h2&gt;&lt;p&gt;One of the most revealing parts of any process map is the handover point.&lt;/p&gt;
-&lt;p&gt;That is where vague accountability becomes expensive.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s where vague accountability becomes expensive.&lt;/p&gt;
 &lt;p&gt;A team can be full of capable people and still lose momentum if handovers are weak. Product thinks engineering has enough context. Engineering thinks the real requirements are still moving. QA thinks something is ready because the state says &amp;ldquo;ready.&amp;rdquo; Client-facing teams think delivery is behind when the work was never structurally prepared in the first place.&lt;/p&gt;
 &lt;p&gt;That kind of friction often gets interpreted as a communication problem.&lt;/p&gt;
 &lt;p&gt;Sometimes it is.&lt;/p&gt;
-&lt;p&gt;But just as often it is a design problem. The system has not been explicit enough about what must exist before work changes hands.&lt;/p&gt;
+&lt;p&gt;But just as often it is a design problem. The system hasn&amp;rsquo;t been explicit enough about what must exist before work changes hands.&lt;/p&gt;
 &lt;p&gt;I think this is why better process redesigns feel less like bureaucracy than people expect. They reduce the amount of interpretive labor everyone has to do. They replace memory and assumption with clearer structure.&lt;/p&gt;
 &lt;h2 id="commercial-flow-matters-too"&gt;Commercial flow matters too
 &lt;/h2&gt;&lt;p&gt;Another mistake I see is treating delivery process as if it is purely an engineering concern.&lt;/p&gt;
-&lt;p&gt;It is not.&lt;/p&gt;
+&lt;p&gt;It isn&amp;rsquo;t.&lt;/p&gt;
 &lt;p&gt;The moment a request can become scoped, quoted, billed, delivered, and supported, the process is carrying commercial meaning. If those transitions are fuzzy, the business pays for it in more than one way.&lt;/p&gt;
 &lt;p&gt;It pays in:&lt;/p&gt;
 &lt;ul&gt;
@@ -66,11 +66,11 @@ Somebody assumes invoicing can be sorted out later.&lt;/p&gt;
 &lt;li&gt;invoicing friction&lt;/li&gt;
 &lt;li&gt;customer confusion about what was agreed&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is one reason I like process designs that make the commercial path more visible instead of leaving it implied somewhere off to the side. A request is not only a technical event. It is often the beginning of an economic one too.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s one reason I like process designs that make the commercial path more visible instead of leaving it implied somewhere off to the side. A request isn&amp;rsquo;t only a technical event. It is often the beginning of an economic one too.&lt;/p&gt;
 &lt;h2 id="cleaner-ownership-beats-heavier-process"&gt;Cleaner ownership beats heavier process
-&lt;/h2&gt;&lt;p&gt;I do not think the goal should be to create the most complete process possible.&lt;/p&gt;
-&lt;p&gt;The goal should be to make ownership difficult to misread.&lt;/p&gt;
-&lt;p&gt;That is a different standard.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;I don&amp;rsquo;t think the goal should be to create the most complete process possible.&lt;/p&gt;
+&lt;p&gt;The goal should be to make ownership hard to misread.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s a different standard.&lt;/p&gt;
 &lt;p&gt;It favors:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;fewer hidden decisions&lt;/li&gt;
@@ -81,18 +81,18 @@ Somebody assumes invoicing can be sorted out later.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;It is possible to have a long process that still fails at those things.&lt;/p&gt;
 &lt;p&gt;It is also possible to have a fairly lean process that gets them right.&lt;/p&gt;
-&lt;p&gt;That is why I do not judge process quality by the number of steps. I judge it by the amount of guesswork the team still has to do after reading it.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s why I don&amp;rsquo;t judge process quality by the number of steps. I judge it by the amount of guesswork the team still has to do after reading it.&lt;/p&gt;
 &lt;h2 id="my-takeaway"&gt;My takeaway
-&lt;/h2&gt;&lt;p&gt;I do not think process redesign should be sold as maturity for its own sake.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;I don&amp;rsquo;t think process redesign should be sold as maturity for its own sake.&lt;/p&gt;
 &lt;p&gt;The real value is simpler than that.&lt;/p&gt;
-&lt;p&gt;Good process design reduces ambiguity at the places where ambiguity becomes expensive.&lt;/p&gt;
+&lt;p&gt;Good process design reduces ambiguity at the places where ambiguity gets expensive.&lt;/p&gt;
 &lt;p&gt;That means clearer intake.
 Clearer ownership.
 Clearer handoffs.
 Clearer review.
 Clearer delivery follow-through.&lt;/p&gt;
 &lt;p&gt;If a redesign does that, teams usually feel the benefit quickly.&lt;/p&gt;
-&lt;p&gt;If it does not, then it is probably just a new diagram describing the old confusion.&lt;/p&gt;
+&lt;p&gt;If it doesn&amp;rsquo;t, then it is probably just a new diagram describing the old confusion.&lt;/p&gt;
 &lt;p&gt;This sits close to the same theme I wrote about in &lt;a class="link" href="https://www.chingono.com/blog/2023/12/05/when-product-velocity-becomes-a-growth-tax/" &gt;When Product Velocity Becomes a Growth Tax&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2025/04/10/the-dora-report-was-right-idps-improve-team-productivity-by-10-percent-heres-how-ive-seen-it/" &gt;The DORA Report Was Right&lt;/a&gt;: delivery gets better when the system reduces cognitive drag instead of quietly multiplying it.&lt;/p&gt;</description></item><item><title>The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations</title><link>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</link><pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/25/the-silent-excellence-trap-why-good-work-gets-invisible-in-big-organizations/cover.png" alt="Featured image of post The Silent Excellence Trap: Why Good Work Gets Invisible in Big Organizations" /&gt;&lt;p&gt;There is a specific kind of frustration that shows up in large organizations when you are doing good work that makes other work possible.&lt;/p&gt;
 &lt;p&gt;You reduce risk.
 You simplify delivery.
