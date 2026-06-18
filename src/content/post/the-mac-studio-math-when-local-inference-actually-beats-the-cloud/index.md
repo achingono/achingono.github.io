@@ -1,23 +1,21 @@
 ---
-author: "Alfero Chingono"
+author: Alfero Chingono
 title: "The Mac Studio Math: When Local Inference Actually Beats the Cloud"
-date: 2026-06-25T09:00:00Z
+date: 2026-06-25T09:00:00.000Z
 draft: true
-description: "For sustained agent workloads, 24/7 cloud GPU bills eclipse a workstation inside weeks. A FinOps-style breakdown with the assumptions exposed."
+description: For sustained agent workloads, 24/7 cloud GPU bills eclipse a workstation inside weeks. A FinOps-style breakdown with the assumptions exposed.
 slug: the-mac-studio-math-when-local-inference-actually-beats-the-cloud
-tags: [
-"FinOps",
-"Local AI",
-"Cloud Costs",
-"AI Agents",
-"Qwen",
-"Platform Engineering"
-]
-categories: [
-"FinOps",
-"AI Agents"
-]
-image: "cover.png"
+tags:
+  - FinOps
+  - Local AI
+  - Cloud Costs
+  - AI Agents
+  - Qwen
+  - Platform Engineering
+categories:
+  - FinOps
+  - AI Agents
+image: cover.png
 ---
 
 "A $3,999 Mac Studio pays for itself in five weeks" is a great tweet and a terrible procurement argument. The number is also not wrong — it's just conditional on assumptions nobody writes down. This is the post I wish existed before I started actually running local models for my agents: a FinOps-style walk-through of when local wins, when it loses, and what to measure before you buy.
