@@ -1,23 +1,21 @@
 ---
-author: "Alfero Chingono"
-title: "The Junior/Senior Gap Widens With AI — Here's How I'd Fix Onboarding"
-date: 2026-07-09T09:00:00Z
+author: Alfero Chingono
+title: The Junior/Senior Gap Widens With AI — Here's How I'd Fix Onboarding
+date: 2026-07-09T09:00:00.000Z
 draft: true
-description: "AI makes senior engineers faster and juniors confidently wrong. Onboarding that assumes a shared baseline is now the single biggest underestimated risk in engineering teams."
+description: AI makes senior engineers faster and juniors confidently wrong. Onboarding that assumes a shared baseline is now the single biggest underestimated risk in engineering teams.
 slug: the-junior-senior-gap-widens-with-ai-heres-how-to-fix-onboarding
-tags: [
-"Software Engineering",
-"Mentorship",
-"AI Agents",
-"FireFly",
-"Platform Engineering",
-"Onboarding"
-]
-categories: [
-"Software Engineering",
-"AI Agents"
-]
-image: "cover.png"
+tags:
+  - Software Engineering
+  - Mentorship
+  - AI Agents
+  - FireFly
+  - Platform Engineering
+  - Onboarding
+categories:
+  - Software Engineering
+  - AI Agents
+image: cover.png
 ---
 
 The most repeated take on my timeline this month: AI tools widen the gap between senior and junior engineers. I think that is right, but most of the conversation stops at the diagnosis. The harder question is what onboarding looks like when the new-hire default is an AI-assisted first draft they cannot evaluate.
