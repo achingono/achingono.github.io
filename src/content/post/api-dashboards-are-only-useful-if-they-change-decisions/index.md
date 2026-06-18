@@ -22,9 +22,9 @@ They had charts.
 They had colors.
 They had enough movement to feel reassuring.
 
-What they often did not have was decision value.
+What they often didn't have was decision value.
 
-That is the standard I keep coming back to with API observability. If a dashboard cannot help someone decide what to investigate, explain, or improve next, it is mostly decoration.
+That's the standard I keep coming back to with API observability. If a dashboard can't help someone decide what to investigate, explain, or improve next, it is mostly decoration.
 
 ## Request counts are not the point
 
@@ -42,15 +42,15 @@ The more useful questions are things like:
 - whether failures are broad or isolated
 - whether a pattern is new or persistent
 
-That is why I prefer API dashboards that segment by consumer, path, date, and outcome instead of stopping at a top-line number.
+That's why I prefer API dashboards that segment by consumer, path, date, and outcome instead of stopping at a top-line number.
 
 ## Segment by consumer, endpoint, and outcome
 
-Once you start breaking API traffic down this way, the dashboard becomes much more honest.
+Once you start breaking API traffic down this way, the dashboard gets more honest.
 
-A consumer-level view can show whether one client or integration partner is generating the bulk of the load.
+A consumer-level view can show whether one client or integration partner is generating most of the load.
 
-A path-level view can show whether the pressure is distributed or concentrated.
+A path-level view can show whether pressure is spread out or concentrated.
 
 A status-level view can show whether the system is mostly healthy with edge-case noise or whether a real degradation is underway.
 
@@ -68,15 +68,15 @@ I think good dashboard design is partly about subtraction.
 
 The moment you include everything, the signal starts competing with noise.
 
-That is especially true for API telemetry. Health checks, root paths, robots, repeated low-value hits, and other background traffic can consume attention that should be going elsewhere.
+That is especially true for API telemetry. Health checks, root paths, robots, repeated low-value hits, and other background traffic can eat the attention that should be going elsewhere.
 
 A dashboard becomes more useful when it is willing to say: these routes are not where human attention should start.
 
-That sounds obvious. In practice, it is not.
+That sounds obvious. In practice, it isn't.
 
 A lot of dashboards are built as if completeness is the same thing as clarity.
 
-It is not.
+It isn't.
 
 Clarity usually comes from deciding what the viewer should safely ignore.
 
@@ -93,15 +93,15 @@ For example:
 - product can use them to see which surfaces appear to matter in practice
 - platform teams can use them to spot where reliability work will buy the most confidence
 
-That cross-functional usefulness does not come from adding more graphs. It comes from choosing views that map to real questions those teams ask.
+That cross-functional usefulness doesn't come from adding more graphs. It comes from choosing views that map to real questions those teams ask.
 
 ## Success rate is more meaningful in context
 
-I also think teams sometimes over-trust a single success metric.
+I also think teams sometimes trust a single success metric too much.
 
-A path can have a respectable success rate and still create friction if the failures concentrate on the wrong customer, the wrong date range, or the wrong step in a workflow.
+A path can have a respectable success rate and still create friction if the failures cluster around the wrong customer, the wrong date range, or the wrong step in a workflow.
 
-That is why I like dashboards that let you see success and failure by path, not just globally. The closer the metric is to the operational surface, the easier it becomes to act on.
+That's why I like dashboards that let you see success and failure by path, not just globally. The closer the metric is to the operational surface, the easier it becomes to act on.
 
 A generic availability story is reassuring.
 
@@ -123,7 +123,7 @@ That means showing enough context to answer practical questions:
 
 When a dashboard can do that, people actually use it.
 
-When it cannot, it becomes the kind of thing teams screenshot for status reviews and ignore during real investigation.
+When it can't, it becomes the kind of thing teams screenshot for status reviews and ignore during real investigation.
 
 That is not a tooling failure.
 
