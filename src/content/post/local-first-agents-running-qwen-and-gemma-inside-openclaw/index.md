@@ -1,23 +1,21 @@
 ---
-author: "Alfero Chingono"
+author: Alfero Chingono
 title: "Local-First Agents: Running Qwen 3.6 and Gemma 4 Inside OpenClaw"
-date: 2026-07-02T09:00:00Z
+date: 2026-07-02T09:00:00.000Z
 draft: true
-description: "Wiring a local model into OpenClaw without breaking tool-calling contracts — and a frank look at where local still loses."
+description: Wiring a local model into OpenClaw without breaking tool-calling contracts — and a frank look at where local still loses.
 slug: local-first-agents-running-qwen-and-gemma-inside-openclaw
-tags: [
-"OpenClaw",
-"Local AI",
-"Ollama",
-"MCP",
-"AI Agents",
-"docker"
-]
-categories: [
-"AI Agents",
-"OpenClaw"
-]
-image: "cover.png"
+tags:
+  - OpenClaw
+  - Local AI
+  - Ollama
+  - MCP
+  - AI Agents
+  - docker
+categories:
+  - AI Agents
+  - OpenClaw
+image: cover.png
 ---
 
 Running a local model is easy. Running a local model as the brain of an agent that has to call tools, honor schemas, and hand off to other agents is where it gets interesting. This is what I actually had to change inside OpenClaw to make Qwen 3.6 and Gemma 4 work as first-class agent backends — and where I still route to a frontier model on purpose.
@@ -93,4 +91,4 @@ The interesting claim is not that local models can replace frontier ones. They c
 
 The interesting claim is that if you design the tool surface correctly, the model becomes a routing decision rather than an architectural one. Local wins the tasks it is good at, frontier catches the ones it is not, and the agents above the gateway do not care which is running underneath.
 
-That is what local-first actually means, at least for the way I build agents. Not "only local, all the time." Local by default, cloud on purpose, with an honest log of which is which.
+That is what local-first actually means, at least for the way I build agents. Local by default, cloud on purpose, with an honest log of which is which.
