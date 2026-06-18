@@ -1,22 +1,20 @@
 ---
-author: "Alfero Chingono"
+author: Alfero Chingono
 title: "Why \"Vibecoding\" Hits a Wall: A Debrief From the Other Side"
-date: 2026-07-23T09:00:00Z
+date: 2026-07-23T09:00:00.000Z
 draft: true
-description: "LLMs close the first-draft gap but widen the integration, debugging, and security gap. Here is where non-engineers actually get stuck — and where AI genuinely helps them past it."
+description: LLMs close the first-draft gap but widen the integration, debugging, and security gap. Here is where non-engineers actually get stuck — and where AI genuinely helps them past it.
 slug: why-vibecoding-hits-a-wall-a-debrief-from-the-other-side
-tags: [
-"AI Agents",
-"Software Engineering",
-"Developer Experience",
-"Build in Public",
-"OpenClaw"
-]
-categories: [
-"Software Engineering",
-"AI Agents"
-]
-image: "cover.png"
+tags:
+  - AI Agents
+  - Software Engineering
+  - Developer Experience
+  - Build in Public
+  - OpenClaw
+categories:
+  - Software Engineering
+  - AI Agents
+image: cover.png
 ---
 
 The promise of "anyone can build software now" has had a year to play out. What I see in practice is more interesting than either the hype or the backlash: non-engineers absolutely can ship a first version, and they absolutely do hit a wall. The wall is not coding. The wall is everything around the code.
