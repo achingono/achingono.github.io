@@ -1,23 +1,21 @@
 ---
-author: "Alfero Chingono"
+author: Alfero Chingono
 title: "When the Model Regresses: Building Agent Systems for Provider Drift"
-date: 2026-06-18T09:00:00Z
+date: 2026-06-18T09:00:00.000Z
 draft: true
 description: "Perceived model regression is real and structural. Treat the model like an unreliable dependency: pin it, benchmark it, fall back on it."
 slug: when-the-model-regresses-building-for-provider-drift
-tags: [
-"LiteLLM",
-"AI Agents",
-"Platform Engineering",
-"Reliability",
-"OpenClaw",
-"Firefly"
-]
-categories: [
-"Platform Engineering",
-"AI Agents"
-]
-image: "cover.png"
+tags:
+  - LiteLLM
+  - AI Agents
+  - Platform Engineering
+  - Reliability
+  - OpenClaw
+  - Firefly
+categories:
+  - Platform Engineering
+  - AI Agents
+image: cover.png
 ---
 
 Every few weeks, the timeline fills up with the same post: "Claude went from 110 IQ to 50 IQ overnight." Sometimes it is survivorship bias. Sometimes the prompt drifted. But often enough, the model actually did change under you — silent routing changes, quantization updates, safety-layer tweaks — and your agents started failing in ways your tests did not cover.
