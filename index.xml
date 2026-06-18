@@ -75,8 +75,8 @@ If certificate handling is invisible, trust at the edge gets fuzzy.&lt;/p&gt;
 &lt;p&gt;They had charts.
 They had colors.
 They had enough movement to feel reassuring.&lt;/p&gt;
-&lt;p&gt;What they often did not have was decision value.&lt;/p&gt;
-&lt;p&gt;That is the standard I keep coming back to with API observability. If a dashboard cannot help someone decide what to investigate, explain, or improve next, it is mostly decoration.&lt;/p&gt;
+&lt;p&gt;What they often didn&amp;rsquo;t have was decision value.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s the standard I keep coming back to with API observability. If a dashboard can&amp;rsquo;t help someone decide what to investigate, explain, or improve next, it is mostly decoration.&lt;/p&gt;
 &lt;h2 id="request-counts-are-not-the-point"&gt;Request counts are not the point
 &lt;/h2&gt;&lt;p&gt;It is easy to build a dashboard that answers the least interesting question: how many requests did we get?&lt;/p&gt;
 &lt;p&gt;That number matters, but only as a starting point.&lt;/p&gt;
@@ -89,11 +89,11 @@ They had enough movement to feel reassuring.&lt;/p&gt;
 &lt;li&gt;whether failures are broad or isolated&lt;/li&gt;
 &lt;li&gt;whether a pattern is new or persistent&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is why I prefer API dashboards that segment by consumer, path, date, and outcome instead of stopping at a top-line number.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s why I prefer API dashboards that segment by consumer, path, date, and outcome instead of stopping at a top-line number.&lt;/p&gt;
 &lt;h2 id="segment-by-consumer-endpoint-and-outcome"&gt;Segment by consumer, endpoint, and outcome
-&lt;/h2&gt;&lt;p&gt;Once you start breaking API traffic down this way, the dashboard becomes much more honest.&lt;/p&gt;
-&lt;p&gt;A consumer-level view can show whether one client or integration partner is generating the bulk of the load.&lt;/p&gt;
-&lt;p&gt;A path-level view can show whether the pressure is distributed or concentrated.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;Once you start breaking API traffic down this way, the dashboard gets more honest.&lt;/p&gt;
+&lt;p&gt;A consumer-level view can show whether one client or integration partner is generating most of the load.&lt;/p&gt;
+&lt;p&gt;A path-level view can show whether pressure is spread out or concentrated.&lt;/p&gt;
 &lt;p&gt;A status-level view can show whether the system is mostly healthy with edge-case noise or whether a real degradation is underway.&lt;/p&gt;
 &lt;p&gt;Put those together and the conversation changes.&lt;/p&gt;
 &lt;p&gt;Support can ask whether a reported issue lines up with a visible pattern.
@@ -103,11 +103,11 @@ Product can tell whether an integration is actually getting used the way people 
 &lt;h2 id="filters-are-part-of-the-design"&gt;Filters are part of the design
 &lt;/h2&gt;&lt;p&gt;I think good dashboard design is partly about subtraction.&lt;/p&gt;
 &lt;p&gt;The moment you include everything, the signal starts competing with noise.&lt;/p&gt;
-&lt;p&gt;That is especially true for API telemetry. Health checks, root paths, robots, repeated low-value hits, and other background traffic can consume attention that should be going elsewhere.&lt;/p&gt;
+&lt;p&gt;That is especially true for API telemetry. Health checks, root paths, robots, repeated low-value hits, and other background traffic can eat the attention that should be going elsewhere.&lt;/p&gt;
 &lt;p&gt;A dashboard becomes more useful when it is willing to say: these routes are not where human attention should start.&lt;/p&gt;
-&lt;p&gt;That sounds obvious. In practice, it is not.&lt;/p&gt;
+&lt;p&gt;That sounds obvious. In practice, it isn&amp;rsquo;t.&lt;/p&gt;
 &lt;p&gt;A lot of dashboards are built as if completeness is the same thing as clarity.&lt;/p&gt;
-&lt;p&gt;It is not.&lt;/p&gt;
+&lt;p&gt;It isn&amp;rsquo;t.&lt;/p&gt;
 &lt;p&gt;Clarity usually comes from deciding what the viewer should safely ignore.&lt;/p&gt;
 &lt;h2 id="observability-should-serve-more-than-one-team"&gt;Observability should serve more than one team
 &lt;/h2&gt;&lt;p&gt;Another reason API dashboards underperform is that they are often built for one audience while pretending to serve many.&lt;/p&gt;
@@ -119,11 +119,11 @@ Product can tell whether an integration is actually getting used the way people 
 &lt;li&gt;product can use them to see which surfaces appear to matter in practice&lt;/li&gt;
 &lt;li&gt;platform teams can use them to spot where reliability work will buy the most confidence&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That cross-functional usefulness does not come from adding more graphs. It comes from choosing views that map to real questions those teams ask.&lt;/p&gt;
+&lt;p&gt;That cross-functional usefulness doesn&amp;rsquo;t come from adding more graphs. It comes from choosing views that map to real questions those teams ask.&lt;/p&gt;
 &lt;h2 id="success-rate-is-more-meaningful-in-context"&gt;Success rate is more meaningful in context
-&lt;/h2&gt;&lt;p&gt;I also think teams sometimes over-trust a single success metric.&lt;/p&gt;
-&lt;p&gt;A path can have a respectable success rate and still create friction if the failures concentrate on the wrong customer, the wrong date range, or the wrong step in a workflow.&lt;/p&gt;
-&lt;p&gt;That is why I like dashboards that let you see success and failure by path, not just globally. The closer the metric is to the operational surface, the easier it becomes to act on.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;I also think teams sometimes trust a single success metric too much.&lt;/p&gt;
+&lt;p&gt;A path can have a respectable success rate and still create friction if the failures cluster around the wrong customer, the wrong date range, or the wrong step in a workflow.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s why I like dashboards that let you see success and failure by path, not just globally. The closer the metric is to the operational surface, the easier it becomes to act on.&lt;/p&gt;
 &lt;p&gt;A generic availability story is reassuring.&lt;/p&gt;
 &lt;p&gt;A route-level outcome story is useful.&lt;/p&gt;
 &lt;h2 id="my-takeaway"&gt;My takeaway
@@ -138,7 +138,7 @@ Product can tell whether an integration is actually getting used the way people 
 &lt;li&gt;what deserves attention first&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;When a dashboard can do that, people actually use it.&lt;/p&gt;
-&lt;p&gt;When it cannot, it becomes the kind of thing teams screenshot for status reviews and ignore during real investigation.&lt;/p&gt;
+&lt;p&gt;When it can&amp;rsquo;t, it becomes the kind of thing teams screenshot for status reviews and ignore during real investigation.&lt;/p&gt;
 &lt;p&gt;That is not a tooling failure.&lt;/p&gt;
 &lt;p&gt;It is a design failure.&lt;/p&gt;</description></item><item><title>Prompting for Product Marketing, Not Just Pretty Pictures</title><link>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</link><pubDate>Thu, 14 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/cover.png" alt="Featured image of post Prompting for Product Marketing, Not Just Pretty Pictures" /&gt;&lt;p&gt;Most advice about AI image prompting still sounds like it was written by people who only care whether an image looks impressive in isolation.&lt;/p&gt;
 &lt;p&gt;That is not usually the real job.&lt;/p&gt;
