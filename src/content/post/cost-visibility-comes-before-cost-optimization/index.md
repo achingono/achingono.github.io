@@ -1,25 +1,23 @@
 ---
-author: "Alfero Chingono"
-title: "Cost Visibility Comes Before Cost Optimization"
-date: 2026-06-04T09:00:00Z
+author: Alfero Chingono
+title: Cost Visibility Comes Before Cost Optimization
+date: 2026-06-04T09:00:00.000Z
 draft: true
-description: "Before teams talk about optimization, they need a cost view that is legible enough to connect spend to architecture, environments, and ownership."
+description: Before teams talk about optimization, they need a cost view that is legible enough to connect spend to architecture, environments, and ownership.
 slug: cost-visibility-comes-before-cost-optimization
-tags: [
-"FinOps",
-"Azure",
-"Cloud Costs",
-"Platform Engineering",
-"Cost Optimization"
-]
-categories: [
-"FinOps",
-"Azure"
-]
-image: "cover.png"
+tags:
+  - FinOps
+  - Azure
+  - Cloud Costs
+  - Platform Engineering
+  - Cost Optimization
+categories:
+  - FinOps
+  - Azure
+image: cover.png
 ---
 
-Cloud cost conversations go sideways surprisingly fast when the numbers are technically accurate but structurally vague.
+Cloud cost conversations go sideways fast when the numbers are technically accurate but structurally vague.
 
 Someone says spend is too high.
 Someone else says the platform is necessary.
@@ -27,7 +25,7 @@ A third person asks for optimization.
 
 And before long the conversation is full of urgency but short on understanding.
 
-That is why I think cost visibility comes before cost optimization. If the cost picture is not legible enough for engineering and leadership to interpret in the same way, the optimization work usually turns reactive.
+That is why I think cost visibility comes before cost optimization. If the cost picture is not legible enough for engineering and leadership to interpret in the same way, optimization work turns reactive.
 
 ## A total cost number is almost useless on its own
 
@@ -35,7 +33,7 @@ I understand why finance starts with the total.
 
 The total matters.
 
-But if that is where the conversation stays, the next steps get sloppy. Teams start trying to reduce spend without first understanding what kind of spend they are looking at.
+But if that is where the conversation stays, the next steps get sloppy. Teams start trying to reduce spend before they understand what kind of spend they are looking at.
 
 Is the cost concentrated in compute, storage, networking, databases, or supporting services?
 Is it attached to production environments or lower environments?
@@ -77,7 +75,7 @@ When cost is visible by resource group, it becomes easier to spot patterns like:
 
 This is the point where cost stops feeling abstract. Teams can recognize themselves in it.
 
-That recognition is important. People are much more likely to improve cost posture when the data maps to something they can actually influence.
+That recognition matters. People are much more likely to improve cost posture when the data maps to something they can actually influence.
 
 ## Optimization starts after attribution
 
@@ -104,7 +102,7 @@ Those are very different categories. They should not all be attacked the same wa
 
 ## FinOps works better when engineering can recognize the story
 
-One of the reasons cloud cost work frustrates teams is that the data is often presented in a way finance can read faster than engineering can.
+One reason cloud cost work frustrates teams is that the data is often presented in a way finance can read faster than engineering can.
 
 I think that is a problem.
 
@@ -148,4 +146,4 @@ Once that exists, optimization gets sharper.
 
 Before that, it is too easy to confuse motion with control.
 
-This also sits closer to the platform side of the story than people sometimes admit. Cost discipline gets much easier when the underlying architecture is understandable, repeatable, and owned clearly. That is part of the same modernization argument I made in [Technical Debt Is a Capital Allocation Decision](/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/).
+This sits close to the platform side of the story. Cost discipline gets much easier when the underlying architecture is understandable, repeatable, and clearly owned. That is part of the same modernization argument I made in [Technical Debt Is a Capital Allocation Decision](/blog/2023/12/07/technical-debt-is-a-capital-allocation-decision/).
