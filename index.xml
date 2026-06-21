@@ -1407,30 +1407,12 @@ Often it does not.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;That is enough.&lt;/p&gt;
 &lt;p&gt;Honestly, &amp;ldquo;enough&amp;rdquo; is one of the healthiest instincts you can have when building infrastructure for yourself.&lt;/p&gt;
-&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image</title><link>https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/</link><pubDate>Sun, 15 Mar 2026 13:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/cover.png" alt="Featured image of post How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image" /&gt;&lt;p&gt;In the &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;first post&lt;/a&gt; I explained why I wanted Docker as the foundation. This one is the next practical problem: how to get OpenClaw talking to &lt;strong&gt;Signal&lt;/strong&gt; and &lt;strong&gt;Microsoft Teams&lt;/strong&gt; without turning the host machine into a dependency junk drawer.&lt;/p&gt;
-&lt;p&gt;The short version is that I ended up building a custom image because the base runtime got me close, but not all the way there.&lt;/p&gt;
-&lt;h2 id="signal-and-teams-were-different-kinds-of-problems"&gt;Signal and Teams were different kinds of problems
-&lt;/h2&gt;&lt;p&gt;Signal and Teams pushed on different parts of the system.&lt;/p&gt;
-&lt;p&gt;Signal is much more of a runtime-tooling problem.&lt;/p&gt;
-&lt;p&gt;You need a working Signal CLI runtime in the container and a persistent place to keep Signal state. If the container can send Signal messages but the identity disappears on rebuild, you have not actually solved the problem.&lt;/p&gt;
-&lt;p&gt;Teams is more of a Node/runtime integration problem.&lt;/p&gt;
-&lt;p&gt;It needs the right hosting support in the image, the right webhook port exposed, and the right application credentials sitting in OpenClaw config so the bot framework side can talk to Microsoft properly.&lt;/p&gt;
-&lt;p&gt;I didn&amp;rsquo;t want to solve those two things in two completely different operational styles.&lt;/p&gt;
-&lt;p&gt;So I chose one image and one compose layout that could support both.&lt;/p&gt;
-&lt;h2 id="why-i-did-not-stop-at-the-base-openclaw-image"&gt;Why I did not stop at the base OpenClaw image
-&lt;/h2&gt;&lt;p&gt;The base OpenClaw image was a good starting point, but I needed more in the environment:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;signal-cli-native&lt;/code&gt; installed in the container&lt;/li&gt;
-&lt;li&gt;GitHub CLI and SSH tooling for the agent&amp;rsquo;s repo workflows&lt;/li&gt;
-&lt;li&gt;an extra Node modules path for additional runtime packages&lt;/li&gt;
-&lt;li&gt;a clean way for both the gateway container and the CLI container to share the same capabilities&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;That led to a custom image tagged locally as &lt;code&gt;openclaw-local:teams&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The name reflects where I started operationally, but the important part is not the tag. The important part is that the image became the place where I declared, very explicitly, &amp;ldquo;this is the OpenClaw runtime I actually depend on.&amp;rdquo;&lt;/p&gt;
-&lt;h2 id="how-i-handled-signal"&gt;How I handled Signal
-&lt;/h2&gt;&lt;p&gt;For Signal, the key decision was to keep the runtime inside the image and the account state outside it.&lt;/p&gt;
-&lt;p&gt;The image installs &lt;code&gt;signal-cli-native&lt;/code&gt;, which gives the container the actual tool it needs to send and receive Signal messages.&lt;/p&gt;
-&lt;p&gt;Then the compose file mounts the Signal data directory into:&lt;/p&gt;
+&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;How I Split OpenClaw into Main and Personal Agents&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image</title><link>https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/</link><pubDate>Sun, 15 Mar 2026 13:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/cover.png" alt="Featured image of post How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image" /&gt;&lt;p&gt;I didn&amp;rsquo;t start with “one neat image” here. I started with a mess of runtime needs that were pulling in different directions.&lt;/p&gt;
+&lt;p&gt;Signal wanted a durable CLI runtime and a place to keep identity state. Teams wanted the right Node hosting pieces, a webhook port, and credentials that lived in config instead of inside the image. If I had split those into separate ad hoc setups, I would have ended up debugging my own infrastructure instead of using it.&lt;/p&gt;
+&lt;p&gt;So I made the image do the runtime work and the compose file do the state work.&lt;/p&gt;
+&lt;h2 id="signal-needed-a-stable-runtime-not-just-a-container-that-could-send-a-message"&gt;Signal needed a stable runtime, not just a container that could send a message
+&lt;/h2&gt;&lt;p&gt;For Signal, the container needed &lt;code&gt;signal-cli-native&lt;/code&gt;. That part is straightforward. The less obvious part is persistence. If the account state disappears every time the container is rebuilt, then the setup is fragile no matter how clean the Dockerfile looks.&lt;/p&gt;
+&lt;p&gt;That is why the compose file mounts the Signal data directory into:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
 &lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
@@ -1439,50 +1421,45 @@ Often it does not.&lt;/p&gt;
 &lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/home/node/.local/share/signal-cli
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;That was the right split for me:&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;That split feels small, but it changes the whole system:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;the image owns the executable&lt;/li&gt;
-&lt;li&gt;the volume owns the durable Signal identity&lt;/li&gt;
+&lt;li&gt;the volume owns the identity&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;This matters more than it sounds.&lt;/p&gt;
-&lt;p&gt;If the image knows how to run Signal but the identity is trapped inside a replaceable container layer, every rebuild becomes risky. If the state is mounted and durable, rebuilds are much less dramatic.&lt;/p&gt;
-&lt;p&gt;On the OpenClaw side, the Signal channel is configured with pairing and allowlists so the bot is not just open to the world. That let me keep Signal useful without letting it become an uncontrolled ingress point.&lt;/p&gt;
-&lt;h2 id="how-i-handled-teams"&gt;How I handled Teams
-&lt;/h2&gt;&lt;p&gt;Teams had a different shape.&lt;/p&gt;
-&lt;p&gt;The container needed the extra Node package support for the Microsoft hosting layer, and the gateway needed to expose the Teams webhook port. In my setup that means port &lt;code&gt;3978&lt;/code&gt; is published by the gateway container so the remote edge can forward &lt;code&gt;/api/messages&lt;/code&gt; traffic back to the local OpenClaw runtime.&lt;/p&gt;
-&lt;p&gt;The actual Teams app credentials live in OpenClaw config, not in the image. That&amp;rsquo;s exactly where I want them.&lt;/p&gt;
-&lt;p&gt;The image should describe runtime capability.&lt;/p&gt;
-&lt;p&gt;The config should describe environment-specific identity.&lt;/p&gt;
-&lt;p&gt;That boundary kept the setup much easier to move, rebuild, and reason about.&lt;/p&gt;
-&lt;h2 id="one-image-two-operational-benefits"&gt;One image, two operational benefits
-&lt;/h2&gt;&lt;p&gt;Using the same custom image for both &lt;code&gt;gateway&lt;/code&gt; and &lt;code&gt;cli&lt;/code&gt; gave me two benefits I really wanted.&lt;/p&gt;
-&lt;p&gt;First, it removed &amp;ldquo;works in one container but not the other&amp;rdquo; drift.&lt;/p&gt;
-&lt;p&gt;If the gateway can use the runtime, the CLI can too. If the CLI can inspect or patch something, it is doing so in the same environment the gateway actually uses. I&amp;rsquo;ve learned to value that kind of consistency a lot.&lt;/p&gt;
-&lt;p&gt;Second, it let me keep the OpenClaw-specific runtime tweaks in one place:&lt;/p&gt;
+&lt;p&gt;That is the kind of boundary I look for now. If state is replaceable and the binary is reproducible, the setup is easier to trust.&lt;/p&gt;
+&lt;h2 id="teams-needed-the-image-to-behave-like-a-real-hosting-environment"&gt;Teams needed the image to behave like a real hosting environment
+&lt;/h2&gt;&lt;p&gt;Teams pushed on a different seam.&lt;/p&gt;
+&lt;p&gt;The container needed the Microsoft hosting layer support, and the gateway had to expose port &lt;code&gt;3978&lt;/code&gt; so the remote edge could forward &lt;code&gt;/api/messages&lt;/code&gt; traffic into the local runtime. The Teams credentials stayed in OpenClaw config, which is where I wanted them. I did not want credentials baked into the image, because the image should describe capability, not environment-specific identity.&lt;/p&gt;
+&lt;p&gt;That distinction ended up being the difference between “this kind of works on my machine” and “this is a system I can rebuild without rereading my own notes.”&lt;/p&gt;
+&lt;h2 id="the-custom-image-was-really-about-reducing-drift"&gt;The custom image was really about reducing drift
+&lt;/h2&gt;&lt;p&gt;The base OpenClaw image got me close, but not all the way there. I needed:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;the extra Node modules path&lt;/li&gt;
-&lt;li&gt;the installed system packages&lt;/li&gt;
-&lt;li&gt;Signal CLI&lt;/li&gt;
-&lt;li&gt;GitHub CLI&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;signal-cli-native&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;GitHub CLI and SSH tooling&lt;/li&gt;
+&lt;li&gt;extra Node module support&lt;/li&gt;
 &lt;li&gt;pnpm-prepared extras&lt;/li&gt;
+&lt;li&gt;one runtime shape that both &lt;code&gt;gateway&lt;/code&gt; and &lt;code&gt;cli&lt;/code&gt; could share&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;It&amp;rsquo;s a much nicer maintenance story than trying to remember which bits live on the host, which belong to the container, and which only exist in some forgotten shell session.&lt;/p&gt;
-&lt;h2 id="the-compose-file-completed-the-picture"&gt;The compose file completed the picture
-&lt;/h2&gt;&lt;p&gt;The image by itself was not enough. The compose file is what turned it into a working system.&lt;/p&gt;
-&lt;p&gt;That is where I defined the things that make the setup feel real:&lt;/p&gt;
+&lt;p&gt;Once I put those pieces into &lt;code&gt;openclaw-local:teams&lt;/code&gt;, the operational story got simpler. The gateway and CLI stopped being two slightly different environments with slightly different failure modes.&lt;/p&gt;
+&lt;p&gt;That matters more than it sounds. A lot of container problems are really drift problems.&lt;/p&gt;
+&lt;h2 id="the-compose-file-is-where-the-system-became-legible"&gt;The compose file is where the system became legible
+&lt;/h2&gt;&lt;p&gt;The image alone was not the whole answer. Compose is what made the setup readable:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;mounted OpenClaw config&lt;/li&gt;
 &lt;li&gt;mounted workspaces&lt;/li&gt;
 &lt;li&gt;mounted Signal data&lt;/li&gt;
-&lt;li&gt;shared access to source repositories&lt;/li&gt;
+&lt;li&gt;shared access to source repos&lt;/li&gt;
 &lt;li&gt;local Ollama dependency&lt;/li&gt;
 &lt;li&gt;editor access&lt;/li&gt;
-&lt;li&gt;network sharing between the gateway and CLI&lt;/li&gt;
+&lt;li&gt;network sharing between gateway and CLI&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;This is one reason I still like Docker Compose for personal infrastructure. It doesn&amp;rsquo;t just run containers. It describes the operating assumptions of the stack in one place.&lt;/p&gt;
-&lt;h2 id="the-setup-was-already-hinting-at-the-routing-story"&gt;The setup was already hinting at the routing story
-&lt;/h2&gt;&lt;p&gt;Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly: which agent answers where, what state belongs to which workspace, and how does a background task find its way back to the right chat? That&amp;rsquo;s where the series goes next.&lt;/p&gt;
-&lt;p&gt;Next in the series: &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;Inside the Dockerfile Behind My OpenClaw Gateway&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)</title><link>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/cover.png" alt="Featured image of post How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)" /&gt;&lt;p&gt;I wrote in 2024 about &lt;a class="link" href="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/" &gt;automating OWASP scan reports in Azure DevOps&lt;/a&gt; because I wanted security scanning to become part of the delivery flow instead of an afterthought.&lt;/p&gt;
+&lt;p&gt;That is the part of Docker Compose I still like. It does not just run things; it shows the operating assumptions.&lt;/p&gt;
+&lt;p&gt;If someone asks me how this setup works, I can point to the compose file and say: this is the runtime, this is the state, this is the boundary between them.&lt;/p&gt;
+&lt;h2 id="the-review-question-i-kept-asking"&gt;The review question I kept asking
+&lt;/h2&gt;&lt;p&gt;The real question was never “can I make Signal and Teams work?” It was “can I make the trust and state boundaries obvious enough that I still understand this setup after a week away from it?”&lt;/p&gt;
+&lt;p&gt;That is the standard I keep coming back to.&lt;/p&gt;
+&lt;p&gt;The image should be boringly capable. The config should be explicit. The volumes should hold the durable parts. And the routing story should stay simple enough that I can explain it without inventing a diagram on the spot.&lt;/p&gt;
+&lt;p&gt;The next problem in the series is routing: once multiple channels are live, which agent answers where, what state belongs to which workspace, and how does a background task get back to the right chat?&lt;/p&gt;</description></item><item><title>How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)</title><link>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/cover.png" alt="Featured image of post How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)" /&gt;&lt;p&gt;I wrote in 2024 about &lt;a class="link" href="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/" &gt;automating OWASP scan reports in Azure DevOps&lt;/a&gt; because I wanted security scanning to become part of the delivery flow instead of an afterthought.&lt;/p&gt;
 &lt;p&gt;This post is the next step in that same direction.&lt;/p&gt;
 &lt;p&gt;The thing I wanted from SonarQube was not another dashboard full of guilt. I wanted a loop that could actually create work, route it, fix it, and come back cleaner on the next scan.&lt;/p&gt;
 &lt;p&gt;That changed the design completely.&lt;/p&gt;
