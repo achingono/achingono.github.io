@@ -1,80 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure on Alfero Chingono</title><link>https://www.chingono.com/tags/azure/</link><description>Recent content in Azure on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 21 Jun 2026 10:16:25 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/azure/index.xml" rel="self" type="application/rss+xml"/><item><title>A Good Cloud Diagram Should Expose Trust Boundaries</title><link>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</link><pubDate>Thu, 28 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/cover.png" alt="Featured image of post A Good Cloud Diagram Should Expose Trust Boundaries" /&gt;&lt;p&gt;I like architecture diagrams, but a lot of them miss the one job that matters most.&lt;/p&gt;
-&lt;p&gt;They show inventory.
-They don&amp;rsquo;t show trust.&lt;/p&gt;
-&lt;p&gt;You can look at the boxes and walk away knowing which services exist without really understanding how the system protects data, where public exposure begins, or which boundaries do the real work.&lt;/p&gt;
-&lt;p&gt;That is why I think a good cloud diagram should make trust boundaries easy to read. Not just make the estate look tidy.&lt;/p&gt;
-&lt;h2 id="most-diagrams-explain-structure-better-than-risk"&gt;Most diagrams explain structure better than risk
-&lt;/h2&gt;&lt;p&gt;This is a common pattern in Azure diagrams.&lt;/p&gt;
-&lt;p&gt;You see a resource group.
-You see networking.
-You see compute.
-You see data stores.
-You see monitoring.&lt;/p&gt;
-&lt;p&gt;All of that helps, but it still leaves a hard question unanswered: where does the system trust less, and where does it trust more?&lt;/p&gt;
-&lt;p&gt;That distinction matters because architecture is not only about components. It is about how confidence changes as traffic moves inward.&lt;/p&gt;
-&lt;p&gt;The external edge should not be treated like the private data plane.
-The application tier should not be treated like the secret store.
-The monitoring surface should not be treated like an optional extra.&lt;/p&gt;
-&lt;p&gt;If the diagram does not make those differences easy to read, it can still be technically correct while staying operationally weak.&lt;/p&gt;
-&lt;h2 id="public-exposure-belongs-at-the-edge"&gt;Public exposure belongs at the edge
-&lt;/h2&gt;&lt;p&gt;One thing I look for first is whether the diagram makes the entry path obvious.&lt;/p&gt;
-&lt;p&gt;Where does internet-facing traffic land?
-What handles termination, routing, and inspection?
-What sits behind that layer, and what definitely does not?&lt;/p&gt;
-&lt;p&gt;When an architecture shows a public edge feeding an application gateway or equivalent boundary before anything sensitive is touched, the diagram starts telling a better story. It says the design is trying to respect exposure levels.&lt;/p&gt;
-&lt;p&gt;That story gets weaker when public-facing access looks casually connected to the rest of the system.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;m not saying every architecture needs the same pattern.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;m saying the pattern it does use should show its security posture clearly enough that someone reviewing it can see where the blast radius is supposed to shrink.&lt;/p&gt;
-&lt;p&gt;A simple example: in &lt;a class="link" href="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/" &gt;How to Enable VM Insights on an Azure Virtual Machine Using Bicep&lt;/a&gt;, the useful part is not just that a VM exists. The important part is that diagnostics data is deliberately routed through a VM extension, a storage account, and Application Insights. That is a boundary story. It tells you where telemetry is collected, where it is stored, and what the VM needs in order to participate.&lt;/p&gt;
-&lt;h2 id="private-data-paths-matter-more-than-service-count"&gt;Private data paths matter more than service count
-&lt;/h2&gt;&lt;p&gt;There is a tendency in cloud architecture conversations to spend too much time naming services and not enough time on how those services are reached.&lt;/p&gt;
-&lt;p&gt;I think the path matters more than the label.&lt;/p&gt;
-&lt;p&gt;A SQL database behind a private path tells me something useful.
-A Key Vault accessed through controlled network boundaries tells me something useful.
-A cache that sits inside the right trust zone tells me something useful.&lt;/p&gt;
-&lt;p&gt;Those details reveal whether the architecture is trying to reduce unnecessary exposure or whether it is simply hoping identity controls will make up for a wide-open topology.&lt;/p&gt;
-&lt;p&gt;That is why I still like diagrams that make private connectivity and restricted service access visible. They force the architecture discussion into a more honest place.&lt;/p&gt;
-&lt;p&gt;The same idea shows up in &lt;a class="link" href="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/" &gt;Consume Secrets in Azure Key vault From Kubernetes On-prem&lt;/a&gt;. That post is not mainly about Kubernetes as a technology list. It is about the path the secret takes: service principal, Key Vault policy, CSI driver, Kubernetes secret, and then the pod mount. Whether you agree with every design choice or not, the important thing is that the trust path is explicit. You can see where Azure stops and where the cluster begins.&lt;/p&gt;
-&lt;h2 id="supporting-services-are-not-accessories"&gt;Supporting services are not accessories
-&lt;/h2&gt;&lt;p&gt;Another weakness in lightweight diagrams is the way they treat certain components as decoration.&lt;/p&gt;
-&lt;p&gt;Monitoring gets tucked in a corner.
-Certificate handling is implied.
-Secret management is assumed.
-Caching is drawn as a performance detail.&lt;/p&gt;
-&lt;p&gt;In practice, those are not extras.&lt;/p&gt;
-&lt;p&gt;They are part of how the application becomes operable.&lt;/p&gt;
-&lt;p&gt;If Key Vault is missing, secret handling becomes somebody else&amp;rsquo;s problem.
-If monitoring is absent, incident response turns into guesswork.
-If certificate handling is invisible, trust at the edge gets fuzzy.&lt;/p&gt;
-&lt;p&gt;The architecture is already making those decisions, whether or not the diagram admits it.&lt;/p&gt;
-&lt;p&gt;That is why I prefer diagrams that treat operational services as part of the architecture&amp;rsquo;s meaning, not just its implementation.&lt;/p&gt;
-&lt;p&gt;This also explains why posts like &lt;a class="link" href="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/" &gt;How to Enable VM Insights on an Azure Virtual Machine Using Bicep&lt;/a&gt; are useful alongside architecture diagrams. They show that observability is not an afterthought. The diagnostics extension, the storage account, and the Application Insights sink are all part of the system&amp;rsquo;s trust model. If those pieces are hidden, the diagram is missing a meaningful boundary.&lt;/p&gt;
-&lt;h2 id="reference-architectures-should-help-teams-reason-not-admire"&gt;Reference architectures should help teams reason, not admire
-&lt;/h2&gt;&lt;p&gt;The best reference diagrams I have seen do not try to prove how much the author knows about Azure.&lt;/p&gt;
-&lt;p&gt;They try to help the next person reason about:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure on Alfero Chingono</title><link>https://www.chingono.com/tags/azure/</link><description>Recent content in Azure on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 21 Jun 2026 10:26:33 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/azure/index.xml" rel="self" type="application/rss+xml"/><item><title>A Good Cloud Diagram Should Expose Trust Boundaries</title><link>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</link><pubDate>Thu, 28 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/28/a-good-cloud-diagram-should-expose-trust-boundaries/cover.png" alt="Featured image of post A Good Cloud Diagram Should Expose Trust Boundaries" /&gt;&lt;p&gt;A few times now, I’ve looked at a cloud diagram and felt the same thing: the boxes were neat, but the architecture still wasn’t telling the truth.&lt;/p&gt;
+&lt;p&gt;That’s usually the moment I start looking for trust boundaries.&lt;/p&gt;
+&lt;p&gt;Not because trust boundaries are some abstract security slogan, but because they’re the fastest way I know to see whether a diagram is actually describing how a system behaves. A good diagram makes it obvious where traffic enters, which component makes the trust decision, and where sensitive data stops being public.&lt;/p&gt;
+&lt;h2 id="the-first-thing-i-check-is-the-edge"&gt;The first thing I check is the edge
+&lt;/h2&gt;&lt;p&gt;When I’m reviewing a diagram, I usually start at the public edge.&lt;/p&gt;
+&lt;p&gt;If there is an application gateway, API gateway, or some other front door, I want to know exactly what it protects and what it does not. I want to see whether the edge is just decorative or whether it is actually doing something useful like terminating TLS, filtering traffic, or separating public access from private workloads.&lt;/p&gt;
+&lt;p&gt;If the diagram draws a single cloud icon and then several internal services with no obvious boundary between them, that’s already a warning sign. It usually means the author is describing deployment shape, not trust shape.&lt;/p&gt;
+&lt;h2 id="then-i-follow-the-data-path"&gt;Then I follow the data path
+&lt;/h2&gt;&lt;p&gt;The next thing I trace is the data path.&lt;/p&gt;
+&lt;p&gt;A diagram can look secure and still hide a bad assumption. I have seen that happen when secrets, certificates, or application settings are drawn as if they just “exist” somewhere in the platform.&lt;/p&gt;
+&lt;p&gt;That is where a concrete example helps.&lt;/p&gt;
+&lt;p&gt;In &lt;strong&gt;How to Enable VM Insights on an Azure Virtual Machine Using Bicep&lt;/strong&gt;, the path is not just “enable monitoring.” The actual flow is more useful than that:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;entry points&lt;/li&gt;
-&lt;li&gt;trust zones&lt;/li&gt;
-&lt;li&gt;service-to-service paths&lt;/li&gt;
-&lt;li&gt;sensitive dependencies&lt;/li&gt;
-&lt;li&gt;operational surfaces&lt;/li&gt;
+&lt;li&gt;the VM gets the extension&lt;/li&gt;
+&lt;li&gt;telemetry moves through the storage account / monitoring plumbing&lt;/li&gt;
+&lt;li&gt;Application Insights becomes the place where the signals end up&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is a better goal.&lt;/p&gt;
-&lt;p&gt;If a diagram helps a team ask sharper questions about network exposure, secret handling, data access, or failure visibility, then it is doing useful work.&lt;/p&gt;
-&lt;p&gt;If it mainly helps people say &amp;ldquo;that looks complete,&amp;rdquo; I&amp;rsquo;m less impressed.&lt;/p&gt;
-&lt;h2 id="my-takeaway"&gt;My takeaway
-&lt;/h2&gt;&lt;p&gt;I do not think a strong cloud diagram is the one with the most logos.&lt;/p&gt;
-&lt;p&gt;It is the one that makes the architecture&amp;rsquo;s trust model easiest to understand.&lt;/p&gt;
-&lt;p&gt;That means:&lt;/p&gt;
+&lt;p&gt;That is the kind of detail I want a diagram to expose. Not just that monitoring exists, but how the machine, the extension, and the telemetry destination relate to one another.&lt;/p&gt;
+&lt;p&gt;The same thing shows up in &lt;strong&gt;Consume Secrets in Azure Key vault From Kubernetes On-prem&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;If the diagram only says “Key Vault,” it is too vague to help me reason about risk. If it shows:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;public entry should be obvious&lt;/li&gt;
-&lt;li&gt;private data paths should be visible&lt;/li&gt;
-&lt;li&gt;sensitive services should not look casually exposed&lt;/li&gt;
-&lt;li&gt;operational services should appear as first-class parts of the system&lt;/li&gt;
+&lt;li&gt;a service principal or identity&lt;/li&gt;
+&lt;li&gt;a Key Vault policy or access path&lt;/li&gt;
+&lt;li&gt;the CSI driver&lt;/li&gt;
+&lt;li&gt;the pod mounting the secret&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;When a diagram does that, it becomes more than a picture of resources.&lt;/p&gt;
-&lt;p&gt;It becomes a usable explanation of how the system intends to stay safe.&lt;/p&gt;
-&lt;p&gt;If you want examples of the implementation side of this idea, &lt;a class="link" href="https://www.chingono.com/blog/2024/06/27/enable-vm-insights-azure-bicep/" &gt;How to Enable VM Insights on an Azure Virtual Machine Using Bicep&lt;/a&gt; and &lt;a class="link" href="https://www.chingono.com/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/" &gt;Consume Secrets in Azure Key vault From Kubernetes On-prem&lt;/a&gt; both point to the same lesson: architecture gets more trustworthy when the boundaries are explicit.&lt;/p&gt;</description></item><item><title>API Dashboards Are Only Useful If They Change Decisions</title><link>https://www.chingono.com/blog/2026/05/21/api-dashboards-are-only-useful-if-they-change-decisions/</link><pubDate>Thu, 21 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/21/api-dashboards-are-only-useful-if-they-change-decisions/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/21/api-dashboards-are-only-useful-if-they-change-decisions/cover.png" alt="Featured image of post API Dashboards Are Only Useful If They Change Decisions" /&gt;&lt;p&gt;I have looked at a lot of dashboards that were visually competent and operationally weak.&lt;/p&gt;
+&lt;p&gt;then I can actually see where the trust decisions happen. I can tell whether the secret is being fetched at runtime, where identity is enforced, and what the cluster needs in order to touch that data.&lt;/p&gt;
+&lt;p&gt;That is the difference between a diagram that looks complete and a diagram that lets you review an implementation.&lt;/p&gt;
+&lt;h2 id="i-care-about-what-stays-public-and-what-does-not"&gt;I care about what stays public and what does not
+&lt;/h2&gt;&lt;p&gt;A lot of diagram problems come from mixing public and private concerns in the same visual layer.&lt;/p&gt;
+&lt;p&gt;If user traffic is supposed to stop at one component and backend services stay private, I want the diagram to make that separation unavoidable. If every box is drawn with the same visual weight, people tend to assume everything is equally exposed.&lt;/p&gt;
+&lt;p&gt;That is where teams get themselves into trouble.&lt;/p&gt;
+&lt;p&gt;The diagram should make it easy to answer questions like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What can the internet reach directly?&lt;/li&gt;
+&lt;li&gt;What only lives inside the private network?&lt;/li&gt;
+&lt;li&gt;What has to be authenticated before it can talk to anything else?&lt;/li&gt;
+&lt;li&gt;What is just internal plumbing?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If I can’t answer those questions from the diagram, I usually don’t trust the diagram yet.&lt;/p&gt;
+&lt;h2 id="supporting-services-should-not-disappear-into-the-background"&gt;Supporting services should not disappear into the background
+&lt;/h2&gt;&lt;p&gt;Another thing I look for is whether the diagram hides the supporting services.&lt;/p&gt;
+&lt;p&gt;Things like monitoring, secret stores, identity providers, certificate handling, and storage are often drawn as little side notes. But in real systems, those pieces are part of the trust story.&lt;/p&gt;
+&lt;p&gt;That is why I liked the two concrete examples above. They remind me that support services are not incidental:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;VM Insights depends on an actual path for telemetry&lt;/li&gt;
+&lt;li&gt;Key Vault depends on identity, policy, and runtime access&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If those pieces are invisible, the diagram is pretending the system is simpler than it really is.&lt;/p&gt;
+&lt;h2 id="what-i-mean-when-i-say-a-diagram-should-expose-trust-boundaries"&gt;What I mean when I say a diagram should expose trust boundaries
+&lt;/h2&gt;&lt;p&gt;I do not mean every diagram has to look like a security architecture poster.&lt;/p&gt;
+&lt;p&gt;I mean a reviewer should be able to glance at it and understand where the interesting decisions are.&lt;/p&gt;
+&lt;p&gt;For me, that usually means the diagram answers three things clearly:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;where the boundary is&lt;/li&gt;
+&lt;li&gt;what crosses it&lt;/li&gt;
+&lt;li&gt;who or what is allowed to cross it&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If the picture does that, it is useful.
+If it doesn’t, the picture is mostly decoration.&lt;/p&gt;
+&lt;h2 id="the-best-diagrams-feel-like-a-review-not-a-presentation"&gt;The best diagrams feel like a review, not a presentation
+&lt;/h2&gt;&lt;p&gt;The strongest diagrams I’ve seen are the ones that make review easy.&lt;/p&gt;
+&lt;p&gt;They do not try to impress you with symmetry. They make it obvious what is exposed, what is internal, and what needs to be trusted carefully.&lt;/p&gt;
+&lt;p&gt;That is what I was aiming for when I wrote this post in the first place, and it is still the standard I use when I look at my own architecture sketches.&lt;/p&gt;
+&lt;p&gt;A good cloud diagram should not just show what exists.&lt;/p&gt;
+&lt;p&gt;It should show where the trust changes.&lt;/p&gt;</description></item><item><title>API Dashboards Are Only Useful If They Change Decisions</title><link>https://www.chingono.com/blog/2026/05/21/api-dashboards-are-only-useful-if-they-change-decisions/</link><pubDate>Thu, 21 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/21/api-dashboards-are-only-useful-if-they-change-decisions/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/21/api-dashboards-are-only-useful-if-they-change-decisions/cover.png" alt="Featured image of post API Dashboards Are Only Useful If They Change Decisions" /&gt;&lt;p&gt;I have looked at a lot of dashboards that were visually competent and operationally weak.&lt;/p&gt;
 &lt;p&gt;They had charts.
 They had colors.
 They had enough movement to feel reassuring.&lt;/p&gt;
