@@ -16,125 +16,103 @@ categories:
 image: cover.png
 ---
 
-I like architecture diagrams, but a lot of them miss the one job that matters most.
+A few times now, I’ve looked at a cloud diagram and felt the same thing: the boxes were neat, but the architecture still wasn’t telling the truth.
 
-They show inventory.
-They don't show trust.
+That’s usually the moment I start looking for trust boundaries.
 
-You can look at the boxes and walk away knowing which services exist without really understanding how the system protects data, where public exposure begins, or which boundaries do the real work.
+Not because trust boundaries are some abstract security slogan, but because they’re the fastest way I know to see whether a diagram is actually describing how a system behaves. A good diagram makes it obvious where traffic enters, which component makes the trust decision, and where sensitive data stops being public.
 
-That is why I think a good cloud diagram should make trust boundaries easy to read. Not just make the estate look tidy.
+## The first thing I check is the edge
 
-## Most diagrams explain structure better than risk
+When I’m reviewing a diagram, I usually start at the public edge.
 
-This is a common pattern in Azure diagrams.
+If there is an application gateway, API gateway, or some other front door, I want to know exactly what it protects and what it does not. I want to see whether the edge is just decorative or whether it is actually doing something useful like terminating TLS, filtering traffic, or separating public access from private workloads.
 
-You see a resource group.
-You see networking.
-You see compute.
-You see data stores.
-You see monitoring.
+If the diagram draws a single cloud icon and then several internal services with no obvious boundary between them, that’s already a warning sign. It usually means the author is describing deployment shape, not trust shape.
 
-All of that helps, but it still leaves a hard question unanswered: where does the system trust less, and where does it trust more?
+## Then I follow the data path
 
-That distinction matters because architecture is not only about components. It is about how confidence changes as traffic moves inward.
+The next thing I trace is the data path.
 
-The external edge should not be treated like the private data plane.
-The application tier should not be treated like the secret store.
-The monitoring surface should not be treated like an optional extra.
+A diagram can look secure and still hide a bad assumption. I have seen that happen when secrets, certificates, or application settings are drawn as if they just “exist” somewhere in the platform.
 
-If the diagram does not make those differences easy to read, it can still be technically correct while staying operationally weak.
+That is where a concrete example helps.
 
-## Public exposure belongs at the edge
+In **How to Enable VM Insights on an Azure Virtual Machine Using Bicep**, the path is not just “enable monitoring.” The actual flow is more useful than that:
 
-One thing I look for first is whether the diagram makes the entry path obvious.
+- the VM gets the extension
+- telemetry moves through the storage account / monitoring plumbing
+- Application Insights becomes the place where the signals end up
 
-Where does internet-facing traffic land?
-What handles termination, routing, and inspection?
-What sits behind that layer, and what definitely does not?
+That is the kind of detail I want a diagram to expose. Not just that monitoring exists, but how the machine, the extension, and the telemetry destination relate to one another.
 
-When an architecture shows a public edge feeding an application gateway or equivalent boundary before anything sensitive is touched, the diagram starts telling a better story. It says the design is trying to respect exposure levels.
+The same thing shows up in **Consume Secrets in Azure Key vault From Kubernetes On-prem**.
 
-That story gets weaker when public-facing access looks casually connected to the rest of the system.
+If the diagram only says “Key Vault,” it is too vague to help me reason about risk. If it shows:
 
-I'm not saying every architecture needs the same pattern.
+- a service principal or identity
+- a Key Vault policy or access path
+- the CSI driver
+- the pod mounting the secret
 
-I'm saying the pattern it does use should show its security posture clearly enough that someone reviewing it can see where the blast radius is supposed to shrink.
+then I can actually see where the trust decisions happen. I can tell whether the secret is being fetched at runtime, where identity is enforced, and what the cluster needs in order to touch that data.
 
-A simple example: in [How to Enable VM Insights on an Azure Virtual Machine Using Bicep](/blog/2024/06/27/enable-vm-insights-azure-bicep/), the useful part is not just that a VM exists. The important part is that diagnostics data is deliberately routed through a VM extension, a storage account, and Application Insights. That is a boundary story. It tells you where telemetry is collected, where it is stored, and what the VM needs in order to participate.
+That is the difference between a diagram that looks complete and a diagram that lets you review an implementation.
 
-## Private data paths matter more than service count
+## I care about what stays public and what does not
 
-There is a tendency in cloud architecture conversations to spend too much time naming services and not enough time on how those services are reached.
+A lot of diagram problems come from mixing public and private concerns in the same visual layer.
 
-I think the path matters more than the label.
+If user traffic is supposed to stop at one component and backend services stay private, I want the diagram to make that separation unavoidable. If every box is drawn with the same visual weight, people tend to assume everything is equally exposed.
 
-A SQL database behind a private path tells me something useful.
-A Key Vault accessed through controlled network boundaries tells me something useful.
-A cache that sits inside the right trust zone tells me something useful.
+That is where teams get themselves into trouble.
 
-Those details reveal whether the architecture is trying to reduce unnecessary exposure or whether it is simply hoping identity controls will make up for a wide-open topology.
+The diagram should make it easy to answer questions like:
 
-That is why I still like diagrams that make private connectivity and restricted service access visible. They force the architecture discussion into a more honest place.
+- What can the internet reach directly?
+- What only lives inside the private network?
+- What has to be authenticated before it can talk to anything else?
+- What is just internal plumbing?
 
-The same idea shows up in [Consume Secrets in Azure Key vault From Kubernetes On-prem](/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/). That post is not mainly about Kubernetes as a technology list. It is about the path the secret takes: service principal, Key Vault policy, CSI driver, Kubernetes secret, and then the pod mount. Whether you agree with every design choice or not, the important thing is that the trust path is explicit. You can see where Azure stops and where the cluster begins.
+If I can’t answer those questions from the diagram, I usually don’t trust the diagram yet.
 
-## Supporting services are not accessories
+## Supporting services should not disappear into the background
 
-Another weakness in lightweight diagrams is the way they treat certain components as decoration.
+Another thing I look for is whether the diagram hides the supporting services.
 
-Monitoring gets tucked in a corner.
-Certificate handling is implied.
-Secret management is assumed.
-Caching is drawn as a performance detail.
+Things like monitoring, secret stores, identity providers, certificate handling, and storage are often drawn as little side notes. But in real systems, those pieces are part of the trust story.
 
-In practice, those are not extras.
+That is why I liked the two concrete examples above. They remind me that support services are not incidental:
 
-They are part of how the application becomes operable.
+- VM Insights depends on an actual path for telemetry
+- Key Vault depends on identity, policy, and runtime access
 
-If Key Vault is missing, secret handling becomes somebody else's problem.
-If monitoring is absent, incident response turns into guesswork.
-If certificate handling is invisible, trust at the edge gets fuzzy.
+If those pieces are invisible, the diagram is pretending the system is simpler than it really is.
 
-The architecture is already making those decisions, whether or not the diagram admits it.
+## What I mean when I say a diagram should expose trust boundaries
 
-That is why I prefer diagrams that treat operational services as part of the architecture's meaning, not just its implementation.
+I do not mean every diagram has to look like a security architecture poster.
 
-This also explains why posts like [How to Enable VM Insights on an Azure Virtual Machine Using Bicep](/blog/2024/06/27/enable-vm-insights-azure-bicep/) are useful alongside architecture diagrams. They show that observability is not an afterthought. The diagnostics extension, the storage account, and the Application Insights sink are all part of the system's trust model. If those pieces are hidden, the diagram is missing a meaningful boundary.
+I mean a reviewer should be able to glance at it and understand where the interesting decisions are.
 
-## Reference architectures should help teams reason, not admire
+For me, that usually means the diagram answers three things clearly:
 
-The best reference diagrams I have seen do not try to prove how much the author knows about Azure.
+1. where the boundary is
+2. what crosses it
+3. who or what is allowed to cross it
 
-They try to help the next person reason about:
+If the picture does that, it is useful.
+If it doesn’t, the picture is mostly decoration.
 
-- entry points
-- trust zones
-- service-to-service paths
-- sensitive dependencies
-- operational surfaces
+## The best diagrams feel like a review, not a presentation
 
-That is a better goal.
+The strongest diagrams I’ve seen are the ones that make review easy.
 
-If a diagram helps a team ask sharper questions about network exposure, secret handling, data access, or failure visibility, then it is doing useful work.
+They do not try to impress you with symmetry. They make it obvious what is exposed, what is internal, and what needs to be trusted carefully.
 
-If it mainly helps people say "that looks complete," I'm less impressed.
+That is what I was aiming for when I wrote this post in the first place, and it is still the standard I use when I look at my own architecture sketches.
 
-## My takeaway
+A good cloud diagram should not just show what exists.
 
-I do not think a strong cloud diagram is the one with the most logos.
+It should show where the trust changes.
 
-It is the one that makes the architecture's trust model easiest to understand.
-
-That means:
-
-- public entry should be obvious
-- private data paths should be visible
-- sensitive services should not look casually exposed
-- operational services should appear as first-class parts of the system
-
-When a diagram does that, it becomes more than a picture of resources.
-
-It becomes a usable explanation of how the system intends to stay safe.
-
-If you want examples of the implementation side of this idea, [How to Enable VM Insights on an Azure Virtual Machine Using Bicep](/blog/2024/06/27/enable-vm-insights-azure-bicep/) and [Consume Secrets in Azure Key vault From Kubernetes On-prem](/blog/2022/11/07/consume-secrets-in-azure-keyvault-from-kubernetes-onprem/) both point to the same lesson: architecture gets more trustworthy when the boundaries are explicit.
