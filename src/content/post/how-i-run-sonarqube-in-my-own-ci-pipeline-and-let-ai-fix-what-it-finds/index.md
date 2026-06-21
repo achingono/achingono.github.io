@@ -1,41 +1,36 @@
 ---
-author: "Alfero Chingono"
-title: "How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)"
-date: 2026-03-05T09:00:00Z
-draft: false
-description: "The pattern I use to turn SonarQube from passive reporting into an active remediation loop with labels, issues, AI-assisted fixes, and human-controlled pull requests."
+author: Alfero Chingono
+title: How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)
+date: 2026-03-05T09:00:00.000Z
+description: The pattern I use to turn SonarQube from passive reporting into an active remediation loop with labels, issues, AI-assisted fixes, and human-controlled pull requests.
 slug: how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds
-tags: [
-"SonarQube",
-"DevSecOps",
-"CI/CD",
-"Automation",
-"AI",
-"Code Quality"
-]
-categories: [
-"Agentic AI",
-"DevSecOps",
-"Automation"
-]
-image: "cover.png"
+tags:
+  - SonarQube
+  - DevSecOps
+  - CI/CD
+  - Automation
+  - AI
+  - Code Quality
+categories:
+  - Agentic AI
+  - DevSecOps
+  - Automation
+image: cover.png
 ---
 
-I wrote in 2024 about [automating OWASP scan reports in Azure DevOps](/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/) because I wanted security scanning to become part of the delivery flow instead of an afterthought.
+I did not want SonarQube to become another dashboard that told me what was wrong and then sat there waiting for a human to do all the work.
 
-This post is the next step in that same direction.
+What I wanted was a loop.
 
-The thing I wanted from SonarQube was not another dashboard full of guilt. I wanted a loop that could actually create work, route it, fix it, and come back cleaner on the next scan.
+Run the scan. Turn findings into something actionable. Let AI handle the obvious remediation. Keep a human in charge of the merge. Scan again.
 
-That changed the design completely.
+That is the difference between reporting and operations.
 
-## The real goal was not "run SonarQube"
+## Running SonarQube is easy. Making it useful is the hard part.
 
-Running SonarQube is easy.
+A scan by itself is not the interesting problem. The interesting problem is whether the findings actually change what happens next.
 
-Turning findings into a useful engineering loop is the hard part.
-
-The pattern I have found most practical looks like this:
+The pattern I use is pretty simple:
 
 1. run the scan on a schedule
 2. translate findings into issues with enough structure to act on
@@ -43,17 +38,15 @@ The pattern I have found most practical looks like this:
 4. keep human review as the merge gate
 5. rescan and repeat
 
-That is what I have been doing across FireFly and [CueMarshal](https://www.cuemarshal.com).
+That is the loop I have been using across FireFly and CueMarshal.
 
-## The FireFly version: temporary SonarQube, durable issues
+## FireFly: findings become issues, not just report output
 
-In [FireFly](https://github.com/achingono/firefly), the workflow is intentionally self-contained.
+In FireFly, the scheduled GitHub Action spins up SonarQube Community as a service container, sets the admin password, creates the project, generates an analysis token, runs the scanner in Docker, and then fetches open issues through the SonarQube API.
 
-The scheduled GitHub Action spins up a SonarQube Community service container, sets the admin password, creates the project, generates an analysis token, runs the scanner in Docker, and then uses the SonarQube API to fetch open issues.
+The useful part is what happens after that.
 
-From there, the workflow does something I think is more useful than just failing the pipeline: it turns findings into **GitHub issues with meaningful labels**.
-
-The labels encode both issue type and severity:
+Instead of treating the scan as the end of the process, the workflow turns findings into GitHub issues with labels like:
 
 - `sonar`
 - `sonar: bug`
@@ -63,70 +56,66 @@ The labels encode both issue type and severity:
 - `sonar: critical`
 - `sonar: major`
 
-That small step matters a lot. Once the findings live as first-class issues in the repo, they stop being hidden inside a scan report and start participating in the normal engineering workflow.
+That labeling step is small, but it changes the feel of the system. The finding moves out of a report and into the normal engineering flow.
 
-The FireFly workflow also keeps the body format clean: key, severity, type, rule, file, line, and the actual message. That makes the issue understandable without forcing someone to click back into SonarQube every time.
+The issue body is also intentionally plain: key, severity, type, rule, file, line, and message. That is enough context to act without bouncing back and forth to SonarQube every time.
 
-## The CueMarshal version: findings re-enter the agent loop
+## CueMarshal: the findings re-enter the agent loop
 
-CueMarshal takes the pattern further.
+CueMarshal uses the same basic idea, but the loop is tighter.
 
-There, SonarQube is not just a quality gate. It is a signal source for the self-improvement system.
+There, SonarQube is not just a quality gate. It is a signal source for the self-improvement workflow.
 
-The scan runs on a schedule, the quality gate is checked, and when issues remain, they are picked up by the self-improvement workflow. That workflow runs deterministic scanners, produces a findings JSON file, and lets AI select the high-value, automation-friendly items to turn into actual repository work.
+The scan runs on a schedule, the quality gate gets checked, and any remaining issues are routed into the agent system. That workflow runs deterministic scanners, produces a findings JSON file, and lets AI choose the items that are actually worth turning into repository work.
 
-At that point the flow becomes very CueMarshal-like:
+After that, the path is familiar:
 
 - finding becomes issue
-- issue gets labels such as `self-improvement` and `source:sonar`
+- issue gets labels like `self-improvement` and `source:sonar`
 - developer agent works the task
 - reviewer agent reviews it
 - human still controls the merge
 
-That is the part I care about most. Static analysis becomes part of an operational loop instead of a reporting loop.
+That is the part that makes the whole thing feel operational instead of theoretical.
 
-## What AI actually fixed
+## The useful part is seeing what actually gets fixed
 
-This pattern became more convincing to me once I could see it in the commit history instead of just in a diagram.
+This pattern felt more real to me once I could see it in commits instead of just in a diagram.
 
-In FireFly, the SonarQube-driven fixes moved through recognizable stages:
+In FireFly, the SonarQube-driven fixes included things like:
 
 - critical auth and data exposure issues
 - medium-severity issues in the LLM, tracer, and execution paths
 - blocker and critical tracer problems
 - remaining major issues in non-UI files
 
-In CueMarshal, the same loop showed up in a different form:
+In CueMarshal, the same loop showed up differently:
 
 - bug-class findings resolved
 - cognitive-complexity hotspots refactored
-- scan-flow issues fixed so the SonarQube pipeline itself became more reliable
+- scan-flow issues fixed so the pipeline itself became more reliable
 
-That is the detail that made the whole approach feel real to me. The AI was not "doing security" in some theatrical sense. It was participating in a bounded remediation loop with concrete input, reviewable output, and a cleaner next scan.
+That is what convinced me this was worth doing. The AI was not magically “doing security.” It was working inside a bounded remediation process with real input, reviewable output, and a cleaner next scan.
 
 ## What I still keep human
 
-I do not think static analysis findings should all be auto-fixed blindly.
+I do not want all findings auto-fixed blindly.
 
-Some changes affect security-sensitive behavior. Some touch core orchestration logic. Some need architectural judgment more than mechanical cleanup.
+Some changes affect security-sensitive behavior. Some touch orchestration logic. Some need architectural judgment more than mechanical cleanup.
 
-That is why I still care so much about review gates, protected areas, and explicit pull requests. AI can do triage. AI can do a surprising amount of repair work. But the system becomes trustworthy only when people retain approval authority over the consequential parts.
+That is why I still care about review gates, protected areas, and explicit pull requests. AI can triage. AI can repair a lot. But the system only stays trustworthy when people keep approval authority over the consequential parts.
 
-This is the same design instinct behind CueMarshal more broadly: automate aggressively, but make the control points obvious.
+## Why this pattern matters to me
 
-## Why I like this pattern
+I have less patience for passive quality tools every year.
 
-The more repositories I maintain, the less patience I have for passive quality tooling.
+If a scan only tells me what is wrong, that is useful.
+If it creates the next actionable task, that is better.
+If that task can go through an AI-assisted workflow and still land in a human-reviewed PR, then the tool is part of delivery instead of commentary on delivery.
 
-If a scan only tells me what is wrong, it is useful.
-If a scan creates the next actionable task, it is much more useful.
-If that task can be routed through an AI-assisted workflow and still land in a human-reviewed PR, then the tool has become part of delivery rather than commentary on delivery.
+That is the threshold I care about.
 
-That is the threshold I care about now.
-
-I still think DAST and pipeline security automation matter deeply; that earlier OWASP post still reflects that. But SonarQube plus an AI remediation loop feels like the next generation of the same idea: make quality signals operational, not ornamental.
-
-If you want the broader architecture around this, [Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra](/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/) covers the orchestration side, and [Why I Started Building My Own DevOps Platform](/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/) covers the bigger motivation.
+I still think DAST and pipeline security automation matter deeply. The earlier OWASP post was about that. But SonarQube plus an AI remediation loop feels like the next step: make quality signals operational, not ornamental.
 
 References:
 
