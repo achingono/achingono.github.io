@@ -1,131 +1,89 @@
 ---
-author: "Alfero Chingono"
-title: "How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image"
-date: 2026-03-15T13:00:00Z
-draft: false
-description: "How I got OpenClaw talking to Signal and Microsoft Teams from one custom Docker image, and why the base image needed a few extra runtime pieces to make that practical."
+author: Alfero Chingono
+title: How I Wired Signal and Microsoft Teams into a Custom OpenClaw Image
+date: 2026-03-15T13:00:00.000Z
+description: How I got OpenClaw talking to Signal and Microsoft Teams from one custom Docker image, and why the base image needed a few extra runtime pieces to make that practical.
 slug: how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image
-tags: [
-"OpenClaw",
-"Docker",
-"Signal",
-"Microsoft Teams",
-"Self-Hosted AI"
-]
-categories: [
-"Agentic AI",
-"Platform Engineering",
-"Automation"
-]
-image: "cover.png"
+tags:
+  - OpenClaw
+  - Docker
+  - Signal
+  - Microsoft Teams
+  - Self-Hosted AI
+categories:
+  - Agentic AI
+  - Platform Engineering
+  - Automation
+image: cover.png
 ---
 
-In the [first post](/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/) I explained why I wanted Docker as the foundation. This one is the next practical problem: how to get OpenClaw talking to **Signal** and **Microsoft Teams** without turning the host machine into a dependency junk drawer.
+I didn't start with “one neat image” here. I started with a mess of runtime needs that were pulling in different directions.
 
-The short version is that I ended up building a custom image because the base runtime got me close, but not all the way there.
+Signal wanted a durable CLI runtime and a place to keep identity state. Teams wanted the right Node hosting pieces, a webhook port, and credentials that lived in config instead of inside the image. If I had split those into separate ad hoc setups, I would have ended up debugging my own infrastructure instead of using it.
 
-## Signal and Teams were different kinds of problems
+So I made the image do the runtime work and the compose file do the state work.
 
-Signal and Teams pushed on different parts of the system.
+## Signal needed a stable runtime, not just a container that could send a message
 
-Signal is much more of a runtime-tooling problem.
+For Signal, the container needed `signal-cli-native`. That part is straightforward. The less obvious part is persistence. If the account state disappears every time the container is rebuilt, then the setup is fragile no matter how clean the Dockerfile looks.
 
-You need a working Signal CLI runtime in the container and a persistent place to keep Signal state. If the container can send Signal messages but the identity disappears on rebuild, you have not actually solved the problem.
-
-Teams is more of a Node/runtime integration problem.
-
-It needs the right hosting support in the image, the right webhook port exposed, and the right application credentials sitting in OpenClaw config so the bot framework side can talk to Microsoft properly.
-
-I didn't want to solve those two things in two completely different operational styles.
-
-So I chose one image and one compose layout that could support both.
-
-## Why I did not stop at the base OpenClaw image
-
-The base OpenClaw image was a good starting point, but I needed more in the environment:
-
-- `signal-cli-native` installed in the container
-- GitHub CLI and SSH tooling for the agent's repo workflows
-- an extra Node modules path for additional runtime packages
-- a clean way for both the gateway container and the CLI container to share the same capabilities
-
-That led to a custom image tagged locally as `openclaw-local:teams`.
-
-The name reflects where I started operationally, but the important part is not the tag. The important part is that the image became the place where I declared, very explicitly, "this is the OpenClaw runtime I actually depend on."
-
-## How I handled Signal
-
-For Signal, the key decision was to keep the runtime inside the image and the account state outside it.
-
-The image installs `signal-cli-native`, which gives the container the actual tool it needs to send and receive Signal messages.
-
-Then the compose file mounts the Signal data directory into:
+That is why the compose file mounts the Signal data directory into:
 
 ```text
 /home/node/.local/share/signal-cli
 ```
 
-That was the right split for me:
+That split feels small, but it changes the whole system:
 
 - the image owns the executable
-- the volume owns the durable Signal identity
+- the volume owns the identity
 
-This matters more than it sounds.
+That is the kind of boundary I look for now. If state is replaceable and the binary is reproducible, the setup is easier to trust.
 
-If the image knows how to run Signal but the identity is trapped inside a replaceable container layer, every rebuild becomes risky. If the state is mounted and durable, rebuilds are much less dramatic.
+## Teams needed the image to behave like a real hosting environment
 
-On the OpenClaw side, the Signal channel is configured with pairing and allowlists so the bot is not just open to the world. That let me keep Signal useful without letting it become an uncontrolled ingress point.
+Teams pushed on a different seam.
 
-## How I handled Teams
+The container needed the Microsoft hosting layer support, and the gateway had to expose port `3978` so the remote edge could forward `/api/messages` traffic into the local runtime. The Teams credentials stayed in OpenClaw config, which is where I wanted them. I did not want credentials baked into the image, because the image should describe capability, not environment-specific identity.
 
-Teams had a different shape.
+That distinction ended up being the difference between “this kind of works on my machine” and “this is a system I can rebuild without rereading my own notes.”
 
-The container needed the extra Node package support for the Microsoft hosting layer, and the gateway needed to expose the Teams webhook port. In my setup that means port `3978` is published by the gateway container so the remote edge can forward `/api/messages` traffic back to the local OpenClaw runtime.
+## The custom image was really about reducing drift
 
-The actual Teams app credentials live in OpenClaw config, not in the image. That's exactly where I want them.
+The base OpenClaw image got me close, but not all the way there. I needed:
 
-The image should describe runtime capability.
-
-The config should describe environment-specific identity.
-
-That boundary kept the setup much easier to move, rebuild, and reason about.
-
-## One image, two operational benefits
-
-Using the same custom image for both `gateway` and `cli` gave me two benefits I really wanted.
-
-First, it removed "works in one container but not the other" drift.
-
-If the gateway can use the runtime, the CLI can too. If the CLI can inspect or patch something, it is doing so in the same environment the gateway actually uses. I've learned to value that kind of consistency a lot.
-
-Second, it let me keep the OpenClaw-specific runtime tweaks in one place:
-
-- the extra Node modules path
-- the installed system packages
-- Signal CLI
-- GitHub CLI
+- `signal-cli-native`
+- GitHub CLI and SSH tooling
+- extra Node module support
 - pnpm-prepared extras
+- one runtime shape that both `gateway` and `cli` could share
 
-It's a much nicer maintenance story than trying to remember which bits live on the host, which belong to the container, and which only exist in some forgotten shell session.
+Once I put those pieces into `openclaw-local:teams`, the operational story got simpler. The gateway and CLI stopped being two slightly different environments with slightly different failure modes.
 
-## The compose file completed the picture
+That matters more than it sounds. A lot of container problems are really drift problems.
 
-The image by itself was not enough. The compose file is what turned it into a working system.
+## The compose file is where the system became legible
 
-That is where I defined the things that make the setup feel real:
+The image alone was not the whole answer. Compose is what made the setup readable:
 
 - mounted OpenClaw config
 - mounted workspaces
 - mounted Signal data
-- shared access to source repositories
+- shared access to source repos
 - local Ollama dependency
 - editor access
-- network sharing between the gateway and CLI
+- network sharing between gateway and CLI
 
-This is one reason I still like Docker Compose for personal infrastructure. It doesn't just run containers. It describes the operating assumptions of the stack in one place.
+That is the part of Docker Compose I still like. It does not just run things; it shows the operating assumptions.
 
-## The setup was already hinting at the routing story
+If someone asks me how this setup works, I can point to the compose file and say: this is the runtime, this is the state, this is the boundary between them.
 
-Even at this stage, there was a lesson hiding in plain sight: getting the channels working is the easy part. Once one runtime can talk to Signal and Teams, the questions come quickly: which agent answers where, what state belongs to which workspace, and how does a background task find its way back to the right chat? That's where the series goes next.
+## The review question I kept asking
 
-Next in the series: [Inside the Dockerfile Behind My OpenClaw Gateway](/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/).
+The real question was never “can I make Signal and Teams work?” It was “can I make the trust and state boundaries obvious enough that I still understand this setup after a week away from it?”
+
+That is the standard I keep coming back to.
+
+The image should be boringly capable. The config should be explicit. The volumes should hold the durable parts. And the routing story should stay simple enough that I can explain it without inventing a diagram on the spot.
+
+The next problem in the series is routing: once multiple channels are live, which agent answers where, what state belongs to which workspace, and how does a background task get back to the right chat?
