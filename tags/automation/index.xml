@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Automation on Alfero Chingono</title><link>https://www.chingono.com/tags/automation/</link><description>Recent content in Automation on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Apr 2026 15:34:04 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/automation/index.xml" rel="self" type="application/rss+xml"/><item><title>Why My OpenClaw Reminders Weren't Reaching Signal or Teams</title><link>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</link><pubDate>Sat, 04 Apr 2026 21:23:46 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/cover.png" alt="Featured image of post Why My OpenClaw Reminders Weren't Reaching Signal or Teams" /&gt;&lt;p&gt;This is the fifth and final post in my short OpenClaw series. If you want the background first, read &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;why I run OpenClaw in Docker&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;how I wired Signal and Teams into a custom image&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;the Dockerfile walkthrough&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;the main/personal agent split&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Automation on Alfero Chingono</title><link>https://www.chingono.com/tags/automation/</link><description>Recent content in Automation on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 21 Jun 2026 10:29:08 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/automation/index.xml" rel="self" type="application/rss+xml"/><item><title>Why My OpenClaw Reminders Weren't Reaching Signal or Teams</title><link>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</link><pubDate>Sat, 04 Apr 2026 21:23:46 +0000</pubDate><guid>https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/04/04/why-my-openclaw-reminders-werent-reaching-signal-or-teams/cover.png" alt="Featured image of post Why My OpenClaw Reminders Weren't Reaching Signal or Teams" /&gt;&lt;p&gt;This is the fifth and final post in my short OpenClaw series. If you want the background first, read &lt;a class="link" href="https://www.chingono.com/blog/2026/03/05/why-i-run-openclaw-in-docker-on-my-own-machine/" &gt;why I run OpenClaw in Docker&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/how-i-wired-signal-and-microsoft-teams-into-a-custom-openclaw-image/" &gt;how I wired Signal and Teams into a custom image&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2026/03/15/inside-the-dockerfile-behind-my-openclaw-gateway/" &gt;the Dockerfile walkthrough&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2026/04/03/how-i-split-openclaw-into-main-and-personal-agents/" &gt;the main/personal agent split&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I ran into an OpenClaw bug this week that annoyed me more than a normal delivery failure would have.&lt;/p&gt;
 &lt;p&gt;A reminder was supposed to come back to me later telling me to submit a GO Transit delay claim. The agent said it had scheduled the reminder. Then later&amp;hellip; nothing showed up in Signal. Nothing showed up in Teams either.&lt;/p&gt;
 &lt;p&gt;That kind of bug is worse than a simple send failure because it creates false confidence. If a reminder system quietly drops the reminder, that&amp;rsquo;s bad. If it tells you the reminder is set when it actually isn&amp;rsquo;t, that&amp;rsquo;s much worse.&lt;/p&gt;
@@ -231,14 +231,13 @@
 &lt;p&gt;That sounds almost embarrassingly obvious, but it&amp;rsquo;s the kind of failure mode that destroys trust very quickly. A failed reminder should be reported as failed. A note in memory isn&amp;rsquo;t a substitute for delivery. And a scheduler shouldn&amp;rsquo;t quietly lose the route back to the person who asked for the work.&lt;/p&gt;
 &lt;p&gt;Small bug. Important fix.&lt;/p&gt;
 &lt;p&gt;And honestly, those are often the bugs worth writing about.&lt;/p&gt;
-&lt;p&gt;If you&amp;rsquo;re interested in the broader design side of this kind of system, I wrote more about &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;why I started building my own DevOps platform&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;what MCP changed for me in practice&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;what building a real multi-agent system taught me about roles, boundaries, and orchestration&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)</title><link>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/cover.png" alt="Featured image of post How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)" /&gt;&lt;p&gt;I wrote in 2024 about &lt;a class="link" href="https://www.chingono.com/blog/2024/09/05/automating-owasp-scan-reports-in-azure-devops/" &gt;automating OWASP scan reports in Azure DevOps&lt;/a&gt; because I wanted security scanning to become part of the delivery flow instead of an afterthought.&lt;/p&gt;
-&lt;p&gt;This post is the next step in that same direction.&lt;/p&gt;
-&lt;p&gt;The thing I wanted from SonarQube was not another dashboard full of guilt. I wanted a loop that could actually create work, route it, fix it, and come back cleaner on the next scan.&lt;/p&gt;
-&lt;p&gt;That changed the design completely.&lt;/p&gt;
-&lt;h2 id="the-real-goal-was-not-run-sonarqube"&gt;The real goal was not &amp;ldquo;run SonarQube&amp;rdquo;
-&lt;/h2&gt;&lt;p&gt;Running SonarQube is easy.&lt;/p&gt;
-&lt;p&gt;Turning findings into a useful engineering loop is the hard part.&lt;/p&gt;
-&lt;p&gt;The pattern I have found most practical looks like this:&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re interested in the broader design side of this kind of system, I wrote more about &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;why I started building my own DevOps platform&lt;/a&gt;, &lt;a class="link" href="https://www.chingono.com/blog/2025/03/20/mcp-in-practice-what-anthropics-model-context-protocol-actually-means-for-developers/" &gt;what MCP changed for me in practice&lt;/a&gt;, and &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;what building a real multi-agent system taught me about roles, boundaries, and orchestration&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)</title><link>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</link><pubDate>Thu, 05 Mar 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/03/05/how-i-run-sonarqube-in-my-own-ci-pipeline-and-let-ai-fix-what-it-finds/cover.png" alt="Featured image of post How I Run SonarQube in My Own CI Pipeline (And Let AI Fix What It Finds)" /&gt;&lt;p&gt;I did not want SonarQube to become another dashboard that told me what was wrong and then sat there waiting for a human to do all the work.&lt;/p&gt;
+&lt;p&gt;What I wanted was a loop.&lt;/p&gt;
+&lt;p&gt;Run the scan. Turn findings into something actionable. Let AI handle the obvious remediation. Keep a human in charge of the merge. Scan again.&lt;/p&gt;
+&lt;p&gt;That is the difference between reporting and operations.&lt;/p&gt;
+&lt;h2 id="running-sonarqube-is-easy-making-it-useful-is-the-hard-part"&gt;Running SonarQube is easy. Making it useful is the hard part.
+&lt;/h2&gt;&lt;p&gt;A scan by itself is not the interesting problem. The interesting problem is whether the findings actually change what happens next.&lt;/p&gt;
+&lt;p&gt;The pattern I use is pretty simple:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;run the scan on a schedule&lt;/li&gt;
 &lt;li&gt;translate findings into issues with enough structure to act on&lt;/li&gt;
@@ -246,14 +245,11 @@
 &lt;li&gt;keep human review as the merge gate&lt;/li&gt;
 &lt;li&gt;rescan and repeat&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;That is what I have been doing across FireFly and &lt;a class="link" href="https://www.cuemarshal.com" target="_blank" rel="noopener"
-&gt;CueMarshal&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id="the-firefly-version-temporary-sonarqube-durable-issues"&gt;The FireFly version: temporary SonarQube, durable issues
-&lt;/h2&gt;&lt;p&gt;In &lt;a class="link" href="https://github.com/achingono/firefly" target="_blank" rel="noopener"
-&gt;FireFly&lt;/a&gt;, the workflow is intentionally self-contained.&lt;/p&gt;
-&lt;p&gt;The scheduled GitHub Action spins up a SonarQube Community service container, sets the admin password, creates the project, generates an analysis token, runs the scanner in Docker, and then uses the SonarQube API to fetch open issues.&lt;/p&gt;
-&lt;p&gt;From there, the workflow does something I think is more useful than just failing the pipeline: it turns findings into &lt;strong&gt;GitHub issues with meaningful labels&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;The labels encode both issue type and severity:&lt;/p&gt;
+&lt;p&gt;That is the loop I have been using across FireFly and CueMarshal.&lt;/p&gt;
+&lt;h2 id="firefly-findings-become-issues-not-just-report-output"&gt;FireFly: findings become issues, not just report output
+&lt;/h2&gt;&lt;p&gt;In FireFly, the scheduled GitHub Action spins up SonarQube Community as a service container, sets the admin password, creates the project, generates an analysis token, runs the scanner in Docker, and then fetches open issues through the SonarQube API.&lt;/p&gt;
+&lt;p&gt;The useful part is what happens after that.&lt;/p&gt;
+&lt;p&gt;Instead of treating the scan as the end of the process, the workflow turns findings into GitHub issues with labels like:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;sonar&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sonar: bug&lt;/code&gt;&lt;/li&gt;
@@ -263,50 +259,48 @@
 &lt;li&gt;&lt;code&gt;sonar: critical&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sonar: major&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That small step matters a lot. Once the findings live as first-class issues in the repo, they stop being hidden inside a scan report and start participating in the normal engineering workflow.&lt;/p&gt;
-&lt;p&gt;The FireFly workflow also keeps the body format clean: key, severity, type, rule, file, line, and the actual message. That makes the issue understandable without forcing someone to click back into SonarQube every time.&lt;/p&gt;
-&lt;h2 id="the-cuemarshal-version-findings-re-enter-the-agent-loop"&gt;The CueMarshal version: findings re-enter the agent loop
-&lt;/h2&gt;&lt;p&gt;CueMarshal takes the pattern further.&lt;/p&gt;
-&lt;p&gt;There, SonarQube is not just a quality gate. It is a signal source for the self-improvement system.&lt;/p&gt;
-&lt;p&gt;The scan runs on a schedule, the quality gate is checked, and when issues remain, they are picked up by the self-improvement workflow. That workflow runs deterministic scanners, produces a findings JSON file, and lets AI select the high-value, automation-friendly items to turn into actual repository work.&lt;/p&gt;
-&lt;p&gt;At that point the flow becomes very CueMarshal-like:&lt;/p&gt;
+&lt;p&gt;That labeling step is small, but it changes the feel of the system. The finding moves out of a report and into the normal engineering flow.&lt;/p&gt;
+&lt;p&gt;The issue body is also intentionally plain: key, severity, type, rule, file, line, and message. That is enough context to act without bouncing back and forth to SonarQube every time.&lt;/p&gt;
+&lt;h2 id="cuemarshal-the-findings-re-enter-the-agent-loop"&gt;CueMarshal: the findings re-enter the agent loop
+&lt;/h2&gt;&lt;p&gt;CueMarshal uses the same basic idea, but the loop is tighter.&lt;/p&gt;
+&lt;p&gt;There, SonarQube is not just a quality gate. It is a signal source for the self-improvement workflow.&lt;/p&gt;
+&lt;p&gt;The scan runs on a schedule, the quality gate gets checked, and any remaining issues are routed into the agent system. That workflow runs deterministic scanners, produces a findings JSON file, and lets AI choose the items that are actually worth turning into repository work.&lt;/p&gt;
+&lt;p&gt;After that, the path is familiar:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;finding becomes issue&lt;/li&gt;
-&lt;li&gt;issue gets labels such as &lt;code&gt;self-improvement&lt;/code&gt; and &lt;code&gt;source:sonar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;issue gets labels like &lt;code&gt;self-improvement&lt;/code&gt; and &lt;code&gt;source:sonar&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;developer agent works the task&lt;/li&gt;
 &lt;li&gt;reviewer agent reviews it&lt;/li&gt;
 &lt;li&gt;human still controls the merge&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is the part I care about most. Static analysis becomes part of an operational loop instead of a reporting loop.&lt;/p&gt;
-&lt;h2 id="what-ai-actually-fixed"&gt;What AI actually fixed
-&lt;/h2&gt;&lt;p&gt;This pattern became more convincing to me once I could see it in the commit history instead of just in a diagram.&lt;/p&gt;
-&lt;p&gt;In FireFly, the SonarQube-driven fixes moved through recognizable stages:&lt;/p&gt;
+&lt;p&gt;That is the part that makes the whole thing feel operational instead of theoretical.&lt;/p&gt;
+&lt;h2 id="the-useful-part-is-seeing-what-actually-gets-fixed"&gt;The useful part is seeing what actually gets fixed
+&lt;/h2&gt;&lt;p&gt;This pattern felt more real to me once I could see it in commits instead of just in a diagram.&lt;/p&gt;
+&lt;p&gt;In FireFly, the SonarQube-driven fixes included things like:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;critical auth and data exposure issues&lt;/li&gt;
 &lt;li&gt;medium-severity issues in the LLM, tracer, and execution paths&lt;/li&gt;
 &lt;li&gt;blocker and critical tracer problems&lt;/li&gt;
 &lt;li&gt;remaining major issues in non-UI files&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;In CueMarshal, the same loop showed up in a different form:&lt;/p&gt;
+&lt;p&gt;In CueMarshal, the same loop showed up differently:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;bug-class findings resolved&lt;/li&gt;
 &lt;li&gt;cognitive-complexity hotspots refactored&lt;/li&gt;
-&lt;li&gt;scan-flow issues fixed so the SonarQube pipeline itself became more reliable&lt;/li&gt;
+&lt;li&gt;scan-flow issues fixed so the pipeline itself became more reliable&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is the detail that made the whole approach feel real to me. The AI was not &amp;ldquo;doing security&amp;rdquo; in some theatrical sense. It was participating in a bounded remediation loop with concrete input, reviewable output, and a cleaner next scan.&lt;/p&gt;
+&lt;p&gt;That is what convinced me this was worth doing. The AI was not magically “doing security.” It was working inside a bounded remediation process with real input, reviewable output, and a cleaner next scan.&lt;/p&gt;
 &lt;h2 id="what-i-still-keep-human"&gt;What I still keep human
-&lt;/h2&gt;&lt;p&gt;I do not think static analysis findings should all be auto-fixed blindly.&lt;/p&gt;
-&lt;p&gt;Some changes affect security-sensitive behavior. Some touch core orchestration logic. Some need architectural judgment more than mechanical cleanup.&lt;/p&gt;
-&lt;p&gt;That is why I still care so much about review gates, protected areas, and explicit pull requests. AI can do triage. AI can do a surprising amount of repair work. But the system becomes trustworthy only when people retain approval authority over the consequential parts.&lt;/p&gt;
-&lt;p&gt;This is the same design instinct behind CueMarshal more broadly: automate aggressively, but make the control points obvious.&lt;/p&gt;
-&lt;h2 id="why-i-like-this-pattern"&gt;Why I like this pattern
-&lt;/h2&gt;&lt;p&gt;The more repositories I maintain, the less patience I have for passive quality tooling.&lt;/p&gt;
-&lt;p&gt;If a scan only tells me what is wrong, it is useful.
-If a scan creates the next actionable task, it is much more useful.
-If that task can be routed through an AI-assisted workflow and still land in a human-reviewed PR, then the tool has become part of delivery rather than commentary on delivery.&lt;/p&gt;
-&lt;p&gt;That is the threshold I care about now.&lt;/p&gt;
-&lt;p&gt;I still think DAST and pipeline security automation matter deeply; that earlier OWASP post still reflects that. But SonarQube plus an AI remediation loop feels like the next generation of the same idea: make quality signals operational, not ornamental.&lt;/p&gt;
-&lt;p&gt;If you want the broader architecture around this, &lt;a class="link" href="https://www.chingono.com/blog/2025/08/28/designing-multi-agent-systems-lessons-from-building-an-8-agent-engineering-orchestra/" &gt;Designing Multi-Agent Systems: Lessons from Building an 8-Agent Engineering Orchestra&lt;/a&gt; covers the orchestration side, and &lt;a class="link" href="https://www.chingono.com/blog/2025/02/15/why-i-started-building-my-own-devops-platform-and-what-i-learned/" &gt;Why I Started Building My Own DevOps Platform&lt;/a&gt; covers the bigger motivation.&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;I do not want all findings auto-fixed blindly.&lt;/p&gt;
+&lt;p&gt;Some changes affect security-sensitive behavior. Some touch orchestration logic. Some need architectural judgment more than mechanical cleanup.&lt;/p&gt;
+&lt;p&gt;That is why I still care about review gates, protected areas, and explicit pull requests. AI can triage. AI can repair a lot. But the system only stays trustworthy when people keep approval authority over the consequential parts.&lt;/p&gt;
+&lt;h2 id="why-this-pattern-matters-to-me"&gt;Why this pattern matters to me
+&lt;/h2&gt;&lt;p&gt;I have less patience for passive quality tools every year.&lt;/p&gt;
+&lt;p&gt;If a scan only tells me what is wrong, that is useful.
+If it creates the next actionable task, that is better.
+If that task can go through an AI-assisted workflow and still land in a human-reviewed PR, then the tool is part of delivery instead of commentary on delivery.&lt;/p&gt;
+&lt;p&gt;That is the threshold I care about.&lt;/p&gt;
+&lt;p&gt;I still think DAST and pipeline security automation matter deeply. The earlier OWASP post was about that. But SonarQube plus an AI remediation loop feels like the next step: make quality signals operational, not ornamental.&lt;/p&gt;
 &lt;p&gt;References:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/achingono/firefly/blob/main/.github/workflows/scheduled-scan.yml" target="_blank" rel="noopener"
