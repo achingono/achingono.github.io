@@ -16,40 +16,40 @@ categories:
 image: cover.png
 ---
 
-Most advice about AI image prompting still sounds like it was written by people who only care whether an image looks impressive in isolation.
+A lot of AI image prompting advice still reads like it was written for people who only care whether the image looks impressive on its own.
 
-That is not usually the real job.
+That is not usually the job.
 
-If the image is meant to sit in a homepage hero, a banner, or a product marketing layout, then "make something beautiful" is not enough. The image has to fit a page, a brand, a message, and an audience. That changes the prompting conversation completely.
+If the image is supposed to live in a homepage hero, a banner, or a product marketing layout, then "make something beautiful" is nowhere near enough. The image has to fit a page, a brand, a message, and an audience. That changes the whole prompting conversation.
 
-## Placement is not a detail
+## Placement is not a side note
 
-One of the most useful shifts in my own thinking was realizing that a prompt gets stronger the moment it stops describing only the image and starts describing the placement.
+One of the biggest shifts in my own thinking was realizing that a prompt gets better the moment it stops describing only the image and starts describing where the image will go.
 
 "A nice business image" is vague.
 
-"A 16:9 banner image for an IT consultancy homepage" is already better.
+"A 16:9 banner image for an IT consultancy homepage" is much more useful.
 
-Now the model has constraints that matter in the real world:
+Now the model has constraints that matter in practice:
 
 - the image has to survive a wide crop
 - it has to leave room for headline text
 - it has to look believable at website scale
-- it has to support a commercial message, not distract from it
+- it has to support a commercial message instead of fighting it
 
-That is a different class of prompt.
+That is a different kind of prompt.
 
-The more you know about where the image will live, the less you need to rely on luck.
+The more you know about placement, the less you are relying on luck.
 
-## Enterprise visuals fail when the context is generic
+## Generic context usually gives generic output
 
 This is where a lot of AI-generated business imagery goes wrong.
 
-The prompt says "professional," but the result says "stock-photo-ish."
+The prompt says "professional," and the result says "stock photo tried its best."
 
 The prompt says "modern office," but the result has no relationship to the product being sold.
 
-The prompt says "homepage banner," but the composition fights the layout instead of supporting it.
+The prompt says "homepage banner," but the composition makes the layout worse instead of better.
 
 Usable product marketing visuals usually need more context than that. In practice, I have found it helps to specify some combination of:
 
@@ -58,15 +58,15 @@ Usable product marketing visuals usually need more context than that. In practic
 - scene type
 - aspect ratio
 - website or campaign context
-- whether the image should include people at all
+- whether people should be in the image at all
 
-Even that list is not about perfection. It is about reducing ambiguity in the same way a good creative brief does.
+That is not about being precious with the prompt. It is about reducing ambiguity the same way a good creative brief does.
 
-## Iteration is not failure
+## Iteration is part of the work
 
-Another thing I do not buy is the idea that a good prompt should somehow produce the final result in one heroic shot.
+I do not buy the idea that a good prompt should somehow produce the final image in one heroic attempt.
 
-That is not how design work behaves.
+That is not how creative work behaves.
 
 The more realistic pattern is iterative:
 
@@ -76,29 +76,29 @@ The more realistic pattern is iterative:
 - remove elements that make the image less usable
 - tighten the tone until it fits the page
 
-That kind of iteration does not mean the first prompt failed. It means the work is behaving like creative work.
+That does not mean the first prompt failed. It means the work is behaving like design work.
 
-I think people underestimate how important that mindset is. If you approach AI image generation as a slot machine, the results stay shallow. If you approach it more like art direction, the quality of your prompts changes.
+If you treat AI image generation like a slot machine, the results stay shallow. If you treat it more like art direction, the quality of the prompts changes.
 
-## Representation deserves intention
+## Representation needs to be deliberate
 
-There is another layer here that matters and should not be treated as incidental.
+There is another layer here that matters and should not be treated as an afterthought.
 
-If you are generating enterprise imagery that includes people, you are also making choices about whose professionalism gets centered and how competence gets depicted. That is not political garnish. It is part of the message.
+If you are generating enterprise imagery that includes people, you are also making choices about whose professionalism gets centered and how competence gets depicted. That is not garnish. It is part of the message.
 
 When teams say they care about representation but leave the visuals to chance, they usually end up reproducing the same narrow defaults they would have used before.
 
 Prompting is one place where that can be corrected deliberately.
 
-You can decide that the image should reflect the audience you want to serve.
-You can decide that enterprise competence does not need to look culturally generic.
-You can decide that inclusion belongs in the creative brief, not as an afterthought once the assets are already done.
+You can decide the image should reflect the audience you want to serve.
+You can decide enterprise competence does not have to look culturally generic.
+You can decide inclusion belongs in the brief, not as a cleanup task after the asset is already done.
 
 That is part of what makes AI image generation more interesting to me than the usual novelty framing. It gives smaller teams a faster way to be intentional.
 
-## Good prompts sound closer to briefs than tricks
+## Good prompts sound like briefs
 
-I think this is the biggest practical lesson.
+This is the biggest practical lesson for me.
 
 The best prompts I have seen do not sound clever. They sound grounded.
 
@@ -106,7 +106,7 @@ They sound like a designer, marketer, or founder being specific about what the a
 
 That usually means less:
 
-- hyper-detailed adjective stacking
+- adjective stacking
 - trying to outsmart the model
 - chasing a cinematic effect for its own sake
 
@@ -118,15 +118,15 @@ And more:
 - clear emotional direction
 - clear iteration goals
 
-The prompt becomes stronger because it is less performative.
+The prompt gets stronger because it becomes less performative.
 
-## My takeaway
+## What I take from it
 
-I do not think the most useful question is whether AI can make attractive images.
+I do not think the interesting question is whether AI can make attractive images.
 
 It obviously can.
 
-The more useful question is whether it can help produce visuals that are fit for real product and marketing surfaces.
+The better question is whether it can help produce visuals that are actually fit for product and marketing surfaces.
 
 That is where the discipline starts to matter.
 

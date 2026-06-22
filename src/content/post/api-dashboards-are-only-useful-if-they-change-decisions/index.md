@@ -22,96 +22,96 @@ They had charts.
 They had colors.
 They had enough movement to feel reassuring.
 
-What they often didn't have was decision value.
+What they often didn't have was a next step.
 
-That's the standard I keep coming back to with API observability. If a dashboard can't help someone decide what to investigate, explain, or improve next, it is mostly decoration.
+That is the part I keep coming back to with API observability. If a dashboard cannot help someone decide what to investigate, explain, or improve next, then it is mostly decoration with a timestamp.
 
-## Request counts are not the point
+## Request counts are the easy part
 
-It is easy to build a dashboard that answers the least interesting question: how many requests did we get?
+It is very easy to build a dashboard that answers the least interesting question: how many requests did we get?
 
 That number matters, but only as a starting point.
 
-On its own, request volume tells you almost nothing about operational health. A busy API can be fine. A quiet API can still be broken for the clients who matter most. A stable total can hide a very unstable endpoint.
+On its own, request volume tells you almost nothing about operational health. A busy API can be fine. A quiet API can still be broken for the clients who matter most. A stable total can hide one endpoint that is wobbling all day.
 
-The more useful questions are things like:
+The questions that usually matter more are the unglamorous ones:
 
-- which consumers are driving the traffic
-- which endpoints are attracting repeated calls
-- where unsuccessful outcomes are clustering
-- whether failures are broad or isolated
-- whether a pattern is new or persistent
+- which consumers are actually driving the traffic
+- which endpoints are getting hit over and over
+- where the failed calls are clustering
+- whether the failures are broad or isolated
+- whether the pattern is new or something the team has already been living with
 
-That's why I prefer API dashboards that segment by consumer, path, date, and outcome instead of stopping at a top-line number.
+That is why I prefer dashboards that break traffic down by consumer, path, date, and outcome instead of stopping at a single top-line number.
 
-## Segment by consumer, endpoint, and outcome
+## Segmenting traffic makes the story less polite
 
-Once you start breaking API traffic down this way, the dashboard gets more honest.
+Once you split the data up this way, the dashboard gets more honest.
 
-A consumer-level view can show whether one client or integration partner is generating most of the load.
+A consumer-level view shows whether one client or integration partner is doing most of the work.
 
-A path-level view can show whether pressure is spread out or concentrated.
+A path-level view shows whether pressure is concentrated in one route or spread across the surface area.
 
-A status-level view can show whether the system is mostly healthy with edge-case noise or whether a real degradation is underway.
+A status-level view shows whether the system is mostly healthy with a bit of noise or whether something real is starting to fail.
 
 Put those together and the conversation changes.
 
-Support can ask whether a reported issue lines up with a visible pattern.
+Support can check whether a complaint lines up with the graph.
 Engineering can see which endpoints deserve inspection first.
-Product can tell whether an integration is actually getting used the way people expected.
+Product can tell whether an integration is being used the way everyone thought it would be.
 
-That is much closer to operational usefulness than a generic "traffic over time" chart.
+That is much closer to operational usefulness than a generic traffic-over-time chart.
 
-## Filters are part of the design
+## Filters matter more than people admit
 
 I think good dashboard design is partly about subtraction.
 
-The moment you include everything, the signal starts competing with noise.
+The moment you include everything, the signal starts competing with background noise.
 
-That is especially true for API telemetry. Health checks, root paths, robots, repeated low-value hits, and other background traffic can eat the attention that should be going elsewhere.
+That is especially true for API telemetry. Health checks, root paths, robots, repeated low-value hits, and other mechanical traffic can crowd out the things people should actually be looking at.
 
-A dashboard becomes more useful when it is willing to say: these routes are not where human attention should start.
+A useful dashboard makes a choice. It says: these routes are not where human attention should start.
 
-That sounds obvious. In practice, it isn't.
+That sounds obvious. In practice, it is not.
 
 A lot of dashboards are built as if completeness is the same thing as clarity.
 
-It isn't.
+It usually is not.
 
-Clarity usually comes from deciding what the viewer should safely ignore.
+Clarity comes from deciding what the viewer can safely ignore.
 
-## Observability should serve more than one team
+## Different teams need different questions answered
 
-Another reason API dashboards underperform is that they are often built for one audience while pretending to serve many.
+Another reason API dashboards underperform is that they are often built for one audience while pretending to serve everyone.
 
-An engineering dashboard built only for engineers can still be useful, but the more interesting dashboards give adjacent teams something concrete too.
+An engineering dashboard built only for engineers can still be useful. But the better dashboards give adjacent teams something concrete too.
 
 For example:
 
-- support can use them to validate whether an incident is isolated or broad
+- support can use them to see whether an issue is isolated or broad
 - customer-facing teams can use them to ground conversations with partners
-- product can use them to see which surfaces appear to matter in practice
-- platform teams can use them to spot where reliability work will buy the most confidence
+- product can use them to see which parts of the API are getting real use
+- platform teams can use them to spot where reliability work will buy confidence fastest
 
-That cross-functional usefulness doesn't come from adding more graphs. It comes from choosing views that map to real questions those teams ask.
+That cross-functional usefulness does not come from adding more graphs. It comes from choosing views that match real questions people ask when something is on fire, or nearly on fire.
 
-## Success rate is more meaningful in context
+## Success rate only helps when you can see where it breaks
 
-I also think teams sometimes trust a single success metric too much.
+I also think teams can trust a single success metric too much.
 
-A path can have a respectable success rate and still create friction if the failures cluster around the wrong customer, the wrong date range, or the wrong step in a workflow.
+A path can have a respectable success rate and still create friction if the failures keep landing on the same customer, the same date range, or the same workflow step.
 
-That's why I like dashboards that let you see success and failure by path, not just globally. The closer the metric is to the operational surface, the easier it becomes to act on.
+That is why I like dashboards that let you see success and failure by path, not just globally. The closer the metric is to the actual surface of the work, the easier it is to act on.
 
 A generic availability story is reassuring.
 
 A route-level outcome story is useful.
 
-## My takeaway
+## What I actually want from an API dashboard
 
 The job of an API dashboard is not to look observability-shaped.
 
-The job is to shorten the path between signal and action.
+The job is to shorten the distance between signal and action.
 
 That means showing enough context to answer practical questions:
 
@@ -121,9 +121,9 @@ That means showing enough context to answer practical questions:
 - whether it is isolated
 - what deserves attention first
 
-When a dashboard can do that, people actually use it.
+When a dashboard can do that, people use it.
 
-When it can't, it becomes the kind of thing teams screenshot for status reviews and ignore during real investigation.
+When it cannot, it turns into the kind of thing teams screenshot for a status meeting and ignore when they need to make a call.
 
 That is not a tooling failure.
 
