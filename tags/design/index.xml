@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Design on Alfero Chingono</title><link>https://www.chingono.com/tags/design/</link><description>Recent content in Design on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 16 Jun 2026 08:06:14 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/design/index.xml" rel="self" type="application/rss+xml"/><item><title>Prompting for Product Marketing, Not Just Pretty Pictures</title><link>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</link><pubDate>Thu, 14 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/cover.png" alt="Featured image of post Prompting for Product Marketing, Not Just Pretty Pictures" /&gt;&lt;p&gt;Most advice about AI image prompting still sounds like it was written by people who only care whether an image looks impressive in isolation.&lt;/p&gt;
-&lt;p&gt;That is not usually the real job.&lt;/p&gt;
-&lt;p&gt;If the image is meant to sit in a homepage hero, a banner, or a product marketing layout, then &amp;ldquo;make something beautiful&amp;rdquo; is not enough. The image has to fit a page, a brand, a message, and an audience. That changes the prompting conversation completely.&lt;/p&gt;
-&lt;h2 id="placement-is-not-a-detail"&gt;Placement is not a detail
-&lt;/h2&gt;&lt;p&gt;One of the most useful shifts in my own thinking was realizing that a prompt gets stronger the moment it stops describing only the image and starts describing the placement.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Design on Alfero Chingono</title><link>https://www.chingono.com/tags/design/</link><description>Recent content in Design on Alfero Chingono</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 22 Jun 2026 19:58:55 -0400</lastBuildDate><atom:link href="https://www.chingono.com/tags/design/index.xml" rel="self" type="application/rss+xml"/><item><title>Prompting for Product Marketing, Not Just Pretty Pictures</title><link>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</link><pubDate>Thu, 14 May 2026 09:00:00 +0000</pubDate><guid>https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/</guid><description>&lt;img src="https://www.chingono.com/blog/2026/05/14/prompting-for-product-marketing-not-just-pretty-pictures/cover.png" alt="Featured image of post Prompting for Product Marketing, Not Just Pretty Pictures" /&gt;&lt;p&gt;A lot of AI image prompting advice still reads like it was written for people who only care whether the image looks impressive on its own.&lt;/p&gt;
+&lt;p&gt;That is not usually the job.&lt;/p&gt;
+&lt;p&gt;If the image is supposed to live in a homepage hero, a banner, or a product marketing layout, then &amp;ldquo;make something beautiful&amp;rdquo; is nowhere near enough. The image has to fit a page, a brand, a message, and an audience. That changes the whole prompting conversation.&lt;/p&gt;
+&lt;h2 id="placement-is-not-a-side-note"&gt;Placement is not a side note
+&lt;/h2&gt;&lt;p&gt;One of the biggest shifts in my own thinking was realizing that a prompt gets better the moment it stops describing only the image and starts describing where the image will go.&lt;/p&gt;
 &lt;p&gt;&amp;ldquo;A nice business image&amp;rdquo; is vague.&lt;/p&gt;
-&lt;p&gt;&amp;ldquo;A 16:9 banner image for an IT consultancy homepage&amp;rdquo; is already better.&lt;/p&gt;
-&lt;p&gt;Now the model has constraints that matter in the real world:&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;A 16:9 banner image for an IT consultancy homepage&amp;rdquo; is much more useful.&lt;/p&gt;
+&lt;p&gt;Now the model has constraints that matter in practice:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;the image has to survive a wide crop&lt;/li&gt;
 &lt;li&gt;it has to leave room for headline text&lt;/li&gt;
 &lt;li&gt;it has to look believable at website scale&lt;/li&gt;
-&lt;li&gt;it has to support a commercial message, not distract from it&lt;/li&gt;
+&lt;li&gt;it has to support a commercial message instead of fighting it&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That is a different class of prompt.&lt;/p&gt;
-&lt;p&gt;The more you know about where the image will live, the less you need to rely on luck.&lt;/p&gt;
-&lt;h2 id="enterprise-visuals-fail-when-the-context-is-generic"&gt;Enterprise visuals fail when the context is generic
+&lt;p&gt;That is a different kind of prompt.&lt;/p&gt;
+&lt;p&gt;The more you know about placement, the less you are relying on luck.&lt;/p&gt;
+&lt;h2 id="generic-context-usually-gives-generic-output"&gt;Generic context usually gives generic output
 &lt;/h2&gt;&lt;p&gt;This is where a lot of AI-generated business imagery goes wrong.&lt;/p&gt;
-&lt;p&gt;The prompt says &amp;ldquo;professional,&amp;rdquo; but the result says &amp;ldquo;stock-photo-ish.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The prompt says &amp;ldquo;professional,&amp;rdquo; and the result says &amp;ldquo;stock photo tried its best.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;The prompt says &amp;ldquo;modern office,&amp;rdquo; but the result has no relationship to the product being sold.&lt;/p&gt;
-&lt;p&gt;The prompt says &amp;ldquo;homepage banner,&amp;rdquo; but the composition fights the layout instead of supporting it.&lt;/p&gt;
+&lt;p&gt;The prompt says &amp;ldquo;homepage banner,&amp;rdquo; but the composition makes the layout worse instead of better.&lt;/p&gt;
 &lt;p&gt;Usable product marketing visuals usually need more context than that. In practice, I have found it helps to specify some combination of:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;role or persona&lt;/li&gt;
@@ -26,12 +26,12 @@
 &lt;li&gt;scene type&lt;/li&gt;
 &lt;li&gt;aspect ratio&lt;/li&gt;
 &lt;li&gt;website or campaign context&lt;/li&gt;
-&lt;li&gt;whether the image should include people at all&lt;/li&gt;
+&lt;li&gt;whether people should be in the image at all&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Even that list is not about perfection. It is about reducing ambiguity in the same way a good creative brief does.&lt;/p&gt;
-&lt;h2 id="iteration-is-not-failure"&gt;Iteration is not failure
-&lt;/h2&gt;&lt;p&gt;Another thing I do not buy is the idea that a good prompt should somehow produce the final result in one heroic shot.&lt;/p&gt;
-&lt;p&gt;That is not how design work behaves.&lt;/p&gt;
+&lt;p&gt;That is not about being precious with the prompt. It is about reducing ambiguity the same way a good creative brief does.&lt;/p&gt;
+&lt;h2 id="iteration-is-part-of-the-work"&gt;Iteration is part of the work
+&lt;/h2&gt;&lt;p&gt;I do not buy the idea that a good prompt should somehow produce the final image in one heroic attempt.&lt;/p&gt;
+&lt;p&gt;That is not how creative work behaves.&lt;/p&gt;
 &lt;p&gt;The more realistic pattern is iterative:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;get the composition roughly right&lt;/li&gt;
@@ -40,24 +40,24 @@
 &lt;li&gt;remove elements that make the image less usable&lt;/li&gt;
 &lt;li&gt;tighten the tone until it fits the page&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;That kind of iteration does not mean the first prompt failed. It means the work is behaving like creative work.&lt;/p&gt;
-&lt;p&gt;I think people underestimate how important that mindset is. If you approach AI image generation as a slot machine, the results stay shallow. If you approach it more like art direction, the quality of your prompts changes.&lt;/p&gt;
-&lt;h2 id="representation-deserves-intention"&gt;Representation deserves intention
-&lt;/h2&gt;&lt;p&gt;There is another layer here that matters and should not be treated as incidental.&lt;/p&gt;
-&lt;p&gt;If you are generating enterprise imagery that includes people, you are also making choices about whose professionalism gets centered and how competence gets depicted. That is not political garnish. It is part of the message.&lt;/p&gt;
+&lt;p&gt;That does not mean the first prompt failed. It means the work is behaving like design work.&lt;/p&gt;
+&lt;p&gt;If you treat AI image generation like a slot machine, the results stay shallow. If you treat it more like art direction, the quality of the prompts changes.&lt;/p&gt;
+&lt;h2 id="representation-needs-to-be-deliberate"&gt;Representation needs to be deliberate
+&lt;/h2&gt;&lt;p&gt;There is another layer here that matters and should not be treated as an afterthought.&lt;/p&gt;
+&lt;p&gt;If you are generating enterprise imagery that includes people, you are also making choices about whose professionalism gets centered and how competence gets depicted. That is not garnish. It is part of the message.&lt;/p&gt;
 &lt;p&gt;When teams say they care about representation but leave the visuals to chance, they usually end up reproducing the same narrow defaults they would have used before.&lt;/p&gt;
 &lt;p&gt;Prompting is one place where that can be corrected deliberately.&lt;/p&gt;
-&lt;p&gt;You can decide that the image should reflect the audience you want to serve.
-You can decide that enterprise competence does not need to look culturally generic.
-You can decide that inclusion belongs in the creative brief, not as an afterthought once the assets are already done.&lt;/p&gt;
+&lt;p&gt;You can decide the image should reflect the audience you want to serve.
+You can decide enterprise competence does not have to look culturally generic.
+You can decide inclusion belongs in the brief, not as a cleanup task after the asset is already done.&lt;/p&gt;
 &lt;p&gt;That is part of what makes AI image generation more interesting to me than the usual novelty framing. It gives smaller teams a faster way to be intentional.&lt;/p&gt;
-&lt;h2 id="good-prompts-sound-closer-to-briefs-than-tricks"&gt;Good prompts sound closer to briefs than tricks
-&lt;/h2&gt;&lt;p&gt;I think this is the biggest practical lesson.&lt;/p&gt;
+&lt;h2 id="good-prompts-sound-like-briefs"&gt;Good prompts sound like briefs
+&lt;/h2&gt;&lt;p&gt;This is the biggest practical lesson for me.&lt;/p&gt;
 &lt;p&gt;The best prompts I have seen do not sound clever. They sound grounded.&lt;/p&gt;
 &lt;p&gt;They sound like a designer, marketer, or founder being specific about what the asset is for.&lt;/p&gt;
 &lt;p&gt;That usually means less:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;hyper-detailed adjective stacking&lt;/li&gt;
+&lt;li&gt;adjective stacking&lt;/li&gt;
 &lt;li&gt;trying to outsmart the model&lt;/li&gt;
 &lt;li&gt;chasing a cinematic effect for its own sake&lt;/li&gt;
 &lt;/ul&gt;
@@ -69,11 +69,11 @@ You can decide that inclusion belongs in the creative brief, not as an afterthou
 &lt;li&gt;clear emotional direction&lt;/li&gt;
 &lt;li&gt;clear iteration goals&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The prompt becomes stronger because it is less performative.&lt;/p&gt;
-&lt;h2 id="my-takeaway"&gt;My takeaway
-&lt;/h2&gt;&lt;p&gt;I do not think the most useful question is whether AI can make attractive images.&lt;/p&gt;
+&lt;p&gt;The prompt gets stronger because it becomes less performative.&lt;/p&gt;
+&lt;h2 id="what-i-take-from-it"&gt;What I take from it
+&lt;/h2&gt;&lt;p&gt;I do not think the interesting question is whether AI can make attractive images.&lt;/p&gt;
 &lt;p&gt;It obviously can.&lt;/p&gt;
-&lt;p&gt;The more useful question is whether it can help produce visuals that are fit for real product and marketing surfaces.&lt;/p&gt;
+&lt;p&gt;The better question is whether it can help produce visuals that are actually fit for product and marketing surfaces.&lt;/p&gt;
 &lt;p&gt;That is where the discipline starts to matter.&lt;/p&gt;
 &lt;p&gt;Once you anchor the prompt in placement, audience, tone, and iteration, the work gets much closer to creative direction and much further from gimmickry.&lt;/p&gt;
 &lt;p&gt;That is the part I find genuinely useful.&lt;/p&gt;
