@@ -2,102 +2,82 @@
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework and LeanKernel (Part 4): Designing for Proactive Execution Without Losing Control"
 date: 2026-06-24T09:00:00Z
-draft: false
-description: "Proactive agents are only useful when safety is structural: scoped permissions, observability, and explicit human control points."
+draft: true
+description: "How LeanKernel approaches proactive execution: scheduled jobs, authentication gates, tool caps, and the single-request default."
 slug: microsoft-agent-framework-and-leankernel-4-designing-for-proactive-execution-without-losing-control
 tags: [
 "LeanKernel",
 "Microsoft Agent Framework",
-"AI Safety",
-"Observability",
-"Platform Engineering"
+"Proactive Execution"
 ]
 categories: [
-"Agentic AI",
-"Operations",
-"Architecture"
+"Architecture",
+"Agentic AI"
 ]
 image: ""
 ---
 
-"Be proactive" is easy to say and hard to operationalize.
+This is a continuation of [Part 3](/blog/2026/06/23/microsoft-agent-framework-and-leankernel-3-the-runtime-contracts-that-made-multi-agent-handoffs-reliable).
 
-In agent systems, proactive behavior without control mechanisms is just unsupervised side effects.
+The most instructive failure in proactive execution was not about scheduling or workflows. It was about tool registration.
 
-By the time I got deeper into LeanKernel, this became the core architecture question:
+## The 128-tool limit
 
-How do you allow agents to move work forward aggressively without letting them silently exceed their mandate?
+LeanKernel registers agent capabilities as tools — function definitions the model can invoke. At deployment, it registered too many. The error surfaced as a 500 from the model provider:
 
-## Decision 1: permission boundaries must exist at runtime, not in docs
+```text
+Error: Invalid 'tools': array too long. Expected an array with maximum length 128
+```
 
-A role definition in markdown is not a control.
+The stack trace led to `POST /chat/completions` with a `tools` payload of 129 entries. Azure's API has a hard limit of 128. I added `MaxTools` to the config to cap registration and a fallback strategy for the overflow:
 
-A control is enforceable capability scope at execution time.
+```csharp
+// LeanKernel.Core/Configuration/LiteLLMConfiguration.cs
+public class LiteLLMConfiguration
+{
+    public int MaxTools { get; set; } = 128;
+}
+```
 
-LeanKernel's role and tool boundaries are designed so each agent can only take actions that match its intended responsibility. This prevents the common collapse where every role becomes a generic superuser once deadlines get tight.
+```yaml
+# docker-stack.yml
+- LEANKERNEL__LITELLM__MAXTOOLS=128
+```
 
-Least privilege is not just security theater here. It keeps outputs interpretable.
+The fallback selects the most relevant tools when the count exceeds the limit. If there is no clear selection, the agent has a fallback economy model route where it tells the caller which capabilities are configured. The failure mode changed from silent 500 to explicit capability negotiation.
 
-If a review role cannot mutate implementation directly, review signals remain trustworthy.
+## Scheduled execution with Ofelia
 
-## Decision 2: every proactive action needs observable intent and outcome
+Scheduled jobs run through Ofelia labels on the gbrain container. The pattern is documented in the [scheduled jobs post](/blog/2026/06/26/leankernel-scheduled-jobs-on-swarm-ofelia-gbrain-and-the-gotchas-that-mattered/), but the key design point: jobs run in the same container as the runtime, with the same secrets and volume mounts. That cut the "works in dev but not on schedule" class of bugs.
 
-Proactive execution is valuable only when operators can answer:
+## The human gate
 
-- what the agent attempted
-- why it attempted it
-- what external tools it touched
-- what state changed as a result
+The auth integration with oauth2-proxy ensures that external endpoints require valid tokens. The `.docker-stack.yml` exposes port 5080 through oauth2-proxy and the `LEANKERNEL__AUTH__HEADER` maps the user identity into downstream headers. This means no external tool invocation happens without a validated identity, even through the auth guard.
 
-That means diagnostics cannot be bolted on as an afterthought.
+```yaml
+services:
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    ports:
+      - "443:443"
+    environment:
+      - OAUTH2_PROXY_UPSTREAMS=http://engine:5080
+      - OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER=false
+```
 
-LeanKernel treats diagnostics and traceability as first-class runtime concerns so operations can inspect workflows without digging through opaque prompt logs.
+## The default behavior
 
-This is where framework-level debugging surfaces and internal telemetry meet: one helps understand flow, the other helps run the system with confidence.
-
-## Decision 3: human control points should be explicit and policy-driven
-
-Not every step needs manual approval. Some steps absolutely do.
-
-The architecture should define where human gates belong:
-
-- high-impact external actions
-- destructive or irreversible operations
-- policy-sensitive decisions
-- low-confidence branches where the system is uncertain
-
-Everything else can run autonomously with strong observability.
-
-This keeps humans in the loop where they add the most value, without turning the whole platform into a bottleneck.
-
-## Decision 4: retries and escalation paths are part of safety
-
-A proactive system must handle failure as a normal condition.
-
-For LeanKernel, that means every meaningful workflow needs:
-
-- retry semantics for transient failure
-- escalation rules when confidence or validation fails
-- durable state so work can resume without guesswork
-
-Safety is not only about preventing bad actions. It is also about recovering cleanly when the environment behaves unexpectedly.
-
-## What I learned about proactive behavior
-
-The best proactive agents are not the ones that do the most.
-
-They are the ones that do the right next thing within a clear authority model, then leave an inspectable trail so humans and systems can verify the result.
-
-That is what turns autonomy from a demo feature into an operational capability.
-
-Microsoft Agent Framework can accelerate pieces of this journey, especially around orchestration and standardized collaboration patterns. But the core architecture decisions remain yours: boundaries, policies, and control loops.
-
-LeanKernel exists because those decisions deserve first-class engineering, not hand-waving.
+The simplest proactive execution policy in LeanKernel: agents are given context about the current request and do not trigger side effects unless explicitly configured. No agent can autonomously produce outbound effects without clearance through `Commander`. One request, one completion, one response. Everything beyond that requires an explicit schedule, a configured tool, or an authenticated session.
 
 ---
 
+Related reading:
+
+- [LeanKernel scheduled jobs on Swarm](/blog/2026/06/26/leankernel-scheduled-jobs-on-swarm-ofelia-gbrain-and-the-gotchas-that-mattered/)
+- [LeanKernel deployment history](/blog/2026/06/25/leankernel-swarm-deployment-commit-history-what-broke-and-how-i-fixed-it/)
+
 Series navigation:
 
-- Part 1: [The Problem Was Never Just Prompts](/blog/2026/06/21/microsoft-agent-framework-and-leankernel-1-the-problem-was-never-just-prompts/)
-- Part 2: [Why a Modular Monolith Was the Right First Bet](/blog/2026/06/22/microsoft-agent-framework-and-leankernel-2-why-a-modular-monolith-was-the-right-first-bet/)
-- Part 3: [The Runtime Contracts That Made Multi-Agent Handoffs Reliable](/blog/2026/06/23/microsoft-agent-framework-and-leankernel-3-the-runtime-contracts-that-made-multi-agent-handoffs-reliable/)
+Part 1: [The Problem Was Never Just Prompts](/blog/2026/06/21/microsoft-agent-framework-and-leankernel-1-the-problem-was-never-just-prompts/).
+Part 2: [Why a Modular Monolith Was the Right First Bet for LeanKernel](/blog/2026/06/22/microsoft-agent-framework-and-leankernel-2-why-a-modular-monolith-was-the-right-first-bet/).
+Part 3: [The Runtime Contracts That Made Multi-Agent Handoffs Reliable](/blog/2026/06/23/microsoft-agent-framework-and-leankernel-3-the-runtime-contracts-that-made-multi-agent-handoffs-reliable/).

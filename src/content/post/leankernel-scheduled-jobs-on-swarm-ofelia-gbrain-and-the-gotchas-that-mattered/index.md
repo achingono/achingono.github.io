@@ -1,133 +1,114 @@
 ---
 author: "Alfero Chingono"
-title: "LeanKernel Scheduled Jobs on Swarm: Ofelia, GBrain, and the Gotchas That Mattered"
+title: "LeanKernel Scheduled Jobs on Swarm"
 date: 2026-06-26T09:00:00Z
-draft: false
-description: "How LeanKernel scheduled jobs evolved on Docker Swarm: from idle containers to gbrain consolidation, plus the specific runtime gotchas uncovered along the way."
+draft: true
+description: "Ofelia scheduled jobs on Docker Swarm: idle containers, gbrain consolidation, and the container label gotcha."
 slug: leankernel-scheduled-jobs-on-swarm-ofelia-gbrain-and-the-gotchas-that-mattered
 tags: [
 "LeanKernel",
 "Docker Swarm",
-"Ofelia",
-"Scheduled Jobs",
-"GBrain"
+"Ofelia"
 ]
 categories: [
 "Operations",
-"Agentic AI",
 "Build in Public"
 ]
 image: ""
 ---
 
-Scheduled jobs looked straightforward in LeanKernel until we tried to run them reliably in Swarm.
+This is a continuation of the [deployment commit history post](/blog/2026/06/25/leankernel-swarm-deployment-commit-history-what-broke-and-how-i-fixed-it).
 
-The commit trail around `97c3e1c` and `00d06c0` shows the actual story: design, failure modes, and consolidation decisions.
+I needed two recurring workflows: a Microsoft To Do attention digest and a GBrain wiki sync with embedding refresh. Later I added deterministic identity self-heal ingest. All of them needed secrets, the gbrain CLI, the bun runtime, and wiki volume access.
 
-## What we were trying to automate
+Here's the first implementation I tried.
 
-Two core recurring workflows:
+## Phase 1: Separate idle containers
 
-- Microsoft To Do attention digest generation
-- GBrain wiki sync + embedding refresh
+I deployed an `ofelia` scheduler service and two idle containers. Each idle container ran `sleep 3153600000` (roughly 100 years) and carried Ofelia `job-exec` labels. When Ofelia's schedule fired, it would `docker exec` into the idle container to run the job script.
 
-Later, a third workflow was added:
+```yaml
+  ms_todo_attention:
+    image: ghcr.io/achingono/leankernel-gbrain:latest
+    command: ["sleep", "3153600000"]
+    deploy:
+      labels:
+        ofelia.job-exec.ms-todo-attention.schedule: "0 6 * * 1-5"
+        ofelia.job-exec.ms-todo-attention.command: "/run/ms-todo-attention-job.sh"
+```
 
-- deterministic identity self-heal ingest (`00d06c0`)
+It worked. But it duplicated runtime surface: two extra containers perpetually sleeping, with duplicated mounts and secret wiring. Every redeploy meant touching configuration in three places.
 
-All of these jobs needed the same things: secrets, gbrain CLI access, bun runtime, and wiki volume access.
+## Consolidation into gbrain
 
-## Phase 1 worked, but cost too much complexity
+I stopped trying to mimic the gbrain runtime in separate containers and moved scheduled job execution into the existing `gbrain` container instead. The diff was straightforward:
 
-The first implementation (captured in `97c3e1c`) used:
+```diff
+   gbrain:
+     image: ghcr.io/achingono/leankernel-gbrain:latest
++    labels:
++      ofelia.enabled: "true"
++      ofelia.job-exec.gbrain-sync-embed.schedule: "*/15 * * * *"
++      ofelia.job-exec.gbrain-sync-embed.command: "/run/gbrain-sync-embed-job.sh"
++      ofelia.job-exec.ms-todo-attention.schedule: "0 6 * * 1-5"
++      ofelia.job-exec.ms-todo-attention.command: "/run/ms-todo-attention-job.sh"
++    configs:
++      - source: gbrain_sync_embed_job
++        target: /run/gbrain-sync-embed-job.sh
++      - source: ms_todo_attention_job
++        target: /run/ms-todo-attention-job.sh
+```
 
-- an `ofelia` scheduler service
-- two separate idle job containers (`sleep 3153600000`)
-- `job-exec` labels targeting those idle containers
+This cut the moving parts. The bigger win was parity: scheduled runs used the same runtime assumptions as interactive gbrain, so I stopped seeing "it works when I run it by hand" mysteries.
 
-It functioned, but it duplicated runtime surface area:
+## Gotcha 1: Ofelia labels must be container-level, not service-level
 
-- extra always-on containers
-- duplicated mounts and secret wiring
-- more places for drift between job runtime and actual gbrain runtime
+During the migration I hit a silent failure. The scheduler was up, logs showed no errors, but jobs never ran.
 
-The design was correct enough to prove the behavior, but too expensive to operate long-term.
+Ofelia's `daemon --docker` mode discovers jobs by reading labels on **running containers** via the Docker API. In Docker Compose, labels under `deploy.labels` are service-level metadata and do not propagate to the container. They need to be at the top-level `labels:` block:
 
-## Consolidation into gbrain was the right move
+```yaml
+# This will NOT work — labels are on the service, not the container
+services:
+  gbrain:
+    deploy:
+      labels:
+        ofelia.job-exec.gbrain-sync-embed.schedule: "*/15 * * * *"
 
-The key architectural shift was to execute scheduled jobs directly inside the existing `gbrain` container.
+# This works — labels go on the container
+services:
+  gbrain:
+    labels:
+      ofelia.job-exec.gbrain-sync-embed.schedule: "*/15 * * * *"
+```
 
-That reduced moving parts and aligned the execution context with where the dependencies already lived.
+That one detail explains a lot of "scheduler is up but jobs never run" debugging sessions.
 
-In practice, it gave us:
+## Gotcha 2: `gbrain init` idempotency and `set -eu`
 
-- fewer services to deploy and monitor
-- fewer duplicated mounts/secrets
-- tighter parity between interactive gbrain behavior and scheduled-job behavior
+`gbrain init` is designed to be safe to run repeatedly, but I still saw non-zero exits during redeploys. The problem was `set -eu` in the entrypoint — any non-zero exit from init would stop the service before it reached `gbrain serve`.
 
-This is one of those cases where "fewer containers" was not about cost-cutting. It was about reducing failure surface.
+The fix was keeping job scripts explicit about secret loading and environment setup, and making initialization expectations visible in logs. After that I stopped treating "container started" as the end of the job. Deployment completion meant health checks plus scheduler registration, not just the process coming up.
 
-## The gotcha that can silently break scheduling
+## Why deterministic ingest mattered
 
-One important lesson from this migration:
+The identity self-heal job writes two specific wiki pages: a routing rules page that tells agents which knowledge paths to follow, and a daily attention digest from Microsoft To Do. I learned this mattered when a routing rule page went missing during a redeploy and agents started answering "I don't have access to that information" for requests they normally handled.
 
-Ofelia in Docker mode discovers jobs from **container labels**, not Swarm service metadata.
+The self-heal job made those artifacts idempotent: every run produces the same pages from the same state, so a missing page gets restored on the next cycle.
 
-If labels are put under `deploy.labels`, job discovery fails quietly because those are service labels. The fix was placing labels at top-level `labels:` for the target service.
+## Verification loop
 
-That one detail explains a lot of "scheduler is up but jobs never run" behavior.
-
-## The second gotcha: init idempotency + strict shell mode
-
-`gbrain init` is meant to be safe to run repeatedly, but operational notes call out real cases where non-zero exits can happen during re-deploy.
-
-With `set -eu` entrypoints, a non-zero init can prevent the service from reaching `gbrain serve`.
-
-The mitigation pattern became:
-
-- keep job scripts explicit about secret loading and environment setup
-- make initialization expectations visible in logs
-- verify post-deploy health and scheduler registration, not just container start
-
-## Why deterministic ingest mattered for scheduled jobs
-
-`00d06c0` added deterministic identity self-heal ingest.
-
-This extended the scheduled-job model beyond "sync whatever changed" into "guarantee specific identity artifacts exist and are embedded."
-
-That is an important evolution for agent systems. Some periodic jobs are maintenance. Others are control-plane correctness guarantees.
-
-Treating them the same is how drift sneaks in.
-
-## Practical verification loop we kept
-
-After deployment, the reliable checks were:
+After deployment, I trusted three checks:
 
 - stack service list has expected LeanKernel services
 - gbrain container exposes expected Ofelia labels
 - Ofelia logs show job registration
-- forced manual execution of job scripts succeeds in-container
 
-The rule became: do not trust scheduler "up" status alone. Trust registration + execution.
-
-## Final takeaway
-
-The scheduled-job architecture became better when we optimized for execution context clarity, not abstract modularity.
-
-If jobs require gbrain runtime, run them in gbrain.
-If scheduler discovery depends on container labels, wire labels exactly there.
-If periodic workflows maintain core behavior, validate them like production code paths.
-
-That is what made this setup durable.
+Then I ran the job scripts manually inside the container with the real secrets and real wiki mounts to validate behavior before the next scheduled run.
 
 ---
-
-Related commits reviewed:
-
-- `97c3e1c` Ofelia scheduled jobs + consolidation into gbrain
-- `00d06c0` deterministic identity self-heal ingest
 
 Related reading:
 
 - [LeanKernel operational notes (Swarm docs)](https://github.com/achingono/swarm/blob/main/docs/deployment/stacks/leankernel/operational-notes.md)
-- [LeanKernel deployment deviations (Swarm docs)](https://github.com/achingono/swarm/blob/main/docs/deployment/stacks/leankernel/deviations-from-plan.md)
+- [Ofelia scheduler docs](https://github.com/mcuadros/ofelia)

@@ -2,102 +2,97 @@
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework and LeanKernel (Part 1): The Problem Was Never Just Prompts"
 date: 2026-06-21T09:00:00Z
-draft: false
-description: "Before architecture patterns and tool protocols, there was a simpler problem: single-agent copilots were not enough for real engineering delivery."
+draft: true
+description: "Why the delivery system around the model matters more than the model itself, starting from a specific two-line fix."
 slug: microsoft-agent-framework-and-leankernel-1-the-problem-was-never-just-prompts
 tags: [
 "Microsoft Agent Framework",
 "LeanKernel",
-"AI Agents",
-"Multi-Agent Systems",
-"Platform Engineering"
+"AI Agents"
 ]
 categories: [
 "Agentic AI",
-"Architecture",
-"Build in Public"
+"Architecture"
 ]
 image: ""
 ---
 
-Most teams did not hit limits with AI because the models were weak.
+I was working on an agent workflow where one agent needed to call tools to fulfill user requests. Instead of calling functions, the agent kept responding in natural language: "I would use the search tool to find relevant documents." It described intent instead of executing it.
 
-They hit limits because the delivery system around the model was weak.
+Here is what the code looked like when I traced the issue:
 
-One agent could draft code. One agent could explain a design. One agent could even fix some tests. But in production workflows, engineering work is not a single action. It is a sequence with role boundaries, handoffs, approvals, retries, and accountability.
+```csharp
+// AgentInvocationBuilder.cs — before
+return new ChatOptions
+{
+    Tools = [.. context.Tools]
+    // ToolMode defaults to None — model doesn't know it can call functions
+};
+```
 
-That gap is the real reason I started shaping LeanKernel.
+The prompt had no instruction to invoke tools, and `ChatToolMode` defaulted to `None`. The model was working correctly within its constraints — it just wasn't told it could emit structured function calls. The fix was two lines:
 
-## The actual problem statement
+```csharp
+// AgentInvocationBuilder.cs — after
+return new ChatOptions
+{
+    Tools = [.. context.Tools],
+    ToolMode = ChatToolMode.Auto  // tells the model function calling is available
+};
+```
 
-I wanted a system that could take a request from idea to merged change with reliability, not just fluency.
+And one line in the system prompt:
 
-That meant solving for:
+```csharp
+// PromptAssembler.cs
+parts.Add("You have access to the functions listed above. When a user asks you to do something that requires a tool, use the function call mechanism rather than describing what you would do.");
+```
+
+That fix (commit `1745636`) changed more about agent reliability than any model swap. The model wasn't the bottleneck. The delivery system was.
+
+## What I was actually trying to build
+
+I wanted a system that could take a request from idea to merged change with reliability, not just fluency. That meant:
 
 - role-specific execution instead of one "do everything" assistant
-- deterministic context assembly instead of magical hidden memory
-- durable state transitions instead of chat-only progress
 - tool contracts instead of ad-hoc integration scripts
+- deterministic context assembly and durable state transitions
 - traceability across planning, implementation, review, and operations
 
-In other words, I was not trying to build a better chatbot. I was trying to build an engineering runtime.
+When Microsoft Agent Framework became generally available, what stood out was the platform intent: stable SDK surface, protocol-first collaboration, and clearer orchestration primitives. Those aligned with the problems I was hitting.
 
-## Why this maps directly to Microsoft Agent Framework
+## Why LeanKernel started as a modular monolith
 
-When Microsoft Agent Framework became generally available, what stood out was not marketing language. It was the platform intent: stable SDK surface, protocol-first collaboration, and clearer orchestration primitives.
+A lot of people asked why I didn't start with distributed microservices. Early on, the hardest question was stabilizing contracts, not scaling traffic. I needed fast iteration on agent boundaries and context assembly rules. A modular monolith gave me one deployable unit with explicit internal boundaries:
 
-Those choices matter because they align with the problems above.
+```text
+LeanKernel.sln
+├── LeanKernel.Abstractions   # shared contracts
+├── LeanKernel.Core           # primitives
+├── LeanKernel.Agents         # agent behavior
+├── LeanKernel.Thinker        # reasoning/orchestration
+├── LeanKernel.Context        # prompt/runtime assembly
+├── LeanKernel.Tools          # tool definitions
+├── LeanKernel.Plugins        # dynamic skill loading
+├── LeanKernel.Persistence    # state durability
+├── LeanKernel.Archivist      # knowledge management
+├── LeanKernel.Channels       # ingress
+├── LeanKernel.Commander      # egress
+└── LeanKernel.Gateway        # host composition
+```
 
-If your foundation gives you predictable APIs, explicit orchestration patterns, and integration points for tool protocols like MCP and agent-to-agent collaboration, you spend less time inventing plumbing and more time shaping behavior.
+The project count matters less than what each owns. Modules own behavior. The gateway composes them.
 
-The key insight is that framework choice does not replace architecture. It accelerates architecture when your boundaries are already clear.
+## What early iterations taught me
 
-## Why LeanKernel became a modular monolith first
+The first versions were over-optimistic about autonomy. You assume the model can fill more gaps than it should. You discover that implicit assumptions become failures under load. Handoffs are where quality silently degrades.
 
-A lot of people ask why not start with distributed microservices if the system is multi-agent.
-
-Because at the beginning, the hardest question is not scaling traffic. It is stabilizing contracts.
-
-I needed fast iteration on:
-
-- agent boundaries
-- command and execution flow
-- context assembly rules
-- persistence semantics
-- diagnostics and feedback loops
-
-A modular monolith gave me one deployable unit with explicit internal boundaries. That reduced operational noise while the architecture itself was still evolving.
-
-The move was deliberate: keep deployment simple while making domain seams strict.
-
-## The lesson from early iterations
-
-The first versions of any agent system are usually over-optimistic about autonomy.
-
-You assume the model can fill more gaps than it should. You discover that implicit assumptions become failures under load. You realize that handoffs are where quality silently degrades.
-
-So the design principle became straightforward:
-
-Make state explicit.
-Make responsibilities explicit.
-Make transitions explicit.
-
-That principle shaped LeanKernel more than any individual model choice.
-
-## What this series covers next
-
-This post sets the problem statement. The next parts focus on the architectural decisions that followed:
-
-- why the modular-monolith boundary map matters for long-term maintainability
-- how LeanKernel's orchestration, context, and tool contracts reduce handoff chaos
-- how permissions, observability, and human approval loops keep proactive agents safe in real workflows
-
-If the system cannot explain why it acted, who acted, and what state changed, it is not production-ready no matter how impressive the output sounds.
+The design principle that emerged: make state explicit, keep responsibilities explicit, and treat orchestration as a runtime contract instead of a conversation.
 
 ---
 
 Series navigation:
 
-- Part 2: [Why a Modular Monolith Was the Right First Bet for LeanKernel](/blog/2026/06/22/microsoft-agent-framework-and-leankernel-2-why-a-modular-monolith-was-the-right-first-bet/)
-- Part 3: [The Runtime Contracts That Made Multi-Agent Handoffs Reliable](/blog/2026/06/23/microsoft-agent-framework-and-leankernel-3-the-runtime-contracts-that-made-multi-agent-handoffs-reliable/)
-- Part 4: [Designing for Proactive Execution Without Losing Control](/blog/2026/06/24/microsoft-agent-framework-and-leankernel-4-designing-for-proactive-execution-without-losing-control/)
+Part 2: [Why a Modular Monolith Was the Right First Bet for LeanKernel](/blog/2026/06/22/microsoft-agent-framework-and-leankernel-2-why-a-modular-monolith-was-the-right-first-bet/).
+Part 3: [The Runtime Contracts That Made Multi-Agent Handoffs Reliable](/blog/2026/06/23/microsoft-agent-framework-and-leankernel-3-the-runtime-contracts-that-made-multi-agent-handoffs-reliable/).
+Part 4: [Designing for Proactive Execution Without Losing Control](/blog/2026/06/24/microsoft-agent-framework-and-leankernel-4-designing-for-proactive-execution-without-losing-control/).
