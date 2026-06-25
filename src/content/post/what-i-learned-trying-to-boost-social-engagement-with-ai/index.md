@@ -2,8 +2,8 @@
 title: What I learned trying to boost social engagement with AI
 date: "2026-06-25"
 draft: true
-summary: A candid post about how automated social engagement backfired, what signals triggered it, and the human adjustments needed to rebuild trust.
-tags: social media, ai, automation, writing, lessons learned
+summary: A candid debrief on what went wrong when I used AI to scale social engagement, and how I’m recovering from it.
+tags: ai, social-media, product, operations
 ---
 
 Draft coming soon.
