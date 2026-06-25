@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Docker Swarm Admin Stack: Portainer + Traefik Edge + OIDC + oauth2-proxy"
-date: 2026-06-24T09:00:00Z
+date: 2026-08-27T09:00:00Z
 draft: true
 description: "The practical control-plane writeup: how the management stack is wired, which failures showed up first, and what the final routing and identity model looks like in code and scripts." 
 slug: docker-swarm-admin-stack-portainer-traefik-oidc-and-oauth2-proxy

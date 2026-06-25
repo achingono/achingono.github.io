@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework and LeanKernel (Part 3): The Runtime Contracts That Made Multi-Agent Handoffs Reliable"
-date: 2026-06-23T09:00:00Z
+date: 2026-07-16T09:00:00Z
 draft: true
 description: "Three concrete problems from LeanKernel runtime history and the contract changes that fixed them."
 slug: microsoft-agent-framework-and-leankernel-3-the-runtime-contracts-that-made-multi-agent-handoffs-reliable

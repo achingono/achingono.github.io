@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Browser Automation Via a Webwright Sidecar: Contracts, Defaults, and Cancelability"
-date: 2026-06-20T09:00:00Z
+date: 2026-07-30T09:00:00Z
 draft: true
 description: "How LeanKernel keeps browser automation out of the .NET process by wrapping Webwright in a sidecar, exposing async browser_* tools with strict security defaults and an operational contract."
 slug: browser-automation-via-webwright-sidecar-leankernel

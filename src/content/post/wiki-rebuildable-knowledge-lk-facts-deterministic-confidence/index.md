@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "A Rebuildable Wiki for Agent Systems: lk-facts, Deterministic Confidence, and Sidecar-owned Indexing"
-date: 2026-06-20T09:00:00Z
+date: 2026-08-13T09:00:00Z
 draft: true
 description: "How LeanKernel keeps wiki knowledge rebuildable and honest: canonical markdown records with fenced lk-facts YAML, deterministic confidence, and an index you can regenerate from source."
 slug: wiki-rebuildable-knowledge-lk-facts-deterministic-confidence

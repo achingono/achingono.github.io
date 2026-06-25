@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Docker Swarm App Stacks: Traefik Host Routing + Per-App Deploy Scripts"
-date: 2026-07-03T09:00:00Z
+date: 2026-09-17T09:00:00Z
 draft: true
 description: "The application deployment writeup: consistent Traefik routing, shared auth assumptions, build helpers, and the Swarm-specific failure modes that changed how I roll out updates." 
 slug: docker-swarm-application-stacks-traefik-routing-and-deploy-scripts

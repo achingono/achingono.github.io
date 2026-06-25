@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework and LeanKernel (Part 4): Designing for Proactive Execution Without Losing Control"
-date: 2026-06-24T09:00:00Z
+date: 2026-07-23T09:00:00Z
 draft: true
 description: "How LeanKernel approaches proactive execution: scheduled jobs, authentication gates, tool caps, and the single-request default."
 slug: microsoft-agent-framework-and-leankernel-4-designing-for-proactive-execution-without-losing-control

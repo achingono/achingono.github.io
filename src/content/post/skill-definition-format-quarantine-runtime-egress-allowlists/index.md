@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "SKILL.md to Runtime Tools: How LeanKernel Loads Skills Without Turning Security into a Guess"
-date: 2026-06-20T09:00:00Z
+date: 2026-08-06T09:00:00Z
 draft: true
 description: "A practical look at LeanKernel’s SKILL.md contract: parsing, validation, quarantine for invalid skills, egress allow lists for HTTP skills, and hot reload behavior for dynamic tool registration."
 slug: skill-definition-format-quarantine-runtime-egress-allowlists

@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework and LeanKernel (Part 2): Why a Modular Monolith Was the Right First Bet"
-date: 2026-06-22T09:00:00Z
+date: 2026-07-09T09:00:00Z
 draft: true
 description: "Why LeanKernel started with strict module boundaries inside one deployable host instead of microservices."
 slug: microsoft-agent-framework-and-leankernel-2-why-a-modular-monolith-was-the-right-first-bet

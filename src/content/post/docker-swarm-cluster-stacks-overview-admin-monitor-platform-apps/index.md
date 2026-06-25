@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Docker Swarm in Stacks: Admin, Monitor, Platform, and Apps"
-date: 2026-06-21T09:00:00Z
+date: 2026-08-20T09:00:00Z
 draft: true
 description: "A practical writeup of the Docker Swarm layout I ended up with after turning two broken-screen Surface Pros into worker nodes and learning the hard parts of networking, routing, and rollout discipline." 
 slug: docker-swarm-cluster-stacks-overview-admin-monitor-platform-apps

@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Microsoft Agent Framework and LeanKernel (Part 1): The Problem Was Never Just Prompts"
-date: 2026-06-21T09:00:00Z
+date: 2026-07-02T09:00:00Z
 draft: true
 description: "Why the delivery system around the model matters more than the model itself, starting from a specific two-line fix."
 slug: microsoft-agent-framework-and-leankernel-1-the-problem-was-never-just-prompts

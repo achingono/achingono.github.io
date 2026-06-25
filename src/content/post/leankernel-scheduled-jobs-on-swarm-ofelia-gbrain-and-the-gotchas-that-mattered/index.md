@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "LeanKernel Scheduled Jobs on Swarm"
-date: 2026-06-26T09:00:00Z
+date: 2026-08-06T09:00:00Z
 draft: true
 description: "Ofelia scheduled jobs on Docker Swarm: idle containers, gbrain consolidation, and the container label gotcha."
 slug: leankernel-scheduled-jobs-on-swarm-ofelia-gbrain-and-the-gotchas-that-mattered

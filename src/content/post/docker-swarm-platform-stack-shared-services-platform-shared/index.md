@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Docker Swarm Platform Stack: Shared Postgres, LiteLLM, Ollama, Redis, Registry, and Playwright"
-date: 2026-06-30T09:00:00Z
+date: 2026-09-10T09:00:00Z
 draft: true
 description: "The shared-services writeup: what lives in the `platform` stack, how service placement and networking are handled, and which rollout problems pushed me toward a stricter deployment model." 
 slug: docker-swarm-platform-stack-shared-services-platform-shared

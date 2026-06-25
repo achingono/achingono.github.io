@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "LeanKernel on Swarm: What Broke in Deployment"
-date: 2026-06-25T09:00:00Z
+date: 2026-07-30T09:00:00Z
 draft: true
 description: "A walk through the git history of LeanKernel deployment on Docker Swarm: what broke, and what I changed to fix it."
 slug: leankernel-swarm-deployment-commit-history-what-broke-and-how-i-fixed-it

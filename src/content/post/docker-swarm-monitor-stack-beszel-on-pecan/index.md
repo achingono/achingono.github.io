@@ -1,7 +1,7 @@
 ---
 author: "Alfero Chingono"
 title: "Docker Swarm Monitor Stack: Beszel on a Dedicated `pecan` Host"
-date: 2026-06-27T09:00:00Z
+date: 2026-09-03T09:00:00Z
 draft: true
 description: "The monitoring writeup: why the Beszel hub lives off-cluster, how the global agent stack is wired, and which operational shortcuts were worth automating." 
 slug: docker-swarm-monitor-stack-beszel-on-pecan
